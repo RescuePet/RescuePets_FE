@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Adoption from '../pages/adoption/Adoption';
 import AdoptionDetail from '../pages/adoptionDetail/AdoptionDetail';
 import Introduction from '../pages/introduction/Introduction';
@@ -11,7 +11,7 @@ import Signup from '../pages/sign/Signup';
 import ReportPosting from '../test/ReportPosting';
 import KakaoMap from '../test/KakaoMap';
 
-const App = () => {
+const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
@@ -31,4 +31,5 @@ const App = () => {
   );
 };
 
-export default App;
+export default Router
+
