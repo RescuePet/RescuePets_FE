@@ -1,7 +1,7 @@
 import React from 'react';
 
-const AdeoptionDetail = () => {
+const AdoptionDetail = () => {
   return <div>AdeoptionDetail</div>;
 };
 
-export default AdeoptionDetail;
+export default AdoptionDetail;

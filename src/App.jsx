@@ -1,8 +1,15 @@
 import React from 'react';
+import Router from 'react-router-dom';
 
-// 여기에 라우터 연결하기
+import Reset from './style/Reset';
+
 const App = () => {
-  return <div>App</div>;
+  return (
+    <>
+      <Reset />
+      <Router />
+    </>
+  );
 };
 
 export default App;
