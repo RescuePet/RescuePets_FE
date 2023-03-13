@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 const Reset = createGlobalStyle`
   /* reset.css */
@@ -29,6 +29,13 @@ const Reset = createGlobalStyle`
   }
   * {
     box-sizing: border-box;
+    font-size: 10px;
+  }
+
+  @media screen and (max-width: 430px) { 
+    * {
+      font-size: 16px;
+    }
   }
   body {
     line-height: 1;

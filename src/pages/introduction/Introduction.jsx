@@ -1,7 +1,8 @@
-import React from 'react';
+import React from "react";
+import Layout from "../../layouts/Layout";
 
 const Introduction = () => {
-  return <div>Introduction</div>;
+  return <Layout>introduction</Layout>;
 };
 
 export default Introduction;

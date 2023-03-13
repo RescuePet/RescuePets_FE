@@ -1,15 +1,15 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Adoption from '../pages/adoption/Adoption';
-import AdoptionDetail from '../pages/adoptionDetail/AdoptionDetail';
-import Introduction from '../pages/introduction/Introduction';
-import Map from '../pages/map/Map';
-import Profile from '../pages/profile/Profile';
-import Report from '../pages/report/Report';
-import ReportDetail from '../pages/reportDetail/ReportDetail';
-import Signin from '../pages/sign/Signin';
-import Signup from '../pages/sign/Signup';
-import ReportPosting from '../test/ReportPosting';
-import KakaoMap from '../test/KakaoMap';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Adoption from "../pages/adoption/Adoption";
+import AdoptionDetail from "../pages/adoptionDetail/AdoptionDetail";
+import Introduction from "../pages/introduction/Introduction";
+import Map from "../pages/map/Map";
+import Profile from "../pages/profile/Profile";
+import Report from "../pages/report/Report";
+import ReportDetail from "../pages/reportDetail/ReportDetail";
+import Signin from "../pages/sign/Signin";
+import Signup from "../pages/sign/Signup";
+import ReportPosting from "../test/ReportPosting";
+import KakaoMap from "../test/KakaoMap";
 
 const Router = () => {
   return (
@@ -31,5 +31,4 @@ const Router = () => {
   );
 };
 
-export default Router
-
+export default Router;
