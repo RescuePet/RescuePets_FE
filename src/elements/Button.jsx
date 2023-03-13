@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 
-const Btn = ({ children, ...props }) => {
+const Button = ({ children, ...props }) => {
     return (
         <>
             <BtnStyle onClick={props.deleteItem} {...props}>
@@ -23,15 +23,13 @@ const BtnStyle = styled.button`
     ${(props) =>
         props.TabBtn &&
         css`
-       margin-top: 100px;
        border: 1px solid #d9d9d9;
     `}
     ${(props) =>
         props.TabBtn2 &&
         css`
-       margin-top: 100px;
        background: #d9d9d9;
     `}
 `;
 
-export default Btn;
+export default Button;
