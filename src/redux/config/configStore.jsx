@@ -1,7 +1,8 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore } from "@reduxjs/toolkit";
+import users from "../modules/signSlice";
 
 const store = configureStore({
-  reducer: {},
+  reducer: { users },
 });
 
 export default store;
