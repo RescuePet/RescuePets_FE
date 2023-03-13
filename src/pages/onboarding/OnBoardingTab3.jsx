@@ -1,50 +1,57 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
-import Button from '../../../elements/Button'
+import styled from 'styled-components'
+import Button from '../../elements/Button'
 
 
+const OnBoardingTab3 = (props) => {
 
-const OnBoardingTab1 = (props) => {
     const navigate = useNavigate()
-    const [tabCount1, setTabCount1] = useState(1);
+
+    const [tabCount3, setTabCount3] = useState(0);
 
     const onClickTabBtn = () => {
-        props.propFunction(tabCount1)
+        props.propFunction3(tabCount3)
     }
 
     return (
         <>
-
             <TabContainer>
-                <TabHander onClick={() => { navigate('/signin') }}>Skip</TabHander>
+                <TabHander onClick={onClickTabBtn}>CLOSE</TabHander>
                 <TabImageBox>
-                    <div></div>
+                    <div>
+                        <img />
+                    </div>
                 </TabImageBox>
 
                 <TabTextBox>
-                    <h3>API기반으로 실시간
-                        유기동물을 구할 수 있어요!
+                    <h3>유기동물의
+                        가족이 되어주세요!
                     </h3>
                 </TabTextBox>
 
                 <TabButtonBox>
+
+
+                    <TabNoneThisBox></TabNoneThisBox>
+                    <TabNoneThisBox></TabNoneThisBox>
                     <TabThisBox></TabThisBox>
-                    <TabNoneThisBox></TabNoneThisBox>
-                    <TabNoneThisBox></TabNoneThisBox>
+
                 </TabButtonBox>
 
-                <TabNextButtonArea >
-                    <Button onClick={onClickTabBtn}>다음</Button>
+
+                <TabNextButtonArea>
+                    <Button onClick={() => { navigate('/signin') }}>로그인</Button>
                 </TabNextButtonArea>
+
+
+
             </TabContainer>
         </>
     )
 }
 
-export default OnBoardingTab1
-
-
+export default OnBoardingTab3
 
 const TabContainer = styled.div`
     width: 100%;
@@ -55,6 +62,7 @@ const TabContainer = styled.div`
     flex-direction: column;
     padding-top: 10px;
 `;
+
 const TabHander = styled.div`
     width: 100%;
     height: 5%;
@@ -64,7 +72,10 @@ const TabHander = styled.div`
     justify-content: right;
     padding-right: 20px;
     font-weight: 700;
+    cursor: pointer;;
 `
+
+
 
 const TabImageBox = styled.div`
     width: 80%;
@@ -86,7 +97,6 @@ const TabTextBox = styled.div`
     padding: 0 50px;
     text-align: center;
 `
-
 
 
 const TabButtonBox = styled.div`
@@ -111,10 +121,13 @@ const TabNoneThisBox = styled.div`
         height: 8px;
         background: #D9D9D9;
         border-radius: 10px;
-`
+`;
 
 
 const TabNextButtonArea = styled.div`
     margin-top: 100px;
     ${(props) => props.theme.FlexCenter}
 `;
+
+
+
