@@ -8,6 +8,7 @@ import check from "../../asset/check.svg";
 import Layout from "../../layouts/Layout";
 import { __signinUser } from "../../redux/modules/signSlice";
 import { FlexAttribute, SignSvgStyle } from "../../style/Mixin";
+import Button from "../../elements/Button";
 
 const Signin = () => {
   const [value, setValue] = useState({ email: "", password: "" });
@@ -65,11 +66,16 @@ const Signin = () => {
           <span>자동로그인</span>
         </AutoSignInWrapper>
         <ButtonWrapper>
-          <button type="submit" form="signin">
+          <Button TabBtn2 type="submit" form="signin">
             로그인
-          </button>
-          <button>카카오톡으로 로그인</button>
+          </Button>
+          <Button TabBtn>카카오톡으로 로그인</Button>
         </ButtonWrapper>
+        <SignUpWrapper>
+          <SignUpSpan>회원가입</SignUpSpan>
+          <BrSpan>|</BrSpan>
+          <Forgot>아이디/비밀번호찾기</Forgot>
+        </SignUpWrapper>
       </SignContainer>
     </Layout>
   );
@@ -92,7 +98,7 @@ const SignHeader = styled.div`
 
 const SignForm = styled.form`
   ${FlexAttribute("column", "center")}
-  margin: 0rem 1.25rem 0rem 1.25rem;
+  margin: 0px 20px 0px 20px;
   img {
     ${SignSvgStyle}
   }
@@ -107,7 +113,7 @@ const InputWrapper = styled.div`
   display: flex;
   align-items: center;
   ${FlexAttribute("row", "", "center")}
-  border-bottom: 0.125rem solid #eeeeee;
+  border-bottom: .125rem solid #eeeeee;
 `;
 
 const SignInput = styled.input`
@@ -120,21 +126,47 @@ const SignInput = styled.input`
 `;
 
 const ButtonWrapper = styled.div`
-  ${FlexAttribute("column", "center")}
+  ${FlexAttribute("column", "center", "center")}
+  margin-top: 3.25rem;
+  button:first-child {
+    margin-bottom: 1.125rem;
+  }
 `;
 
 const AutoSignInWrapper = styled.div`
   ${FlexAttribute("row", "flex-end", "center")}
-  margin: 18px 31px 0 0;
+  margin: 1.125rem 1.9375rem 0 0;
   cursor: pointer;
   img {
     ${SignSvgStyle}
   }
   span {
-    margin-left: 8px;
-    font-size: 13px;
+    margin-left: 0.5rem;
+    font-size: 0.8125rem;
     color: #666666;
   }
+`;
+
+const SignUpWrapper = styled.div`
+  ${FlexAttribute("row", "center", "center")}
+  margin-top: 1.5rem;
+`;
+
+const SignUpSpan = styled.span`
+  font-size: 0.875rem;
+  cursor: pointer;
+`;
+
+const Forgot = styled.span`
+  font-size: 0.75rem;
+  color: #999999;
+  cursor: pointer;
+`;
+
+const BrSpan = styled.span`
+  margin: 0 1rem;
+  font-size: 0.75rem;
+  color: #999999;
 `;
 
 export default Signin;
