@@ -30,8 +30,8 @@ const Reset = createGlobalStyle`
   * {
     box-sizing: border-box;
     font-size: 10px;
+    background-color: #ffffff;
   }
-
   @media screen and (max-width: 430px) { 
     * {
       font-size: 16px;
@@ -58,6 +58,7 @@ const Reset = createGlobalStyle`
   button {
     background-color: white;
     border: none;
+    cursor: pointer;
   }
   input, textarea {
     outline: none;
