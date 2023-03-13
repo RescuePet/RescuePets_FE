@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Adoption from "../pages/adoption/Adoption";
 import AdoptionDetail from "../pages/adoptionDetail/AdoptionDetail";
-import Introduction from "../pages/introduction/Introduction";
+import OnBoarding from "../onboarding/OnBoarding";
 import Map from "../pages/map/Map";
 import Profile from "../pages/profile/Profile";
 import Report from "../pages/report/Report";
@@ -15,7 +15,7 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Introduction />} />
+        <Route path="/" element={<OnBoarding />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/adoption" element={<Adoption />} />
