@@ -1,8 +1,8 @@
 import React from "react";
 import Layout from "../../layouts/Layout";
 
-const Introduction = () => {
+const OnBoarding = () => {
   return <Layout>introduction</Layout>;
 };
 
-export default Introduction;
+export default OnBoarding;
