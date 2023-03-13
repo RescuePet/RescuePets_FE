@@ -1,55 +1,73 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import Button from '../../../elements/Button'
+import { useNavigate } from 'react-router-dom'
 
 
 
-const OnBoardingTab1 = (props) => {
 
-    const [tabCount1, setTabCount1] = useState(1);
-    // console.log(tabCount1)
+const OnBoardingTab2 = (props) => {
+    const navigate = useNavigate()
+    const [tabCount2, setTabCount2] = useState(2);
 
     const onClickTabBtn = () => {
-        props.propFunction(tabCount1)
+        props.propFunction2(tabCount2)
     }
 
     return (
         <>
             <TabContainer>
+                <TabHander onClick={() => { navigate('/signin') }}>Skip</TabHander>
                 <TabImageBox>
                     <div></div>
                 </TabImageBox>
 
                 <TabTextBox>
-                    <h3>공공API를 활용한 구조된 유기동물에
-                        대한정보를 제공합니다!
+                    <h3>편하고 빠르게 잃어버린
+                        반려동물을 등록해보세요!
                     </h3>
                 </TabTextBox>
-
                 <TabButtonBox>
 
-                    <TabThisBox></TabThisBox>
                     <TabNoneThisBox></TabNoneThisBox>
+
+                    <TabThisBox></TabThisBox>
+
                     <TabNoneThisBox></TabNoneThisBox>
 
                 </TabButtonBox>
 
-                <TabNextButtonArea onClick={onClickTabBtn}>다음</TabNextButtonArea>
+                <TabNextButtonArea>
+                    <Button onClick={onClickTabBtn}
+                        >다음</Button>
+                </TabNextButtonArea>
+
             </TabContainer>
         </>
     )
 }
 
-export default OnBoardingTab1
+export default OnBoardingTab2
 
 const TabContainer = styled.div`
     width: 100%;
     height: 100vh;
-    /* border: 1px solid red; */
     display: flex;
     align-items: center;
     flex-direction: column;
-    padding-top: 100px;
+    padding-top: 10px;
 `;
+
+const TabHander = styled.div`
+    width: 100%;
+    height: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    padding-right: 20px;
+    font-weight: 700;
+`
+
 
 
 const TabImageBox = styled.div`
@@ -65,13 +83,14 @@ const TabImageBox = styled.div`
     }
 `;
 
+
 const TabTextBox = styled.div`
     width: 80%;
     height: 10%;
     margin-top: 1.5625rem;
+    padding: 0 50px;
+    text-align: center;
 `
-
-
 
 const TabButtonBox = styled.div`
     width: 50%;
@@ -94,15 +113,13 @@ const TabNoneThisBox = styled.div`
         width: 8px;
         height: 8px;
         background: #D9D9D9;
-        border-radius: 10px;
-`
-
+        border-radius: 4px;
+`;
 
 const TabNextButtonArea = styled.div`
-    width: 335px;
-    height: 56px;
     margin-top: 100px;
-    border: 1px solid #d9d9d9;
-    border-radius: 1rem;
     ${(props) => props.theme.FlexCenter}
 `;
+
+
+
