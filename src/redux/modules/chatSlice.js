@@ -18,7 +18,7 @@ export const __getChatRoom = createAsyncThunk(
 
 // Get Chat Log
 export const __getChatLog = createAsyncThunk(
-  "getChatRoom",
+  "getChatLog",
   async (payload, thunkAPI) => {
     try {
       const response = await instance.get(`/room/${payload}`);
