@@ -10,6 +10,8 @@ import Signin from "../pages/sign/Signin";
 import Signup from "../pages/sign/Signup";
 import ReportPosting from "../test/ReportPosting";
 import KakaoMap from "../test/KakaoMap";
+import ChatList from "../pages/chat/ChatList";
+import ChatRoom from "../pages/chat/ChatRoom";
 
 const Router = () => {
   return (
@@ -21,9 +23,11 @@ const Router = () => {
         <Route path="/adoption" element={<Adoption />} />
         <Route path="/adoptiondetail" element={<AdoptionDetail />} />
         <Route path="/map" element={<Map />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/chatlist" element={<ChatList />} />
+        <Route path="/chatroom" element={<ChatRoom />} />
         <Route path="/report" element={<Report />} />
         <Route path="/reportdetail" element={<ReportDetail />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/testreport" element={<ReportPosting />} />
         <Route path="/testmap" element={<KakaoMap />} />
       </Routes>
