@@ -37,17 +37,21 @@ const Footer = () => {
         <FooterContiner>
 
             {
-                menuBar === false ? null : (
-                    <Navigation><img src={FooterIconHome} />
-                        <img src={FooterIconMypage} /> </Navigation>
-                )
+                menuBar === false ?
+                    null
+                    :
+                    (
+                        <Navigation><img src={FooterIconHome} />
+                            <img src={FooterIconMypage} /> </Navigation>
+                    )
             }
 
-            <FooterIconToggleBtn className='toggleBtn' onClick={onClickMenuBarHandler}></FooterIconToggleBtn>
+            <FooterIconToggleBtn className='toggleBtn'
+                onClick={onClickMenuBarHandler}></FooterIconToggleBtn>
 
-            <FooterEachIconContiner>   <img src={FooterIconHome} />    <p>홈</p>       </FooterEachIconContiner>
+            <FooterEachIconContiner> <img src={FooterIconHome} />    <p>홈</p>       </FooterEachIconContiner>
             <FooterEachIconContiner >   <img src={FooterIconNetwork} /> <p>펫페크워크</p> </FooterEachIconContiner>
-            <FooterEachIconContiner></FooterEachIconContiner>
+            <FooterEachIconContiner>  <p>글쓰기</p>                                    </FooterEachIconContiner>
 
             <FooterEachIconContiner >   <img src={FooterIconChat} />    <p>채팅</p>     </FooterEachIconContiner>
             <FooterEachIconContiner>   <img src={FooterIconMypage} />  <p>마이페이지</p> </FooterEachIconContiner>
@@ -111,6 +115,7 @@ const FooterIconToggleBtn = styled.div`
     &::before{
     content: '+';
     position: absolute;
+    top: 5px;
     font-size: 3em;
     font-weight: 300;
     color: #ffff;

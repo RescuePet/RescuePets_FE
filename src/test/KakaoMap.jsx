@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Marker from '../asset/Marker.svg'
-import styled from "styled-components";
 import { useSelector } from 'react-redux';
 
 const KakaoMap = () => {
@@ -120,35 +119,16 @@ const KakaoMap = () => {
     <>
       {
         mapBg === false ? (
-
-          <div id="map" style={{ width: "100%", height: "90vh", opacity: "0.5", background: "rgba(0, 0, 0, 0.8)" }}></div>
-
+          <div id="map" style={{ width: "100%", height: "90vh", filter: "brightness(20%)" }}></div>
         )
           :
           (
-
             <div id="map" style={{ width: "100%", height: "90vh" }}></div>
-
-
           )
       }
-      {/* <div id="map" style={{ width: "100%", height: "90vh" }}></div> */}
     </>
   );
 }
 
 
 export default KakaoMap;
-
-// const DIv = styled.div`
-//     /* position: fixed;
-//     top: 0;
-//     left: 0;
-//     bottom: 0;
-//     right: 0; */
-//     background: rgba(0, 0, 0, 0.8);
-// `;
-
-// const DIV2 = styled.div`
-//   background: transparent;
-// `
