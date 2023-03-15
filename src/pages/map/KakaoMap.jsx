@@ -1,28 +1,34 @@
 import React, { useEffect, useState } from "react";
-import Marker from '../asset/Marker.svg'
-import { useSelector } from 'react-redux';
+import Marker from '../../asset/Marker.svg'
+import { useSelector, useDispatch } from 'react-redux';
+import { __GETDATA } from "../../redux/modules/getdata";
 
 const KakaoMap = () => {
+  const dispatch = useDispatch();
 
-  const data = useSelector((state) => {
+  // 리덕스에 저장된 값 가져오기 
+  const menutoggle = useSelector((state) => {
     return state.menubar.toggle;
   })
 
-  const [mapBg, setMapBg] = useState(data);
+  const [mapBg, setMapBg] = useState(menutoggle);
 
   useEffect(() => {
-    setMapBg(data)
-  }, [data])
-
+    setMapBg(menutoggle)
+  }, [menutoggle])
 
   const { kakao } = window;
 
   useEffect(() => {
-    mapscript()
-  }, [])
+    dispatch(__GETDATA())
+  }, []);
 
-  const mapscript = () => {
 
+  // 유저가 직접올리는 것들 !
+  const data = useSelector((state) => state.getData.data);
+  // console.log(data)
+
+  useEffect(() => {
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
       mapOption = {
         center: new kakao.maps.LatLng(37.450701, 126.570667), // 지도의 중심좌표
@@ -39,7 +45,7 @@ const KakaoMap = () => {
           lon = position.coords.longitude; // 경도
 
         const locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-          message = '<div class="isgood">여기에 계신가요?!</div>'; // 인포윈도우에 표시될 내용입니다
+          message = '<div class="isgood">현재위치</div>'; // 인포윈도우에 표시될 내용입니다
         // 마커와 인포윈도우를 표시합니다
         displayMarker(locPosition, message);
       });
@@ -54,7 +60,7 @@ const KakaoMap = () => {
 
     // 커스텀오버레이 
     const imageSrc = `${Marker}` // 마커이미지의 주소입니다    
-    const imageSize = new kakao.maps.Size(64, 69) // 마커이미지의 크기입니다
+    const imageSize = new kakao.maps.Size(44, 59) // 마커이미지의 크기입니다
     const imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
     // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
@@ -79,17 +85,16 @@ const KakaoMap = () => {
       '</div>';
 
     // 커스텀 오버레이가 표시될 위치입니다 
-    var position = new kakao.maps.LatLng(37.54699, 127.09598);
+    var position = new kakao.maps.LatLng(37.54699, 125.09598);
 
     // 커스텀 오버레이를 생성합니다
     var customOverlay = new kakao.maps.CustomOverlay({
       map: map,
       position: position,
-      content: content,
       yAnchor: 1
     });
 
-    // 지도에 마커와 인포윈도우를 표시하는 함수입니다! 
+    // 현재있는 위치기반으로 지도에 마커와 인포윈도우를 표시하는 함수입니다! 
     function displayMarker(locPosition, message) {
 
       // 현재 위치마커를 생성합니다
@@ -113,7 +118,18 @@ const KakaoMap = () => {
       // 지도 중심좌표를 접속위치로 변경합니다
       map.setCenter(locPosition);
     }
-  };
+
+
+    data?.map((item) => {
+      new kakao.maps.Marker({
+        map: map,
+        position: new kakao.maps.LatLng(item.lat, item.lng),
+        title: item.title,
+      });
+    })
+    // 마커가 생성될때 바로 화면상에 새로생성된 마커를 보여주기 위해 의존성배열에 Data를 넣어주었다! 
+  }, [data])
+
 
   return (
     <>

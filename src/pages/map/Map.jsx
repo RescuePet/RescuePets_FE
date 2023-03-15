@@ -1,10 +1,10 @@
 import React from 'react';
-import KakaoMap from '../../test/KakaoMap';
+import KakaoMap from './KakaoMap';
 import Footer from '../../layouts/Footer';
 
 const Map = () => {
 
- 
+
 
   return (
     <div>

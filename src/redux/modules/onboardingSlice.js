@@ -9,7 +9,6 @@ export const onboardingSlice = createSlice({
     initialState: initialState,
     reducers: {
         onboarding: (state, action) => {
-            
             state.page = action.payload
         },
     },

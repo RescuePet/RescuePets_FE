@@ -41,20 +41,22 @@ const Footer = () => {
                     null
                     :
                     (
-                        <Navigation><img src={FooterIconHome} />
-                            <img src={FooterIconMypage} /> </Navigation>
+                        <Navigation>
+                            <FooterMenuList>? 실종 글 작성하기 </FooterMenuList>
+                            <FooterMenuList>🚨 목격 글 작성하기</FooterMenuList>
+                        </Navigation>
                     )
             }
 
-            <FooterIconToggleBtn className='toggleBtn'
-                onClick={onClickMenuBarHandler}></FooterIconToggleBtn>
+            {/* <FooterIconToggleBtn className='toggleBtn'
+                onClick={onClickMenuBarHandler}></FooterIconToggleBtn> */}
 
             <FooterEachIconContiner> <img src={FooterIconHome} />    <p>홈</p>       </FooterEachIconContiner>
             <FooterEachIconContiner >   <img src={FooterIconNetwork} /> <p>펫페크워크</p> </FooterEachIconContiner>
-            <FooterEachIconContiner>  <p>글쓰기</p>                                    </FooterEachIconContiner>
-
             <FooterEachIconContiner >   <img src={FooterIconChat} />    <p>채팅</p>     </FooterEachIconContiner>
             <FooterEachIconContiner>   <img src={FooterIconMypage} />  <p>마이페이지</p> </FooterEachIconContiner>
+            <FooterEachIconContiner>   <FooterIconToggleBtn className='toggleBtn'
+                onClick={onClickMenuBarHandler}></FooterIconToggleBtn>      </FooterEachIconContiner>
 
         </FooterContiner>
     )
@@ -81,14 +83,16 @@ const FooterContiner = styled.div`
 // 메뉴바 모달
 const Navigation = styled.div`
     position: absolute;
-    bottom: 115px;
-    width: 210px;
-    height: 70px;
-    background: #fff;
-    border-radius: 25px;
+    left: 50%;
+    bottom: 40px;
+    width: 200px;
+    height: 170px;
+    /* border: 1px solid #fff;
+    border-radius: 25px; */
     /* opacity: 0.9; */
-    ${(props) => props.theme.FlexCenter}
-    &::after{
+    ${(props) => props.theme.FlexColumn}
+    gap: 10px 0;
+    /* &::after{
       content: "";
       position: absolute;
       top: 100%;
@@ -98,16 +102,24 @@ const Navigation = styled.div`
       border-style: solid;
       color: #eee;
       border-color: #fff transparent transparent transparent;
-    }
+    } */
+`;
+
+const FooterMenuList = styled.div`
+    width: 9.6875rem;
+    height: 2.75rem;
+    background: #666;
+    color: #fff;
+    ${props => props.theme.FlexCenter};
 `;
 
 // 모달 보이게 하는 검정색 원형 
 const FooterIconToggleBtn = styled.div`
     position: absolute;
-    bottom: 45px;
-    width:  56px;
-    height: 56px;
-    background: #000;
+    bottom: -10px;
+    width:  40px;
+    height: 40px;
+    background: #222222;
     border-radius: 50%;
     /* filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.25)); */
     ${(props) => props.theme.FlexCenter}
@@ -115,7 +127,7 @@ const FooterIconToggleBtn = styled.div`
     &::before{
     content: '+';
     position: absolute;
-    top: 5px;
+    top: 0;
     font-size: 3em;
     font-weight: 300;
     color: #ffff;

@@ -1,0 +1,53 @@
+{
+    "map": [
+        {
+            "id": 1,
+            "title": "호수공원",
+            "lat": 36.714842,
+            "lng": 127.425622,
+            "img": "https://i.pinimg.com/564x/cf/7b/0a/cf7b0ad3494947f5d756e19ab12cd14b.jpg"
+        },
+        {
+            "id": 2,
+            "title": "용산",
+            "lat": 37.537152,
+            "lng": 126.979502,
+            "img": "https://i.pinimg.com/564x/cf/7b/0a/cf7b0ad3494947f5d756e19ab12cd14b.jpg"
+        },
+        {
+            "id": 3,
+            "title": "5895-1",
+            "lat": 37.703671,
+            "lng": 126.777038,
+            "img": "https://i.pinimg.com/564x/cf/7b/0a/cf7b0ad3494947f5d756e19ab12cd14b.jpg"
+        },
+        {
+            "id": 4,
+            "title": "독도",
+            "lat": 37.24202236009284,
+            "lng": 131.8655653685244,
+            "img": "https://i.pinimg.com/564x/cf/7b/0a/cf7b0ad3494947f5d756e19ab12cd14b.jpg"
+        },
+        {
+            "id": 5,
+            "title": "서울역",
+            "lat": 37.557371,
+            "lng": 126.971408,
+            "img": "https://i.pinimg.com/564x/cf/7b/0a/cf7b0ad3494947f5d756e19ab12cd14b.jpg"
+        },
+        {
+            "id": 6,
+            "title": "서울역2",
+            "lat": 37.556371,
+            "lng": 126.971408,
+            "img": "https://i.pinimg.com/564x/cf/7b/0a/cf7b0ad3494947f5d756e19ab12cd14b.jpg"
+        },
+        {
+            "id": 7,
+            "title": "제주",
+            "lat": 33.450701,
+            "lng": 126.570667,
+            "img": "https://i.pinimg.com/564x/cf/7b/0a/cf7b0ad3494947f5d756e19ab12cd14b.jpg"
+        }
+    ]
+}
