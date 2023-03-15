@@ -3,16 +3,19 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import Button from '../../elements/Button'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { onboarding } from "../../redux/modules/onboardingSlice"
 
 
 
 
 const OnBoardingTab2 = (props) => {
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const [tabCount2, setTabCount2] = useState(2);
 
     const onClickTabBtn = () => {
-        props.propFunction2(tabCount2)
+        dispatch(onboarding(tabCount2))
     }
 
     return (

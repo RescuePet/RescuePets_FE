@@ -17,7 +17,3 @@ export const menuBarSlice = createSlice({
 export default menuBarSlice.reducer;
 
 export const { toggleMenu } = menuBarSlice.actions;
-
-// export default counterSlice.reducer;
-
-// export const { addNumber, minusNumber } = counterSlice.actions;

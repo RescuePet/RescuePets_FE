@@ -5,7 +5,7 @@ import FooterIconMypage from "../asset/FooterIconMypage.svg"
 import FooterIconHome from "../asset/FooterIconHome.svg"
 import FooterIconNetwork from "../asset/FooterIconNetwork.svg"
 import './Footer.css'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { toggleMenu } from "../redux/modules/menubarSlice"
 
 const Footer = () => {

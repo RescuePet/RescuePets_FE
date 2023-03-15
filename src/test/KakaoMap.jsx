@@ -8,13 +8,8 @@ const KakaoMap = () => {
   const data = useSelector((state) => {
     return state.menubar.toggle;
   })
-  console.log("리덕서저장된값", data)
 
-
-  // console.log(props)
   const [mapBg, setMapBg] = useState(data);
-
-  // console.log(mapBg)
 
   useEffect(() => {
     setMapBg(data)
