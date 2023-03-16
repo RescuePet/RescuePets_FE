@@ -18,6 +18,15 @@ export const FlexAttribute = (direction, justify, align) => css`
   justify-content: ${justify};
 `;
 
+export const HeaderStyle = css`
+  width: 100%;
+  height: 5rem;
+  padding-top: 2.5rem;
+  ${Border_2_color}
+  font-size: 1.125rem;
+  font-weight: 700;
+`;
+
 export const SignSvgStyle = css`
   width: 1rem;
   height: 1rem;
@@ -62,4 +71,19 @@ export const ContentTextStyle = css`
 export const ContentInformationStyle = css`
   ${Body_400_12}
   color: #666666;
+`;
+
+export const AlertMessageCountStyle = css`
+  border-radius: 50%;
+  display: inline-block;
+  margin-top: 4px;
+  padding-top: 0.15rem;
+  width: 16px;
+  height: 16px;
+  background-color: black;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 12px;
+  text-align: center;
+  color: white;
 `;
