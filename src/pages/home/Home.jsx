@@ -11,6 +11,7 @@ import carouselImage3 from "../../asset/carousel/3.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { __getAdoptionList } from "../../redux/modules/adoptioonSlice";
 import { Link } from "react-router-dom";
+import Footer from "../../layouts/Footer";
 
 const Home = () => {
   const images = [carouselImage1, carouselImage2, carouselImage3];
@@ -58,6 +59,7 @@ const Home = () => {
           <div ref={ref}></div>
         </PostContainer>
       </HomeContainer>
+      <Footer></Footer>
     </Layout>
   );
 };

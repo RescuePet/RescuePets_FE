@@ -60,8 +60,6 @@ const KindSpan = styled.span`
   position: absolute;
   top: 10px;
   left: 10px;
-  background-color: transparent;
-  font-size: 10px;
 `;
 
 const InformationWrapper = styled.div`

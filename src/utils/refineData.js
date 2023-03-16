@@ -12,11 +12,11 @@ const refineData = (item) => {
       refinedata.kind = "강아지";
     }
     if (item.sexCd === "Q") {
-      refinedata.sexCd = " ❓";
+      refinedata.sexCd = "❓";
     } else if (item.sexCd === "M") {
-      refinedata.sexCd = " 🚹";
+      refinedata.sexCd = "🚹";
     } else if (item.sexCd === "F") {
-      refinedata.sexCd = " 🚺";
+      refinedata.sexCd = "🚺";
     }
     if (item.neuterYn === "U") {
       refinedata.information.push("모름");
