@@ -1,11 +1,17 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { __getAdoptionDetail } from "../../redux/modules/adoptioonSlice";
-import Layout from "../../layouts/Layout";
+
 import styled from "styled-components";
-import { FlexAttribute, StateSpanStyle } from "../../style/Mixin";
-import { useNavigate } from "react-router-dom";
+import { FlexAttribute, PostBorderStyle } from "../../style/Mixin";
+
+import Layout from "../../layouts/Layout";
+import Shelter from "./components/Shelter";
+import Location from "./components/Location";
+import Title from "./components/Title";
+import Footer from "../../layouts/Footer";
 
 const AdoptionDetail = () => {
   const { id } = useParams();
@@ -15,38 +21,64 @@ const AdoptionDetail = () => {
   useEffect(() => {
     dispatch(__getAdoptionDetail(id));
   }, []);
-
-  const detailInfo = useSelector((state) => state.adoption.adiotionDetail);
+  const detailInfo = useSelector((state) => state.adoption);
 
   // 비동기처리 시 detailInfo가 없을 경우를 고려
-  if (detailInfo.adoption.loading) {
+  if (JSON.stringify(detailInfo.adiotionDetail) === "{}") {
     return <div>Loading...</div>;
   }
+
+  const titleData = {
+    state: detailInfo.adiotionDetail.processState,
+    kindCd: detailInfo.adiotionDetail.refinedata.kindCd,
+    sexCd: detailInfo.adiotionDetail.refinedata.sexCd,
+    information: detailInfo.adiotionDetail.refinedata.information.join("/"),
+  };
+
+  const locationData = {
+    careNm: detailInfo.adiotionDetail.careNm,
+    careTel: detailInfo.adiotionDetail.careTel,
+  };
+
+  const shelterData = [
+    { option: "주소", data: detailInfo.adiotionDetail.careAddr },
+    {
+      option: "공고기간",
+      data: [
+        detailInfo.adiotionDetail.noticeSdt,
+        detailInfo.adiotionDetail.noticeEdt,
+      ].join("~"),
+    },
+    { option: "특이사항", data: detailInfo.adiotionDetail.specialMark },
+    {
+      option: "담당부서",
+      data: [
+        detailInfo.adiotionDetail.orgNm,
+        detailInfo.adiotionDetail.officetel,
+      ],
+    },
+  ];
 
   return (
     <Layout>
       <DetailContainer>
         <ImageContainer>
-          <Image src={detailInfo.popfile} />
+          <Image src={detailInfo.adiotionDetail.popfile} />
           <BackButton onClick={() => navigate(-1)}>backbutton</BackButton>
         </ImageContainer>
-        <InformationContainer>
-          <TitleWrapper>
-            <State>{detailInfo.refinedata.kind}</State>
-            <TitleInformation>{detailInfo.refinedata.kindCd}</TitleInformation>
-            <SexCd>{detailInfo.refinedata.sexCd}</SexCd>
-            <Information>
-              {detailInfo.refinedata.information.join("/")}
-            </Information>
-          </TitleWrapper>
-          <ShelterInformationContainer>
-            <TitleWrapper>
-              <TitleInformation>보호 정보</TitleInformation>
-            </TitleWrapper>
-            <MapBox></MapBox>
-          </ShelterInformationContainer>
-        </InformationContainer>
+        <div>
+          <Title titleData={titleData}></Title>
+          <Location locationData={locationData}></Location>
+          <ShelterContainer>
+            {shelterData.map((item, index) => {
+              return (
+                <Shelter key={`shelter-item-${index}`} item={item}></Shelter>
+              );
+            })}
+          </ShelterContainer>
+        </div>
       </DetailContainer>
+      <Footer></Footer>
     </Layout>
   );
 };
@@ -79,44 +111,8 @@ const BackButton = styled.button`
   cursor: pointer;
 `;
 
-const InformationContainer = styled.div`
-  span {
-    margin-left: 10px;
-  }
-`;
-
-const TitleWrapper = styled.div`
-  ${FlexAttribute("row", "center", "center")};
-  padding: 16px;
-  border-bottom: 2px solid #eeeeee;
-`;
-
-const TitleInformation = styled.span`
-  font-size: 14px;
-  font-weight: 400;
-`;
-
-const State = styled.span`
-  ${StateSpanStyle}
-  font-size: 10px;
-`;
-
-const SexCd = styled.span``;
-
-const Information = styled.span`
-  font-size: 12px;
-  color: #666666;
-`;
-
-const ShelterInformationContainer = styled.div`
-  padding: 18px 0 0 16px;
-  border-bottom: 1px solid #eeeeee;
-`;
-
-const MapBox = styled.div`
-  width: 335px;
-  height: 112px;
-  background-color: black;
+const ShelterContainer = styled.div`
+  ${PostBorderStyle}
 `;
 
 export default AdoptionDetail;
