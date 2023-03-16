@@ -11,6 +11,7 @@ import Signup from "../pages/sign/Signup";
 import ReportPosting from "../test/ReportPosting";
 import ChatList from "../pages/chat/ChatList";
 import ChatRoom from "../pages/chat/ChatRoom";
+import Home from "../pages/home/Home";
 
 const Router = () => {
   return (
@@ -19,8 +20,9 @@ const Router = () => {
         <Route path="/" element={<OnBoarding />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/adoption" element={<Adoption />} />
-        <Route path="/adoptiondetail" element={<AdoptionDetail />} />
+        <Route path="/adoptiondetail/:id" element={<AdoptionDetail />} />
         <Route path="/map" element={<Map />} />
         <Route path="/chatlist" element={<ChatList />} />
         <Route path="/chatroom" element={<ChatRoom />} />
