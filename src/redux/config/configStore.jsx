@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import users from "../modules/signSlice";
 import chat from "../modules/chatSlice";
-import carousel from "../modules/carouselSlice";
+import adoption from "../modules/adoptioonSlice";
 
 const store = configureStore({
-  reducer: { users, chat, carousel },
+  reducer: { users, chat, adoption },
 });
 
 export default store;

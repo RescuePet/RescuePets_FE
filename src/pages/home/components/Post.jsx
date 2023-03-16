@@ -1,29 +1,31 @@
 import React from "react";
-import styled from "styled-components";
-import { FlexAttribute } from "../../../style/Mixin";
 
-const Post = () => {
+import styled from "styled-components";
+import { FlexAttribute, StateSpanStyle } from "../../../style/Mixin";
+
+const Post = ({ item }) => {
   return (
     <PostContainer>
       <ThunbnailWrapper>
-        <Tuumbnail></Tuumbnail>
+        <Tuumbnail src={item.filename}></Tuumbnail>
+        <KindSpan>{item.data.refinedata.kind}</KindSpan>
       </ThunbnailWrapper>
       <InformationWrapper>
         <TitleBox>
-          <h2>러시안 블루</h2>
-          <span>성별</span>
+          <h2>{item.data.refinedata.kindCd}</h2>
+          <span>{item.data.refinedata.sexCd}</span>
         </TitleBox>
         <TextBox>
-          <span>이미지</span>
-          <span>수원시 동물 보호 센터</span>
+          <span>📍</span>
+          <span>{item.careNm}</span>
         </TextBox>
         <TextBox>
-          <span>이미지</span>
-          <span>수원시 동물 보호 센터</span>
+          <span>🕙</span>
+          <span>{item.happenDt}</span>
         </TextBox>
         <TextBox>
-          <span>이미지</span>
-          <span>수원시 동물 보호 센터</span>
+          <span>ℹ️</span>
+          <span>{item.data.refinedata.information.join("/")}</span>
         </TextBox>
       </InformationWrapper>
     </PostContainer>
@@ -40,13 +42,27 @@ const PostContainer = styled.div`
 `;
 
 const ThunbnailWrapper = styled.div`
+  position: relative;
+  ${FlexAttribute("row", "center", "center")}
   width: 120px;
   height: 120px;
   border-radius: 4px;
   background-color: #cccccc;
+  overflow: hidden;
 `;
 
-const Tuumbnail = styled.div``;
+const Tuumbnail = styled.img`
+  object-fit: contain;
+`;
+
+const KindSpan = styled.span`
+  ${StateSpanStyle}
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: transparent;
+  font-size: 10px;
+`;
 
 const InformationWrapper = styled.div`
   padding: 16px;

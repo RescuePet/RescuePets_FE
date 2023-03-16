@@ -12,3 +12,10 @@ export const SignSvgStyle = css`
   height: 1rem;
   cursor: pointer;
 `;
+
+export const StateSpanStyle = css`
+  padding: 2px;
+  border: 1px solid black;
+  border-radius: 8px;
+  font-weight: 700;
+`;
