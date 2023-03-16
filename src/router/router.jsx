@@ -9,7 +9,6 @@ import ReportDetail from "../pages/reportDetail/ReportDetail";
 import Signin from "../pages/sign/Signin";
 import Signup from "../pages/sign/Signup";
 import ReportPosting from "../test/ReportPosting";
-import KakaoMap from "../test/KakaoMap";
 import ChatList from "../pages/chat/ChatList";
 import ChatRoom from "../pages/chat/ChatRoom";
 
@@ -29,7 +28,6 @@ const Router = () => {
         <Route path="/reportdetail" element={<ReportDetail />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/testreport" element={<ReportPosting />} />
-        <Route path="/testmap" element={<KakaoMap />} />
       </Routes>
     </BrowserRouter>
   );
