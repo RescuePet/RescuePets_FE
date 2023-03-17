@@ -126,7 +126,7 @@ const Missing = () => {
         });
     };
 
-
+    var resultDiv = document.getElementById('clickLatlng');
     const onSubmitMissingHanlder = (data) => {
         console.log(data)
         console.log("종류 :", currentSeleteValue)
@@ -140,6 +140,7 @@ const Missing = () => {
         console.log("사진 :", imageFile)
         console.log("사례금 :", data.money)
         console.log("사례금 :", data.number)
+        console.log("지도 좌표", resultDiv.innerHTML)
     }
     // 현재위치 위도 경도로 불러오기 
     navigator.geolocation.getCurrentPosition(onSucces, onFailure);
@@ -159,18 +160,17 @@ const Missing = () => {
     const [long, setLong] = useState("");
     const [lati, setLati] = useState("");
 
+    const AOMG = `${long},${lati}`
 
     console.log(long, lati)
 
     useEffect(() => {
 
-
-
         // 현재 위치를 지도 가운데로 두고 드래가 가능한 마커생성 or 아래에 좌표등록 지도화면 이동가능하게 하기 
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
             mapOption = {
                 center: new kakao.maps.LatLng(lati, long), // 지도의 중심좌표
-                level: 5 // 지도의 확대 레벨
+                level: 12 // 지도의 확대 레벨
             };
 
         var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
@@ -193,12 +193,11 @@ const Missing = () => {
             // 마커 위치를 클릭한 위치로 옮깁니다
             marker.setPosition(latlng);
 
-            var message = `${latlng.getLat()} + ${latlng.getLng()}`;
-
-            const AOMG = latlng.getLat() + latlng.getLng()
+            var message = `${latlng.getLat()} ${latlng.getLng()}`;
             console.log(message)
-            // var resultDiv = document.getElementById('clickLatlng');
-            // resultDiv.innerHTML = message;
+
+            var resultDiv = document.getElementById('clickLatlng');
+            resultDiv.innerHTML = message;
         });
     }, [onSucces])
 
@@ -321,7 +320,6 @@ const Missing = () => {
 
                         </ReportAnimalInfoBoxColumn>
 
-
                         <ReportAnimalInfoBoxColumn>
                             <ReportAnimalInfoBoxColumnColunb>
                                 <p>색상</p>
@@ -349,11 +347,13 @@ const Missing = () => {
 
 
                 <ReportKakaoMapBox>
-                    <p>실종위치</p> <ReportanimaltypesSelectInput type="text" placeholder="입력하기"
-                    // value={AOMG}
-                    // onChange={}
-                    />
-                    <div id='map'>카카오맵 들어갈곳</div>
+
+                    <ReportKakaoMapBoxTitle>
+                        <p id='clickLatlng'>실종위치</p>
+                    </ReportKakaoMapBoxTitle>
+
+                    <ReportKakaoMapBoxMap id='map'> </ReportKakaoMapBoxMap>
+
                 </ReportKakaoMapBox>
 
                 <ReportAnimalDayBox>
@@ -468,8 +468,6 @@ const Missing = () => {
                                     <div>  <img src={imgdelete} /></div>프리뷰</ReportAnimalPicturePreview>
                             )
                         }
-                        {/* <ReportAnimalPicturePreview>
-              <div>X</div>프리뷰</ReportAnimalPicturePreview> */}
 
                     </ReportAnimalPictureAreaInputBox>
 
@@ -558,8 +556,6 @@ const ReportAnimalInfoBox2 = styled.div`
   margin: 0 auto;
   border: 1px solid red;
 `;
-
-
 
 const ReportAnimalInfoBox = styled.div`
   width: 100%;
@@ -754,22 +750,20 @@ const ReportKakaoMapBox = styled.div`
   /* border: 1px solid blue; */
   ${props => props.theme.FlexColumn}
   gap: 10px 0;
-  h2 {
+`;
+const ReportKakaoMapBoxTitle = styled.div`
     width: 100%;
     height: 15%;
-    /* border: 1px solid red; */
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-  }
-  div {
+    border: 1px solid red;
+`;
+const ReportKakaoMapBoxMap = styled.div`
     z-index: 15;
     width: 100%;
-    height: 85%;
+    height: 80%;
+    border: 1px solid red;
     ${props => props.theme.FlexCenter}
-    /* border: 1px solid red; */
-  } 
-`;
+`
+
 
 const ReportAnimalDayBox = styled.div`
   width: 20.9375rem;
@@ -953,6 +947,5 @@ const ReportAnimalUserInfo = styled.div`
       color: #EA5455;
       ${props => props.theme.FlexCenter}
     }
-    
   }
 `;
