@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Marker from '../../asset/Marker.svg'
+import Marker from '../../asset/marker.png'
 import { useSelector, useDispatch } from 'react-redux';
 import { __GETDATA } from "../../redux/modules/getdata";
 
