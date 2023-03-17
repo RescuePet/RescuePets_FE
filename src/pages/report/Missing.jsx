@@ -8,6 +8,8 @@ import Button from "../../elements/Button"
 import cancel from "../../asset/delete.svg";
 import imageCompression from 'browser-image-compression';
 import imgdelete from "../../asset/imgDelete.svg";
+import Marker from "../../asset/marker.png"
+
 
 
 const Missing = () => {
@@ -126,7 +128,8 @@ const Missing = () => {
         });
     };
 
-    var resultDiv = document.getElementById('clickLatlng');
+    const resultlngDiv = document.getElementById('clicklng');
+    const resultlatDiv = document.getElementById('clicklat');
     const onSubmitMissingHanlder = (data) => {
         console.log(data)
         console.log("종류 :", currentSeleteValue)
@@ -138,9 +141,11 @@ const Missing = () => {
         console.log("특징 :", data.characteristic)
         console.log("메모 :", data.memo)
         console.log("사진 :", imageFile)
+        console.log("시간대:", currentSeleteTimeValue)
         console.log("사례금 :", data.money)
-        console.log("사례금 :", data.number)
-        console.log("지도 좌표", resultDiv.innerHTML)
+        console.log("전화번호 :", data.number)
+        console.log("지도 좌표", resultlngDiv.innerHTML)
+        console.log("지도 좌표", resultlatDiv.innerHTML)
     }
     // 현재위치 위도 경도로 불러오기 
     navigator.geolocation.getCurrentPosition(onSucces, onFailure);
@@ -160,13 +165,9 @@ const Missing = () => {
     const [long, setLong] = useState("");
     const [lati, setLati] = useState("");
 
-    const AOMG = `${long},${lati}`
 
-    console.log(long, lati)
 
     useEffect(() => {
-
-        // 현재 위치를 지도 가운데로 두고 드래가 가능한 마커생성 or 아래에 좌표등록 지도화면 이동가능하게 하기 
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
             mapOption = {
                 center: new kakao.maps.LatLng(lati, long), // 지도의 중심좌표
@@ -175,10 +176,17 @@ const Missing = () => {
 
         var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
+        const imageSrc = `${Marker}` // 마커이미지의 주소입니다    
+        const imageSize = new kakao.maps.Size(32, 34) // 마커이미지의 크기입니다
+        const imageOption = { offset: new kakao.maps.Point(10, 20) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
+            markerPosition = new kakao.maps.LatLng(37.54699, 127.09598); // 마커가 표시될 위치입니다
         // 지도를 클릭한 위치에 표출할 마커입니다
         var marker = new kakao.maps.Marker({
             // 지도 중심좌표에 마커를 생성합니다 
-            position: map.getCenter()
+            position: map.getCenter(),
+            image: markerImage // 마커이미지 설정 
         });
         // 지도에 마커를 표시합니다
         marker.setMap(map);
@@ -193,11 +201,13 @@ const Missing = () => {
             // 마커 위치를 클릭한 위치로 옮깁니다
             marker.setPosition(latlng);
 
-            var message = `${latlng.getLat()} ${latlng.getLng()}`;
-            console.log(message)
+            const messageLng = `${latlng.getLng()}`;
+            const messageLat = `${latlng.getLat()} `;
 
-            var resultDiv = document.getElementById('clickLatlng');
-            resultDiv.innerHTML = message;
+            var resultlngDiv = document.getElementById('clicklng');
+            var resultlatDiv = document.getElementById('clicklat');
+            resultlngDiv.innerHTML = messageLat;
+            resultlatDiv.innerHTML = messageLng;
         });
     }, [onSucces])
 
@@ -284,7 +294,7 @@ const Missing = () => {
 
 
                             <ReportAnimalInfoBoxColumnRow>
-                                <p>종류</p>
+                                <p>나이</p>
                                 {/* <ReportSelect props={Animationtype}/> */}
                                 <SelectBox onClick={() => setShowAgeOptions((isShowAgeOptions) => !isShowAgeOptions)}>
                                     <Label>{currentSeleteAgeValue}</Label>
@@ -349,7 +359,11 @@ const Missing = () => {
                 <ReportKakaoMapBox>
 
                     <ReportKakaoMapBoxTitle>
-                        <p id='clickLatlng'>실종위치</p>
+                        <p>실종위치 *</p>
+                        <div>
+                            <div>  <label id='clicklng'></label> </div>
+                            <div> <label id='clicklat'></label> </div>
+                        </div>
                     </ReportKakaoMapBoxTitle>
 
                     <ReportKakaoMapBoxMap id='map'> </ReportKakaoMapBoxMap>
@@ -445,11 +459,8 @@ const Missing = () => {
                     <ReportAnimalPictureAreaInputBox>
 
                         <input
-                            type="file"
-                            accept="image/*"
-                            style={{ display: 'none' }}
-                            ref={(refer) => (imageRef = refer)}
-                            onChange={onChangeUploadHandler}
+                            type="file" accept="image/*" style={{ display: 'none' }}
+                            ref={(refer) => (imageRef = refer)} onChange={onChangeUploadHandler}
                             required />
                         <ReportAnimalPictureInput onClick={() => imageRef.click()}>
                             <h3>+</h3>
@@ -554,7 +565,7 @@ const ReportAnimalInfoBox2 = styled.div`
   width: 20.9375rem;
   height: 23rem;
   margin: 0 auto;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 `;
 
 const ReportAnimalInfoBox = styled.div`
@@ -638,9 +649,8 @@ const ReportAnimalInfoBoxColumnColunb = styled.div`
 
 
 const ReportanimaltypesBox = styled.div`
-  width: 90%;
+  width: 100%;
   height: 7.5rem;
-  /* border: 1px solid red; */
   margin: 0 auto;
   ${props => props.theme.FlexColumn}
 `;
@@ -650,10 +660,7 @@ const ReportanimaltypesTitle = styled.div`
   height: 30%;
   display: flex;
   align-items: center;
-  font-size: 14px;
-  font-weight: 400;
-  color: #222222;
-  /* border: 1px solid red; */
+  ${props => props.theme.Body_400_14}
 `;
 
 const ReportanimaltypesSelect = styled.div`
@@ -745,7 +752,7 @@ const Option = styled.li`
 const ReportKakaoMapBox = styled.div`
  position: relative;
   width: 20.9375rem;
-  height: 12.25rem;
+  height: 14.875rem;
   margin: 0 auto;
   /* border: 1px solid blue; */
   ${props => props.theme.FlexColumn}
@@ -753,14 +760,35 @@ const ReportKakaoMapBox = styled.div`
 `;
 const ReportKakaoMapBoxTitle = styled.div`
     width: 100%;
-    height: 15%;
-    border: 1px solid red;
+    height: 20%;
+    /* border: 1px solid red; */
+    > p {
+        width: 100%;
+        height: 20%;
+        color: #222222;
+        font-size: 20px;
+    }
+    > div {
+        width: 100%;
+        height: 80%;
+        padding-top: 20px;
+        font-size: 12px;
+        ${props => props.theme.FlexRow}
+        > div {
+            width: 100%;
+            height: 100%;
+            > label {
+                width: 9.75rem;
+                border-bottom: 2px solid #EEEEEE;
+            }
+        }
+    }
+    
 `;
 const ReportKakaoMapBoxMap = styled.div`
     z-index: 15;
     width: 100%;
     height: 80%;
-    border: 1px solid red;
     ${props => props.theme.FlexCenter}
 `
 
@@ -769,16 +797,13 @@ const ReportAnimalDayBox = styled.div`
   width: 20.9375rem;
   height: 5.5rem;
   margin: 0 auto;
-  /* border: 1px solid gray; */
   > p {
     width: 100%;
     height: 20px;
-    /* border: 1px solid red; */
   }
   > div {
     width: 100%;
     height: 80%;
-    /* border: 1px solid red; */
     display: flex;
     align-items: center;
     flex-direction: row;
@@ -786,20 +811,19 @@ const ReportAnimalDayBox = styled.div`
       position: relative;
       width: 50%;
       height: 100%;
-      /* border: 1px solid blue; */
-      > p {
+       p {
         padding-top: 10px;
         color: #666666;
         font-size: 12px;
       }
-      > img {
+      img {
         position: absolute;
         width: 1rem; 
         height: 1rem;
         bottom: 25px;
         right: 5px;
       }
-      > span {
+     span {
         padding-top: 5px;
         font-size: 12px;
         color: #EA5455;
@@ -813,15 +837,16 @@ const ReportAnimalsignificantBox = styled.div`
   width: 20.9375rem;
   height: 9.75rem;
   margin: 0 auto;
-  /* border: 1px solid #000; */
 `;
 
 const ReportAnimalsignificantBoxTitle = styled.div`
   width: 100%;
   height: 15%;
-  color: #222222;
-  font-size: 20px;
+  > p{
+    ${props => props.theme.Body_400_14};
+  }
 `;
+
 
 const ReportAnimalsignificantBoxInput = styled.div`
   width: 100%;
