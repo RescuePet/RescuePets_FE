@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
 import styled from 'styled-components'
 import Layout from "../../layouts/Layout"
 // import { ReportSelect } from './ReportSelect'
+// import Input from '../../elements/Input';
 import Button from "../../elements/Button"
 import cancel from "../../asset/delete.svg";
 import imageCompression from 'browser-image-compression';
@@ -11,16 +12,16 @@ import imgdelete from "../../asset/imgDelete.svg";
 
 const Missing = () => {
     let imageRef;
-    const Animationtype = ['강아지', '고양이', '기타']
+    const { kakao } = window;
+
     // selete 종류
     const [currentSeleteValue, setCurrentSeleteValue] = useState('강아지')
+    const [isShowOptions, setShowOptions] = useState(false);
     // selete 나이 
     const [currentSeleteAgeValue, setCurrentSeleteAgeValue] = useState('0살~3살')
+    const [isShowAgeOptions, setShowAgeOptions] = useState(false);
     // selete 시간대 
     const [currentSeleteTimeValue, setCurrentSeleteTimeValue] = useState('0시~08시')
-
-    const [isShowOptions, setShowOptions] = useState(false);
-    const [isShowAgeOptions, setShowAgeOptions] = useState(false);
     const [isShowTimeOptions, setShowTimeOptions] = useState(false);
 
     const {
@@ -139,8 +140,67 @@ const Missing = () => {
         console.log("사진 :", imageFile)
         console.log("사례금 :", data.money)
         console.log("사례금 :", data.number)
-
     }
+    // 현재위치 위도 경도로 불러오기 
+    navigator.geolocation.getCurrentPosition(onSucces, onFailure);
+
+    // 성공일시 좌표저장
+    function onSucces(position) {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        setLong(lng);
+        setLati(lat);
+    }
+    // 실패일시 알림
+    function onFailure() {
+        alert("위치 정보를 찾을수 없습니다.");
+    }
+    // 지도 죄표값들 
+    const [long, setLong] = useState("");
+    const [lati, setLati] = useState("");
+
+
+    console.log(long, lati)
+
+    useEffect(() => {
+
+
+
+        // 현재 위치를 지도 가운데로 두고 드래가 가능한 마커생성 or 아래에 좌표등록 지도화면 이동가능하게 하기 
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+            mapOption = {
+                center: new kakao.maps.LatLng(lati, long), // 지도의 중심좌표
+                level: 5 // 지도의 확대 레벨
+            };
+
+        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+        // 지도를 클릭한 위치에 표출할 마커입니다
+        var marker = new kakao.maps.Marker({
+            // 지도 중심좌표에 마커를 생성합니다 
+            position: map.getCenter()
+        });
+        // 지도에 마커를 표시합니다
+        marker.setMap(map);
+
+        // 지도에 클릭 이벤트를 등록합니다
+        // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
+        kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+
+            // 클릭한 위도, 경도 정보를 가져옵니다 
+            var latlng = mouseEvent.latLng;
+
+            // 마커 위치를 클릭한 위치로 옮깁니다
+            marker.setPosition(latlng);
+
+            var message = `${latlng.getLat()} + ${latlng.getLng()}`;
+
+            const AOMG = latlng.getLat() + latlng.getLng()
+            console.log(message)
+            // var resultDiv = document.getElementById('clickLatlng');
+            // resultDiv.innerHTML = message;
+        });
+    }, [onSucces])
 
     return (
         <Layout>
@@ -198,14 +258,25 @@ const Missing = () => {
 
                     {/* 성별 중성화 여부 체크 */}
                     <ReportAnimalInfoBox>
-                        <div>
-                            <p>성별</p>
-                        </div>
-                        <div>
-                            <p>중성화</p>
-                        </div>
-                    </ReportAnimalInfoBox>
 
+                        <ReportAnimalInfoCheckBox>
+                            <ReportAnimalInfoCheckBoxTitle> <p>성별</p></ReportAnimalInfoCheckBoxTitle>
+                            <ReportAnimalInfoCheckBoxSelete> <div>수컷</div>
+                                <div>암컷</div>
+                                <div>모름</div></ReportAnimalInfoCheckBoxSelete>
+
+                        </ReportAnimalInfoCheckBox>
+
+                        <ReportAnimalInfoCheckBox>
+                            <ReportAnimalInfoCheckBoxTitle> <p>중성화</p></ReportAnimalInfoCheckBoxTitle>
+                            <ReportAnimalInfoCheckBoxSelete>
+                                <div>완료</div>
+                                <div>암컷</div>
+                                <div>모름</div></ReportAnimalInfoCheckBoxSelete>
+
+                        </ReportAnimalInfoCheckBox>
+
+                    </ReportAnimalInfoBox>
 
                     {/* 나이 체중 색상   */}
                     <ReportAnimalInfoBox>
@@ -278,8 +349,11 @@ const Missing = () => {
 
 
                 <ReportKakaoMapBox>
-                    <h2>실종위치</h2>
-                    <div>카카오맵 들어갈곳</div>
+                    <p>실종위치</p> <ReportanimaltypesSelectInput type="text" placeholder="입력하기"
+                    // value={AOMG}
+                    // onChange={}
+                    />
+                    <div id='map'>카카오맵 들어갈곳</div>
                 </ReportKakaoMapBox>
 
                 <ReportAnimalDayBox>
@@ -489,11 +563,41 @@ const ReportAnimalInfoBox2 = styled.div`
 
 const ReportAnimalInfoBox = styled.div`
   width: 100%;
-  height: 7.8125rem;
+  height: 130px;
   /* border: 1px solid #0f0f0f; */
   margin: 0 auto;
   /* ${props => props.theme.FlexColumn} */
 `;
+
+const ReportAnimalInfoCheckBox = styled.div`
+    width: 100%;
+    height: 50%;
+    /* border: 1px solid red; */
+    ${props => props.theme.FlexColumn}
+`;
+const ReportAnimalInfoCheckBoxTitle = styled.div`
+    width: 100%;
+    height: 20%;
+    > p {
+        color: #666666;
+        font-size: 12px;
+    }
+`;
+const ReportAnimalInfoCheckBoxSelete = styled.div`
+    width: 100%;
+    height: 80%;
+    
+    gap: 0 16px;
+      ${props => props.theme.FlexCenter}
+     > div {
+        width: 6.3125rem;
+        height: 2rem;
+        border-radius: 1rem;
+        border: 1px solid #666666;
+        ${props => props.theme.FlexCenter}
+    }
+`
+
 
 const ReportAnimalInfoBoxColumn = styled.div`
   width: 100%;
@@ -643,6 +747,7 @@ const Option = styled.li`
 
 /* 문제없음 */
 const ReportKakaoMapBox = styled.div`
+ position: relative;
   width: 20.9375rem;
   height: 12.25rem;
   margin: 0 auto;
@@ -658,8 +763,10 @@ const ReportKakaoMapBox = styled.div`
     align-items: center;
   }
   div {
+    z-index: 15;
     width: 100%;
-    height: 10rem;
+    height: 85%;
+    ${props => props.theme.FlexCenter}
     /* border: 1px solid red; */
   } 
 `;
