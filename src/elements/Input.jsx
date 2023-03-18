@@ -1,9 +1,10 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 
-const Input = (props) => {
-    return <DefailtInput {...props}>{props.children}</DefailtInput>;
+const Input = ({ children, ...props }) => {
+  return <DefailtInput  {...props}>{children}</DefailtInput>;
 }
+
 
 export default Input
 const DefailtInput = styled.input`

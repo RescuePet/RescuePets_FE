@@ -11,7 +11,6 @@ import imgdelete from "../../asset/imgDelete.svg";
 import Marker from "../../asset/marker.png"
 
 
-
 const Missing = () => {
     let imageRef;
     const { kakao } = window;
@@ -27,7 +26,7 @@ const Missing = () => {
     const [isShowTimeOptions, setShowTimeOptions] = useState(false);
 
     const {
-        register, handleSubmit, formState: { errors }, reset, resetField, } = useForm();
+        register, handleSubmit, formState: { errors }, reset, resetField, getValues } = useForm();
 
     const handleOnChangeSelectValue = (e) => {
         const { innerText } = e.target;
@@ -44,6 +43,11 @@ const Missing = () => {
         setCurrentSeleteTimeValue(innerText);
     };
 
+
+    // const handleEvent = (event) => {
+    //     const value = getValues("number");
+    //     setState(value);
+    // }
 
     // 버튼을 누르면 선택된 usehookForm 제거 
     const onClickDeleteanimaltypes = () => {
@@ -71,22 +75,19 @@ const Missing = () => {
         resetField("number")
     }
 
-    // 이미지 로직 
     const [formImagin, setFormformImagin] = useState(new FormData());
-    // 이미지 state 
+
     const [imageFile, setImageFile] = useState({
         imageFile: "",
         viewUrl: "",
     });
-    // console.log(imageFile)
+
     const [loaded, setLoaded] = useState(false);
 
-    // 이미지를 등록을 하면 
     const onChangeUploadHandler = async (e) => {
         e.preventDefault();
 
         const imageFile = e.target.files[0];
-        // console.log('Before Compression: ', imageFile.size);
 
         const options = {
             maxSizeMB: 1,
@@ -101,12 +102,7 @@ const Missing = () => {
             formImg.append('image', compressedFile);
             setFormformImagin(formImg);
 
-            // for (let value of formImg.values()) {
-            //   console.log(value);
-            // }
-
             const fileReader = new FileReader()
-            // console.log(compressedFile);
             fileReader.readAsDataURL(compressedFile);
 
             fileReader.onload = () => {
@@ -122,7 +118,6 @@ const Missing = () => {
 
     }
     const onClickDeleteHandler = () => {
-        // console.log("사진 삭제 버튼 클릭");
         setImageFile({
             viewUrl: ""
         });
@@ -130,10 +125,11 @@ const Missing = () => {
 
     const resultlngDiv = document.getElementById('clicklng');
     const resultlatDiv = document.getElementById('clicklat');
+
     const onSubmitMissingHanlder = (data) => {
         console.log(data)
         console.log("종류 :", currentSeleteValue)
-        console.log("품종 :", data.animaltypes)
+        console.log("품종 :", data.animaltypes + '종')
         console.log("나이 :", currentSeleteAgeValue)
         console.log("kg :", data.animalkg)
         console.log("색깔 :", data.animalcolor)
@@ -146,25 +142,25 @@ const Missing = () => {
         console.log("전화번호 :", data.number)
         console.log("지도 좌표", resultlngDiv.innerHTML)
         console.log("지도 좌표", resultlatDiv.innerHTML)
+        // const stringToNumPrice = Number(data.money.replace(/,/g, ''));
+        // const stringToNumNumber = Number(data.number.replace(/-/g, ''));
+        // console.log(stringToNumPrice)
+        // console.log(stringToNumNumber)
     }
-    // 현재위치 위도 경도로 불러오기 
+
     navigator.geolocation.getCurrentPosition(onSucces, onFailure);
 
-    // 성공일시 좌표저장
     function onSucces(position) {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
         setLong(lng);
         setLati(lat);
     }
-    // 실패일시 알림
     function onFailure() {
         alert("위치 정보를 찾을수 없습니다.");
     }
-    // 지도 죄표값들 
     const [long, setLong] = useState("");
     const [lati, setLati] = useState("");
-
 
 
     useEffect(() => {
@@ -191,8 +187,6 @@ const Missing = () => {
         // 지도에 마커를 표시합니다
         marker.setMap(map);
 
-        // 지도에 클릭 이벤트를 등록합니다
-        // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
         kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
 
             // 클릭한 위도, 경도 정보를 가져옵니다 
@@ -221,7 +215,6 @@ const Missing = () => {
                 <ReportHeader>
                     <div></div>
                     <div>실종 글 작성하기</div>
-
                     <div>x</div>
                 </ReportHeader>
 
@@ -250,12 +243,10 @@ const Missing = () => {
 
                             <div>
                                 <p>품종</p>
+                                {/* Input */}
                                 <ReportanimaltypesSelectInput type="text" placeholder="입력하기"
                                     {...register("animaltypes", {
-                                        pattern: {
-                                            value: /^[ㄱ-ㅎ|가-힣]+$/,
-                                            message: "한글만 2 ~ 8글자 사이로 입력",
-                                        },
+                                        pattern: { value: /^[ㄱ-ㅎ|가-힣]+$/, message: "한글만 2 ~ 8글자 사이로 입력", },
                                     })} />
                                 <img src={cancel} onClick={onClickDeleteanimaltypes} />
                                 <span>{errors?.animaltypes?.message}</span>
@@ -466,7 +457,6 @@ const Missing = () => {
                             <h3>+</h3>
                         </ReportAnimalPictureInput>
 
-
                         {
                             imageFile?.viewUrl !== "" ? (
                                 <ReportAnimalPicturePreview>
@@ -486,46 +476,48 @@ const Missing = () => {
 
                 <ReportAnimalUserInfo>
                     <div>
-
                         <p>사례금</p>
                         <ReportanimaltypesSelectInput type="text" placeholder='입력하기'
                             {...register("money", {
                                 required: false,
-                                pattern: {
-                                    value: /^[가-힣\s]+$/,
-                                    message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
-                                },
+                                // pattern: {
+                                //     value: /^[0-9]+$/,
+                                //     message: "숫자만 입력 ",
+                                // },
                                 maxLength: {
-                                    value: 20,
-                                    message: "20글자 이하이어야 합니다.",
-                                },
-                            })} />
-                        <img src={cancel} onClick={onClickDeleteanimalMoney} />
+                                    value: 15,
+                                    message: "15글자 이하이어야 합니다.",
+                                }
+                            })}
+                            inputMode="numeric"
+                            onChange={(event) => {
+                                const value = event.target.value;
+                                event.target.value = Number(value.replace(/[^0-9]/g, '')).toLocaleString();
+                            }} />
+                        < img src={cancel} onClick={onClickDeleteanimalMoney} />
                         <span>{errors?.money?.message}</span>
                     </div>
 
                     <div>
                         <p>연락처</p>
-                        <ReportanimaltypesSelectInput type="text" placeholder='입력하기'
+                        <ReportanimaltypesSelectInput type="tel" placeholder='010-xxxx-xxxx'
+                            inputMode="numeric"
+                            onChange={(event) => {
+                                const value = event.target.value;
+                                event.target.value = Number(value.replace(/[^0-9]/g, '')).toLocaleString();
+                            }}
                             {...register("number", {
                                 required: false,
-                                pattern: {
-                                    value: /^[가-힣\s]+$/,
-                                    message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
-                                },
-                                maxLength: {
-                                    value: 12,
-                                    message: "12글자 이하이어야 합니다.",
-                                },
+                                pattern: { value: /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/, message: "하이픈(-)을 넣어주세요 ", },
+                                maxLength: { value: 16, message: "12글자 이하이어야 합니다.", },
                             })} />
                         <img src={cancel} onClick={onClickDeleteanimalNumber} />
                         <span>{errors?.number?.message}</span>
                     </div>
-                </ReportAnimalUserInfo>
 
+                </ReportAnimalUserInfo>
                 <Button type="submit" TabBtn2>작성 완료</Button>
             </ReportContinaer >
-
         </Layout >
     )
 }
