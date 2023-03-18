@@ -17,6 +17,21 @@ import {
 } from './components/reportstyle';
 
 const Sighting = () => {
+  let imageRef;
+  const { kakao } = window;
+
+  // Selete로직 
+  const [currentSeleteValue, setCurrentSeleteValue] = useState('강아지')
+  const [isShowOptions, setShowOptions] = useState(false);
+  const handleOnChangeSelectValue = (e) => {
+    const { innerText } = e.target;
+    setCurrentSeleteValue(innerText);
+  };
+  // React-hook-form
+  const {
+    register, handleSubmit, formState: { errors },
+    reset, resetField, getValues } = useForm();
+
   return (
     <ReportSightingContainer>
 
@@ -27,7 +42,34 @@ const Sighting = () => {
       </ReportHeader>
 
       <ReportAnimalInfoArea>
+        <ReportAnimalInfoBox>
 
+
+          <ReportanimaltypesTitle>동물정보</ReportanimaltypesTitle>
+          {/* 동물정보 종류, 품종 */}
+          <ReportanimaltypesSelect>
+            <div>
+              <p>종류</p>
+
+              <SelectBox onClick={() => setShowOptions((isShowOptions) => !isShowOptions)}>
+                <Label>{currentSeleteValue}</Label>
+                <SelectOptions show={isShowOptions}>
+
+                  <Option onClick={handleOnChangeSelectValue}>강아지</Option>
+                  <Option onClick={handleOnChangeSelectValue}>고양이</Option>
+                  <Option onClick={handleOnChangeSelectValue}>기타</Option>
+
+                </SelectOptions>
+              </SelectBox>
+            </div>
+
+            <div>
+
+            </div>
+
+          </ReportanimaltypesSelect>
+
+        </ReportAnimalInfoBox>
       </ReportAnimalInfoArea>
 
     </ReportSightingContainer>

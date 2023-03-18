@@ -44,10 +44,43 @@ export const ReportAnimalInfoArea = styled.div`
 
 export const ReportAnimalInfoBox = styled.div`
   width: 100%;
-  height: 130px;
-  /* border: 1px solid #0f0f0f; */
+  height: 8.125rem;
+  border: 1px solid #0f0f0f;
   margin: 0 auto;
   /* ${props => props.theme.FlexColumn} */
+`;
+
+export const ReportanimaltypesTitle = styled.div`
+  width: 100%;
+  height: 30%;
+  display: flex;
+  align-items: center;
+  ${props => props.theme.Body_400_20_14}
+`;
+
+export const ReportanimaltypesSelect = styled.div`
+  width: 20.9375rem;
+  height: 3.75rem;
+  display: flex;
+  align-items: center;
+  border: 1px solid red;
+  > div {
+    position: relative;
+    width: 50%;
+    height: 100%;
+    border: 1px solid blue;
+    padding: 10px 0 20px 0;
+    > p {
+    color: #666666;
+    ${props => props.theme.Body_400_12}
+    }
+    > img {
+    position: absolute;
+    ${SignSvgStyle}   
+    right: 5px;
+    top: 25px;
+    }
+  }
 `;
 
 export const ReportAnimalInfoCheckBox = styled.div`
@@ -145,40 +178,11 @@ export const ReportanimaltypesBox = styled.div`
   ${props => props.theme.FlexColumn}
 `;
 
-export const ReportanimaltypesTitle = styled.div`
-  width: 100%;
-  height: 30%;
-  display: flex;
-  align-items: center;
-  ${props => props.theme.Body_400_14}
-`;
 
-export const ReportanimaltypesSelect = styled.div`
-  width: 20.9375rem;
-  height: 3.75rem;
-  display: flex;
-  align-items: center;
-  /* border: 1px solid red; */
-  > div {
-    position: relative;
-    width: 50%;
-    height: 100%;
-    /* border: 1px solid blue; */
-    padding: 10px 0 20px 0;
-    > p {
-    color: #666666;
-    ${props => props.theme.Body_400_12}
-    }
-    > img {
-    position: absolute;
-    ${SignSvgStyle}   
-    right: 5px;
-    top: 25px;
-    }
-  }
-`;
 
-export const ReportanimaltypesSelectInput = styled.input`
+
+
+export const ReportInput = styled.input`
   width: 9.75rem;
   height: 1.5625rem;
   margin-top: 5px;
@@ -187,6 +191,16 @@ export const ReportanimaltypesSelectInput = styled.input`
   background: transparent;
   font-size: 12px;
 `;
+
+export const ReportLgInput = styled.input`
+  width: 20.9375rem;
+  height: 1.5625rem;
+  margin-top: 5px;
+  /* border: 1px solid red; */
+  border-bottom: 2px solid #EEEEEE;
+  background: transparent;
+  font-size: 12px;
+`
 
 export const SelectBox = styled.div`
   position: relative;

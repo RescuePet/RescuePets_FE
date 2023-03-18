@@ -11,7 +11,7 @@ import imgdelete from "../../asset/imgDelete.svg";
 import Marker from "../../asset/marker.png"
 import { ReportMissingContainer, ReportHeader ,ReportAnimalInfoArea, ReportAnimalInfoBox ,ReportAnimalInfoCheckBox
 ,ReportAnimalInfoCheckBoxTitle , ReportAnimalInfoCheckBoxSelete ,ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
-ReportAnimalInfoBoxColumnColunb, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportanimaltypesSelectInput,
+ReportAnimalInfoBoxColumnColunb, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportInput,ReportLgInput,
 SelectBox ,Label ,SelectOptions ,Option ,ReportKakaoMapBox ,ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox,
 ReportAnimalsignificantBox, ReportAnimalsignificantBoxTitle,ReportAnimalsignificantBoxInput, ReportAnimalPictureArea,
 ReportAnimalPictureAreaTitle, ReportAnimalPictureAreaInputBox, ReportAnimalPictureInput, ReportAnimalPicturePreview ,ReportAnimalUserInfo}  from './components/reportstyle';
@@ -49,6 +49,10 @@ const Missing = () => {
     // selete 종류
     const [currentSeleteValue, setCurrentSeleteValue] = useState('강아지')
     const [isShowOptions, setShowOptions] = useState(false);
+    const handleOnChangeSelectValue = (e) => {
+        const { innerText } = e.target;
+        setCurrentSeleteValue(innerText);
+    };
     // selete 나이 
     const [currentSeleteAgeValue, setCurrentSeleteAgeValue] = useState('0살~3살')
     const [isShowAgeOptions, setShowAgeOptions] = useState(false);
@@ -58,11 +62,6 @@ const Missing = () => {
 
     const {
         register, handleSubmit, formState: { errors }, reset, resetField, getValues } = useForm();
-
-    const handleOnChangeSelectValue = (e) => {
-        const { innerText } = e.target;
-        setCurrentSeleteValue(innerText);
-    };
 
     const handleOnChangeSelectAgeValue = (e) => {
         const { innerText } = e.target;
@@ -265,7 +264,7 @@ const Missing = () => {
                             <div>
                                 <p>품종</p>
                                 {/* Input */}
-                                <ReportanimaltypesSelectInput type="text" placeholder="입력하기"
+                                <ReportInput type="text" placeholder="입력하기"
                                     {...register("animaltypes", {
                                         pattern: { value: /^[ㄱ-ㅎ|가-힣]+$/, message: "한글만 2 ~ 8글자 사이로 입력", },
                                     })} />
@@ -344,7 +343,7 @@ const Missing = () => {
                             <ReportAnimalInfoBoxColumnRow>
                                 <p>체중(Kg)</p>
 
-                                <ReportanimaltypesSelectInput type="text" placeholder='입력하기'
+                                <ReportInput type="text" placeholder='입력하기'
                                     {...register("animalkg", {
                                         pattern: {
                                             value: /^[0-9]+$/,
@@ -365,7 +364,7 @@ const Missing = () => {
                         <ReportAnimalInfoBoxColumn>
                             <ReportAnimalInfoBoxColumnColunb>
                                 <p>색상</p>
-                                <ReportanimaltypesSelectInput style={{ width: "335px" }}
+                                <ReportLgInput
                                     type="text" placeholder='입력하기'
                                     {...register("animalcolor", {
                                         required: false,
@@ -404,7 +403,7 @@ const Missing = () => {
                     <div>
                         <div>
                             <p>날짜</p>
-                            <ReportanimaltypesSelectInput type="text" placeholder='2022-07-14'
+                            <ReportInput type="text" placeholder='2022-07-14'
                                 {...register("days", {
                                     pattern: {
                                         value: /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/,
@@ -436,7 +435,7 @@ const Missing = () => {
                     <ReportAnimalsignificantBoxInput>
                         <div>
                             <p>특징</p>
-                            <ReportanimaltypesSelectInput type="text" placeholder='입력하기' style={{ width: "335px" }}
+                            <ReportLgInput type="text" placeholder='입력하기'
                                 {...register("characteristic", {
                                     required: false,
                                     pattern: {
@@ -454,7 +453,7 @@ const Missing = () => {
                         {/* 메모 */}
                         <div>
                             <p>메모</p>
-                            <ReportanimaltypesSelectInput type="text" placeholder='입력하기' style={{ width: "335px" }}
+                            <ReportLgInput type="text" placeholder='입력하기' 
                                 {...register("memo", {
                                     required: false,
                                     pattern: {
@@ -501,7 +500,7 @@ const Missing = () => {
                 <ReportAnimalUserInfo>
                     <div>
                         <p>사례금</p>
-                        <ReportanimaltypesSelectInput type="text" placeholder='입력하기'
+                        <ReportInput type="text" placeholder='입력하기'
                             {...register("money", {
                                 required: false, // 필수 X 
                                 maxLength: { value: 15, message: "15글자 이하이어야 합니다.", }
@@ -517,7 +516,7 @@ const Missing = () => {
 
                     <div>
                         <p>연락처</p>
-                        <ReportanimaltypesSelectInput type="tel" placeholder='010-xxxx-xxxx'
+                        <ReportInput type="tel" placeholder='010-xxxx-xxxx'
                             inputMode="numeric"
                             onChange={(event) => {
                                 const value = event.target.value;
