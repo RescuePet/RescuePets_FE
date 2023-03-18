@@ -157,7 +157,7 @@ export const ReportAnimalInfoBoxColumnRow = styled.div`
 `;
 
 // 색상 
-export const ReportAnimalInfoBoxColumnColunb = styled.div`
+export const ReportAnimalInfoBoxColumnColumn = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
@@ -167,12 +167,13 @@ export const ReportAnimalInfoBoxColumnColunb = styled.div`
   }
   > img {
     position: absolute;
-    bottom: 25px;
-    width: 1rem;
-    height: 1rem;
-    right: 5px;
+    ${SignSvgStyle}   
+    bottom: 30px; 
+    right: 10px;
   }
-  /* border: 1px solid red; */
+  > span{
+    ${props => props.theme.Span_alert}
+  }
 `;
 
 export const ReportanimaltypesBox = styled.div`

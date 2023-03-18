@@ -11,7 +11,7 @@ import imgdelete from "../../asset/imgDelete.svg";
 import Marker from "../../asset/marker.png"
 import { ReportMissingContainer, ReportHeader ,ReportAnimalInfoArea, ReportAnimalInfoBox ,ReportAnimalInfoCheckBox
 ,ReportAnimalInfoCheckBoxTitle , ReportAnimalInfoCheckBoxSelete ,ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
-ReportAnimalInfoBoxColumnColunb, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportInput,ReportLgInput,
+ReportAnimalInfoBoxColumnColumn, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportInput,ReportLgInput,
 SelectBox ,Label ,SelectOptions ,Option ,ReportKakaoMapBox ,ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox,
 ReportAnimalsignificantBox, ReportAnimalsignificantBoxTitle,ReportAnimalsignificantBoxInput, ReportAnimalPictureArea,
 ReportAnimalPictureAreaTitle, ReportAnimalPictureAreaInputBox, ReportAnimalPictureInput, ReportAnimalPicturePreview ,ReportAnimalUserInfo}  from './components/reportstyle';
@@ -362,7 +362,7 @@ const Missing = () => {
                         </ReportAnimalInfoBoxColumn>
 
                         <ReportAnimalInfoBoxColumn>
-                            <ReportAnimalInfoBoxColumnColunb>
+                            <ReportAnimalInfoBoxColumnColumn>
                                 <p>색상</p>
                                 <ReportLgInput
                                     type="text" placeholder='입력하기'
@@ -380,7 +380,7 @@ const Missing = () => {
                                 <img src={cancel} onClick={onClickDeleteanimalColor} />
                                 <span>{errors?.animalcolor?.message}</span>
 
-                            </ReportAnimalInfoBoxColumnColunb>
+                            </ReportAnimalInfoBoxColumnColumn>
                         </ReportAnimalInfoBoxColumn>
 
                     </ReportAnimalInfoBox>

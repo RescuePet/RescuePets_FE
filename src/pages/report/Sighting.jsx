@@ -10,7 +10,7 @@ import Marker from "../../asset/marker.png"
 import {
   ReportSightingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
   , ReportAnimalInfoCheckBoxTitle, ReportAnimalInfoCheckBoxSelete, ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
-  ReportAnimalInfoBoxColumnColunb, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportInput, ReportLgInput,
+  ReportAnimalInfoBoxColumnColumn, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportInput, ReportLgInput,
   SelectBox, Label, SelectOptions, Option, ReportKakaoMapBox, ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox,
   ReportAnimalsignificantBox, ReportAnimalsignificantBoxTitle, ReportAnimalsignificantBoxInput, ReportAnimalPictureArea,
   ReportAnimalPictureAreaTitle, ReportAnimalPictureAreaInputBox, ReportAnimalPictureInput, ReportAnimalPicturePreview, ReportAnimalUserInfo
@@ -66,6 +66,7 @@ const Sighting = () => {
     console.log(currentNeuteredValue)
     console.log(data.animalAge)
     console.log(data.animalkg)
+    console.log(data.animalcolor)
 
   }
   // 버튼을 누르면 선택된 usehookForm 제거 
@@ -77,6 +78,10 @@ const Sighting = () => {
   }
   const onClickDeleteanimalAge = () => {
     resetField("animalAge")
+  }
+
+  const onClickDeleteanimalColor = () => {
+    resetField("animalcolor")
   }
 
   return (
@@ -175,7 +180,7 @@ const Sighting = () => {
                       }
                     })} />
                   <img src={cancel} onClick={onClickDeleteanimalAge} />
-                  <span>{errors?.animalkg?.message}</span>
+                  <span>{errors?.animalAge?.message}</span>
                 </ReportAnimalInfoBoxColumnRow>
 
                 <ReportAnimalInfoBoxColumnRow>
@@ -199,7 +204,23 @@ const Sighting = () => {
               </ReportAnimalInfoBoxColumn>
               {/* 색상 */}
               <ReportAnimalInfoBoxColumn>
-
+                <ReportAnimalInfoBoxColumnColumn>
+                  <p>색상</p>
+                  <ReportLgInput type="text" placeholder='입력하기'
+                    {...register("animalcolor", {
+                      required: false,
+                      pattern: {
+                        value: /^[가-힣\s]+$/,
+                        message: "한글만 2 ~ 8글자 사이로 입력 ",
+                      },
+                      maxLength: {
+                        value: 8,
+                        message: "8글자 이하이어야 합니다.",
+                      },
+                    })} />
+                  <img src={cancel} onClick={onClickDeleteanimalColor} />
+                  <span>{errors?.animalcolor?.message}</span>
+                </ReportAnimalInfoBoxColumnColumn>
               </ReportAnimalInfoBoxColumn>
 
             </ReportAnimalInfoBox>
