@@ -64,10 +64,19 @@ const Sighting = () => {
     console.log(currentSeleteValue)
     console.log(currentGenderValue)
     console.log(currentNeuteredValue)
+    console.log(data.animalAge)
+    console.log(data.animalkg)
+
   }
   // 버튼을 누르면 선택된 usehookForm 제거 
   const onClickDeleteanimaltypes = () => {
     resetField("animaltypes")
+  }
+  const onClickDeleteanimalKg = () => {
+    resetField("animalkg")
+  }
+  const onClickDeleteanimalAge = () => {
+    resetField("animalAge")
   }
 
   return (
@@ -133,7 +142,6 @@ const Sighting = () => {
               <ReportAnimalInfoCheckBox>
                 <ReportAnimalInfoCheckBoxTitle> <p>중성화</p> </ReportAnimalInfoCheckBoxTitle>
                 <ReportAnimalInfoCheckBoxSelete>
-
                   {
                     seleteneuteredArr.map((el, index) => (
                       <li
@@ -144,14 +152,58 @@ const Sighting = () => {
                         {el.neutered}
                       </li>
                     ))}
-
                 </ReportAnimalInfoCheckBoxSelete>
-
               </ReportAnimalInfoCheckBox>
+            </ReportAnimalInfoBox>
 
+            {/* 나이 체중 색상*/}
+            <ReportAnimalInfoBox>
+              {/* 나이 체중  */}
+              <ReportAnimalInfoBoxColumn>
 
+                <ReportAnimalInfoBoxColumnRow>
+                  <p>나이</p>
+                  <ReportInput type="text" placeholder='입력하기'
+                    {...register("animalAge", {
+                      pattern: {
+                        value: /^[0-9]+$/,
+                        message: "숫자만입력가능",
+                      },
+                      maxLength: {
+                        value: 3,
+                        message: "숫자만 입력! 3자리수 이하로 작성",
+                      }
+                    })} />
+                  <img src={cancel} onClick={onClickDeleteanimalAge} />
+                  <span>{errors?.animalkg?.message}</span>
+                </ReportAnimalInfoBoxColumnRow>
+
+                <ReportAnimalInfoBoxColumnRow>
+                  <p>체중(Kg)</p>
+
+                  <ReportInput type="text" placeholder='입력하기'
+                    {...register("animalkg", {
+                      pattern: {
+                        value: /^[0-9]+$/,
+                        message: "숫자만입력가능",
+                      },
+                      maxLength: {
+                        value: 3,
+                        message: "숫자만 입력! 3자리수 이하로 작성",
+                      }
+                    })} />
+                  <img src={cancel} onClick={onClickDeleteanimalKg} />
+                  <span>{errors?.animalkg?.message}</span>
+
+                </ReportAnimalInfoBoxColumnRow>
+              </ReportAnimalInfoBoxColumn>
+              {/* 색상 */}
+              <ReportAnimalInfoBoxColumn>
+
+              </ReportAnimalInfoBoxColumn>
 
             </ReportAnimalInfoBox>
+
 
           </ReportAnimalInfoBox>
         </ReportAnimalInfoArea>

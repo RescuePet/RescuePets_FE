@@ -118,7 +118,6 @@ export const ReportAnimalInfoCheckBoxSelete = styled.ul`
         ${props => props.theme.FlexCenter}
         ${props => props.theme.Body_400_12}  
      }
-
     .focused {
      //선택된 Tabmenu 에만 적용되는 CSS를 구현
     border: 1px solid #666666;
@@ -141,17 +140,19 @@ export const ReportAnimalInfoBoxColumnRow = styled.div`
   position: relative;
   width: 50%;
   height: 100%;
+  /* border: 1px solid red; */
   > p { 
     color: #666666;
     ${props => props.theme.Body_400_12}
   }
-  /* border: 1px solid red; */
   > img {
     position: absolute;
-    width: 1rem;
-    height: 1rem;
-    bottom: 25px;
-    right: 5px;
+    ${SignSvgStyle}   
+    bottom: 30px;
+    right: 10px;
+  }
+  > span {
+    ${props => props.theme.Span_alert}
   }
 `;
 
