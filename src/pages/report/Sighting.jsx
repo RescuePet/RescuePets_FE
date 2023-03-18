@@ -27,6 +27,32 @@ const Sighting = () => {
     const { innerText } = e.target;
     setCurrentSeleteValue(innerText);
   };
+  // Tab 로직 성별 중성화 
+  const [currentGenderTab, setCurrentGenderTab] = useState(0);
+  const [currentNeuteredTab, setCurrentNeuteredTab] = useState(0);
+  const SeletegenderArr = [
+    { gender: '수컷' },
+    { gender: '암컷' },
+    { gender: '모름' },
+  ];
+
+  const seleteneuteredArr = [
+    { neutered: "완료" },
+    { neutered: "미완료" },
+    { neutered: "모름" }
+  ];
+  const [currentGenderValue, setCurrentGenderValue] = useState('수컷');
+  const [currentNeuteredValue, setCurrentNeuteredValue] = useState('완료');
+
+  const selectMGenderHandler = (index) => {
+    setCurrentGenderTab(index);
+    setCurrentGenderValue(SeletegenderArr[index].gender)
+  };
+  const selectNeuteredHandler = (index) => {
+    setCurrentNeuteredTab(index);
+    setCurrentNeuteredValue(seleteneuteredArr[index].neutered)
+  };
+
   // React-hook-form
   const {
     register, handleSubmit, formState: { errors },
@@ -34,8 +60,10 @@ const Sighting = () => {
 
   // form submit 로직
   const onSubmitSightingHanlder = (data) => {
-    console.log(data)
+    console.log(data.animaltypes)
     console.log(currentSeleteValue)
+    console.log(currentGenderValue)
+    console.log(currentNeuteredValue)
   }
   // 버튼을 누르면 선택된 usehookForm 제거 
   const onClickDeleteanimaltypes = () => {
@@ -61,7 +89,6 @@ const Sighting = () => {
             <ReportanimaltypesSelect>
               <div>
                 <p>종류</p>
-
                 <SelectBox onClick={() => setShowOptions((isShowOptions) => !isShowOptions)}>
                   <Label>{currentSeleteValue}</Label>
                   <SelectOptions show={isShowOptions}>
@@ -83,8 +110,48 @@ const Sighting = () => {
                 <img src={cancel} onClick={onClickDeleteanimaltypes} />
                 <span>{errors?.animaltypes?.message}</span>
               </div>
-
             </ReportanimaltypesSelect>
+
+            <ReportAnimalInfoBox>
+              {/* 성별 */}
+              <ReportAnimalInfoCheckBox>
+                <ReportAnimalInfoCheckBoxTitle> <p>성별</p></ReportAnimalInfoCheckBoxTitle>
+                <ReportAnimalInfoCheckBoxSelete>
+                  {
+                    SeletegenderArr.map((el, index) => (
+                      <li
+                        key={index}
+                        className={index === currentGenderTab ? "submenu focused" : "submenu"}
+                        onClick={() => selectMGenderHandler(index)}
+                      >
+                        {el.gender}
+                      </li>
+                    ))}
+                </ReportAnimalInfoCheckBoxSelete>
+              </ReportAnimalInfoCheckBox>
+              {/* 중성화 */}
+              <ReportAnimalInfoCheckBox>
+                <ReportAnimalInfoCheckBoxTitle> <p>중성화</p> </ReportAnimalInfoCheckBoxTitle>
+                <ReportAnimalInfoCheckBoxSelete>
+
+                  {
+                    seleteneuteredArr.map((el, index) => (
+                      <li
+                        key={index}
+                        className={index === currentNeuteredTab ? "submenu focused" : "submenu"}
+                        onClick={() => selectNeuteredHandler(index)}
+                      >
+                        {el.neutered}
+                      </li>
+                    ))}
+
+                </ReportAnimalInfoCheckBoxSelete>
+
+              </ReportAnimalInfoCheckBox>
+
+
+
+            </ReportAnimalInfoBox>
 
           </ReportAnimalInfoBox>
         </ReportAnimalInfoArea>

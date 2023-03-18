@@ -39,7 +39,7 @@ export const ReportAnimalInfoArea = styled.div`
   width: 20.9375rem;
   height: 23rem;
   margin: 0 auto;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 `;
 
 export const ReportAnimalInfoBox = styled.div`
