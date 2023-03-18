@@ -6,6 +6,7 @@ import cancel from "../../asset/delete.svg";
 import imageCompression from 'browser-image-compression';
 import imgdelete from "../../asset/imgDelete.svg";
 import Marker from "../../asset/marker.png"
+import { Select } from './components/Select';
 import {
   ReportSightingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
   , ReportAnimalInfoCheckBoxTitle, ReportAnimalInfoCheckBoxSelete, ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
@@ -20,19 +21,62 @@ const Sighting = () => {
   const { kakao } = window;
 
   // Selete로직 
-  const [currentSeleteValue, setCurrentSeleteValue] = useState('강아지')
+  const NameValue = [
+    { id: 0, name: "강아지" },
+    { id: 1, name: "고양이" },
+    { id: 2, name: "기타" },
+  ]
+
+  const TimeValue = [
+    { id: 0, name: "12시" },
+    { id: 1, name: "13시" },
+    { id: 2, name: "14시" },
+    { id: 3, name: "15시" },
+    { id: 4, name: "16시" },
+    { id: 5, name: "17시" },
+    { id: 6, name: "18시" },
+    { id: 7, name: "19시" },
+    { id: 8, name: "20시" },
+    { id: 9, name: "21시" },
+    { id: 10, name: "22시" },
+    { id: 11, name: "23시" },
+    { id: 12, name: "24시" },
+    { id: 13, name: "00시" },
+    { id: 14, name: "01시" },
+    { id: 15, name: "02시" },
+    { id: 16, name: "03시" },
+    { id: 17, name: "04시" },
+    { id: 18, name: "05시" },
+    { id: 19, name: "06시" },
+    { id: 20, name: "07시" },
+    { id: 21, name: "08시" },
+    { id: 22, name: "09시" },
+    { id: 23, name: "10시" },
+    { id: 24, name: "11시" },
+  ];
+  // 종류데이터
+  const [type, setType] = useState('')
+  // console.log(type)
+  const onChangeData = (newData) => {
+    setType(newData);
+  }
+  const [time, setTime] = useState('')
+  // console.log(time)
+  const onChangeTimeData = (newData) => {
+    setTime(newData);
+  }
+
+
+  const [currentSeleteValue, setCurrentSeleteValue] = useState(NameValue[0].name)
   const [isShowOptions, setShowOptions] = useState(false);
   const handleOnChangeSelectValue = (e) => {
-    const { innerText } = e.target;
-    setCurrentSeleteValue(innerText);
+    // const { innerText } = e.target;
+    console.log(e.target.value)
+    // setCurrentSeleteValue(e.target.getAttribute("value"));
   };
-  // Selete 로직 나이 
-  const [currentSeleteAgeValue, setCurrentSeleteAgeValue] = useState('0살')
-  const [isShowAgeOptions, setShowAgeOptions] = useState(false);
-  const handleOnChangeSelectAgeValue = (e) => {
-    const { innerText } = e.target;
-    setCurrentSeleteAgeValue(innerText);
-  };
+
+
+
   // Tab 로직 성별 중성화 
   const [currentGenderTab, setCurrentGenderTab] = useState(0);
   const [currentNeuteredTab, setCurrentNeuteredTab] = useState(0);
@@ -67,16 +111,16 @@ const Sighting = () => {
   // form submit 로직
   const onSubmitSightingHanlder = (data) => {
     console.log(data.animaltypes)
-    console.log(currentSeleteValue)
+    console.log(type)
     console.log(currentGenderValue)
     console.log(currentNeuteredValue)
     console.log(data.animalAge)
     console.log(data.animalkg)
     console.log(data.animalcolor)
     console.log(data.days)
-    console.log(currentSeleteAgeValue)
+    console.log(time)
     console.log(data.characteristic)
-    console.log(data.meno)
+    console.log(data.memo)
     console.log("지도 좌표", resultlngDiv.innerHTML)
     console.log("지도 좌표", resultlatDiv.innerHTML)
 
@@ -206,11 +250,6 @@ const Sighting = () => {
     });
   };
 
-
-
-
-
-
   return (
     <Layout>
       <ReportSightingContainer onSubmit={handleSubmit(onSubmitSightingHanlder)}>
@@ -230,16 +269,24 @@ const Sighting = () => {
             <ReportanimaltypesSelect>
               <div>
                 <p>종류</p>
-                <SelectBox onClick={() => setShowOptions((isShowOptions) => !isShowOptions)}>
+                <Select data={NameValue} onChangeData={onChangeData} />
+                {/* <SelectBox onClick={() => setShowOptions((isShowOptions) => !isShowOptions)}>
                   <Label>{currentSeleteValue}</Label>
                   <SelectOptions show={isShowOptions}>
+                    {
+                      NameValue.map((item) => {
+                        <Option
+                          key={item.id}>{item.name}</Option>
+                      })
+                    } */}
 
-                    <Option onClick={handleOnChangeSelectValue}>강아지</Option>
+
+                {/*   <Option onClick={handleOnChangeSelectValue}>강아지</Option>
                     <Option onClick={handleOnChangeSelectValue}>고양이</Option>
-                    <Option onClick={handleOnChangeSelectValue}>기타</Option>
-
+                    <Option onClick={handleOnChangeSelectValue}>기타</Option> */}
+                {/* 
                   </SelectOptions>
-                </SelectBox>
+                </SelectBox> */}
               </div>
 
               <div>
@@ -385,23 +432,7 @@ const Sighting = () => {
             {/* 시간대 */}
             <div>
               <p>시간대</p>
-              <SelectBox onClick={() => setShowAgeOptions((isShowAgeOptions) => !isShowAgeOptions)}>
-                <Label>{currentSeleteAgeValue}</Label>
-                <SelectOptions show={isShowAgeOptions}>
-                  <Option onClick={handleOnChangeSelectAgeValue}>0살 </Option>
-                  <Option onClick={handleOnChangeSelectAgeValue}>1살 </Option>
-                  <Option onClick={handleOnChangeSelectAgeValue}>2살 </Option>
-                  <Option onClick={handleOnChangeSelectAgeValue}>3살 </Option>
-                  <Option onClick={handleOnChangeSelectAgeValue}>4살 </Option>
-                  <Option onClick={handleOnChangeSelectAgeValue}>5살 </Option>
-                  <Option onClick={handleOnChangeSelectAgeValue}>6살 </Option>
-                  <Option onClick={handleOnChangeSelectAgeValue}>7살 </Option>
-                  <Option onClick={handleOnChangeSelectAgeValue}>8살 </Option>
-                  <Option onClick={handleOnChangeSelectAgeValue}>9살 </Option>
-                  <Option onClick={handleOnChangeSelectAgeValue}>10살 </Option>
-                  <Option onClick={handleOnChangeSelectAgeValue}>10살이상 </Option>
-                </SelectOptions>
-              </SelectBox>
+              <Select data={TimeValue} onChangeData={onChangeTimeData} />
             </div>
           </div>
         </ReportAnimalDayBox>
@@ -475,7 +506,7 @@ const Sighting = () => {
 
         <Button type="submit" TabBtn2>작성 완료</Button>
       </ReportSightingContainer>
-    </Layout>
+    </Layout >
   )
 }
 
