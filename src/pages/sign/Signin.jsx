@@ -7,7 +7,7 @@ import check from "../../asset/check.svg";
 
 import Layout from "../../layouts/Layout";
 import { __signinUser } from "../../redux/modules/signSlice";
-import { FlexAttribute, SignSvgStyle } from "../../style/Mixin";
+import { FlexAttribute, HeaderStyle, SignSvgStyle } from "../../style/Mixin";
 import Button from "../../elements/Button";
 
 const Signin = () => {
@@ -88,12 +88,7 @@ const SignContainer = styled.div`
 
 const SignHeader = styled.div`
   ${FlexAttribute("row", "center")}
-  width: 100%;
-  height: 5rem;
-  padding-top: 2.5rem;
-  border-bottom: 0.25rem solid #eeeeee;
-  font-size: 1.125rem;
-  font-weight: 700;
+  ${HeaderStyle}
 `;
 
 const SignForm = styled.form`
