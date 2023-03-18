@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { FlexAttribute, SignSvgStyle } from "../../../style/Mixin"
 
-export const ReportContinaer = styled.form`
+export const ReportMissingContinaer = styled.form`
   width: 100%;
-  height: 75.5rem;
+  height: 83.375rem;
   ${FlexAttribute("column", "center", "center")}   
   gap: 10px 0;
   /* border: 1px solid #000; */

@@ -9,7 +9,7 @@ import cancel from "../../asset/delete.svg";
 import imageCompression from 'browser-image-compression';
 import imgdelete from "../../asset/imgDelete.svg";
 import Marker from "../../asset/marker.png"
-import { ReportContinaer, ReportHeader ,ReportAnimalInfoBox2, ReportAnimalInfoBox ,ReportAnimalInfoCheckBox
+import { ReportMissingContinaer, ReportHeader ,ReportAnimalInfoBox2, ReportAnimalInfoBox ,ReportAnimalInfoCheckBox
 ,ReportAnimalInfoCheckBoxTitle , ReportAnimalInfoCheckBoxSelete ,ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
 ReportAnimalInfoBoxColumnColunb, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportanimaltypesSelectInput,
 SelectBox ,Label ,SelectOptions ,Option ,ReportKakaoMapBox ,ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox,
@@ -228,7 +228,7 @@ const Missing = () => {
 
     return (
         <Layout>
-            <ReportContinaer onSubmit={handleSubmit(onSubmitMissingHanlder,
+            <ReportMissingContinaer onSubmit={handleSubmit(onSubmitMissingHanlder,
                 onClickDeleteanimaltypes, onClickDeleteanimalDays, onClickDeleteanimalKg,
                 onClickDeleteanimalcharacteristic, onClickDeleteanimalmemo, onClickDeleteanimalColor
                 , onClickDeleteanimalMoney, onClickDeleteanimalNumber)}>
@@ -534,7 +534,7 @@ const Missing = () => {
 
                 </ReportAnimalUserInfo>
                 <Button type="submit" TabBtn2>작성 완료</Button>
-            </ReportContinaer >
+            </ReportMissingContinaer >
         </Layout >
     )
 }
