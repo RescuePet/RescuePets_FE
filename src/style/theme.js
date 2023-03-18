@@ -73,6 +73,12 @@ export const Body_400_12 = css`
   line-height: 12px;
 `;
 
+export const Body_400_10 = css`
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 10px;
+`;
+
 export const Body_300_10 = css`
   font-weight: 300;
   font-size: 10px;

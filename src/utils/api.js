@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import refineData from "./refineData";
 
 const instance = axios.create({
-  baseURL: `${process.env.REACT_APP_HOME_URL}`,
+  baseURL: `${process.env.REACT_APP_SIGN_TEST}`,
 });
 
 instance.interceptors.request.use(
@@ -21,6 +21,16 @@ instance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+instance.interceptors.response.use((response) => {
+  if (response.config.url === "/api/member/login") {
+    const TOKEN = response.headers.authorization;
+    Cookies.set("Token", TOKEN);
+    localStorage.setItem("userInfo", JSON.stringify(response.data));
+    return response;
+  }
+  return response;
+});
 
 const home = axios.create({
   baseURL: `${process.env.REACT_APP_HOME_URL}`,
