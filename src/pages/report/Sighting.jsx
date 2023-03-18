@@ -24,29 +24,23 @@ const Sighting = () => {
 
   // 종류데이터
   const [type, setType] = useState(NameValue[0].name)
-  // console.log(type)
   const onChangeData = (newData) => {
     setType(newData);
   }
   const [time, setTime] = useState(TimeValue[0].name)
-  // console.log(time)
   const onChangeTimeData = (newData) => {
     setTime(newData);
   }
 
-  // Tab 로직 성별 중성화 
+  // Tab 로직 
   const [currentGenderTab, setCurrentGenderTab] = useState(0);
   const [currentNeuteredTab, setCurrentNeuteredTab] = useState(0);
   const SeletegenderArr = [
-    { gender: '수컷' },
-    { gender: '암컷' },
-    { gender: '모름' },
+    { gender: '수컷' }, { gender: '암컷' }, { gender: '모름' },
   ];
 
   const seleteneuteredArr = [
-    { neutered: "완료" },
-    { neutered: "미완료" },
-    { neutered: "모름" }
+    { neutered: "완료" }, { neutered: "미완료" }, { neutered: "모름" }
   ];
   const [currentGenderValue, setCurrentGenderValue] = useState('수컷');
   const [currentNeuteredValue, setCurrentNeuteredValue] = useState('완료');
@@ -83,31 +77,9 @@ const Sighting = () => {
 
   }
   // 버튼을 누르면 선택된 usehookForm 제거 
-  const onClickDeleteanimaltypes = () => {
-    resetField("animaltypes")
+  const onClickDeleteValue = (data) => {
+    resetField(data)
   }
-  const onClickDeleteanimalKg = () => {
-    resetField("animalkg")
-  }
-  const onClickDeleteanimalAge = () => {
-    resetField("animalAge")
-  }
-
-  const onClickDeleteanimalColor = () => {
-    resetField("animalcolor")
-  }
-
-  const onClickDeleteanimalDays = () => {
-    resetField("days")
-  }
-  const onClickDeleteanimalcharacteristic = () => {
-    resetField("characteristic")
-  }
-
-  const onClickDeleteanimalmemo = () => {
-    resetField("memo")
-  }
-
   // 카카오 맵 로직 
   const resultlngDiv = document.getElementById('clicklng');
   const resultlatDiv = document.getElementById('clicklat');
@@ -235,7 +207,7 @@ const Sighting = () => {
                   {...register("animaltypes", {
                     pattern: { value: /^[ㄱ-ㅎ|가-힣]+$/, message: "한글만 2 ~ 8글자 사이로 입력", },
                   })} />
-                <img src={cancel} onClick={onClickDeleteanimaltypes} />
+                <img src={cancel} onClick={(() => { onClickDeleteValue('animaltypes') })} />
                 <span>{errors?.animaltypes?.message}</span>
               </div>
             </ReportanimaltypesSelect>
@@ -293,7 +265,7 @@ const Sighting = () => {
                         message: "숫자만 입력! 3자리수 이하로 작성",
                       }
                     })} />
-                  <img src={cancel} onClick={onClickDeleteanimalAge} />
+                  <img src={cancel} onClick={(() => { onClickDeleteValue('animalAge') })} />
                   <span>{errors?.animalAge?.message}</span>
                 </ReportAnimalInfoBoxColumnRow>
 
@@ -311,7 +283,7 @@ const Sighting = () => {
                         message: "숫자만 입력! 3자리수 이하로 작성",
                       }
                     })} />
-                  <img src={cancel} onClick={onClickDeleteanimalKg} />
+                  <img src={cancel} onClick={(() => { onClickDeleteValue('animalkg') })} />
                   <span>{errors?.animalkg?.message}</span>
 
                 </ReportAnimalInfoBoxColumnRow>
@@ -332,7 +304,7 @@ const Sighting = () => {
                         message: "8글자 이하이어야 합니다.",
                       },
                     })} />
-                  <img src={cancel} onClick={onClickDeleteanimalColor} />
+                  <img src={cancel} onClick={(() => { onClickDeleteValue('animalcolor') })} />
                   <span>{errors?.animalcolor?.message}</span>
                 </ReportAnimalInfoBoxColumnColumn>
               </ReportAnimalInfoBoxColumn>
@@ -366,7 +338,7 @@ const Sighting = () => {
                     message: "20xx-xx-xx 형식으로 입력",
                   },
                 })} />
-              <img src={cancel} onClick={onClickDeleteanimalDays} />
+              <img src={cancel} onClick={(() => { onClickDeleteValue('days') })} />
               <span>{errors?.days?.message}</span>
             </div>
             {/* 시간대 */}
@@ -396,7 +368,7 @@ const Sighting = () => {
                     message: "20글자 이하이어야 합니다.",
                   },
                 })} />
-              <img src={cancel} onClick={onClickDeleteanimalcharacteristic} />
+              <img src={cancel} onClick={(() => { onClickDeleteValue('characteristic') })} />
               <span>{errors?.characteristic?.message}</span>
             </div>
             <div>
@@ -413,7 +385,7 @@ const Sighting = () => {
                     message: "20글자 이하이어야 합니다.",
                   },
                 })} />
-              <img src={cancel} onClick={onClickDeleteanimalmemo} />
+              <img src={cancel} onClick={(() => { onClickDeleteValue('memo') })} />
               <span>{errors?.memo?.message}</span>
             </div>
           </ReportAnimalSignificantBoxInputArea>
