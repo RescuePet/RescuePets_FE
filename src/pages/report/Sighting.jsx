@@ -8,7 +8,7 @@ import imageCompression from 'browser-image-compression';
 import imgdelete from "../../asset/imgDelete.svg";
 import Marker from "../../asset/marker.png"
 import {
-  ReportContinaer, ReportHeader, ReportAnimalInfoBox2, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
+  ReportSightingContainer, ReportHeader, ReportAnimalInfoBox2, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
   , ReportAnimalInfoCheckBoxTitle, ReportAnimalInfoCheckBoxSelete, ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
   ReportAnimalInfoBoxColumnColunb, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportanimaltypesSelectInput,
   SelectBox, Label, SelectOptions, Option, ReportKakaoMapBox, ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox,
@@ -18,7 +18,16 @@ import {
 
 const Sighting = () => {
   return (
-    <div>Sighting</div>
+    <ReportSightingContainer>
+
+      <ReportHeader>
+        <div></div>
+        <div>목격 글 작성하기</div>
+        <div>x</div>
+      </ReportHeader>
+
+
+    </ReportSightingContainer>
   )
 }
 

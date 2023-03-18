@@ -8,11 +8,19 @@ export const ReportMissingContainer = styled.form`
   gap: 10px 0;
   /* border: 1px solid #000; */
 `;
+export const ReportSightingContainer = styled.form`
+  width: 100%;
+  height: 78rem;
+  padding-top: 30px;
+  /* ${FlexAttribute("column", "center", "center")}    */
+  ${FlexAttribute("column", "", "center")}   
+  gap: 10px 0;
+  border: 1px solid #000;
+`;
 
 export const ReportHeader = styled.div`
   width: 100%;
-  height: 5rem;
-  padding-top: 2.5rem;
+  height: 2.625rem;
   border-bottom: 0.25rem solid #eeeeee;
   font-size: 1.125rem;
   font-weight: 700;
@@ -31,7 +39,7 @@ export const ReportAnimalInfoBox2 = styled.div`
   width: 20.9375rem;
   height: 23rem;
   margin: 0 auto;
-  /* border: 1px solid red; */
+  border: 1px solid red;
 `;
 
 export const ReportAnimalInfoBox = styled.div`
