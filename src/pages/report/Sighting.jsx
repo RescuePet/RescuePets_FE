@@ -6,7 +6,7 @@ import cancel from "../../asset/delete.svg";
 import imageCompression from 'browser-image-compression';
 import imgdelete from "../../asset/imgDelete.svg";
 import Marker from "../../asset/marker.png"
-import { Select } from './components/Select';
+import { CustomSelect } from './components/CustomSelect';
 import {
   ReportSightingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
   , ReportAnimalInfoCheckBoxTitle, ReportAnimalInfoCheckBoxSelete, ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
@@ -66,17 +66,6 @@ const Sighting = () => {
     setTime(newData);
   }
 
-
-  const [currentSeleteValue, setCurrentSeleteValue] = useState(NameValue[0].name)
-  const [isShowOptions, setShowOptions] = useState(false);
-  const handleOnChangeSelectValue = (e) => {
-    // const { innerText } = e.target;
-    console.log(e.target.value)
-    // setCurrentSeleteValue(e.target.getAttribute("value"));
-  };
-
-
-
   // Tab 로직 성별 중성화 
   const [currentGenderTab, setCurrentGenderTab] = useState(0);
   const [currentNeuteredTab, setCurrentNeuteredTab] = useState(0);
@@ -106,7 +95,7 @@ const Sighting = () => {
   // React-hook-form
   const {
     register, handleSubmit, formState: { errors },
-    reset, resetField, getValues } = useForm();
+    reset, resetField, } = useForm();
 
   // form submit 로직
   const onSubmitSightingHanlder = (data) => {
@@ -269,7 +258,7 @@ const Sighting = () => {
             <ReportanimaltypesSelect>
               <div>
                 <p>종류</p>
-                <Select data={NameValue} onChangeData={onChangeData} />
+                <CustomSelect data={NameValue} onChangeData={onChangeData} />
                 {/* <SelectBox onClick={() => setShowOptions((isShowOptions) => !isShowOptions)}>
                   <Label>{currentSeleteValue}</Label>
                   <SelectOptions show={isShowOptions}>
@@ -432,7 +421,7 @@ const Sighting = () => {
             {/* 시간대 */}
             <div>
               <p>시간대</p>
-              <Select data={TimeValue} onChangeData={onChangeTimeData} />
+              <CustomSelect data={TimeValue} onChangeData={onChangeTimeData} />
             </div>
           </div>
         </ReportAnimalDayBox>
