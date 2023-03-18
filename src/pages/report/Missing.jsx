@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
-import styled from 'styled-components'
 import Layout from "../../layouts/Layout"
-// import { ReportSelect } from './ReportSelect'
-// import Input from '../../elements/Input';
 import Button from "../../elements/Button"
 import cancel from "../../asset/delete.svg";
 import imageCompression from 'browser-image-compression';
@@ -14,7 +11,7 @@ import {
     , ReportAnimalInfoCheckBoxTitle, ReportAnimalInfoCheckBoxSelete, ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
     ReportAnimalInfoBoxColumnColumn, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportInput, ReportLgInput,
     SelectBox, Label, SelectOptions, Option, ReportKakaoMapBox, ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox,
-    ReportAnimalsignificantBox, ReportAnimalsignificantBoxTitle, ReportAnimalsignificantBoxInput, ReportAnimalPictureArea,
+    ReportAnimalSignificantBox, ReportAnimalSignificantBoxTitle, ReportAnimalSignificantBoxInputArea, ReportAnimalPictureArea,
     ReportAnimalPictureAreaTitle, ReportAnimalPictureAreaInputBox, ReportAnimalPictureInput, ReportAnimalPicturePreview, ReportAnimalUserInfo
 } from './components/reportstyle';
 
@@ -436,12 +433,12 @@ const Missing = () => {
                     </div>
                 </ReportAnimalDayBox>
                 {/* 특이사항  */}
-                <ReportAnimalsignificantBox>
-                    <ReportAnimalsignificantBoxTitle>
+                <ReportAnimalSignificantBox>
+                    <ReportAnimalSignificantBoxTitle>
                         <p> 특이사항 </p>
-                    </ReportAnimalsignificantBoxTitle>
+                    </ReportAnimalSignificantBoxTitle>
 
-                    <ReportAnimalsignificantBoxInput>
+                    <ReportAnimalSignificantBoxInputArea>
                         <div>
                             <p>특징</p>
                             <ReportLgInput type="text" placeholder='입력하기'
@@ -477,9 +474,9 @@ const Missing = () => {
                             <img src={cancel} onClick={onClickDeleteanimalmemo} />
                             <span>{errors?.memo?.message}</span>
                         </div>
-                    </ReportAnimalsignificantBoxInput>
+                    </ReportAnimalSignificantBoxInputArea>
 
-                </ReportAnimalsignificantBox>
+                </ReportAnimalSignificantBox>
 
                 <ReportAnimalPictureArea>
                     <ReportAnimalPictureAreaTitle><p>사진첨부</p></ReportAnimalPictureAreaTitle>

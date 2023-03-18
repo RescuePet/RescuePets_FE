@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
-import styled from 'styled-components'
 import Layout from "../../layouts/Layout"
 import Button from "../../elements/Button"
 import cancel from "../../asset/delete.svg";
@@ -12,7 +11,7 @@ import {
   , ReportAnimalInfoCheckBoxTitle, ReportAnimalInfoCheckBoxSelete, ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
   ReportAnimalInfoBoxColumnColumn, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportInput, ReportLgInput,
   SelectBox, Label, SelectOptions, Option, ReportKakaoMapBox, ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox,
-  ReportAnimalsignificantBox, ReportAnimalsignificantBoxTitle, ReportAnimalsignificantBoxInput, ReportAnimalPictureArea,
+  ReportAnimalSignificantBox, ReportAnimalSignificantBoxTitle, ReportAnimalSignificantBoxInputArea, ReportAnimalPictureArea,
   ReportAnimalPictureAreaTitle, ReportAnimalPictureAreaInputBox, ReportAnimalPictureInput, ReportAnimalPicturePreview, ReportAnimalUserInfo
 } from './components/reportstyle';
 
@@ -74,6 +73,12 @@ const Sighting = () => {
     console.log(data.animalAge)
     console.log(data.animalkg)
     console.log(data.animalcolor)
+    console.log(data.days)
+    console.log(currentSeleteAgeValue)
+    console.log(data.characteristic)
+    console.log(data.meno)
+    console.log("지도 좌표", resultlngDiv.innerHTML)
+    console.log("지도 좌표", resultlatDiv.innerHTML)
 
   }
   // 버튼을 누르면 선택된 usehookForm 제거 
@@ -94,8 +99,17 @@ const Sighting = () => {
   const onClickDeleteanimalDays = () => {
     resetField("days")
   }
+  const onClickDeleteanimalcharacteristic = () => {
+    resetField("characteristic")
+  }
+
+  const onClickDeleteanimalmemo = () => {
+    resetField("memo")
+  }
 
   // 카카오 맵 로직 
+  const resultlngDiv = document.getElementById('clicklng');
+  const resultlatDiv = document.getElementById('clicklat');
   const [long, setLong] = useState("");
   const [lati, setLati] = useState("");
   navigator.geolocation.getCurrentPosition(onSucces, onFailure);
@@ -144,7 +158,53 @@ const Sighting = () => {
     });
   }, [onSucces])
 
+  // 이미지 로직 
+  // 이미지로직
+  const [formImagin, setFormformImagin] = useState(new FormData());
 
+  const [imageFile, setImageFile] = useState({
+    imageFile: "",
+    viewUrl: "",
+  });
+
+  const [loaded, setLoaded] = useState(false);
+
+  const onChangeUploadHandler = async (e) => {
+    e.preventDefault();
+
+    const imageFile = e.target.files[0];
+
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
+
+    try {
+      const compressedFile = await imageCompression(imageFile, options);
+      const formImg = new FormData();
+      formImg.append('image', compressedFile);
+      setFormformImagin(formImg);
+
+      const fileReader = new FileReader()
+      fileReader.readAsDataURL(compressedFile);
+
+      fileReader.onload = () => {
+        setImageFile({
+          viewUrl: String(fileReader.result),
+        });
+        setLoaded(true);
+      };
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const onClickDeleteHandler = () => {
+    setImageFile({
+      viewUrl: ""
+    });
+  };
 
 
 
@@ -328,7 +388,6 @@ const Sighting = () => {
               <SelectBox onClick={() => setShowAgeOptions((isShowAgeOptions) => !isShowAgeOptions)}>
                 <Label>{currentSeleteAgeValue}</Label>
                 <SelectOptions show={isShowAgeOptions}>
-
                   <Option onClick={handleOnChangeSelectAgeValue}>0살 </Option>
                   <Option onClick={handleOnChangeSelectAgeValue}>1살 </Option>
                   <Option onClick={handleOnChangeSelectAgeValue}>2살 </Option>
@@ -341,15 +400,78 @@ const Sighting = () => {
                   <Option onClick={handleOnChangeSelectAgeValue}>9살 </Option>
                   <Option onClick={handleOnChangeSelectAgeValue}>10살 </Option>
                   <Option onClick={handleOnChangeSelectAgeValue}>10살이상 </Option>
-
-
                 </SelectOptions>
               </SelectBox>
             </div>
           </div>
-
-
         </ReportAnimalDayBox>
+
+        <ReportAnimalSignificantBox>
+          <ReportAnimalSignificantBoxTitle>
+            <p> 특이사항 </p>
+          </ReportAnimalSignificantBoxTitle>
+          <ReportAnimalSignificantBoxInputArea>
+            <div>
+              <p>특징</p>
+              <ReportLgInput type="text" placeholder='입력하기'
+                {...register("characteristic", {
+                  required: false,
+                  pattern: {
+                    value: /^[가-힣\s]+$/,
+                    message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: "20글자 이하이어야 합니다.",
+                  },
+                })} />
+              <img src={cancel} onClick={onClickDeleteanimalcharacteristic} />
+              <span>{errors?.characteristic?.message}</span>
+            </div>
+            <div>
+              <p>메모</p>
+              <ReportLgInput type="text" placeholder='입력하기'
+                {...register("memo", {
+                  required: false,
+                  pattern: {
+                    value: /^[가-힣\s]+$/,
+                    message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: "20글자 이하이어야 합니다.",
+                  },
+                })} />
+              <img src={cancel} onClick={onClickDeleteanimalmemo} />
+              <span>{errors?.memo?.message}</span>
+            </div>
+          </ReportAnimalSignificantBoxInputArea>
+        </ReportAnimalSignificantBox>
+
+        <ReportAnimalPictureArea>
+          <ReportAnimalPictureAreaTitle><p>사진첨부</p></ReportAnimalPictureAreaTitle>
+
+          <ReportAnimalPictureAreaInputBox>
+            <input
+              type="file" accept="image/*" style={{ display: 'none' }}
+              ref={(refer) => (imageRef = refer)} onChange={onChangeUploadHandler}
+              required />
+            <ReportAnimalPictureInput onClick={() => imageRef.click()}>
+              <h3>+</h3>
+            </ReportAnimalPictureInput>
+            {
+              imageFile?.viewUrl !== "" ? (
+                <ReportAnimalPicturePreview>
+                  <img src={imageFile.viewUrl} />
+                  <div onClick={onClickDeleteHandler}>
+                    <img src={imgdelete} /></div></ReportAnimalPicturePreview>
+              ) : (
+                <ReportAnimalPicturePreview>
+                  <div> <img src={imgdelete} /></div>프리뷰</ReportAnimalPicturePreview>
+              )
+            }
+          </ReportAnimalPictureAreaInputBox>
+        </ReportAnimalPictureArea>
 
         <Button type="submit" TabBtn2>작성 완료</Button>
       </ReportSightingContainer>

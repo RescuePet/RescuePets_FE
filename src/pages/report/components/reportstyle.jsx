@@ -10,7 +10,7 @@ export const ReportMissingContainer = styled.form`
 `;
 export const ReportSightingContainer = styled.form`
   width: 100%;
-  height: 78rem;
+  height: 72rem;
   padding-top: 30px;
   /* ${FlexAttribute("column", "center", "center")}    */
   ${FlexAttribute("column", "", "center")}   
@@ -335,13 +335,13 @@ export const ReportAnimalDayBox = styled.div`
   }
 `;
 
-export const ReportAnimalsignificantBox = styled.div`
+export const ReportAnimalSignificantBox = styled.div`
   width: 20.9375rem;
   height: 9.75rem;
   margin: 0 auto;
 `;
 
-export const ReportAnimalsignificantBoxTitle = styled.div`
+export const ReportAnimalSignificantBoxTitle = styled.div`
   width: 100%;
   height: 15%;
   > p{
@@ -350,10 +350,9 @@ export const ReportAnimalsignificantBoxTitle = styled.div`
 `;
 
 
-export const ReportAnimalsignificantBoxInput = styled.div`
+export const ReportAnimalSignificantBoxInputArea = styled.div`
   width: 100%;
   height: 85%;
-  /* border: 1px solid blue; */
   color: #222222;
   font-size: 20px;
   ${props => props.theme.FlexColumn}
@@ -361,17 +360,16 @@ export const ReportAnimalsignificantBoxInput = styled.div`
     position: relative;
     width: 100%;
     height: 50%;
-    /* border: 1px solid red; */
     > p {
       color: #666666;
-      font-size: 12px;
+      ${props => props.theme.Body_400_12}
       padding-top: 10px;
     }
     > img {
       position: absolute;
       ${SignSvgStyle}   
       bottom: 25px;
-      right: 5px;
+      right: 15px;
       }
     > span {
         ${props => props.theme.Span_alert}
@@ -383,21 +381,19 @@ export const ReportAnimalPictureArea = styled.div`
   position: relative;
   width: 8.25rem;
   height: 5.75rem;
-  /* border: 1px solid red; */
   margin-right: 12.5rem;
-`
+`;
 export const ReportAnimalPictureAreaTitle = styled.div`
   width: 100%;
   height: 20%;
-  color: #222222;
-  font-size: 20px;
-  /* border: 1px solid red; */
+  > p{
+    ${props => props.theme.Body_400_14}
+  }
 `;
 
 export const ReportAnimalPictureAreaInputBox = styled.div`
   width: 100%;
   height: 80%;
-  /* border: 1px solid gray; */
 ${props => props.theme.FlexCenter}
   gap: 0px 20px;
 `;
