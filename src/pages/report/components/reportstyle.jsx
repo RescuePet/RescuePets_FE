@@ -15,7 +15,7 @@ export const ReportSightingContainer = styled.form`
   /* ${FlexAttribute("column", "center", "center")}    */
   ${FlexAttribute("column", "", "center")}   
   gap: 10px 0;
-  border: 1px solid #000;
+  /* border: 1px solid #000; */
 `;
 
 export const ReportHeader = styled.div`

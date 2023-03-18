@@ -33,46 +33,48 @@ const Sighting = () => {
     reset, resetField, getValues } = useForm();
 
   return (
-    <ReportSightingContainer>
+    <Layout>
+      <ReportSightingContainer>
 
-      <ReportHeader>
-        <div></div>
-        <div>목격 글 작성하기</div>
-        <div>x</div>
-      </ReportHeader>
+        <ReportHeader>
+          <div></div>
+          <div>목격 글 작성하기</div>
+          <div>x</div>
+        </ReportHeader>
 
-      <ReportAnimalInfoArea>
-        <ReportAnimalInfoBox>
+        <ReportAnimalInfoArea>
+          <ReportAnimalInfoBox>
 
 
-          <ReportanimaltypesTitle>동물정보</ReportanimaltypesTitle>
-          {/* 동물정보 종류, 품종 */}
-          <ReportanimaltypesSelect>
-            <div>
-              <p>종류</p>
+            <ReportanimaltypesTitle>동물정보</ReportanimaltypesTitle>
+            {/* 동물정보 종류, 품종 */}
+            <ReportanimaltypesSelect>
+              <div>
+                <p>종류</p>
 
-              <SelectBox onClick={() => setShowOptions((isShowOptions) => !isShowOptions)}>
-                <Label>{currentSeleteValue}</Label>
-                <SelectOptions show={isShowOptions}>
+                <SelectBox onClick={() => setShowOptions((isShowOptions) => !isShowOptions)}>
+                  <Label>{currentSeleteValue}</Label>
+                  <SelectOptions show={isShowOptions}>
 
-                  <Option onClick={handleOnChangeSelectValue}>강아지</Option>
-                  <Option onClick={handleOnChangeSelectValue}>고양이</Option>
-                  <Option onClick={handleOnChangeSelectValue}>기타</Option>
+                    <Option onClick={handleOnChangeSelectValue}>강아지</Option>
+                    <Option onClick={handleOnChangeSelectValue}>고양이</Option>
+                    <Option onClick={handleOnChangeSelectValue}>기타</Option>
 
-                </SelectOptions>
-              </SelectBox>
-            </div>
+                  </SelectOptions>
+                </SelectBox>
+              </div>
 
-            <div>
+              <div>
 
-            </div>
+              </div>
 
-          </ReportanimaltypesSelect>
+            </ReportanimaltypesSelect>
 
-        </ReportAnimalInfoBox>
-      </ReportAnimalInfoArea>
+          </ReportAnimalInfoBox>
+        </ReportAnimalInfoArea>
 
-    </ReportSightingContainer>
+      </ReportSightingContainer>
+    </Layout>
   )
 }
 
