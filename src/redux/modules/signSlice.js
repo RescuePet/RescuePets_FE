@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { instance } from "../../utils/api";
 import Cookies from "js-cookie";
-// import axios from "axios";
 
 // Sign In
 export const __signinUser = createAsyncThunk(
@@ -18,12 +17,27 @@ export const __signinUser = createAsyncThunk(
   }
 );
 
+// Sign Up
+export const __signupUser = createAsyncThunk(
+  "signupUser",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await instance.post("/api/member/signup", payload);
+      const TOKEN = response.headers.authorization;
+      Cookies.set("Token", TOKEN);
+      return thunkAPI.fulfillWithValue("success");
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
 const initialState = {
   message: "",
 };
 
-export const usersSlice = createSlice({
-  name: "users",
+export const signsSlice = createSlice({
+  name: "signs",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -34,8 +48,15 @@ export const usersSlice = createSlice({
       })
       .addCase(__signinUser.rejected, (state, action) => {
         state.message = action.error.message;
+      })
+      .addCase(__signupUser.fulfilled, (state, action) => {
+        state.message = action.payload;
+        console.log("sign up ", state.message);
+      })
+      .addCase(__signupUser.rejected, (state, action) => {
+        state.message = action.error.message;
       });
   },
 });
 
-export default usersSlice.reducer;
+export default signsSlice.reducer;
