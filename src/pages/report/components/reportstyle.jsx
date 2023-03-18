@@ -237,8 +237,8 @@ export const SelectOptions = styled.ul`
   top: 35px;
   left: 0;
   width: 100%;
-  overflow: hidden;
-  height: 90px;
+  overflow: scroll;
+  height: 100px;
   max-height: ${(props) => (props.show ? "none" : "0")};
   padding: 0;
   border-radius: 8px;
@@ -305,8 +305,7 @@ export const ReportAnimalDayBox = styled.div`
   height: 5.5rem;
   margin: 0 auto;
   > p {
-    width: 100%;
-    height: 20px;
+    ${props => props.theme.Body_400_14}
   }
   > div {
     width: 100%;
@@ -325,10 +324,9 @@ export const ReportAnimalDayBox = styled.div`
       }
       img {
         position: absolute;
-        width: 1rem; 
-        height: 1rem;
+        ${SignSvgStyle}   
         bottom: 25px;
-        right: 5px;
+        right: 10px;
       }
      span {
         ${props => props.theme.Span_alert}
@@ -370,11 +368,10 @@ export const ReportAnimalsignificantBoxInput = styled.div`
       padding-top: 10px;
     }
     > img {
-        position: absolute;
-        width: 1rem; 
-        height: 1rem;
-        bottom: 25px;
-        right: 5px;
+      position: absolute;
+      ${SignSvgStyle}   
+      bottom: 25px;
+      right: 5px;
       }
     > span {
         ${props => props.theme.Span_alert}

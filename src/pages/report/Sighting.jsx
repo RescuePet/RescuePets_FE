@@ -27,6 +27,13 @@ const Sighting = () => {
     const { innerText } = e.target;
     setCurrentSeleteValue(innerText);
   };
+  // Selete 로직 나이 
+  const [currentSeleteAgeValue, setCurrentSeleteAgeValue] = useState('0살')
+  const [isShowAgeOptions, setShowAgeOptions] = useState(false);
+  const handleOnChangeSelectAgeValue = (e) => {
+    const { innerText } = e.target;
+    setCurrentSeleteAgeValue(innerText);
+  };
   // Tab 로직 성별 중성화 
   const [currentGenderTab, setCurrentGenderTab] = useState(0);
   const [currentNeuteredTab, setCurrentNeuteredTab] = useState(0);
@@ -83,6 +90,11 @@ const Sighting = () => {
   const onClickDeleteanimalColor = () => {
     resetField("animalcolor")
   }
+
+  const onClickDeleteanimalDays = () => {
+    resetField("days")
+  }
+
   // 카카오 맵 로직 
   const [long, setLong] = useState("");
   const [lati, setLati] = useState("");
@@ -98,12 +110,38 @@ const Sighting = () => {
     alert("위치 정보를 찾을수 없습니다.");
   }
   useEffect(() => {
-    var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
       mapOption = {
         center: new kakao.maps.LatLng(lati, long), // 지도의 중심좌표
-        level: 12 // 지도의 확대 레벨
+        level: 5 // 지도의 확대 레벨
       };
-    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+    const map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+    const imageSrc = `${Marker}` // 마커이미지의 주소입니다    
+    const imageSize = new kakao.maps.Size(32, 34) // 마커이미지의 크기입니다
+    const imageOption = { offset: new kakao.maps.Point(10, 20) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+    const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
+      markerPosition = new kakao.maps.LatLng(lati, long); // 마커가 표시될 위치입니다
+    const marker = new kakao.maps.Marker({
+      // 지도 중심좌표에 마커를 생성합니다 
+      position: map.getCenter(),
+      image: markerImage // 마커이미지 설정 
+    });
+    // 지도에 마커를 표시합니다
+    marker.setMap(map);
+    kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+      // 클릭한 위도, 경도 정보를 가져옵니다 
+      const latlng = mouseEvent.latLng;
+      // 마커 위치를 클릭한 위치로 옮깁니다
+      marker.setPosition(latlng);
+      const messageLng = `${latlng.getLng()}`;
+      const messageLat = `${latlng.getLat()} `;
+      const resultlngDiv = document.getElementById('clicklng');
+      const resultlatDiv = document.getElementById('clicklat');
+      resultlngDiv.innerHTML = messageLat;
+      resultlatDiv.innerHTML = messageLng;
+    });
   }, [onSucces])
 
 
@@ -258,7 +296,7 @@ const Sighting = () => {
         <ReportKakaoMapBox>
 
           <ReportKakaoMapBoxTitle>
-            <p>실종위치 *</p>
+            <p>목격위치 *</p>
             <div>
               <div><label id='clicklng'>위도</label></div>
               <div><label id='clicklat'>경도</label></div>
@@ -267,7 +305,51 @@ const Sighting = () => {
           <ReportKakaoMapBoxMap id='map'></ReportKakaoMapBoxMap>
         </ReportKakaoMapBox>
 
+        <ReportAnimalDayBox>
+          <p>목격일시 *</p>
+          {/* 날짜 */}
+          <div>
+            {/* 날짜 */}
+            <div>
+              <p>날짜</p>
+              <ReportInput type="text" placeholder='2022-07-14'
+                {...register("days", {
+                  pattern: {
+                    value: /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/,
+                    message: "20xx-xx-xx 형식으로 입력",
+                  },
+                })} />
+              <img src={cancel} onClick={onClickDeleteanimalDays} />
+              <span>{errors?.days?.message}</span>
+            </div>
+            {/* 시간대 */}
+            <div>
+              <p>시간대</p>
+              <SelectBox onClick={() => setShowAgeOptions((isShowAgeOptions) => !isShowAgeOptions)}>
+                <Label>{currentSeleteAgeValue}</Label>
+                <SelectOptions show={isShowAgeOptions}>
 
+                  <Option onClick={handleOnChangeSelectAgeValue}>0살 </Option>
+                  <Option onClick={handleOnChangeSelectAgeValue}>1살 </Option>
+                  <Option onClick={handleOnChangeSelectAgeValue}>2살 </Option>
+                  <Option onClick={handleOnChangeSelectAgeValue}>3살 </Option>
+                  <Option onClick={handleOnChangeSelectAgeValue}>4살 </Option>
+                  <Option onClick={handleOnChangeSelectAgeValue}>5살 </Option>
+                  <Option onClick={handleOnChangeSelectAgeValue}>6살 </Option>
+                  <Option onClick={handleOnChangeSelectAgeValue}>7살 </Option>
+                  <Option onClick={handleOnChangeSelectAgeValue}>8살 </Option>
+                  <Option onClick={handleOnChangeSelectAgeValue}>9살 </Option>
+                  <Option onClick={handleOnChangeSelectAgeValue}>10살 </Option>
+                  <Option onClick={handleOnChangeSelectAgeValue}>10살이상 </Option>
+
+
+                </SelectOptions>
+              </SelectBox>
+            </div>
+          </div>
+
+
+        </ReportAnimalDayBox>
 
         <Button type="submit" TabBtn2>작성 완료</Button>
       </ReportSightingContainer>
