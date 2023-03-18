@@ -84,3 +84,10 @@ export const Body_300_10 = css`
   font-size: 10px;
   line-height: 16px;
 `;
+
+export const Span_alert = css`
+  padding-top: 5px;
+  font-size: 12px;
+  color: #EA5455;
+  ${props => props.theme.FlexCenter}
+`;

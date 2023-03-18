@@ -77,8 +77,11 @@ export const ReportanimaltypesSelect = styled.div`
     > img {
     position: absolute;
     ${SignSvgStyle}   
-    right: 5px;
-    top: 25px;
+    right: 10px;
+    top: 30px;
+    }
+    > span {
+        ${props => props.theme.Span_alert}
     }
   }
 `;
@@ -326,10 +329,7 @@ export const ReportAnimalDayBox = styled.div`
         right: 5px;
       }
      span {
-        padding-top: 5px;
-        font-size: 12px;
-        color: #EA5455;
-        ${props => props.theme.FlexCenter}
+        ${props => props.theme.Span_alert}
       }
   }
   }
@@ -375,10 +375,7 @@ export const ReportAnimalsignificantBoxInput = styled.div`
         right: 5px;
       }
     > span {
-      padding-top: 5px;
-      font-size: 12px;
-      color: #EA5455;
-      ${props => props.theme.FlexCenter}
+        ${props => props.theme.Span_alert}
     }
   }
 `;
@@ -468,10 +465,7 @@ export const ReportAnimalUserInfo = styled.div`
         right: 15px;
       }
     > span {
-      padding-top: 5px;
-      font-size: 12px;
-      color: #EA5455;
-      ${props => props.theme.FlexCenter}
+        ${props => props.theme.Span_alert}
     }
   }
 `;
