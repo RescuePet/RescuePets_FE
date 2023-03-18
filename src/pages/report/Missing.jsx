@@ -9,6 +9,7 @@ import cancel from "../../asset/delete.svg";
 import imageCompression from 'browser-image-compression';
 import imgdelete from "../../asset/imgDelete.svg";
 import Marker from "../../asset/marker.png"
+import { FlexAttribute, SignSvgStyle } from "../../style/Mixin"
 
 
 const Missing = () => {
@@ -69,12 +70,6 @@ const Missing = () => {
         setCurrentSeleteTimeValue(innerText);
     };
 
-
-    // const handleEvent = (event) => {
-    //     const value = getValues("number");
-    //     setState(value);
-    // }
-
     // 버튼을 누르면 선택된 usehookForm 제거 
     const onClickDeleteanimaltypes = () => {
         resetField("animaltypes")
@@ -100,7 +95,7 @@ const Missing = () => {
     const onClickDeleteanimalNumber = () => {
         resetField("number")
     }
-
+    // 이미지로직
     const [formImagin, setFormformImagin] = useState(new FormData());
 
     const [imageFile, setImageFile] = useState({
@@ -123,7 +118,6 @@ const Missing = () => {
 
         try {
             const compressedFile = await imageCompression(imageFile, options);
-            console.log(compressedFile)
             const formImg = new FormData();
             formImg.append('image', compressedFile);
             setFormformImagin(formImg);
@@ -140,9 +134,8 @@ const Missing = () => {
         } catch (error) {
             console.log(error);
         }
-
-
     }
+
     const onClickDeleteHandler = () => {
         setImageFile({
             viewUrl: ""
@@ -151,9 +144,9 @@ const Missing = () => {
 
     const resultlngDiv = document.getElementById('clicklng');
     const resultlatDiv = document.getElementById('clicklat');
-
+    // form submit버튼
     const onSubmitMissingHanlder = (data) => {
-        console.log(data)
+
         console.log("종류 :", currentSeleteValue)
         console.log("품종 :", data.animaltypes + '종')
         console.log("성별 :", currentGenderValue)
@@ -171,22 +164,22 @@ const Missing = () => {
         console.log("지도 좌표", resultlngDiv.innerHTML)
         console.log("지도 좌표", resultlatDiv.innerHTML)
     }
-
+    // 현재위치를 받아오는 로직
     navigator.geolocation.getCurrentPosition(onSucces, onFailure);
-
+    // 성공
     function onSucces(position) {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
         setLong(lng);
         setLati(lat);
     }
+    // 실패
     function onFailure() {
         alert("위치 정보를 찾을수 없습니다.");
     }
     const [long, setLong] = useState("");
     const [lati, setLati] = useState("");
-
-
+    // 지도를 그려쥬는 로직
     useEffect(() => {
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
             mapOption = {
@@ -390,25 +383,20 @@ const Missing = () => {
                     </ReportAnimalInfoBox>
                 </ReportAnimalInfoBox2>
 
-
                 <ReportKakaoMapBox>
-
                     <ReportKakaoMapBoxTitle>
                         <p>실종위치 *</p>
                         <div>
-                            <div>  <label id='clicklng'></label> </div>
-                            <div> <label id='clicklat'></label> </div>
+                            <div><label id='clicklng'></label></div>
+                            <div><label id='clicklat'></label></div>
                         </div>
                     </ReportKakaoMapBoxTitle>
                     {/* 맵에서 뿌려줄때 4~6초 걸린다 로딩일때 보여줄것을 만들어야한다  */}
-                    <ReportKakaoMapBoxMap id='map'> </ReportKakaoMapBoxMap>
-
+                    <ReportKakaoMapBoxMap id='map'></ReportKakaoMapBoxMap>
                 </ReportKakaoMapBox>
 
                 <ReportAnimalDayBox>
-
                     <p>실종일시 *</p>
-
                     <div>
                         <div>
                             <p>날짜</p>
@@ -427,26 +415,20 @@ const Missing = () => {
                             <SelectBox onClick={() => setShowTimeOptions((isShowTimeOptions) => !isShowTimeOptions)}>
                                 <Label>{currentSeleteTimeValue}</Label>
                                 <SelectOptions show={isShowTimeOptions}>
-
                                     <Option onClick={handleOnChangeSelectTimeValue}>0시~08시 </Option>
                                     <Option onClick={handleOnChangeSelectTimeValue}>08시~16시 </Option>
                                     <Option onClick={handleOnChangeSelectTimeValue}>16시~0시</Option>
-
                                 </SelectOptions>
                             </SelectBox>
                         </div>
                     </div>
-
                 </ReportAnimalDayBox>
-
                 {/* 특이사항  */}
                 <ReportAnimalsignificantBox>
-                    {/* 특이사항 Title */}
                     <ReportAnimalsignificantBoxTitle>
                         <p> 특이사항 </p>
                     </ReportAnimalsignificantBoxTitle>
 
-                    {/* 특이사항 인풋! */}
                     <ReportAnimalsignificantBoxInput>
                         <div>
                             <p>특징</p>
@@ -464,9 +446,8 @@ const Missing = () => {
                                 })} />
                             <img src={cancel} onClick={onClickDeleteanimalcharacteristic} />
                             <span>{errors?.characteristic?.message}</span>
-
                         </div>
-
+                        {/* 메모 */}
                         <div>
                             <p>메모</p>
                             <ReportanimaltypesSelectInput type="text" placeholder='입력하기' style={{ width: "335px" }}
@@ -489,10 +470,8 @@ const Missing = () => {
                 </ReportAnimalsignificantBox>
 
                 <ReportAnimalPictureArea>
-
                     <ReportAnimalPictureAreaTitle><p>사진첨부</p></ReportAnimalPictureAreaTitle>
                     <ReportAnimalPictureAreaInputBox>
-
                         <input
                             type="file" accept="image/*" style={{ display: 'none' }}
                             ref={(refer) => (imageRef = refer)} onChange={onChangeUploadHandler}
@@ -500,7 +479,6 @@ const Missing = () => {
                         <ReportAnimalPictureInput onClick={() => imageRef.click()}>
                             <h3>+</h3>
                         </ReportAnimalPictureInput>
-
                         {
                             imageFile?.viewUrl !== "" ? (
                                 <ReportAnimalPicturePreview>
@@ -509,11 +487,9 @@ const Missing = () => {
                                         <img src={imgdelete} /></div></ReportAnimalPicturePreview>
                             ) : (
                                 <ReportAnimalPicturePreview>
-                                    {/* <img src={imageFile.viewUrl} /> */}
-                                    <div>  <img src={imgdelete} /></div>프리뷰</ReportAnimalPicturePreview>
+                                    <div> <img src={imgdelete} /></div>프리뷰</ReportAnimalPicturePreview>
                             )
                         }
-
                     </ReportAnimalPictureAreaInputBox>
 
                 </ReportAnimalPictureArea>
@@ -523,15 +499,8 @@ const Missing = () => {
                         <p>사례금</p>
                         <ReportanimaltypesSelectInput type="text" placeholder='입력하기'
                             {...register("money", {
-                                required: false,
-                                // pattern: {
-                                //     value: /^[0-9]+$/,
-                                //     message: "숫자만 입력 ",
-                                // },
-                                maxLength: {
-                                    value: 15,
-                                    message: "15글자 이하이어야 합니다.",
-                                }
+                                required: false, // 필수 X 
+                                maxLength: { value: 15, message: "15글자 이하이어야 합니다.", }
                             })}
                             inputMode="numeric"
                             onChange={(event) => {
@@ -551,7 +520,7 @@ const Missing = () => {
                                 event.target.value = Number(value.replace(/[^0-9]/g, '')).toLocaleString();
                             }}
                             {...register("number", {
-                                required: false,
+                                required: false, // 필수 X 
                                 pattern: { value: /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/, message: "하이픈(-)을 넣어주세요 ", },
                                 maxLength: { value: 16, message: "12글자 이하이어야 합니다.", },
                             })} />
@@ -571,9 +540,7 @@ export default Missing
 const ReportContinaer = styled.form`
   width: 100%;
   height: 75.5rem;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+  ${FlexAttribute("column", "center", "center")}   
   gap: 10px 0;
   /* border: 1px solid #000; */
 `;
@@ -585,18 +552,17 @@ const ReportHeader = styled.div`
   border-bottom: 0.25rem solid #eeeeee;
   font-size: 1.125rem;
   font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+  ${FlexAttribute("", "center", "space-around")}   
   color: #222222;
   > div {
     height: 100%;
     width: 33.3%;
     ${props => props.theme.FlexCenter}
     /* border: 1px solid red; */
-    font-size: 18px;
+    ${props => props.theme.Title_700_18}
   }
 `;
+
 const ReportAnimalInfoBox2 = styled.div`
   width: 20.9375rem;
   height: 23rem;
@@ -738,8 +704,7 @@ const ReportanimaltypesSelect = styled.div`
     }
     > img {
     position: absolute;
-    width: 1rem;
-    height: 1rem;
+    ${SignSvgStyle}   
     right: 5px;
     top: 25px;
     }
@@ -818,12 +783,11 @@ const ReportKakaoMapBox = styled.div`
 const ReportKakaoMapBoxTitle = styled.div`
     width: 100%;
     height: 20%;
-    /* border: 1px solid red; */
     > p {
         width: 100%;
         height: 20%;
+        ${props => props.theme.Body_400_14}
         color: #222222;
-        font-size: 20px;
     }
     > div {
         width: 100%;
