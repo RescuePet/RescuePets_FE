@@ -15,6 +15,32 @@ const Missing = () => {
     let imageRef;
     const { kakao } = window;
 
+    const [currentGenderTab, setCurrentGenderTab] = useState(0);
+    const [currentNeuteredTab, setCurrentNeuteredTab] = useState(0);
+
+    const SeletegenderArr = [
+        { gender: '수컷' },
+        { gender: '암컷' },
+        { gender: '모름' },
+    ];
+
+    const seleteneuteredArr = [
+        { neutered: "완료" },
+        { neutered: "미완료" },
+        { neutered: "모름" }
+    ];
+    const [currentGenderValue, setCurrentGenderValue] = useState('수컷');
+    const [currentNeuteredValue, setCurrentNeuteredValue] = useState('완료');
+
+    const selectMGenderHandler = (index) => {
+        setCurrentGenderTab(index);
+        setCurrentGenderValue(SeletegenderArr[index].gender)
+    };
+    const selectNeuteredHandler = (index) => {
+        setCurrentNeuteredTab(index);
+        setCurrentNeuteredValue(seleteneuteredArr[index].neutered)
+    };
+
     // selete 종류
     const [currentSeleteValue, setCurrentSeleteValue] = useState('강아지')
     const [isShowOptions, setShowOptions] = useState(false);
@@ -130,6 +156,8 @@ const Missing = () => {
         console.log(data)
         console.log("종류 :", currentSeleteValue)
         console.log("품종 :", data.animaltypes + '종')
+        console.log("성별 :", currentGenderValue)
+        console.log("중성회 :", currentNeuteredValue)
         console.log("나이 :", currentSeleteAgeValue)
         console.log("kg :", data.animalkg)
         console.log("색깔 :", data.animalcolor)
@@ -142,10 +170,6 @@ const Missing = () => {
         console.log("전화번호 :", data.number)
         console.log("지도 좌표", resultlngDiv.innerHTML)
         console.log("지도 좌표", resultlatDiv.innerHTML)
-        // const stringToNumPrice = Number(data.money.replace(/,/g, ''));
-        // const stringToNumNumber = Number(data.number.replace(/-/g, ''));
-        // console.log(stringToNumPrice)
-        // console.log(stringToNumNumber)
     }
 
     navigator.geolocation.getCurrentPosition(onSucces, onFailure);
@@ -261,18 +285,38 @@ const Missing = () => {
 
                         <ReportAnimalInfoCheckBox>
                             <ReportAnimalInfoCheckBoxTitle> <p>성별</p></ReportAnimalInfoCheckBoxTitle>
-                            <ReportAnimalInfoCheckBoxSelete> <div>수컷</div>
-                                <div>암컷</div>
-                                <div>모름</div></ReportAnimalInfoCheckBoxSelete>
+                            <ReportAnimalInfoCheckBoxSelete>
+
+                                {
+                                    SeletegenderArr.map((el, index) => (
+                                        <li
+                                            key={index}
+                                            className={index === currentGenderTab ? "submenu focused" : "submenu"}
+                                            onClick={() => selectMGenderHandler(index)}
+                                        >
+                                            {el.gender}
+                                        </li>
+                                    ))}
+                            </ReportAnimalInfoCheckBoxSelete>
 
                         </ReportAnimalInfoCheckBox>
 
                         <ReportAnimalInfoCheckBox>
-                            <ReportAnimalInfoCheckBoxTitle> <p>중성화</p></ReportAnimalInfoCheckBoxTitle>
+                            <ReportAnimalInfoCheckBoxTitle> <p>중성화</p> </ReportAnimalInfoCheckBoxTitle>
                             <ReportAnimalInfoCheckBoxSelete>
-                                <div>완료</div>
-                                <div>암컷</div>
-                                <div>모름</div></ReportAnimalInfoCheckBoxSelete>
+
+                                {
+                                    seleteneuteredArr.map((el, index) => (
+                                        <li
+                                            key={index}
+                                            className={index === currentNeuteredTab ? "submenu focused" : "submenu"}
+                                            onClick={() => selectNeuteredHandler(index)}
+                                        >
+                                            {el.neutered}
+                                        </li>
+                                    ))}
+
+                            </ReportAnimalInfoCheckBoxSelete>
 
                         </ReportAnimalInfoCheckBox>
 
@@ -356,7 +400,7 @@ const Missing = () => {
                             <div> <label id='clicklat'></label> </div>
                         </div>
                     </ReportKakaoMapBoxTitle>
-
+                    {/* 맵에서 뿌려줄때 4~6초 걸린다 로딩일때 보여줄것을 만들어야한다  */}
                     <ReportKakaoMapBoxMap id='map'> </ReportKakaoMapBoxMap>
 
                 </ReportKakaoMapBox>
@@ -582,25 +626,38 @@ const ReportAnimalInfoCheckBoxTitle = styled.div`
         font-size: 12px;
     }
 `;
-const ReportAnimalInfoCheckBoxSelete = styled.div`
+const ReportAnimalInfoCheckBoxSelete = styled.ul`
     width: 100%;
     height: 80%;
-    
     gap: 0 16px;
-      ${props => props.theme.FlexCenter}
-     > div {
+    ${props => props.theme.FlexCenter}
+    > li {
         width: 6.3125rem;
+        height: 2rem; 
+        cursor: pointer;
+    }
+    .submenu {
         height: 2rem;
         border-radius: 1rem;
-        border: 1px solid #666666;
+        border: 1px solid #CCCCCC;
+        color: #CCCCCC;
         ${props => props.theme.FlexCenter}
+        ${props => props.theme.Body_400_12}  
+     }
+
+    .focused {
+     //선택된 Tabmenu 에만 적용되는 CSS를 구현
+    border: 1px solid #666666;
+    color: #666666
     }
+
 `
 
 
 const ReportAnimalInfoBoxColumn = styled.div`
   width: 100%;
   height: 50%;
+  margin-top: 5px;
   /* border: 1px solid blue; */
   font-size: 12px;
   ${props => props.theme.FlexRow}
@@ -612,6 +669,10 @@ const ReportAnimalInfoBoxColumnRow = styled.div`
   position: relative;
   width: 50%;
   height: 100%;
+  > p { 
+    color: #666666;
+    ${props => props.theme.Body_400_12}
+  }
   /* border: 1px solid red; */
   > img {
     position: absolute;
@@ -627,6 +688,10 @@ const ReportAnimalInfoBoxColumnColunb = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
+  > p {
+    color: #666666;
+    ${props => props.theme.Body_400_12}
+  }
   > img {
     position: absolute;
     bottom: 25px;
@@ -669,7 +734,7 @@ const ReportanimaltypesSelect = styled.div`
     padding: 10px 0 20px 0;
     > p {
     color: #666666;
-    font-size: 12px;
+    ${props => props.theme.Body_400_12}
     }
     > img {
     position: absolute;
