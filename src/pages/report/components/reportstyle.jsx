@@ -261,7 +261,6 @@ export const ReportKakaoMapBox = styled.div`
   width: 20.9375rem;
   height: 14.875rem;
   margin: 0 auto;
-  /* border: 1px solid blue; */
   ${props => props.theme.FlexColumn}
   gap: 10px 0;
 `;
@@ -284,6 +283,7 @@ export const ReportKakaoMapBoxTitle = styled.div`
         > div {
             width: 100%;
             height: 100%;
+            border-bottom: 2px solid #EEEEEE;
             > label {
                 width: 9.75rem;
                 border-bottom: 2px solid #EEEEEE;

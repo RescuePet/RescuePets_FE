@@ -83,6 +83,35 @@ const Sighting = () => {
   const onClickDeleteanimalColor = () => {
     resetField("animalcolor")
   }
+  // 카카오 맵 로직 
+  const [long, setLong] = useState("");
+  const [lati, setLati] = useState("");
+  navigator.geolocation.getCurrentPosition(onSucces, onFailure);
+
+  function onSucces(position) {
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
+    setLong(lng);
+    setLati(lat);
+  }
+  function onFailure() {
+    alert("위치 정보를 찾을수 없습니다.");
+  }
+  useEffect(() => {
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+      mapOption = {
+        center: new kakao.maps.LatLng(lati, long), // 지도의 중심좌표
+        level: 12 // 지도의 확대 레벨
+      };
+    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+  }, [onSucces])
+
+
+
+
+
+
+
 
   return (
     <Layout>
@@ -222,12 +251,24 @@ const Sighting = () => {
                   <span>{errors?.animalcolor?.message}</span>
                 </ReportAnimalInfoBoxColumnColumn>
               </ReportAnimalInfoBoxColumn>
-
             </ReportAnimalInfoBox>
-
-
           </ReportAnimalInfoBox>
         </ReportAnimalInfoArea>
+
+        <ReportKakaoMapBox>
+
+          <ReportKakaoMapBoxTitle>
+            <p>실종위치 *</p>
+            <div>
+              <div><label id='clicklng'>위도</label></div>
+              <div><label id='clicklat'>경도</label></div>
+            </div>
+          </ReportKakaoMapBoxTitle>
+          <ReportKakaoMapBoxMap id='map'></ReportKakaoMapBoxMap>
+        </ReportKakaoMapBox>
+
+
+
         <Button type="submit" TabBtn2>작성 완료</Button>
       </ReportSightingContainer>
     </Layout>
