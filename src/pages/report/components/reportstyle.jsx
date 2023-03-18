@@ -45,7 +45,7 @@ export const ReportAnimalInfoArea = styled.div`
 export const ReportAnimalInfoBox = styled.div`
   width: 100%;
   height: 8.125rem;
-  border: 1px solid #0f0f0f;
+  /* border: 1px solid #0f0f0f; */
   margin: 0 auto;
   /* ${props => props.theme.FlexColumn} */
 `;
@@ -63,12 +63,12 @@ export const ReportanimaltypesSelect = styled.div`
   height: 3.75rem;
   display: flex;
   align-items: center;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   > div {
     position: relative;
     width: 50%;
     height: 100%;
-    border: 1px solid blue;
+    /* border: 1px solid blue; */
     padding: 10px 0 20px 0;
     > p {
     color: #666666;

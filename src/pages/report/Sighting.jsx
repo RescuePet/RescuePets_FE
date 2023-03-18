@@ -10,7 +10,7 @@ import Marker from "../../asset/marker.png"
 import {
   ReportSightingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
   , ReportAnimalInfoCheckBoxTitle, ReportAnimalInfoCheckBoxSelete, ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
-  ReportAnimalInfoBoxColumnColunb, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportanimaltypesSelectInput,
+  ReportAnimalInfoBoxColumnColunb, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportInput, ReportLgInput,
   SelectBox, Label, SelectOptions, Option, ReportKakaoMapBox, ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox,
   ReportAnimalsignificantBox, ReportAnimalsignificantBoxTitle, ReportAnimalsignificantBoxInput, ReportAnimalPictureArea,
   ReportAnimalPictureAreaTitle, ReportAnimalPictureAreaInputBox, ReportAnimalPictureInput, ReportAnimalPicturePreview, ReportAnimalUserInfo
@@ -32,9 +32,19 @@ const Sighting = () => {
     register, handleSubmit, formState: { errors },
     reset, resetField, getValues } = useForm();
 
+  // form submit 로직
+  const onSubmitSightingHanlder = (data) => {
+    console.log(data)
+    console.log(currentSeleteValue)
+  }
+  // 버튼을 누르면 선택된 usehookForm 제거 
+  const onClickDeleteanimaltypes = () => {
+    resetField("animaltypes")
+  }
+
   return (
     <Layout>
-      <ReportSightingContainer>
+      <ReportSightingContainer onSubmit={handleSubmit(onSubmitSightingHanlder)}>
 
         <ReportHeader>
           <div></div>
@@ -65,14 +75,20 @@ const Sighting = () => {
               </div>
 
               <div>
-
+                <p>품종</p>
+                <ReportInput type="text" placeholder="입력하기"
+                  {...register("animaltypes", {
+                    pattern: { value: /^[ㄱ-ㅎ|가-힣]+$/, message: "한글만 2 ~ 8글자 사이로 입력", },
+                  })} />
+                <img src={cancel} onClick={onClickDeleteanimaltypes} />
+                <span>{errors?.animaltypes?.message}</span>
               </div>
 
             </ReportanimaltypesSelect>
 
           </ReportAnimalInfoBox>
         </ReportAnimalInfoArea>
-
+        <Button type="submit" TabBtn2>작성 완료</Button>
       </ReportSightingContainer>
     </Layout>
   )
