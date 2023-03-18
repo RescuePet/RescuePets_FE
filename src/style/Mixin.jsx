@@ -10,6 +10,12 @@ export const Border_2_color = css`
   border-bottom: 2px solid #eeeeee;
 `;
 
+export const InputBorder_1 = css`
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 20px;
+`;
+
 //Mixin
 export const FlexAttribute = (direction, justify, align) => css`
   display: flex;
@@ -86,4 +92,22 @@ export const AlertMessageCountStyle = css`
   line-height: 12px;
   text-align: center;
   color: white;
+`;
+
+export const FooterStyle = css`
+  width: 100%;
+  height: 4.75rem;
+  border-top: 1px solid #eeeeee;
+  padding-top: 10px;
+  ${(props) => props.theme.FlexCenter}
+  gap: 10px 72px;
+  position: fixed;
+  bottom: 0;
+  z-index: 10;
+  background-color: white;
+  @media screen and (max-width: 431px) {
+    position: fixed;
+    bottom: 0%;
+    z-index: 11;
+  }
 `;

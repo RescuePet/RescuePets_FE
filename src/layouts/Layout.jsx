@@ -21,7 +21,7 @@ const Box = styled.div`
   margin: 0 auto;
   display: flex;
   justify-content: center;
-  background-color: #f9f3ea;
+  background-color: #ffffff;
   /* border: 1px solid red; */
 
   // 430px이하일떄 넣어줌
@@ -29,8 +29,8 @@ const Box = styled.div`
   @media screen and (max-width: 430px) {
     margin: 0 auto;
     width: 375px;
-    border: 1px solid blue;
-    background-color: #f9f3ea;
+    /* border: 1px solid blue; */
+    background-color: #ffffff;
   }
 `;
 

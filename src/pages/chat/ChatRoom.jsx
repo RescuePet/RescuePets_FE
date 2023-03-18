@@ -1,16 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { __getChatRoom } from "../../redux/modules/chatSlice";
+import Cookies from "js-cookie";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-import Cookies from "js-cookie";
+
+import styled from "styled-components";
+import { FlexAttribute, HeaderStyle } from "../../style/Mixin";
+import { Body_500_16 } from "../../style/theme";
+
+import Layout from "../../layouts/Layout";
+import InputContainer from "../../components/InputContainer";
+import Send from "./components/Send";
+import Receive from "./components/Receive";
+import { instance } from "../../utils/api";
+
+const socket = new SockJS(`${process.env.REACT_APP_CHAT_TEST}/ws/chat`);
+const ws = Stomp.over(socket);
+ws.debug = null;
 
 const ChatRoom = () => {
-  const [message, setMessage] = useState("");
-
-  const dispatch = useDispatch();
   const postId = 1;
-  const roomId = useSelector((state) => state.chat.roomId);
+  const sender = JSON.parse(localStorage.getItem("userInfo"));
+  const [roomId, setRoomId] = useState("");
+  const [currentChat, setCurrentChat] = useState([]);
 
   const TOKEN = Cookies.get("Token");
   let headers = {
@@ -18,28 +29,22 @@ const ChatRoom = () => {
   };
 
   useEffect(() => {
-    dispatch(__getChatRoom(postId));
-
-    wsConnectSubscribe();
+    instance
+      .post(`/chat/catch-room/${postId}`)
+      .then((response) => {
+        setRoomId(response.data);
+        wsConnectSubscribe(response.data);
+        return instance.get(`/room/${response.data}`);
+      })
+      .then((response) => {
+        setCurrentChat([...response.data.dto]);
+        return;
+      });
 
     return () => {
       onbeforeunloda();
     };
-  }, [roomId]);
-
-  console.log("roomId ->", roomId);
-  console.log("JS TOKEN ->", TOKEN);
-
-  const socket = new SockJS(`${process.env.REACT_APP_CHAT_TEST}/ws/chat`);
-  // SockJS를 내부에 들고 있는 stomp를 내어줌
-  const ws = Stomp.over(socket);
-  console.log("infomation ws -> ", ws);
-
-  const content = {
-    type: "TALK",
-    sender: "test1",
-    message: message,
-  };
+  }, []);
 
   // 연결 시 실행
   const waitForConnection = (ws, callback) => {
@@ -57,47 +62,91 @@ const ChatRoom = () => {
     );
   }; //stomp 메시지 에러 waitForConnection함수로 해결
 
-  const wsConnectSubscribe = () => {
-    try {
-      console.log("headers", headers);
-      ws.connect(headers, (frame) => {
-        ws.subscribe(`/sub/${roomId}`, (response) => {
-          let data = JSON.parse(response.body);
-          console.log("sucsess connect");
-          console.log("data message ->", data);
-        });
+  const wsConnectSubscribe = (roomId) => {
+    ws.connect(headers, {}, () => {
+      ws.subscribe(`/sub/${roomId}`, (response) => {
+        let data = JSON.parse(response.body);
+        setCurrentChat((prev) => [...prev, data]);
       });
-    } catch (error) {
-      console.log("error message ->", error);
-    }
+    });
   };
 
   const onbeforeunloda = () => {
     try {
-      ws.disconnect(
-        () => {
-          ws.unsubscribe("sub-0");
-          clearTimeout(waitForConnection);
-        },
-        { Access_Token: localStorage.getItem("Access_Token") }
-      );
+      ws.disconnect(() => {
+        ws.unsubscribe("sub-0");
+        clearTimeout(waitForConnection);
+      });
     } catch (e) {}
   };
 
-  const handleSubmit = () => {
+  const submitHandler = (register) => {
+    let message = register.message;
+    if (message === "") {
+      return;
+    }
+    const sendSettings = {
+      type: "TALK",
+      sender: sender.nickname,
+      message: message,
+    };
     waitForConnection(ws, () => {
-      ws.send(`/pub/${roomId}`, {}, JSON.stringify(content));
+      ws.send(`/pub/${roomId}`, {}, JSON.stringify(sendSettings));
     });
   };
 
   return (
-    <>
-      <div></div>
-      <br />
-      <input value={message} onChange={(e) => setMessage(e.target.value)} />
-      <button onClick={() => handleSubmit()}>보내기</button>
-    </>
+    <Layout>
+      <ChatRoomLayout>
+        <ChatRoomHeader>
+          <HeaderTitle>밤빵이아빠</HeaderTitle>
+        </ChatRoomHeader>
+        <ChatRoomBody>
+          {currentChat.length !== 0 &&
+            currentChat.map((item, index) => {
+              if (item.sender === sender.nickname) {
+                return (
+                  <Send
+                    key={`send-item-${index}`}
+                    message={item.message}
+                  ></Send>
+                );
+              } else {
+                return (
+                  <Receive
+                    key={`receive-item-${index}`}
+                    message={item.message}
+                  ></Receive>
+                );
+              }
+            })}
+        </ChatRoomBody>
+        <InputContainer
+          placeholder="메세지를 입력해주세요."
+          submitHandler={submitHandler}
+        ></InputContainer>
+      </ChatRoomLayout>
+    </Layout>
   );
 };
+
+const ChatRoomLayout = styled.div`
+  ${FlexAttribute("column")}
+  width: 100%;
+`;
+
+const ChatRoomHeader = styled.div`
+  ${FlexAttribute("row", "center", "center")}
+  ${HeaderStyle}
+`;
+
+const HeaderTitle = styled.span`
+  ${Body_500_16}
+  padding-bottom: 17px;
+`;
+
+const ChatRoomBody = styled.div`
+  width: 100%;
+`;
 
 export default ChatRoom;

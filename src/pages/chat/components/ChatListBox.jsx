@@ -8,7 +8,7 @@ import {
 import styled from "styled-components";
 import { Body_400_14, Body_400_12, Body_300_10 } from "../../../style/theme";
 
-const ChatRoom = () => {
+const ChatListBox = () => {
   return (
     <ChatRoomListContainer>
       <ClickDiv>
@@ -74,4 +74,4 @@ const MessageCount = styled.div`
   ${AlertMessageCountStyle}
 `;
 
-export default ChatRoom;
+export default ChatListBox;

@@ -4,7 +4,7 @@ import Footer from "../../layouts/Footer";
 import { FlexAttribute, HeaderStyle } from "../../style/Mixin";
 import styled from "styled-components";
 import { Title_700_18 } from "../../style/theme";
-import ChatRoom from "./components/ChatRoom";
+import ChatListBox from "./components/ChatListBox";
 
 const ChatList = () => {
   return (
@@ -13,7 +13,8 @@ const ChatList = () => {
         <ChatHeader>
           <HeaderTitle>Chatting</HeaderTitle>
         </ChatHeader>
-        <ChatRoom></ChatRoom>
+        <ChatListBox></ChatListBox>
+        <ChatListBox></ChatListBox>
       </ChatLayout>
       <Footer></Footer>
     </Layout>
