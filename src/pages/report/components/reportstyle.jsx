@@ -35,7 +35,7 @@ export const ReportHeader = styled.div`
   }
 `;
 
-export const ReportAnimalInfoBox2 = styled.div`
+export const ReportAnimalInfoArea = styled.div`
   width: 20.9375rem;
   height: 23rem;
   margin: 0 auto;

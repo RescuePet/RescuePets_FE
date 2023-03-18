@@ -8,7 +8,7 @@ import imageCompression from 'browser-image-compression';
 import imgdelete from "../../asset/imgDelete.svg";
 import Marker from "../../asset/marker.png"
 import {
-  ReportSightingContainer, ReportHeader, ReportAnimalInfoBox2, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
+  ReportSightingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
   , ReportAnimalInfoCheckBoxTitle, ReportAnimalInfoCheckBoxSelete, ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
   ReportAnimalInfoBoxColumnColunb, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportanimaltypesSelectInput,
   SelectBox, Label, SelectOptions, Option, ReportKakaoMapBox, ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox,
@@ -26,6 +26,9 @@ const Sighting = () => {
         <div>x</div>
       </ReportHeader>
 
+      <ReportAnimalInfoArea>
+
+      </ReportAnimalInfoArea>
 
     </ReportSightingContainer>
   )

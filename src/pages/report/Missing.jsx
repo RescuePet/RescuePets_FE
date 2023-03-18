@@ -9,7 +9,7 @@ import cancel from "../../asset/delete.svg";
 import imageCompression from 'browser-image-compression';
 import imgdelete from "../../asset/imgDelete.svg";
 import Marker from "../../asset/marker.png"
-import { ReportMissingContainer, ReportHeader ,ReportAnimalInfoBox2, ReportAnimalInfoBox ,ReportAnimalInfoCheckBox
+import { ReportMissingContainer, ReportHeader ,ReportAnimalInfoArea, ReportAnimalInfoBox ,ReportAnimalInfoCheckBox
 ,ReportAnimalInfoCheckBoxTitle , ReportAnimalInfoCheckBoxSelete ,ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
 ReportAnimalInfoBoxColumnColunb, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportanimaltypesSelectInput,
 SelectBox ,Label ,SelectOptions ,Option ,ReportKakaoMapBox ,ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox,
@@ -239,7 +239,7 @@ const Missing = () => {
                     <div>x</div>
                 </ReportHeader>
 
-                <ReportAnimalInfoBox2>
+                <ReportAnimalInfoArea>
 
                     <ReportanimaltypesBox>
 
@@ -385,7 +385,7 @@ const Missing = () => {
                         </ReportAnimalInfoBoxColumn>
 
                     </ReportAnimalInfoBox>
-                </ReportAnimalInfoBox2>
+                </ReportAnimalInfoArea>
 
                 <ReportKakaoMapBox>
                     <ReportKakaoMapBoxTitle>
