@@ -10,57 +10,25 @@ import { CustomSelect } from './components/CustomSelect';
 import {
   ReportSightingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
   , ReportAnimalInfoCheckBoxTitle, ReportAnimalInfoCheckBoxSelete, ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
-  ReportAnimalInfoBoxColumnColumn, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportInput, ReportLgInput,
-  SelectBox, Label, SelectOptions, Option, ReportKakaoMapBox, ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox,
+  ReportAnimalInfoBoxColumnColumn, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportInput, ReportLgInput,
+  ReportKakaoMapBox, ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox,
   ReportAnimalSignificantBox, ReportAnimalSignificantBoxTitle, ReportAnimalSignificantBoxInputArea, ReportAnimalPictureArea,
   ReportAnimalPictureAreaTitle, ReportAnimalPictureAreaInputBox, ReportAnimalPictureInput, ReportAnimalPicturePreview, ReportAnimalUserInfo
 } from './components/reportstyle';
+import { NameValue, TimeValue } from './components/data';
 
 const Sighting = () => {
   let imageRef;
   const { kakao } = window;
 
-  // Selete로직 
-  const NameValue = [
-    { id: 0, name: "강아지" },
-    { id: 1, name: "고양이" },
-    { id: 2, name: "기타" },
-  ]
 
-  const TimeValue = [
-    { id: 0, name: "12시" },
-    { id: 1, name: "13시" },
-    { id: 2, name: "14시" },
-    { id: 3, name: "15시" },
-    { id: 4, name: "16시" },
-    { id: 5, name: "17시" },
-    { id: 6, name: "18시" },
-    { id: 7, name: "19시" },
-    { id: 8, name: "20시" },
-    { id: 9, name: "21시" },
-    { id: 10, name: "22시" },
-    { id: 11, name: "23시" },
-    { id: 12, name: "24시" },
-    { id: 13, name: "00시" },
-    { id: 14, name: "01시" },
-    { id: 15, name: "02시" },
-    { id: 16, name: "03시" },
-    { id: 17, name: "04시" },
-    { id: 18, name: "05시" },
-    { id: 19, name: "06시" },
-    { id: 20, name: "07시" },
-    { id: 21, name: "08시" },
-    { id: 22, name: "09시" },
-    { id: 23, name: "10시" },
-    { id: 24, name: "11시" },
-  ];
   // 종류데이터
-  const [type, setType] = useState('')
+  const [type, setType] = useState(NameValue[0].name)
   // console.log(type)
   const onChangeData = (newData) => {
     setType(newData);
   }
-  const [time, setTime] = useState('')
+  const [time, setTime] = useState(TimeValue[0].name)
   // console.log(time)
   const onChangeTimeData = (newData) => {
     setTime(newData);
@@ -95,7 +63,7 @@ const Sighting = () => {
   // React-hook-form
   const {
     register, handleSubmit, formState: { errors },
-    reset, resetField, } = useForm();
+    reset, resetField, } = useForm({ mode: 'onChange' });
 
   // form submit 로직
   const onSubmitSightingHanlder = (data) => {
@@ -192,7 +160,6 @@ const Sighting = () => {
   }, [onSucces])
 
   // 이미지 로직 
-  // 이미지로직
   const [formImagin, setFormformImagin] = useState(new FormData());
 
   const [imageFile, setImageFile] = useState({
@@ -259,23 +226,7 @@ const Sighting = () => {
               <div>
                 <p>종류</p>
                 <CustomSelect data={NameValue} onChangeData={onChangeData} />
-                {/* <SelectBox onClick={() => setShowOptions((isShowOptions) => !isShowOptions)}>
-                  <Label>{currentSeleteValue}</Label>
-                  <SelectOptions show={isShowOptions}>
-                    {
-                      NameValue.map((item) => {
-                        <Option
-                          key={item.id}>{item.name}</Option>
-                      })
-                    } */}
 
-
-                {/*   <Option onClick={handleOnChangeSelectValue}>강아지</Option>
-                    <Option onClick={handleOnChangeSelectValue}>고양이</Option>
-                    <Option onClick={handleOnChangeSelectValue}>기타</Option> */}
-                {/* 
-                  </SelectOptions>
-                </SelectBox> */}
               </div>
 
               <div>
@@ -371,7 +322,7 @@ const Sighting = () => {
                   <p>색상</p>
                   <ReportLgInput type="text" placeholder='입력하기'
                     {...register("animalcolor", {
-                      required: false,
+                      // required: false,
                       pattern: {
                         value: /^[가-힣\s]+$/,
                         message: "한글만 2 ~ 8글자 사이로 입력 ",

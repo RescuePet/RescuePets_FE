@@ -12,7 +12,7 @@ export const CustomSelect = ({ data, onChangeData }) => {
     // 이코드로 상위컴포넌트로 가장최신값을 보낸다 
     onChangeData(e.target.getAttribute("value"))
   };
-  console.log(currentValue)
+  // console.log(currentValue)
   return (
     <SelectBox onClick={() => setShowOptions((prev) => !prev)}>
       <Label>{currentValue}</Label>

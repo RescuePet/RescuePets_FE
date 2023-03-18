@@ -11,63 +11,28 @@ import {
     ReportMissingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
     , ReportAnimalInfoCheckBoxTitle, ReportAnimalInfoCheckBoxSelete, ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
     ReportAnimalInfoBoxColumnColumn, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportInput, ReportLgInput,
-    SelectBox, Label, SelectOptions, Option, ReportKakaoMapBox, ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox,
+    ReportKakaoMapBox, ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox,
     ReportAnimalSignificantBox, ReportAnimalSignificantBoxTitle, ReportAnimalSignificantBoxInputArea, ReportAnimalPictureArea,
     ReportAnimalPictureAreaTitle, ReportAnimalPictureAreaInputBox, ReportAnimalPictureInput, ReportAnimalPicturePreview, ReportAnimalUserInfo
 } from './components/reportstyle';
+import { NameValue, TimeValue } from './components/data';
 
 const Missing = () => {
     let imageRef;
     const { kakao } = window;
     // Selete로직 
-    const NameValue = [
-        { id: 0, name: "강아지" },
-        { id: 1, name: "고양이" },
-        { id: 2, name: "기타" },
-    ]
 
-    const TimeValue = [
-        { id: 0, name: "12시" },
-        { id: 1, name: "13시" },
-        { id: 2, name: "14시" },
-        { id: 3, name: "15시" },
-        { id: 4, name: "16시" },
-        { id: 5, name: "17시" },
-        { id: 6, name: "18시" },
-        { id: 7, name: "19시" },
-        { id: 8, name: "20시" },
-        { id: 9, name: "21시" },
-        { id: 10, name: "22시" },
-        { id: 11, name: "23시" },
-        { id: 12, name: "24시" },
-        { id: 13, name: "00시" },
-        { id: 14, name: "01시" },
-        { id: 15, name: "02시" },
-        { id: 16, name: "03시" },
-        { id: 17, name: "04시" },
-        { id: 18, name: "05시" },
-        { id: 19, name: "06시" },
-        { id: 20, name: "07시" },
-        { id: 21, name: "08시" },
-        { id: 22, name: "09시" },
-        { id: 23, name: "10시" },
-        { id: 24, name: "11시" },
-    ];
     // 종류데이터
-    const [type, setType] = useState('')
+    const [type, setType] = useState(NameValue[0].name)
     // console.log(type)
     const onChangeData = (newData) => {
         setType(newData);
     }
-    const [time, setTime] = useState('')
+    const [time, setTime] = useState(TimeValue[0].name)
     // console.log(time)
     const onChangeTimeData = (newData) => {
         setTime(newData);
     }
-
-
-
-
 
     const [currentGenderTab, setCurrentGenderTab] = useState(0);
     const [currentNeuteredTab, setCurrentNeuteredTab] = useState(0);
@@ -95,122 +60,34 @@ const Missing = () => {
         setCurrentNeuteredValue(seleteneuteredArr[index].neutered)
     };
 
-    // selete 종류
-    const [currentSeleteValue, setCurrentSeleteValue] = useState('강아지')
-    const [isShowOptions, setShowOptions] = useState(false);
-    const handleOnChangeSelectValue = (e) => {
-        const { innerText } = e.target;
-        setCurrentSeleteValue(innerText);
-    };
-    // selete 나이 
-    const [currentSeleteAgeValue, setCurrentSeleteAgeValue] = useState('0살')
-    const [isShowAgeOptions, setShowAgeOptions] = useState(false);
-    // selete 시간대 
-    const [currentSeleteTimeValue, setCurrentSeleteTimeValue] = useState('0시~08시')
-    const [isShowTimeOptions, setShowTimeOptions] = useState(false);
+
 
     const {
-        register, handleSubmit, formState: { errors }, reset, resetField, getValues } = useForm();
+        register, handleSubmit, formState: { errors }, reset,
+        resetField, } = useForm({ mode: 'onChange' });
 
-    const handleOnChangeSelectAgeValue = (e) => {
-        const { innerText } = e.target;
-        setCurrentSeleteAgeValue(innerText);
-    };
-
-    const handleOnChangeSelectTimeValue = (e) => {
-        const { innerText } = e.target;
-        setCurrentSeleteTimeValue(innerText);
-    };
-
-    // 버튼을 누르면 선택된 usehookForm 제거 
-    const onClickDeleteanimaltypes = () => {
-        resetField("animaltypes")
+    const onClickDeleteValue = (data) => {
+        resetField(data)
     }
-    const onClickDeleteanimalKg = () => {
-        resetField("animalkg")
-    }
-    const onClickDeleteanimalDays = () => {
-        resetField("days")
-    }
-    const onClickDeleteanimalColor = () => {
-        resetField("animalcolor")
-    }
-    const onClickDeleteanimalcharacteristic = () => {
-        resetField("characteristic")
-    }
-    const onClickDeleteanimalmemo = () => {
-        resetField("memo")
-    }
-    const onClickDeleteanimalMoney = () => {
-        resetField("money")
-    }
-    const onClickDeleteanimalNumber = () => {
-        resetField("number")
-    }
-    // 이미지로직
-    const [formImagin, setFormformImagin] = useState(new FormData());
-
-    const [imageFile, setImageFile] = useState({
-        imageFile: "",
-        viewUrl: "",
-    });
-
-    const [loaded, setLoaded] = useState(false);
-
-    const onChangeUploadHandler = async (e) => {
-        e.preventDefault();
-
-        const imageFile = e.target.files[0];
-
-        const options = {
-            maxSizeMB: 1,
-            maxWidthOrHeight: 1920,
-            useWebWorker: true,
-        };
-
-        try {
-            const compressedFile = await imageCompression(imageFile, options);
-            const formImg = new FormData();
-            formImg.append('image', compressedFile);
-            setFormformImagin(formImg);
-
-            const fileReader = new FileReader()
-            fileReader.readAsDataURL(compressedFile);
-
-            fileReader.onload = () => {
-                setImageFile({
-                    viewUrl: String(fileReader.result),
-                });
-                setLoaded(true);
-            };
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    const onClickDeleteHandler = () => {
-        setImageFile({
-            viewUrl: ""
-        });
-    };
 
     const resultlngDiv = document.getElementById('clicklng');
     const resultlatDiv = document.getElementById('clicklat');
     // form submit버튼
+
     const onSubmitMissingHanlder = (data) => {
 
-        console.log("종류 :", currentSeleteValue)
+        console.log("종류 :", type)
         console.log("품종 :", data.animaltypes + '종')
         console.log("성별 :", currentGenderValue)
         console.log("중성회 :", currentNeuteredValue)
-        console.log("나이 :", currentSeleteAgeValue)
+        // console.log("나이 :", currentSeleteAgeValue)
         console.log("kg :", data.animalkg)
         console.log("색깔 :", data.animalcolor)
         console.log("날짜 :", data.days)
         console.log("특징 :", data.characteristic)
         console.log("메모 :", data.memo)
         console.log("사진 :", imageFile)
-        console.log("시간대:", currentSeleteTimeValue)
+        console.log("시간대:", time)
         console.log("사례금 :", data.money)
         console.log("전화번호 :", data.number)
         console.log("지도 좌표", resultlngDiv.innerHTML)
@@ -255,17 +132,13 @@ const Missing = () => {
         });
         // 지도에 마커를 표시합니다
         marker.setMap(map);
-
         kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
             // 클릭한 위도, 경도 정보를 가져옵니다 
             const latlng = mouseEvent.latLng;
-
             // 마커 위치를 클릭한 위치로 옮깁니다
             marker.setPosition(latlng);
-
             const messageLng = `${latlng.getLng()}`;
             const messageLat = `${latlng.getLat()} `;
-
             const resultlngDiv = document.getElementById('clicklng');
             const resultlatDiv = document.getElementById('clicklat');
             resultlngDiv.innerHTML = messageLat;
@@ -273,12 +146,54 @@ const Missing = () => {
         });
     }, [onSucces])
 
+    // 이미지로직
+    const [formImagin, setFormformImagin] = useState(new FormData());
+
+    const [imageFile, setImageFile] = useState({
+        imageFile: "",
+        viewUrl: "",
+    });
+
+    const [loaded, setLoaded] = useState(false);
+
+    const onChangeUploadHandler = async (e) => {
+        e.preventDefault();
+
+        const imageFile = e.target.files[0];
+        const options = {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 1920,
+            useWebWorker: true,
+        };
+        try {
+            const compressedFile = await imageCompression(imageFile, options);
+            const formImg = new FormData();
+            formImg.append('image', compressedFile);
+            setFormformImagin(formImg);
+
+            const fileReader = new FileReader()
+            fileReader.readAsDataURL(compressedFile);
+
+            fileReader.onload = () => {
+                setImageFile({
+                    viewUrl: String(fileReader.result),
+                });
+                setLoaded(true);
+            };
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const onClickDeleteHandler = () => {
+        setImageFile({
+            viewUrl: ""
+        });
+    };
+
     return (
         <Layout>
-            <ReportMissingContainer onSubmit={handleSubmit(onSubmitMissingHanlder,
-                onClickDeleteanimaltypes, onClickDeleteanimalDays, onClickDeleteanimalKg,
-                onClickDeleteanimalcharacteristic, onClickDeleteanimalmemo, onClickDeleteanimalColor
-                , onClickDeleteanimalMoney, onClickDeleteanimalNumber)}>
+            <ReportMissingContainer onSubmit={handleSubmit(onSubmitMissingHanlder)}>
 
                 <ReportHeader>
                     <div></div>
@@ -306,7 +221,7 @@ const Missing = () => {
                                     {...register("animaltypes", {
                                         pattern: { value: /^[ㄱ-ㅎ|가-힣]+$/, message: "한글만 2 ~ 8글자 사이로 입력", },
                                     })} />
-                                <img src={cancel} onClick={onClickDeleteanimaltypes} />
+                                <img src={cancel} onClick={(() => { onClickDeleteValue('animaltypes') })} />
                                 <span>{errors?.animaltypes?.message}</span>
                             </div>
 
@@ -363,27 +278,20 @@ const Missing = () => {
 
                             <ReportAnimalInfoBoxColumnRow>
                                 <p>나이</p>
+                                <ReportInput type="text" placeholder='입력하기'
+                                    {...register("animalAge", {
+                                        pattern: {
+                                            value: /^[0-9]+$/,
+                                            message: "숫자만입력가능",
+                                        },
+                                        maxLength: {
+                                            value: 3,
+                                            message: "숫자만 입력! 3자리수 이하로 작성",
+                                        }
+                                    })} />
+                                <img src={cancel} onClick={(() => { onClickDeleteValue('animalAge') })} />
 
-
-                                {/* <SelectBox onClick={() => setShowAgeOptions((isShowAgeOptions) => !isShowAgeOptions)}>
-                                    <Label>{currentSeleteAgeValue}</Label>
-                                    <SelectOptions show={isShowAgeOptions}>
-
-                                        <Option onClick={handleOnChangeSelectAgeValue}>0살 </Option>
-                                        <Option onClick={handleOnChangeSelectAgeValue}>1살 </Option>
-                                        <Option onClick={handleOnChangeSelectAgeValue}>2살 </Option>
-                                        <Option onClick={handleOnChangeSelectAgeValue}>3살 </Option>
-                                        <Option onClick={handleOnChangeSelectAgeValue}>4살 </Option>
-                                        <Option onClick={handleOnChangeSelectAgeValue}>5살 </Option>
-                                        <Option onClick={handleOnChangeSelectAgeValue}>6살 </Option>
-                                        <Option onClick={handleOnChangeSelectAgeValue}>7살 </Option>
-                                        <Option onClick={handleOnChangeSelectAgeValue}>8살 </Option>
-                                        <Option onClick={handleOnChangeSelectAgeValue}>9살 </Option>
-                                        <Option onClick={handleOnChangeSelectAgeValue}>10살 </Option>
-                                        <Option onClick={handleOnChangeSelectAgeValue}>10살이상 </Option>
-
-                                    </SelectOptions>
-                                </SelectBox> */}
+                                <span>{errors?.animalAge?.message}</span>
                             </ReportAnimalInfoBoxColumnRow>
 
                             <ReportAnimalInfoBoxColumnRow>
@@ -400,8 +308,9 @@ const Missing = () => {
                                             message: "4글자 이하이어야 합니다.",
                                         }
                                     })} />
+                                <img src={cancel} onClick={(() => { onClickDeleteValue('animalkg') })} />
                                 <span>{errors?.animalkg?.message}</span>
-                                <img src={cancel} onClick={onClickDeleteanimalKg} />
+
 
                             </ReportAnimalInfoBoxColumnRow>
 
@@ -423,7 +332,7 @@ const Missing = () => {
                                             message: "8글자 이하이어야 합니다.",
                                         },
                                     })} />
-                                <img src={cancel} onClick={onClickDeleteanimalColor} />
+                                <img src={cancel} onClick={(() => { onClickDeleteValue('animalcolor') })} />
                                 <span>{errors?.animalcolor?.message}</span>
 
                             </ReportAnimalInfoBoxColumnColumn>
@@ -456,7 +365,7 @@ const Missing = () => {
                                         message: "20xx-xx-xx 형식으로 입력",
                                     },
                                 })} />
-                            <img src={cancel} onClick={onClickDeleteanimalDays} />
+                            <img src={cancel} onClick={(() => { onClickDeleteValue('days') })} />
                             <span>{errors?.days?.message}</span>
                         </div>
                         <div>
@@ -486,7 +395,7 @@ const Missing = () => {
                                         message: "20글자 이하이어야 합니다.",
                                     },
                                 })} />
-                            <img src={cancel} onClick={onClickDeleteanimalcharacteristic} />
+                            <img src={cancel} onClick={(() => { onClickDeleteValue('characteristic') })} />
                             <span>{errors?.characteristic?.message}</span>
                         </div>
                         {/* 메모 */}
@@ -504,7 +413,7 @@ const Missing = () => {
                                         message: "20글자 이하이어야 합니다.",
                                     },
                                 })} />
-                            <img src={cancel} onClick={onClickDeleteanimalmemo} />
+                            <img src={cancel} onClick={(() => { onClickDeleteValue('memo') })} />
                             <span>{errors?.memo?.message}</span>
                         </div>
                     </ReportAnimalSignificantBoxInputArea>
@@ -549,7 +458,7 @@ const Missing = () => {
                                 const value = event.target.value;
                                 event.target.value = Number(value.replace(/[^0-9]/g, '')).toLocaleString();
                             }} />
-                        < img src={cancel} onClick={onClickDeleteanimalMoney} />
+                        < img src={cancel} onClick={(() => { onClickDeleteValue('money') })} />
                         <span>{errors?.money?.message}</span>
                     </div>
 
@@ -566,7 +475,7 @@ const Missing = () => {
                                 pattern: { value: /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/, message: "하이픈(-)을 넣어주세요 ", },
                                 maxLength: { value: 16, message: "12글자 이하이어야 합니다.", },
                             })} />
-                        <img src={cancel} onClick={onClickDeleteanimalNumber} />
+                        <img src={cancel} onClick={(() => { onClickDeleteValue('number') })} />
                         <span>{errors?.number?.message}</span>
                     </div>
 
