@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import arrow from "../../asset/arrow.svg";
 import eye from "../../asset/eye.svg";
 import Layout from "../../layouts/Layout";
-// import { __signupUser } from "../../redux/modules/signSlice";
+import { __signupUser } from "../../redux/modules/signSlice";
 import { FlexAttribute, SignSvgStyle } from "../../style/Mixin";
 import Button from "../../elements/Button";
 import { CustomSelect } from "../../elements/CustomSelect";
@@ -52,7 +52,12 @@ const Signup = () => {
 
 
   const onSubmitSignupHandler = (data) => {
-    console.log("이메일 :", data.id + "@" + email)
+    if (data.password === data.checkpassword) {
+      console.log(data)
+      console.log("이메일 :", data.id + "@" + email)
+    } else {
+      alert('비밀번호 오류')
+    }
   }
 
   return (
@@ -64,7 +69,7 @@ const Signup = () => {
           <div></div>
         </SignHeader>
 
-        <SignIdBox>
+        <SignIdNincknameBox>
           <p>아이디</p>
           <div>
             <div>
@@ -83,193 +88,167 @@ const Signup = () => {
               <CustomSelect data={data} onChangeData={onChangeData} />
             </div>
           </div>
-        </SignIdBox>
+        </SignIdNincknameBox>
 
         <SignPwBox>
           <p>비밀번호</p>
           <div>
-            <div>1</div>
-            <div>2</div>
-          </div>
-        </SignPwBox>
-
-        <Button type="submit" TabBtn2>회원가입</Button>
-        {/* <InputWrapper>
-            <SelectInput
-              name="email"
-              value={value.email || ""}
-              onChange={handleInput}
-              placeholder="이메일 주소"
-            />
-            <MiddleContext>@{selectedOption}</MiddleContext>
-            <SelectWrapper>
-              <SelectButton onClick={() => setOpenSelectBox(!openSelectBox)}>
-                <img src={arrow} alt="셀렉트 박스 열기" />
-              </SelectButton>
-              {openSelectBox && (
-                <SelectBox>
-                  <SelectUl>
-                    <Selectli onClick={handleSelect} value="naver.com">
-                      naver.com
-                    </Selectli>
-                    <Selectli onClick={handleSelect} value="gmail.com">
-                      gmail.com
-                    </Selectli>
-                    <Selectli onClick={handleSelect} value="nate.com">
-                      nate.com
-                    </Selectli>
-                  </SelectUl>
-                </SelectBox>
-              )}
-            </SelectWrapper>
-          </InputWrapper> */}
-        {/* <SignText>비밀번호</SignText>
-          <InputWrapper>
-            <SignInput
-              {...register("password", {
+            <div>
+              <SignLgInput {...register("password", {
                 required: true,
                 pattern: {
                   value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, message: "비밀번호 (최소 8자리 숫자, 문자, 특수문자 최소 1개",
                 },
                 maxLength: { value: 12, message: "8~12 자리 숫자, 문자, 특수문자 최소 1개", }
               })}
-              name="password"
-              type={showPassword ? "text" : "password"}
-              placeholder="영문, 숫자, 특수문자 조합 8자리 이상"
-            />
-            <img
-              onClick={toggleShowPassword}
-              src={eye}
-              alt="showPassword"
-              name="showPassword"
-            />
-          </InputWrapper>
-          <Errormessage>
-            <span>{errors?.password?.message}</span>
-          </Errormessage>
+                name="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="영문, 숫자, 특수문자 조합 8자리 이상" />
+              <img
+                onClick={toggleShowPassword}
+                src={eye}
+                alt="showPassword"
+              />
+              <span>{errors?.password?.message}</span>
+            </div>
+            <div>
+              <SignLgInput name="checkpassword" type={showPassword ? "text" : "password"}
+                placeholder="비밀번호 재입력"
+                {...register("checkpassword", {
+                  required: true,
+                  pattern: {
+                    value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, message: "8~12 자리 숫자, 문자, 특수문자 최소 1개",
+                  },
+                  maxLength: { value: 12, message: "8~12 자리 숫자, 문자, 특수문자 최소 1개", }
+                })} />
 
-          <InputWrapper>
-            <SignInput
-              {...register("checkpassword", {
-                required: true,
-                pattern: {
-                  value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, message: "8~12 자리 숫자, 문자, 특수문자 최소 1개",
-                },
-                maxLength: { value: 12, message: "8~12 자리 숫자, 문자, 특수문자 최소 1개", }
-              })}
-              name="checkpassword"
-              type={showPassword ? "text" : "password"}
-              placeholder="비밀번호 재입력"
-            />
-            <img
-              onClick={toggleShowPasswordConfirm}
-              src={eye}
-              alt="showPassword"
-              name="showPassword"
-            />
-          </InputWrapper>
-          <Errormessage>
-            <span>{errors?.checkpassword?.message}</span>
-          </Errormessage>
-          <SignText>닉네임</SignText>
-          <InputWrapper>
-            <SignInput
-              {...register("nickname", {
-                required: true,
-                pattern: { value: /^[ㄱ-ㅎ|가-힣]+$/, message: "한글만 2 ~ 8글자 사이로 입력", },
-                maxLength: { value: 8, message: "한글만 2 ~ 8글자 사이로 입력", }
-              })}
+              <img
+                onClick={toggleShowPassword}
+                src={eye}
+                alt="showPassword"
+              />
+              <span>{errors?.checkpassword?.message}</span>
 
+            </div>
+          </div>
+        </SignPwBox>
+
+        <SignIdNincknameBox>
+          <p>닉네임</p>
+          <div>
+            <SignLgInput  {...register("nickname", {
+              required: true,
+              pattern: { value: /^[ㄱ-ㅎ|가-힣]+$/, message: "8자이내 한글 또는 영문", },
+              maxLength: { value: 8, message: "8자이내 한글 또는 영문", }
+            })}
               name="nickname"
               type="text"
-              placeholder="8자이내 한글 또는 영문"
-            />
-          </InputWrapper>
-          <Errormessage>
+              placeholder="8자이내 한글 또는 영문" />
             <span>{errors?.nickname?.message}</span>
-          </Errormessage>
-        </SignForm>
-        <ButtonWrapper>
-          <Button type="submit" TabBtn2>회원가입</Button>
-        </ButtonWrapper> */}
+          </div>
+
+        </SignIdNincknameBox>
+        <SignBtnBox><Button type="submit" TabBtn2>회원가입</Button></SignBtnBox>
+
+
       </SignContainer>
     </Layout>
   );
 };
 const SignContainer = styled.form`
-   ${FlexAttribute("column", "center", "center")}   
+   ${FlexAttribute("column", "", "center")}   
   width: 100%;
   height: 50.75rem;
-  border: 1px solid red;
+  gap: 2rem 0;
 `;
 
 const SignHeader = styled.div`
-   width: 100%;
-  height: 2.625rem;
+  width: 100%;
+  height: 4rem;
+  padding-top: 20px;
   border-bottom: 0.25rem solid #eeeeee;
   font-size: 1.125rem;
   font-weight: 700;
   ${FlexAttribute("", "center", "space-around")}   
   color: #222222;
-  border: 1px solid red;
   > div {
     height: 100%;
     width: 33.3%;
     ${props => props.theme.FlexCenter}
-    /* border: 1px solid red; */
     ${props => props.theme.Title_700_18}
   }
 `;
 
-const SignIdBox = styled.div`
+const SignIdNincknameBox = styled.div`
   width: 20.9375rem;
   height: 4rem;
   margin-top: 2rem;
-
   > p {
     width: 100%;
     height: 20%;
     ${props => props.theme.Body_400_14}
   }
   >div {
+    position: relative;
     width: 100%;
     height: 80%;
     ${props => props.theme.FlexRow}
     > div {
       width: 50%;
       height: 90%;
-    
       > span {
       ${props => props.theme.Span_alert}
       }
     }
-   
+    >span {
+    position: absolute;
+    top: 40px;
+    ${props => props.theme.Span_alert}
+    
+    }
   }
+  
 `;
 const SignPwBox = styled.div`
-  width: 100%;
+  width: 20.9375rem;
   height: 7.5rem;
-  border: 1px solid red;
   > p {
     width: 100%;
     height: 20%;
-    border: 1px solid red;
     ${props => props.theme.Body_400_14}
   }
   >div {
     width: 100%;
     height: 80%;
-    border: 1px solid red;
     ${props => props.theme.FlexColumn}
     > div {
+      position: relative;
       width: 100%;
       height: 50%;
-      border: 1px solid red;
+
+      > img {
+      position: absolute;
+      ${SignSvgStyle}  
+      top: 10px;
+      right: 0px;
+      }
+      > span {
+        position: absolute;
+        display: flex;
+        ${props => props.theme.Span_alert}
+      }
     }
   }
+ 
+
 `;
 
-
+const SignBtnBox = styled.div`
+  width: 20.9375rem;
+  height: 5rem;
+  margin-top: 5rem;
+  ${props => props.theme.FlexCenter}
+`
 const SignsmInput = styled.input`
   width: 9.75rem;
   height: 1.5625rem;
@@ -278,7 +257,23 @@ const SignsmInput = styled.input`
   background: transparent;
   font-size: 12px;
   cursor: pointer;
+  ::placeholder{
+    color: #666666;
+  }
 `;
+const SignLgInput = styled.input`
+  width: 20.9375rem;
+  height: 1.5625rem;
+  margin-top: 5px;
+  border-bottom: 2px solid #EEEEEE;
+  background: transparent;
+  font-size: 12px;
+  cursor: pointer;
+  ::placeholder{
+    color: #666666;
+  }
+`;
+
 
 
 
