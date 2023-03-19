@@ -38,6 +38,17 @@ const KakaoMap = () => {
     alert("위치 정보를 찾을수 없습니다.");
   }
 
+  const mapRef = useRef();
+  // useEffect(() => {
+  //   const container = document.getElementById('myMap');
+  //   const options = {
+  //     center: new kakao.maps.LatLng(lati, long),
+  //     level: 10,
+  //   };
+  //   mapRef.current = new kakao.maps.Map(container, options);
+  // }, [location]);
+  // 
+
 
   useEffect(() => {
     const container = document.getElementById('myMap');
@@ -46,11 +57,10 @@ const KakaoMap = () => {
       level: 10,
     };
     mapRef.current = new kakao.maps.Map(container, options);
-  }, [location]);
 
-  const mapRef = useRef();
 
-  useEffect(() => {
+
+
     const overlayInfos = data?.map(info => {
       console.log(info)
       return {

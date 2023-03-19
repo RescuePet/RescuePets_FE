@@ -7,10 +7,15 @@ import FooterIconNetwork from "../asset/FooterIconNetwork.svg";
 import "./Footer.css";
 import { useDispatch } from "react-redux";
 import { toggleMenu } from "../redux/modules/menubarSlice";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
   // payload로 값 보내기 위한 훅
   const dispatch = useDispatch();
+  const navigate = useNavigate()
+
+  // const MoveToMissing = navigate('/missing')
+  // const MoveToSighting = navigate('/sighting')
 
   const [menuBar, setMenuBar] = useState(false);
 
@@ -34,8 +39,8 @@ const Footer = () => {
     <FooterContiner>
       {menuBar === false ? null : (
         <Navigation>
-          <FooterMenuList>? 실종 글 작성하기 </FooterMenuList>
-          <FooterMenuList>🚨 목격 글 작성하기</FooterMenuList>
+          <FooterMenuList >? 실종 글 작성하기 </FooterMenuList>
+          <FooterMenuList >🚨 목격 글 작성하기</FooterMenuList>
         </Navigation>
       )}
 
