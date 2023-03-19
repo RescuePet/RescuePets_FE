@@ -19,6 +19,11 @@ const Signup = () => {
     { id: 1, name: "gmail.com" },
     { id: 2, name: "nate.com" },
   ];
+  // 종류데이터
+  const [email, setEmail] = useState(data[0].name)
+  const onChangeData = (newData) => {
+    setEmail(newData);
+  }
 
   const {
     register, handleSubmit, formState: { errors },
@@ -47,18 +52,49 @@ const Signup = () => {
 
 
   const onSubmitSignupHandler = (data) => {
-    console.log(data)
+    console.log("이메일 :", data.id + "@" + email)
   }
 
   return (
     <Layout>
       <SignContainer onSubmit={handleSubmit(onSubmitSignupHandler)}>
         <SignHeader>
-          <span>회원가입</span>
+          <div>이전</div>
+          <div>회원가입</div>
+          <div></div>
         </SignHeader>
-        <SignForm >
-          <SignText>로그인</SignText>
-          {/* <InputWrapper>
+
+        <SignIdBox>
+          <p>아이디</p>
+          <div>
+            <div>
+              <SignsmInput name="email" type="text" placeholder="입력하기" required
+                {...register("id", {
+                  pattern: {
+                    value: /^[a-zA-Z0-9]+$/, message: "영문 숫자 2 ~ 8글자 사이로 입력",
+                  },
+                  maxLength: { value: 12, message: "12글자이내 작성", }
+                })}
+              />
+              <span>{errors?.id?.message}</span>
+            </div>
+            <p>@</p>
+            <div>
+              <CustomSelect data={data} onChangeData={onChangeData} />
+            </div>
+          </div>
+        </SignIdBox>
+
+        <SignPwBox>
+          <p>비밀번호</p>
+          <div>
+            <div>1</div>
+            <div>2</div>
+          </div>
+        </SignPwBox>
+
+        <Button type="submit" TabBtn2>회원가입</Button>
+        {/* <InputWrapper>
             <SelectInput
               name="email"
               value={value.email || ""}
@@ -87,7 +123,7 @@ const Signup = () => {
               )}
             </SelectWrapper>
           </InputWrapper> */}
-          <SignText>비밀번호</SignText>
+        {/* <SignText>비밀번호</SignText>
           <InputWrapper>
             <SignInput
               {...register("password", {
@@ -133,7 +169,7 @@ const Signup = () => {
             />
           </InputWrapper>
           <Errormessage>
-            {passwordConfirmError && <p>비밀번호가 일치하지 않습니다.</p>}
+            <span>{errors?.checkpassword?.message}</span>
           </Errormessage>
           <SignText>닉네임</SignText>
           <InputWrapper>
@@ -141,7 +177,7 @@ const Signup = () => {
               {...register("nickname", {
                 required: true,
                 pattern: { value: /^[ㄱ-ㅎ|가-힣]+$/, message: "한글만 2 ~ 8글자 사이로 입력", },
-                maxLength: { value: 8, message: "숫자만 입력! 3자리수 이하로 작성", }
+                maxLength: { value: 8, message: "한글만 2 ~ 8글자 사이로 입력", }
               })}
 
               name="nickname"
@@ -155,68 +191,95 @@ const Signup = () => {
         </SignForm>
         <ButtonWrapper>
           <Button type="submit" TabBtn2>회원가입</Button>
-        </ButtonWrapper>
+        </ButtonWrapper> */}
       </SignContainer>
     </Layout>
   );
 };
 const SignContainer = styled.form`
-  ${FlexAttribute("column")}
+   ${FlexAttribute("column", "center", "center")}   
   width: 100%;
+  height: 50.75rem;
+  border: 1px solid red;
 `;
 
 const SignHeader = styled.div`
-  ${FlexAttribute("row", "center")}
-  width: 100%;
-  height: 5rem;
-  padding-top: 2.5rem;
+   width: 100%;
+  height: 2.625rem;
   border-bottom: 0.25rem solid #eeeeee;
   font-size: 1.125rem;
   font-weight: 700;
-`;
-
-const SignForm = styled.div`
-  ${FlexAttribute("column", "center")}
-  margin: 0px 20px 0px 20px;
-  img {
-    ${SignSvgStyle}
+  ${FlexAttribute("", "center", "space-around")}   
+  color: #222222;
+  border: 1px solid red;
+  > div {
+    height: 100%;
+    width: 33.3%;
+    ${props => props.theme.FlexCenter}
+    /* border: 1px solid red; */
+    ${props => props.theme.Title_700_18}
   }
 `;
 
-const SignText = styled.span`
-  font-size: 0.875rem;
+const SignIdBox = styled.div`
+  width: 20.9375rem;
+  height: 4rem;
   margin-top: 2rem;
-`;
 
-const InputWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  ${FlexAttribute("row", "", "center")}
-  border-bottom: 0.125rem solid #eeeeee;
-`;
-
-const SignInput = styled.input`
-    width: 20.9375rem;
-     height: 2.875rem;
-     font-size: 12px;
-     ::placeholder {
-    color: #cccccc;
+  > p {
+    width: 100%;
+    height: 20%;
+    ${props => props.theme.Body_400_14}
   }
-`
-
-
-const ButtonWrapper = styled.div`
-  margin-top: 100px;
-  margin-left: 50px;
-  button:first-child {
-    margin-bottom: 1.125rem;
+  >div {
+    width: 100%;
+    height: 80%;
+    ${props => props.theme.FlexRow}
+    > div {
+      width: 50%;
+      height: 90%;
+    
+      > span {
+      ${props => props.theme.Span_alert}
+      }
+    }
+   
   }
 `;
-const Errormessage = styled.div`
+const SignPwBox = styled.div`
   width: 100%;
-  height: 2.875rem;
-  font-size: 0.75rem;
+  height: 7.5rem;
+  border: 1px solid red;
+  > p {
+    width: 100%;
+    height: 20%;
+    border: 1px solid red;
+    ${props => props.theme.Body_400_14}
+  }
+  >div {
+    width: 100%;
+    height: 80%;
+    border: 1px solid red;
+    ${props => props.theme.FlexColumn}
+    > div {
+      width: 100%;
+      height: 50%;
+      border: 1px solid red;
+    }
+  }
 `;
+
+
+const SignsmInput = styled.input`
+  width: 9.75rem;
+  height: 1.5625rem;
+  margin-top: 5px;
+  border-bottom: 2px solid #EEEEEE;
+  background: transparent;
+  font-size: 12px;
+  cursor: pointer;
+`;
+
 
 
 
