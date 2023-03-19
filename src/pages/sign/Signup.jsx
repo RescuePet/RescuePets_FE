@@ -1,287 +1,272 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import arrow from "../../asset/arrow.svg";
 import eye from "../../asset/eye.svg";
 import Layout from "../../layouts/Layout";
 import { __signupUser } from "../../redux/modules/signSlice";
 import { FlexAttribute, SignSvgStyle } from "../../style/Mixin";
 import Button from "../../elements/Button";
+import { CustomSelect } from "../../elements/CustomSelect";
 
 const Signup = () => {
-  const [value, setValue] = useState({
-    email: "",
-    password: "",
-    passwordConfirm: "",
-    nickname: "",
-  });
-  // console.log(value);
+
+  const data = [
+    { id: 0, name: "naver.com" },
+    { id: 1, name: "gmail.com" },
+    { id: 2, name: "nate.com" },
+  ];
+  // 종류데이터
+  const [email, setEmail] = useState(data[0].name)
+  const onChangeData = (newData) => {
+    setEmail(newData);
+  }
+
+  const {
+    register, handleSubmit, formState: { errors },
+    reset, } = useForm({ mode: 'onChange' });
+
+
+  // 비밀번호 체크 로직
   const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const [passwordConfirmError, setPasswordConfirmError] = useState(false);
-  const [nickNameError, setNickNameError] = useState(false);
-  const [openSelectBox, setOpenSelectBox] = useState(false);
-  //셀렉트박스 저장하는 스테이트
-  const [selectedOption, setSelectedOption] = useState("");
-  //선택한옵션 랜더링하는 스테이트
   const dispatch = useDispatch();
-  const handleInput = (e) => {
-    setValue({ ...value, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(value.email + "@" + selectedOption);
-
-    // 비밀번호 정규식 확인
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,}$/;
-    if (!passwordRegex.test(value.password)) {
-      setPasswordError(true);
-      return;
-    }
-
-    // 비밀번호 재입력 일치 확인
-    if (value.password !== value.passwordConfirm) {
-      setPasswordConfirmError(true);
-      return;
-    }
-
-    // 닉네임 정규식 확인
-    const nicknameRegex = /^[a-zA-Z가-힣]{1,8}$/;
-    if (!value.nickname || !nicknameRegex.test(value.nickname)) {
-      setNickNameError(true);
-      return;
-    }
-    // console.log(value.nickname);
-
-    dispatch(
-      __signupUser({
-        email: value.email,
-        password: value.password,
-        passwordConfirm: value.passwordConfirm,
-        nickname: value.nickname,
-      })
-    );
-  };
 
   //비밀번호 이모티콘
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-  //비밀번호 확인 이모티콘
-  const toggleShowPasswordConfirm = () => {
-    setShowPasswordConfirm(!showPasswordConfirm);
-  };
-
-  const handleSelect = (event) => {
-    const selectedOption = event.target.textContent;
-    setSelectedOption(selectedOption);
-    // console.log(event.target.textContent);
-    // const updatedEmail = `${value.email}${selectedOption}`;
-    // setValue({ ...value, email: updatedEmail });
-    setOpenSelectBox(false); // 옵션 박스 닫기
-  };
+  const onSubmitSignupHandler = (data) => {
+    if (data.password === data.checkpassword) {
+      // console.log(data)
+      const id = data.id + "@" + email
+      console.log(id)
+      console.log(data.password)
+      console.log(data.nickname)
+      const userInfo = {
+        email: id,
+        password: data.password,
+        nickname: data.nickname
+      }
+      dispatch(__signupUser(userInfo))
+      reset();
+    } else {
+      alert('비밀번호 오류')
+    }
+  }
 
   return (
     <Layout>
-      <SignContainer>
+      <SignContainer onSubmit={handleSubmit(onSubmitSignupHandler)}>
         <SignHeader>
-          <span>회원가입</span>
+          <div>이전</div>
+          <div>회원가입</div>
+          <div></div>
         </SignHeader>
-        <SignForm id="signup" action="" onSubmit={handleSubmit}>
-          <SignText>로그인</SignText>
-          <InputWrapper>
-            <SelectInput
-              name="email"
-              value={value.email || ""}
-              onChange={handleInput}
-              placeholder="이메일 주소"
-            />
-            <MiddleContext>@{selectedOption}</MiddleContext>
-            <SelectWrapper>
-              <SelectButton onClick={() => setOpenSelectBox(!openSelectBox)}>
-                <img src={arrow} alt="셀렉트 박스 열기" />
-              </SelectButton>
-              {openSelectBox && (
-                <SelectBox>
-                  <SelectUl>
-                    <Selectli onClick={handleSelect} value="naver.com">
-                      naver.com
-                    </Selectli>
-                    <Selectli onClick={handleSelect} value="gmail.com">
-                      gmail.com
-                    </Selectli>
-                    <Selectli onClick={handleSelect} value="nate.com">
-                      nate.com
-                    </Selectli>
-                  </SelectUl>
-                </SelectBox>
-              )}
-            </SelectWrapper>
-          </InputWrapper>
-          <SignText>비밀번호</SignText>
-          <InputWrapper>
-            <SignInput
-              name="password"
-              value={value.password || ""}
-              onChange={handleInput}
-              type={showPassword ? "text" : "password"}
-              placeholder="영문, 숫자, 특수문자 조합 8자리 이상"
-            />
-            <img
-              onClick={toggleShowPassword}
-              src={eye}
-              alt="showPassword"
-              name="showPassword"
-            />
-          </InputWrapper>
-          <Errormessage>
-            {passwordError && (
-              <p>
-                비밀번호는 영문, 숫자, 특수문자 조합 8자리 이상이어야 합니다.
-              </p>
-            )}
-          </Errormessage>
 
-          <InputWrapper>
-            <SignInput
-              name="passwordConfirm"
-              value={value.passwordConfirm || ""}
-              onChange={handleInput}
-              type={showPassword ? "text" : "password"}
-              placeholder="비밀번호 재입력"
-            />
-            <img
-              onClick={toggleShowPasswordConfirm}
-              src={eye}
-              alt="showPassword"
-              name="showPassword"
-            />
-          </InputWrapper>
-          <Errormessage>
-            {passwordConfirmError && <p>비밀번호가 일치하지 않습니다.</p>}
-          </Errormessage>
-          <SignText>닉네임</SignText>
-          <InputWrapper>
-            <SignInput
+        <SignIdNincknameBox>
+          <p>아이디</p>
+          <div>
+            <div>
+              <SignsmInput name="email" type="text" placeholder="입력하기" required
+                {...register("id", {
+                  pattern: {
+                    value: /^[a-zA-Z0-9]+$/, message: "영문 숫자 2 ~ 8글자 사이로 입력",
+                  },
+                  maxLength: { value: 12, message: "12글자이내 작성", }
+                })}
+              />
+              <span>{errors?.id?.message}</span>
+            </div>
+            <p>@</p>
+            <div>
+              <CustomSelect data={data} onChangeData={onChangeData} />
+            </div>
+          </div>
+        </SignIdNincknameBox>
+
+        <SignPwBox>
+          <p>비밀번호</p>
+          <div>
+            <div>
+              <SignLgInput {...register("password", {
+                required: true,
+                pattern: {
+                  value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, message: "비밀번호 (최소 8자리 숫자, 문자, 특수문자 최소 1개",
+                },
+                maxLength: { value: 12, message: "8~12 자리 숫자, 문자, 특수문자 최소 1개", }
+              })}
+                name="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="영문, 숫자, 특수문자 조합 8자리 이상" />
+              <img
+                onClick={toggleShowPassword}
+                src={eye}
+                alt="showPassword"
+              />
+              <span>{errors?.password?.message}</span>
+            </div>
+            <div>
+              <SignLgInput name="checkpassword" type={showPassword ? "text" : "password"}
+                placeholder="비밀번호 재입력"
+                {...register("checkpassword", {
+                  required: true,
+                  pattern: {
+                    value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, message: "8~12 자리 숫자, 문자, 특수문자 최소 1개",
+                  },
+                  maxLength: { value: 12, message: "8~12 자리 숫자, 문자, 특수문자 최소 1개", }
+                })} />
+
+              <img
+                onClick={toggleShowPassword}
+                src={eye}
+                alt="showPassword"
+              />
+              <span>{errors?.checkpassword?.message}</span>
+
+            </div>
+          </div>
+        </SignPwBox>
+
+        <SignIdNincknameBox>
+          <p>닉네임</p>
+          <div>
+            <SignLgInput  {...register("nickname", {
+              required: true,
+              pattern: { value: /^[ㄱ-ㅎ|가-힣]+$/, message: "8자이내 한글 또는 영문", },
+              maxLength: { value: 8, message: "8자이내 한글 또는 영문", }
+            })}
               name="nickname"
-              value={value.nickname || ""}
-              onChange={handleInput}
-              placeholder="8자이내 한글 또는 영문"
-            />
-          </InputWrapper>
-          <Errormessage>
-            {nickNameError && <p>닉네임이 맞지 않습니다</p>}
-          </Errormessage>
-        </SignForm>
-        <ButtonWrapper>
-          <Button TabBtn2 type="submit" form="signup">
-            회원가입
-          </Button>
-        </ButtonWrapper>
+              type="text"
+              placeholder="8자이내 한글 또는 영문" />
+            <span>{errors?.nickname?.message}</span>
+          </div>
+
+        </SignIdNincknameBox>
+        <SignBtnBox><Button type="submit" TabBtn2>회원가입</Button></SignBtnBox>
+
+
       </SignContainer>
     </Layout>
   );
 };
-const SignContainer = styled.div`
-  ${FlexAttribute("column")}
+const SignContainer = styled.form`
+   ${FlexAttribute("column", "", "center")}   
   width: 100%;
+  height: 50.75rem;
+  gap: 2rem 0;
 `;
 
 const SignHeader = styled.div`
-  ${FlexAttribute("row", "center")}
   width: 100%;
-  height: 5rem;
-  padding-top: 2.5rem;
+  height: 4rem;
+  padding-top: 20px;
   border-bottom: 0.25rem solid #eeeeee;
   font-size: 1.125rem;
   font-weight: 700;
-`;
-
-const SignForm = styled.form`
-  ${FlexAttribute("column", "center")}
-  margin: 0px 20px 0px 20px;
-  img {
-    ${SignSvgStyle}
+  ${FlexAttribute("", "center", "space-around")}   
+  color: #222222;
+  > div {
+    height: 100%;
+    width: 33.3%;
+    ${props => props.theme.FlexCenter}
+    ${props => props.theme.Title_700_18}
   }
 `;
 
-const SignText = styled.span`
-  font-size: 0.875rem;
+const SignIdNincknameBox = styled.div`
+  width: 20.9375rem;
+  height: 4rem;
   margin-top: 2rem;
+  > p {
+    width: 100%;
+    height: 20%;
+    ${props => props.theme.Body_400_14}
+  }
+  >div {
+    position: relative;
+    width: 100%;
+    height: 80%;
+    ${props => props.theme.FlexRow}
+    > div {
+      width: 50%;
+      height: 90%;
+      > span {
+      ${props => props.theme.Span_alert}
+      }
+    }
+    >span {
+    position: absolute;
+    top: 40px;
+    ${props => props.theme.Span_alert}
+    
+    }
+  }
+  
+`;
+const SignPwBox = styled.div`
+  width: 20.9375rem;
+  height: 7.5rem;
+  > p {
+    width: 100%;
+    height: 20%;
+    ${props => props.theme.Body_400_14}
+  }
+  >div {
+    width: 100%;
+    height: 80%;
+    ${props => props.theme.FlexColumn}
+    > div {
+      position: relative;
+      width: 100%;
+      height: 50%;
+
+      > img {
+      position: absolute;
+      ${SignSvgStyle}  
+      top: 10px;
+      right: 0px;
+      }
+      > span {
+        position: absolute;
+        display: flex;
+        ${props => props.theme.Span_alert}
+      }
+    }
+  }
+ 
+
 `;
 
-const InputWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  ${FlexAttribute("row", "", "center")}
-  border-bottom: 0.125rem solid #eeeeee;
+const SignBtnBox = styled.div`
+  width: 20.9375rem;
+  height: 5rem;
+  margin-top: 5rem;
+  ${props => props.theme.FlexCenter}
+`
+const SignsmInput = styled.input`
+  width: 9.75rem;
+  height: 1.5625rem;
+  margin-top: 5px;
+  border-bottom: 2px solid #EEEEEE;
+  background: transparent;
+  font-size: 12px;
+  cursor: pointer;
+  ::placeholder{
+    color: #666666;
+  }
 `;
-
-const SignInput = styled.input`
-  width: 90%;
-  height: 2.875rem;
-  font-size: 0.75rem;
-  ::placeholder {
-    color: #cccccc;
+const SignLgInput = styled.input`
+  width: 20.9375rem;
+  height: 1.5625rem;
+  margin-top: 5px;
+  border-bottom: 2px solid #EEEEEE;
+  background: transparent;
+  font-size: 12px;
+  cursor: pointer;
+  ::placeholder{
+    color: #666666;
   }
 `;
 
-const SelectInput = styled.input`
-  width: 50%;
-  height: 2.875rem;
-  font-size: 0.75rem;
-  ::placeholder {
-    color: #cccccc;
-  }
-`;
-
-const ButtonWrapper = styled.div`
-  margin-top: 100px;
-  margin-left: 50px;
-  button:first-child {
-    margin-bottom: 1.125rem;
-  }
-`;
-const Errormessage = styled.div`
-  width: 100%;
-  height: 2.875rem;
-  font-size: 0.75rem;
-`;
-
-const MiddleContext = styled.div``;
-
-const SelectButton = styled.button`
-  position: absolute;
-  right: 10px;
-`;
-
-const SelectWrapper = styled.div`
-  position: relative;
-  width: 50%;
-`;
-
-const SelectBox = styled.div`
-  position: relative;
-  width: 100%;
-  margin-top: 10px;
-`;
-
-const SelectUl = styled.ul`
-  position: absolute;
-  max-height: 120px;
-  right: 10px;
-  margin-top: 20px;
-`;
-const Selectli = styled.li`
-  padding: 1.5px;
-  border: 1px solid black;
-  border-bottom: none;
-  &:last-child {
-    border-bottom: 1px solid black;
-  }
-  margin-bottom: -1px;
-`;
 export default Signup;
