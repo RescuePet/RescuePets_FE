@@ -46,7 +46,7 @@
 .contentTextTitle {
     width: 8.75rem;
     height: 20%;
-    border: 1px solid gray;
+
 }
 
 .contentTextDesc {
@@ -54,7 +54,7 @@
     height: 50%;
     text-align: center;
     font-size: 12px;
-    border: 1px solid red;
+
 }
 
 .contentTextBtnBox {
