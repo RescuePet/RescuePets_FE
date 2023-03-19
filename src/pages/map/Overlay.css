@@ -1,45 +1,82 @@
-.overlayWrap {
+.contentDiv {
     position: relative;
-    width: 300px;
-    height: 100px;
+    width: 15rem;
+    height: 5.625rem;
     bottom: 100px;
-    background: #eee;
+    background: #FFFFFF;
     border-radius: .4em;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: row
+    flex-direction: row;
+    gap: 0 10px;
 }
 
-.overlayWrap::after {
+.contentDiv::after {
     content: "";
     position: absolute;
     top: 100%;
     left: 50%;
-    margin-left: -15px;
-    border-width: 15px;
+    margin-left: -10px;
+    border-width: 10px;
     border-style: solid;
-    color: #eee;
-    border-color: #eee transparent transparent transparent;
+    color: #FFFFFF;
+    border-color: #FFFFFF transparent transparent transparent;
 }
 
-.overlayImg {
-    width: 25%;
+.contentImgArea {
+    width: 4.75rem;
+    height: 4.75rem;
+    border: .125rem;
+}
+
+.contentTextArea {
+    width: 60%;
     height: 90%;
+    display: flex;
+    justify-content: center;
+    gap: 5px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    /* border: 1px solid blue; */
+}
+
+.contentTextTitle {
+    width: 8.75rem;
+    height: 20%;
+    border: 1px solid gray;
+}
+
+.contentTextDesc {
+    width: 8.75rem;
+    height: 50%;
+    text-align: center;
+    font-size: 12px;
     border: 1px solid red;
 }
 
-.accommInfoWrap {
-    width: 65%;
-    height: 90%;
-    display: flex;
-
-    justify-content: center;
-    border: 1px solid blue;
-}
-
-.accommInfoWrap h1 {
+.contentTextBtnBox {
     width: 100%;
     height: 20%;
-    border: 1px solid gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 0 10px;
+}
+
+.contentTextDetailBtn {
+    width: 40%;
+    height: 100%;
+    background: #eee;
+    border-radius: 4px;
+}
+
+.contentTextDeleteBtn {
+    width: 40%;
+    height: 100%;
+    background: #eee;
+    border-radius: 4px;
 }
