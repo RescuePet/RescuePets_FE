@@ -16,9 +16,20 @@ const DefailtInput = styled.input`
   font-size: 12px;
   cursor: pointer;
   ${(props) =>
-        props.lg &&
-        css`
+    props.lg &&
+    css`
      width: 335px;
+    `}
+     ${(props) =>
+    props.signlg &&
+    css`
+     width: 335px;
+     height: 2.875rem;
+     font-size: 12px;
+     ::placeholder {
+    color: #cccccc;
+  }
+    
     `}
     &:hover {
     cursor: pointer;

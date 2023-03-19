@@ -1,70 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import arrow from "../../asset/arrow.svg";
 import eye from "../../asset/eye.svg";
 import Layout from "../../layouts/Layout";
-import { __signupUser } from "../../redux/modules/signSlice";
+// import { __signupUser } from "../../redux/modules/signSlice";
 import { FlexAttribute, SignSvgStyle } from "../../style/Mixin";
 import Button from "../../elements/Button";
+import { CustomSelect } from "../../elements/CustomSelect";
+import Input from "../../elements/Input"
 
 const Signup = () => {
-  const [value, setValue] = useState({
-    email: "",
-    password: "",
-    passwordConfirm: "",
-    nickname: "",
-  });
-  // console.log(value);
+
+
+  const data = [
+    { id: 0, name: "naver.com" },
+    { id: 1, name: "gmail.com" },
+    { id: 2, name: "nate.com" },
+  ];
+
+  const {
+    register, handleSubmit, formState: { errors },
+    reset, resetField, } = useForm({ mode: 'onChange' });
+
+
+  // 비밀번호 체크 로직
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
   const [passwordConfirmError, setPasswordConfirmError] = useState(false);
-  const [nickNameError, setNickNameError] = useState(false);
-  const [openSelectBox, setOpenSelectBox] = useState(false);
-  //셀렉트박스 저장하는 스테이트
-  const [selectedOption, setSelectedOption] = useState("");
-  //선택한옵션 랜더링하는 스테이트
+
   const dispatch = useDispatch();
-  const handleInput = (e) => {
-    setValue({ ...value, [e.target.name]: e.target.value });
-  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(value.email + "@" + selectedOption);
 
-    // 비밀번호 정규식 확인
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,}$/;
-    if (!passwordRegex.test(value.password)) {
-      setPasswordError(true);
-      return;
-    }
 
-    // 비밀번호 재입력 일치 확인
-    if (value.password !== value.passwordConfirm) {
-      setPasswordConfirmError(true);
-      return;
-    }
-
-    // 닉네임 정규식 확인
-    const nicknameRegex = /^[a-zA-Z가-힣]{1,8}$/;
-    if (!value.nickname || !nicknameRegex.test(value.nickname)) {
-      setNickNameError(true);
-      return;
-    }
-    // console.log(value.nickname);
-
-    dispatch(
-      __signupUser({
-        email: value.email,
-        password: value.password,
-        passwordConfirm: value.passwordConfirm,
-        nickname: value.nickname,
-      })
-    );
-  };
 
   //비밀번호 이모티콘
   const toggleShowPassword = () => {
@@ -75,24 +44,21 @@ const Signup = () => {
     setShowPasswordConfirm(!showPasswordConfirm);
   };
 
-  const handleSelect = (event) => {
-    const selectedOption = event.target.textContent;
-    setSelectedOption(selectedOption);
-    // console.log(event.target.textContent);
-    // const updatedEmail = `${value.email}${selectedOption}`;
-    // setValue({ ...value, email: updatedEmail });
-    setOpenSelectBox(false); // 옵션 박스 닫기
-  };
+
+
+  const onSubmitSignupHandler = (data) => {
+    console.log(data)
+  }
 
   return (
     <Layout>
-      <SignContainer>
+      <SignContainer onSubmit={handleSubmit(onSubmitSignupHandler)}>
         <SignHeader>
           <span>회원가입</span>
         </SignHeader>
-        <SignForm id="signup" action="" onSubmit={handleSubmit}>
+        <SignForm >
           <SignText>로그인</SignText>
-          <InputWrapper>
+          {/* <InputWrapper>
             <SelectInput
               name="email"
               value={value.email || ""}
@@ -120,13 +86,18 @@ const Signup = () => {
                 </SelectBox>
               )}
             </SelectWrapper>
-          </InputWrapper>
+          </InputWrapper> */}
           <SignText>비밀번호</SignText>
           <InputWrapper>
             <SignInput
+              {...register("password", {
+                required: true,
+                pattern: {
+                  value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, message: "비밀번호 (최소 8자리 숫자, 문자, 특수문자 최소 1개",
+                },
+                maxLength: { value: 12, message: "8~12 자리 숫자, 문자, 특수문자 최소 1개", }
+              })}
               name="password"
-              value={value.password || ""}
-              onChange={handleInput}
               type={showPassword ? "text" : "password"}
               placeholder="영문, 숫자, 특수문자 조합 8자리 이상"
             />
@@ -138,18 +109,19 @@ const Signup = () => {
             />
           </InputWrapper>
           <Errormessage>
-            {passwordError && (
-              <p>
-                비밀번호는 영문, 숫자, 특수문자 조합 8자리 이상이어야 합니다.
-              </p>
-            )}
+            <span>{errors?.password?.message}</span>
           </Errormessage>
 
           <InputWrapper>
             <SignInput
-              name="passwordConfirm"
-              value={value.passwordConfirm || ""}
-              onChange={handleInput}
+              {...register("checkpassword", {
+                required: true,
+                pattern: {
+                  value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, message: "8~12 자리 숫자, 문자, 특수문자 최소 1개",
+                },
+                maxLength: { value: 12, message: "8~12 자리 숫자, 문자, 특수문자 최소 1개", }
+              })}
+              name="checkpassword"
               type={showPassword ? "text" : "password"}
               placeholder="비밀번호 재입력"
             />
@@ -166,26 +138,29 @@ const Signup = () => {
           <SignText>닉네임</SignText>
           <InputWrapper>
             <SignInput
+              {...register("nickname", {
+                required: true,
+                pattern: { value: /^[ㄱ-ㅎ|가-힣]+$/, message: "한글만 2 ~ 8글자 사이로 입력", },
+                maxLength: { value: 8, message: "숫자만 입력! 3자리수 이하로 작성", }
+              })}
+
               name="nickname"
-              value={value.nickname || ""}
-              onChange={handleInput}
+              type="text"
               placeholder="8자이내 한글 또는 영문"
             />
           </InputWrapper>
           <Errormessage>
-            {nickNameError && <p>닉네임이 맞지 않습니다</p>}
+            <span>{errors?.nickname?.message}</span>
           </Errormessage>
         </SignForm>
         <ButtonWrapper>
-          <Button TabBtn2 type="submit" form="signup">
-            회원가입
-          </Button>
+          <Button type="submit" TabBtn2>회원가입</Button>
         </ButtonWrapper>
       </SignContainer>
     </Layout>
   );
 };
-const SignContainer = styled.div`
+const SignContainer = styled.form`
   ${FlexAttribute("column")}
   width: 100%;
 `;
@@ -200,7 +175,7 @@ const SignHeader = styled.div`
   font-weight: 700;
 `;
 
-const SignForm = styled.form`
+const SignForm = styled.div`
   ${FlexAttribute("column", "center")}
   margin: 0px 20px 0px 20px;
   img {
@@ -221,22 +196,14 @@ const InputWrapper = styled.div`
 `;
 
 const SignInput = styled.input`
-  width: 90%;
-  height: 2.875rem;
-  font-size: 0.75rem;
-  ::placeholder {
+    width: 20.9375rem;
+     height: 2.875rem;
+     font-size: 12px;
+     ::placeholder {
     color: #cccccc;
   }
-`;
+`
 
-const SelectInput = styled.input`
-  width: 50%;
-  height: 2.875rem;
-  font-size: 0.75rem;
-  ::placeholder {
-    color: #cccccc;
-  }
-`;
 
 const ButtonWrapper = styled.div`
   margin-top: 100px;
@@ -251,37 +218,6 @@ const Errormessage = styled.div`
   font-size: 0.75rem;
 `;
 
-const MiddleContext = styled.div``;
 
-const SelectButton = styled.button`
-  position: absolute;
-  right: 10px;
-`;
 
-const SelectWrapper = styled.div`
-  position: relative;
-  width: 50%;
-`;
-
-const SelectBox = styled.div`
-  position: relative;
-  width: 100%;
-  margin-top: 10px;
-`;
-
-const SelectUl = styled.ul`
-  position: absolute;
-  max-height: 120px;
-  right: 10px;
-  margin-top: 20px;
-`;
-const Selectli = styled.li`
-  padding: 1.5px;
-  border: 1px solid black;
-  border-bottom: none;
-  &:last-child {
-    border-bottom: 1px solid black;
-  }
-  margin-bottom: -1px;
-`;
 export default Signup;
