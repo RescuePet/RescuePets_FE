@@ -9,10 +9,8 @@ import { __signupUser } from "../../redux/modules/signSlice";
 import { FlexAttribute, SignSvgStyle } from "../../style/Mixin";
 import Button from "../../elements/Button";
 import { CustomSelect } from "../../elements/CustomSelect";
-import Input from "../../elements/Input"
 
 const Signup = () => {
-
 
   const data = [
     { id: 0, name: "naver.com" },
@@ -27,34 +25,31 @@ const Signup = () => {
 
   const {
     register, handleSubmit, formState: { errors },
-    reset, resetField, } = useForm({ mode: 'onChange' });
+    reset, } = useForm({ mode: 'onChange' });
 
 
   // 비밀번호 체크 로직
   const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-  const [passwordConfirmError, setPasswordConfirmError] = useState(false);
-
   const dispatch = useDispatch();
-
-
-
 
   //비밀번호 이모티콘
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-  //비밀번호 확인 이모티콘
-  const toggleShowPasswordConfirm = () => {
-    setShowPasswordConfirm(!showPasswordConfirm);
-  };
-
-
-
   const onSubmitSignupHandler = (data) => {
     if (data.password === data.checkpassword) {
-      console.log(data)
-      console.log("이메일 :", data.id + "@" + email)
+      // console.log(data)
+      const id = data.id + "@" + email
+      console.log(id)
+      console.log(data.password)
+      console.log(data.nickname)
+      const userInfo = {
+        email: id,
+        password: data.password,
+        nickname: data.nickname
+      }
+      dispatch(__signupUser(userInfo))
+      reset();
     } else {
       alert('비밀번호 오류')
     }
@@ -273,9 +268,5 @@ const SignLgInput = styled.input`
     color: #666666;
   }
 `;
-
-
-
-
 
 export default Signup;

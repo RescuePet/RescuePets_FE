@@ -19,6 +19,7 @@ export const __signinUser = createAsyncThunk(
 export const __signupUser = createAsyncThunk(
   "signupUser",
   async (payload, thunkAPI) => {
+    console.log(payload)
     try {
       const response = await instance.post("/api/member/signup", payload);
       const TOKEN = response.headers.authorization;
