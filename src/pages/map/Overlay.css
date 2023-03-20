@@ -1,7 +1,9 @@
 .contentDiv {
     position: relative;
-    width: 15rem;
-    height: 5.625rem;
+    /* width: 15rem; */
+    width: 20.9375rem;
+    /* height: 5.625rem; */
+    height: 7rem;
     bottom: 100px;
     background: #FFFFFF;
     border-radius: .4em;
@@ -9,7 +11,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    gap: 0 10px;
+    /* gap: 0 10px; */
 }
 
 .contentDiv::after {
@@ -25,14 +27,21 @@
 }
 
 .contentImgArea {
-    width: 4.75rem;
-    height: 4.75rem;
+    /* width: 4.75rem;
+    height: 4.75rem; */
+    width: 7.5rem;
+    height: 7rem;
+    border-radius: .4em;
+    background: #CCCCCC;
     border: .125rem;
+    /* border: 1px solid red; */
 }
 
 .contentTextArea {
-    width: 60%;
-    height: 90%;
+    /* width: 60%;
+    height: 90%; */
+    width: 13.4375rem;
+    height: 7rem;
     display: flex;
     justify-content: center;
     gap: 5px 0;
@@ -41,7 +50,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    /* border: 1px solid blue; */
+    border: 1px solid blue;
 }
 
 .contentTextTitle {
