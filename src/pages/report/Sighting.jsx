@@ -112,8 +112,8 @@ const Sighting = () => {
     const imageSize = new kakao.maps.Size(32, 34) // 마커이미지의 크기입니다
     const imageOption = { offset: new kakao.maps.Point(10, 20) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-    const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
-      markerPosition = new kakao.maps.LatLng(lati, long); // 마커가 표시될 위치입니다
+    const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
+
     const marker = new kakao.maps.Marker({
       // 지도 중심좌표에 마커를 생성합니다 
       position: map.getCenter(),
@@ -121,18 +121,24 @@ const Sighting = () => {
     });
     // 지도에 마커를 표시합니다
     marker.setMap(map);
+
+    let geocoder = new kakao.maps.services.Geocoder();
     kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
-      // 클릭한 위도, 경도 정보를 가져옵니다 
-      const latlng = mouseEvent.latLng;
-      // 마커 위치를 클릭한 위치로 옮깁니다
-      marker.setPosition(latlng);
-      const messageLng = `${latlng.getLng()}`;
-      const messageLat = `${latlng.getLat()} `;
-      const resultlngDiv = document.getElementById('clicklng');
-      const resultlatDiv = document.getElementById('clicklat');
-      resultlngDiv.innerHTML = messageLat;
-      resultlatDiv.innerHTML = messageLng;
+      searchDetailAddrFromCoords(mouseEvent.latLng, function (result, status) {
+
+        if (status === kakao.maps.services.Status.OK) {
+          marker.setPosition(mouseEvent.latLng);
+          marker.setMap(map);
+          const currentAddress = result[0]?.address?.address_name
+          const addressDiv = document.getElementById('address');
+          addressDiv.innerHTML = currentAddress;
+        }
+      });
     });
+    const searchDetailAddrFromCoords = (coords, callback) => {
+      geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+    }
+
   }, [onSucces])
 
   // 이미지 로직 
@@ -321,8 +327,7 @@ const Sighting = () => {
           <ReportKakaoMapBoxTitle>
             <p>목격위치 *</p>
             <div>
-              <div><label id='clicklng'>위도</label></div>
-              <div><label id='clicklat'>경도</label></div>
+              <div><label id='address'>주소</label></div>
             </div>
           </ReportKakaoMapBoxTitle>
           <ReportKakaoMapBoxMap id='map'></ReportKakaoMapBoxMap>

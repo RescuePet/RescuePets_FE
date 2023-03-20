@@ -116,7 +116,7 @@ const Missing = () => {
         const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
             mapOption = {
                 center: new kakao.maps.LatLng(lati, long), // 지도의 중심좌표
-                level: 12 // 지도의 확대 레벨
+                level: 5 // 지도의 확대 레벨
             };
 
         const map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
@@ -139,12 +139,11 @@ const Missing = () => {
         kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
             searchDetailAddrFromCoords(mouseEvent.latLng, function (result, status) {
                 if (status === kakao.maps.services.Status.OK) {
-                    console.log(result[0]?.address?.address_name)
                     marker.setPosition(mouseEvent.latLng);
                     marker.setMap(map);
-                    const address = result[0]?.address?.address_name
-                    const resultlngDiv = document.getElementById('clicklng');
-                    resultlngDiv.innerHTML = address;
+                    const currentAddress = result[0]?.address?.address_name
+                    const addressDiv = document.getElementById('address');
+                    addressDiv.innerHTML = currentAddress;
                 }
             });
         });
@@ -152,6 +151,7 @@ const Missing = () => {
         const searchDetailAddrFromCoords = (coords, callback) => {
             geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
         }
+
     }, [onSucces])
 
 
@@ -359,8 +359,7 @@ const Missing = () => {
                     <ReportKakaoMapBoxTitle>
                         <p>실종위치 *</p>
                         <div>
-                            <div><label id='clicklng'></label></div>
-                            <div><label id='clicklat'></label></div>
+                            <div><label id='address'></label></div>
                         </div>
                     </ReportKakaoMapBoxTitle>
                     {/* 맵에서 뿌려줄때 4~6초 걸린다 로딩일때 보여줄것을 만들어야한다  */}
