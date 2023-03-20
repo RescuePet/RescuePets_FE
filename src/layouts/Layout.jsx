@@ -11,13 +11,13 @@ const Layout = ({ children }) => {
 
 const WebLayout = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background-color: #333;
 `;
 
 const Box = styled.div`
   width: 430px;
-  height: 100vh;
+  height: 100%;
   margin: 0 auto;
   display: flex;
   justify-content: center;
@@ -29,6 +29,7 @@ const Box = styled.div`
   @media screen and (max-width: 430px) {
     margin: 0 auto;
     width: 375px;
+    height: 100%;
     /* border: 1px solid blue; */
     background-color: #ffffff;
   }
