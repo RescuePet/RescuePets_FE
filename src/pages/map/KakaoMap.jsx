@@ -16,6 +16,7 @@ const KakaoMap = () => {
   })
 
   const [mapBg, setMapBg] = useState(menutoggle);
+
   useEffect(() => {
     setMapBg(menutoggle)
   }, [menutoggle])
@@ -41,6 +42,7 @@ const KakaoMap = () => {
   }
 
   const mapRef = useRef();
+
   useEffect(() => {
     const container = document.getElementById('myMap');
     const options = {
@@ -48,10 +50,10 @@ const KakaoMap = () => {
       level: 10,
     };
     mapRef.current = new kakao.maps.Map(container, options);
-  }, [location]);
+    // }, [location]);
 
-  // 
-  useEffect(() => {
+    // 
+    // useEffect(() => {
     const overlayInfos = data?.map(info => {
       console.log(info)
       return {
@@ -72,7 +74,6 @@ const KakaoMap = () => {
       let position = new kakao.maps.LatLng(el.lat, el.lng);
 
 
-
       // content HTMLElement 생성
       const content = document.createElement('div');
       content.classList.add('contentDiv');
@@ -90,7 +91,7 @@ const KakaoMap = () => {
       contentTextTitle.classList.add('contentTextTitle');
       contentTextTitle.innerText = `${el.title}`;
       contentTextArea.appendChild(contentTextTitle)
-
+      // 
 
       const contentTextdesc = document.createElement('div');
       contentTextdesc.classList.add('contentTextDesc');
@@ -105,7 +106,6 @@ const KakaoMap = () => {
       contentTextDetailBtn.classList.add('contentTextDetailBtn');
       contentTextDetailBtn.appendChild(document.createTextNode('상세'));
       contentTextBtnBox.appendChild(contentTextDetailBtn)
-
 
 
       const closeBtn = document.createElement('button');
@@ -123,38 +123,14 @@ const KakaoMap = () => {
         customOverlay.setMap(null);
       };
 
-      // let content =
-      //   `<div class="overlayWrap">` +
-      //   `    <img class="overlayImg" src=${el.img} alt="img"/>` +
-      //   '    <div class="accommInfoWrap">' +
-      //   `        <h1 class="accommName">${el.title}</h1>` +
-      //   `<div class="close" id=${el.id} onclick="closeOverlay()" title="닫기">X</div>` +
-      //   '    </div>' +
-      //   '</div>';
-
-
-
-      // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
 
       kakao.maps.event.addListener(marker, 'click', function () {
         customOverlay.setMap(mapRef.current);
       });
-      // 인포 닫는 로직 구현해야만한다 1 
-
-
-      // kakao.maps.event.addListener(marker, 'mouseover', function () {
-      //   customOverlay.setMap(mapRef.current);
-      // });
-
-      // kakao.maps.event.addListener(marker, 'mouseout', function () {
-      //   setTimeout(function () {
-      //     customOverlay.setMap();
-      //   });
-      // });
-      // 
 
     });
-  }, [data]);
+    // 의존성배열에 현재주소를 가지고오면 
+  }, [onSucces]);
 
   return (
     <>
