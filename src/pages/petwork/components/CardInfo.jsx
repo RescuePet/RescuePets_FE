@@ -3,11 +3,11 @@ import styled from "styled-components";
 import { FlexAttribute } from "../../../style/Mixin";
 import { Body_400_12 } from "../../../style/theme";
 
-const CardInfo = () => {
+const CardInfo = ({ children }) => {
   return (
     <InfoWrapper>
       <TitleSvg></TitleSvg>
-      <Contents>수원 영통구</Contents>
+      <Contents>{children}</Contents>
     </InfoWrapper>
   );
 };

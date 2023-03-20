@@ -4,22 +4,22 @@ import { FlexAttribute, StateSpanStyle } from "../../../style/Mixin";
 import { Body_400_14 } from "../../../style/theme";
 import CardInfo from "./CardInfo";
 
-const Card = () => {
+const Card = ({ item }) => {
   return (
     <ListCard>
       <CardImgWrapper>
-        <CardImg></CardImg>
-        <StateSpan>강아지</StateSpan>
+        <CardImg src={item.postImages[0].imageURL}></CardImg>
+        <StateSpan>{item.upkind}</StateSpan>
       </CardImgWrapper>
       <CardInfoContainer>
         <CardTitleWrapper>
-          <CardTitle>러시안 블루</CardTitle>
-          <SexSvg></SexSvg>
+          <CardTitle>{item.kindCd}</CardTitle>
+          <SexSvg>{item.sexCd}</SexSvg>
         </CardTitleWrapper>
         <CardInfoWrapper>
-          <CardInfo></CardInfo>
-          <CardInfo></CardInfo>
-          <CardInfo></CardInfo>
+          <CardInfo>{item.happenPlace}</CardInfo>
+          <CardInfo>{item.happenDt}</CardInfo>
+          <CardInfo>{item.neuterYn}</CardInfo>
         </CardInfoWrapper>
       </CardInfoContainer>
     </ListCard>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import { Title_700_18 } from "../../style/theme";
@@ -6,8 +6,41 @@ import { HeaderStyle, FlexAttribute } from "../../style/Mixin";
 import Footer from "../../layouts/Footer";
 import Card from "./components/Card";
 import Category from "./components/Category";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  __getCatchPost,
+  __getMissingPost,
+} from "../../redux/modules/petworkSlice";
+import { useInView } from "react-intersection-observer";
 
 const PetworkList = () => {
+  const [missingRef, missingInView] = useInView();
+  const [catchRef, catchInView] = useInView();
+  const dispatch = useDispatch();
+  const petwork = useSelector((state) => state.petwork);
+  const [missingPage, setMissingPage] = useState(1);
+  const [catchPage, setCatchPage] = useState(1);
+  const missingPayloadSettings = {
+    page: missingPage,
+    size: 5,
+  };
+  const catchPayloadSettings = {
+    page: catchPage,
+    size: 5,
+  };
+  useEffect(() => {
+    if (missingInView) {
+      setMissingPage((prev) => prev + 1);
+      dispatch(__getMissingPost(missingPayloadSettings));
+    }
+    if (catchInView) {
+      setCatchPage((prev) => prev + 1);
+      dispatch(__getCatchPost(catchPayloadSettings));
+    }
+  }, [missingInView, catchInView]);
+
+  console.log("console petwork", petwork);
+
   return (
     <Layout>
       <PetworkLayout>
@@ -17,28 +50,24 @@ const PetworkList = () => {
         <Category></Category>
         <ListContainer>
           <ListTitleWrapper>
-            <ListTitle>우리집 반려동물을 찾아주세요</ListTitle>
+            <ListTitle>{petwork.category}</ListTitle>
             <RefreshButton></RefreshButton>
           </ListTitleWrapper>
           <ListCardContainer>
-            <Card></Card>
-            <Card></Card>
-            <Card></Card>
-            <Card></Card>
-            <Card></Card>
-            <Card></Card>
-            <Card></Card>
-            <Card></Card>
-            <Card></Card>
-            <Card></Card>
-            <Card></Card>
-            <Card></Card>
-            <Card></Card>
-            <Card></Card>
-            <Card></Card>
-            <Card></Card>
-            <Card></Card>
-            <Card></Card>
+            {petwork.category === "우리집 반려동물을 찾아주세요"
+              ? petwork?.missingPostLists?.map((item, index) => {
+                  return (
+                    <Card key={`missing-post-${index}`} item={item}></Card>
+                  );
+                })
+              : petwork?.catchPostLists?.map((item, index) => {
+                  return <Card key={`catch-post-${index}`} item={item}></Card>;
+                })}
+            {petwork.category === "우리집 반려동물을 찾아주세요" ? (
+              <div ref={missingRef}></div>
+            ) : (
+              <div ref={catchRef}></div>
+            )}
           </ListCardContainer>
         </ListContainer>
         <Footer></Footer>
