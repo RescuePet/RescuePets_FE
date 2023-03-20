@@ -36,7 +36,7 @@ const MissingDetail = () => {
           </InfoWrapper>
           <InfoWrapper>
             <BodyTitleSvg>📍</BodyTitleSvg>
-            <BodyTitleText>발견일시</BodyTitleText>
+            <BodyTitleText>실종일시</BodyTitleText>
             <ContentTextWrapper>
               <ContentTextBox>
                 <ContentOptionText>23.03.14 | </ContentOptionText>
@@ -60,6 +60,13 @@ const MissingDetail = () => {
                 사람 손을 무서워하진 않아서 실종이나 유기된게 아닐까
                 추측해봅니다ㅠㅠ
               </ContentText>
+            </ContentTextWrapper>
+          </InfoWrapper>
+          <InfoWrapper>
+            <BodyTitleSvg>📍</BodyTitleSvg>
+            <BodyTitleText>사례금</BodyTitleText>
+            <ContentTextWrapper>
+              <ContentText>500,000원</ContentText>
             </ContentTextWrapper>
           </InfoWrapper>
         </InfoContainer>
