@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-export const CustomSelect = ({ data, onChangeData }) => {
+export const CustomSelect = ({ data, onChangeData, onChangeID }) => {
   const [currentValue, setCurrentValue] = useState(data[0].name);
   // console.log(currentValue) //이 값을 상위컴포넌트로 보내야 한다 
   const [showOptions, setShowOptions] = useState(false);
@@ -11,8 +11,10 @@ export const CustomSelect = ({ data, onChangeData }) => {
     setCurrentValue(e.target.getAttribute("value"));
     // 이코드로 상위컴포넌트로 가장최신값을 보낸다 
     onChangeData(e.target.getAttribute("value"))
+    onChangeID(e.target.id)
   };
-  // console.log(currentValue)
+
+
   return (
     <SelectBox onClick={() => setShowOptions((prev) => !prev)}>
       <Label>{currentValue}</Label>
@@ -20,8 +22,11 @@ export const CustomSelect = ({ data, onChangeData }) => {
         {data.map((data) => (
           <Option
             key={data.id}
+            // 옵션들 값
+            id={data.value}
             value={data.name}
             onClick={handleOnChangeSelectValue}>
+            {/* 선택된 값*/}
             {data.name}
           </Option>
         ))}

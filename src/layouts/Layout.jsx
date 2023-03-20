@@ -29,6 +29,7 @@ const Box = styled.div`
   @media screen and (max-width: 430px) {
     margin: 0 auto;
     width: 375px;
+    height: 100%;
     /* border: 1px solid blue; */
     background-color: #ffffff;
   }

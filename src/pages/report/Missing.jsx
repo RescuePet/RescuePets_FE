@@ -15,7 +15,7 @@ import {
     ReportAnimalSignificantBox, ReportAnimalSignificantBoxTitle, ReportAnimalSignificantBoxInputArea, ReportAnimalPictureArea,
     ReportAnimalPictureAreaTitle, ReportAnimalPictureAreaInputBox, ReportAnimalPictureInput, ReportAnimalPicturePreview, ReportAnimalUserInfo
 } from './components/reportstyle';
-import { NameValue, TimeValue } from './components/data';
+import { NameValue, TimeValue, SeletegenderArr, seleteneuteredArr } from './components/data';
 
 const Missing = () => {
     let imageRef;
@@ -24,10 +24,18 @@ const Missing = () => {
 
     // 종류데이터
     const [type, setType] = useState(NameValue[0].name)
-    // console.log(type)
+    const [typeID, setTypeID] = useState('DOG')
+
+    // console.log("EN :", typeID)
+
     const onChangeData = (newData) => {
         setType(newData);
     }
+
+    const onChangeID = (newValue) => {
+        setTypeID(newValue)
+    }
+
     const [time, setTime] = useState(TimeValue[0].name)
     // console.log(time)
     const onChangeTimeData = (newData) => {
@@ -37,30 +45,21 @@ const Missing = () => {
     const [currentGenderTab, setCurrentGenderTab] = useState(0);
     const [currentNeuteredTab, setCurrentNeuteredTab] = useState(0);
 
-    const SeletegenderArr = [
-        { gender: '수컷' },
-        { gender: '암컷' },
-        { gender: '모름' },
-    ];
-
-    const seleteneuteredArr = [
-        { neutered: "완료" },
-        { neutered: "미완료" },
-        { neutered: "모름" }
-    ];
     const [currentGenderValue, setCurrentGenderValue] = useState('수컷');
+    const [currentGenderEnValue, setCurrentGenderEnValue] = useState('DOG')
     const [currentNeuteredValue, setCurrentNeuteredValue] = useState('완료');
+    const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState('YES');
 
     const selectMGenderHandler = (index) => {
         setCurrentGenderTab(index);
         setCurrentGenderValue(SeletegenderArr[index].gender)
+        setCurrentGenderEnValue(SeletegenderArr[index].value)
     };
     const selectNeuteredHandler = (index) => {
         setCurrentNeuteredTab(index);
         setCurrentNeuteredValue(seleteneuteredArr[index].neutered)
+        setCurrentNeuteredEnValue(seleteneuteredArr[index].value)
     };
-
-
 
     const {
         register, handleSubmit, formState: { errors }, reset,
@@ -75,12 +74,14 @@ const Missing = () => {
     // form submit버튼
 
     const onSubmitMissingHanlder = (data) => {
-
-        console.log("종류 :", type)
+        console.log(data)
+        // console.log("종류 :", type)
+        console.log("종류 :", typeID)
         console.log("품종 :", data.animaltypes + '종')
-        console.log("성별 :", currentGenderValue)
-        console.log("중성회 :", currentNeuteredValue)
-        // console.log("나이 :", currentSeleteAgeValue)
+        // console.log(currentGenderValue)
+        console.log("성별", currentGenderEnValue)
+        // console.log(currentNeuteredValue)
+        console.log("중성화", currentNeuteredEnValue)
         console.log("kg :", data.animalkg)
         console.log("색깔 :", data.animalcolor)
         console.log("날짜 :", data.days)
@@ -113,7 +114,7 @@ const Missing = () => {
         const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
             mapOption = {
                 center: new kakao.maps.LatLng(lati, long), // 지도의 중심좌표
-                level: 5 // 지도의 확대 레벨
+                level: 12 // 지도의 확대 레벨
             };
 
         const map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
@@ -211,7 +212,7 @@ const Missing = () => {
 
                             <div>
                                 <p>종류</p>
-                                <CustomSelect data={NameValue} onChangeData={onChangeData} />
+                                <CustomSelect data={NameValue} onChangeData={onChangeData} onChangeID={onChangeID} />
                             </div>
 
                             <div>
@@ -239,6 +240,7 @@ const Missing = () => {
                                     SeletegenderArr.map((el, index) => (
                                         <li
                                             key={index}
+                                            value={el.value}
                                             className={index === currentGenderTab ? "submenu focused" : "submenu"}
                                             onClick={() => selectMGenderHandler(index)}
                                         >

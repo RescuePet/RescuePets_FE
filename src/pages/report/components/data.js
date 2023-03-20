@@ -1,7 +1,20 @@
+export const SeletegenderArr = [
+    { gender: '수컷', value: "MALE" },
+    { gender: '암컷', value: "FEMALE" },
+    { gender: '모름', value: "UNKNOWN" },
+];
+
+export const seleteneuteredArr = [
+    { neutered: "완료", value: "YES" },
+    { neutered: "미완료", value: "NO" },
+    { neutered: "모름", value: "UNKNOWN" }
+];
+
+
 export const NameValue = [
-    { id: 0, name: "강아지" },
-    { id: 1, name: "고양이" },
-    { id: 2, name: "기타" },
+    { id: 0, name: "강아지", value: "DOG", },
+    { id: 1, name: "고양이", value: "CAT" },
+    { id: 2, name: "기타", value: "ECT" },
 ]
 
 export const TimeValue = [

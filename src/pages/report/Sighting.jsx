@@ -15,43 +15,47 @@ import {
   ReportAnimalSignificantBox, ReportAnimalSignificantBoxTitle, ReportAnimalSignificantBoxInputArea, ReportAnimalPictureArea,
   ReportAnimalPictureAreaTitle, ReportAnimalPictureAreaInputBox, ReportAnimalPictureInput, ReportAnimalPicturePreview, ReportAnimalUserInfo
 } from './components/reportstyle';
-import { NameValue, TimeValue } from './components/data';
+import { NameValue, TimeValue, SeletegenderArr, seleteneuteredArr } from './components/data';
 
 const Sighting = () => {
   let imageRef;
   const { kakao } = window;
 
-
   // 종류데이터
   const [type, setType] = useState(NameValue[0].name)
+  const [typeID, setTypeID] = useState('DOG')
+
   const onChangeData = (newData) => {
     setType(newData);
   }
+
+  const onChangeID = (newValue) => {
+    setTypeID(newValue)
+  }
+
   const [time, setTime] = useState(TimeValue[0].name)
   const onChangeTimeData = (newData) => {
     setTime(newData);
   }
 
   // Tab 로직 
-  const [currentGenderTab, setCurrentGenderTab] = useState(0);
-  const [currentNeuteredTab, setCurrentNeuteredTab] = useState(0);
-  const SeletegenderArr = [
-    { gender: '수컷' }, { gender: '암컷' }, { gender: '모름' },
-  ];
-
-  const seleteneuteredArr = [
-    { neutered: "완료" }, { neutered: "미완료" }, { neutered: "모름" }
-  ];
+  const [currentGenderTab, setCurrentGenderTab] = useState(0); //tab
   const [currentGenderValue, setCurrentGenderValue] = useState('수컷');
+  const [currentGenderEnValue, setCurrentGenderEnValue] = useState('DOG')
+
+  const [currentNeuteredTab, setCurrentNeuteredTab] = useState(0);
   const [currentNeuteredValue, setCurrentNeuteredValue] = useState('완료');
+  const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState('YES');
 
   const selectMGenderHandler = (index) => {
     setCurrentGenderTab(index);
     setCurrentGenderValue(SeletegenderArr[index].gender)
+    setCurrentGenderEnValue(SeletegenderArr[index].value)
   };
   const selectNeuteredHandler = (index) => {
     setCurrentNeuteredTab(index);
     setCurrentNeuteredValue(seleteneuteredArr[index].neutered)
+    setCurrentNeuteredEnValue(seleteneuteredArr[index].value)
   };
 
   // React-hook-form
@@ -61,12 +65,13 @@ const Sighting = () => {
 
   // form submit 로직
   const onSubmitSightingHanlder = (data) => {
-    console.log(data.animaltypes)
-    console.log(type)
-    console.log(currentGenderValue)
-    console.log(currentNeuteredValue)
-    console.log(data.animalAge)
-    console.log(data.animalkg)
+    console.log(data)
+    console.log("종류 :", typeID)
+    console.log("품종 :", data.animaltypes + '종')
+    console.log("성별", currentGenderEnValue)
+    console.log("중성화", currentNeuteredEnValue)
+    console.log(data.animalAge + '살')
+    console.log(data.animalkg + 'Kg')
     console.log(data.animalcolor)
     console.log(data.days)
     console.log(time)
@@ -74,7 +79,6 @@ const Sighting = () => {
     console.log(data.memo)
     console.log("지도 좌표", resultlngDiv.innerHTML)
     console.log("지도 좌표", resultlatDiv.innerHTML)
-
   }
   // 버튼을 누르면 선택된 usehookForm 제거 
   const onClickDeleteValue = (data) => {
@@ -197,7 +201,7 @@ const Sighting = () => {
             <ReportanimaltypesSelect>
               <div>
                 <p>종류</p>
-                <CustomSelect data={NameValue} onChangeData={onChangeData} />
+                <CustomSelect data={NameValue} onChangeData={onChangeData} onChangeID={onChangeID} />
 
               </div>
 
