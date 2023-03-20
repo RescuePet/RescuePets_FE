@@ -77,16 +77,14 @@ const Sighting = () => {
     console.log(time)
     console.log(data.characteristic)
     console.log(data.memo)
-    console.log("지도 좌표", resultlngDiv.innerHTML)
-    console.log("지도 좌표", resultlatDiv.innerHTML)
+    console.log("지도 주소", addressDiv.innerHTML)
   }
   // 버튼을 누르면 선택된 usehookForm 제거 
   const onClickDeleteValue = (data) => {
     resetField(data)
   }
   // 카카오 맵 로직 
-  const resultlngDiv = document.getElementById('clicklng');
-  const resultlatDiv = document.getElementById('clicklat');
+  const addressDiv = document.getElementById('address');
   const [long, setLong] = useState("");
   const [lati, setLati] = useState("");
   navigator.geolocation.getCurrentPosition(onSucces, onFailure);

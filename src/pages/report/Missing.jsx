@@ -69,10 +69,7 @@ const Missing = () => {
         resetField(data)
     }
 
-    const resultlngDiv = document.getElementById('clicklng');
-    const resultlatDiv = document.getElementById('clicklat');
     // form submit버튼
-
     const onSubmitMissingHanlder = (data) => {
         console.log(data)
         console.log("종류 :", typeID)
@@ -90,12 +87,13 @@ const Missing = () => {
         console.log("시간대:", time)
         console.log("사례금 :", data.money)
         console.log("전화번호 :", data.number)
-        console.log("지도 좌표", resultlngDiv.innerHTML)
-        console.log("지도 좌표", resultlatDiv.innerHTML)
+        console.log("지도 주소", addressDiv.innerHTML)
     }
 
-
+    const addressDiv = document.getElementById('address');
     // 현재위치를 받아오는 로직
+    const [long, setLong] = useState("");
+    const [lati, setLati] = useState("");
     navigator.geolocation.getCurrentPosition(onSucces, onFailure);
     // 성공
     function onSucces(position) {
@@ -108,8 +106,6 @@ const Missing = () => {
     function onFailure() {
         alert("위치 정보를 찾을수 없습니다.");
     }
-    const [long, setLong] = useState("");
-    const [lati, setLati] = useState("");
     // 지도를 그려쥬는 로직
 
     useEffect(() => {
