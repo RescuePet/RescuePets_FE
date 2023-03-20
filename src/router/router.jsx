@@ -13,6 +13,8 @@ import Home from "../pages/home/Home";
 import Missing from "../pages/report/Missing";
 import Sighting from "../pages/report/Sighting";
 import PetworkList from "../pages/petwork/PetworkList";
+import MissingDetail from "../pages/reportDetail/MissingDetail";
+import SightingDetail from "../pages/reportDetail/SightingDetail";
 
 const Router = () => {
   return (
@@ -32,6 +34,8 @@ const Router = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/testreport" element={<ReportPosting />} />
         <Route path="/petwork" element={<PetworkList />} />
+        <Route path="/missingdetail" element={<MissingDetail />} />
+        <Route path="/sightingdetail" element={<SightingDetail />} />
       </Routes>
     </BrowserRouter>
   );

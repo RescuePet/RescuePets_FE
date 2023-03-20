@@ -22,6 +22,23 @@ const PetworkList = () => {
           </ListTitleWrapper>
           <ListCardContainer>
             <Card></Card>
+            <Card></Card>
+            <Card></Card>
+            <Card></Card>
+            <Card></Card>
+            <Card></Card>
+            <Card></Card>
+            <Card></Card>
+            <Card></Card>
+            <Card></Card>
+            <Card></Card>
+            <Card></Card>
+            <Card></Card>
+            <Card></Card>
+            <Card></Card>
+            <Card></Card>
+            <Card></Card>
+            <Card></Card>
           </ListCardContainer>
         </ListContainer>
         <Footer></Footer>
