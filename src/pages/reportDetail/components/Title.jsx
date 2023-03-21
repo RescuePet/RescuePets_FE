@@ -1,20 +1,19 @@
 import React from "react";
 import styled from "styled-components";
-import { Body_400_14 } from "../../../style/theme";
+import { Body_400_12, Body_400_14 } from "../../../style/theme";
 import {
   ContentInformationStyle,
   FlexAttribute,
-  PostTitleBorderStyle,
   StateSpanStyle,
 } from "../../../style/Mixin";
 
-const Title = () => {
+const Title = ({ titleInfo }) => {
   return (
     <TitleWrapper>
-      <State>목격</State>
-      <SemiText>러시안 블루</SemiText>
-      <SexCd></SexCd>
-      <RegularText>중성화 ?/나이 ?/몸무게 ?/회색</RegularText>
+      <State>{titleInfo.state}</State>
+      <SemiText>{titleInfo.kindCd}</SemiText>
+      <SexCd>{titleInfo.sexCd}/</SexCd>
+      <RegularText>{titleInfo.info.join("/")}</RegularText>
     </TitleWrapper>
   );
 };
@@ -35,10 +34,8 @@ const SemiText = styled.span`
   ${Body_400_14}
 `;
 
-const SexCd = styled.div`
-  width: 16px;
-  height: 16px;
-  background-color: #999999;
+const SexCd = styled.span`
+  ${Body_400_12}
 `;
 
 const RegularText = styled.span`

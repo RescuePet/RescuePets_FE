@@ -3,13 +3,15 @@ import styled from "styled-components";
 import { Body_400_12, Body_400_14, BorderRadius } from "../../../style/theme";
 import { FlexAttribute, PostBorderStyle } from "../../../style/Mixin";
 
-const Location = ({ locationData }) => {
+const Location = ({ locationInfo }) => {
   return (
     <LocationContainer>
       <LocationWrapper>
-        <SemiText className="locationtitle">목격정보</SemiText>
+        <SemiText className="locationtitle">{locationInfo.state}</SemiText>
         <ContentTextWrapper>
-          <ContentText>용인 백현 초등학교 정문 화단에서 목격</ContentText>
+          <ContentText>
+            {locationInfo.happenLatitude + " " + locationInfo.happenLongitude}
+          </ContentText>
         </ContentTextWrapper>
       </LocationWrapper>
       <MapDiv></MapDiv>

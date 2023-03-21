@@ -16,7 +16,21 @@ export const __getMissingPost = createAsyncThunk(
   }
 );
 
-// Get Catch post
+// Get missing post detail
+export const __getMissingPostDetail = createAsyncThunk(
+  "getMissingPostDetail",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await instance.get(`/api/pets/missing/${payload}`);
+      console.log(response.data);
+      return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
+// Get catch post
 export const __getCatchPost = createAsyncThunk(
   "getCatchPost",
   async (payload, thunkAPI) => {
@@ -24,6 +38,20 @@ export const __getCatchPost = createAsyncThunk(
       const response = await instance.get(
         `/api/pets/catch/?page=${payload.page}&size=${payload.size}`
       );
+      return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
+// Get catch post detail
+export const __getCatchPostDetail = createAsyncThunk(
+  "getCatchPostDetail",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await instance.get(`/api/pets/catch/${payload}`);
+      console.log(response.data);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       throw new Error(error.response.data.message);
@@ -39,6 +67,8 @@ const initialState = {
   catchPage: 1,
   missingPostLists: [],
   catchPostLists: [],
+  missingPostDetail: {},
+  catchPostDetail: {},
   missingLastPage: false,
   catchLastPage: false,
 };
@@ -75,6 +105,14 @@ export const petworkSlice = createSlice({
       });
 
     builder
+      .addCase(__getMissingPostDetail.fulfilled, (state, action) => {
+        state.missingPostDetail = action.payload;
+      })
+      .addCase(__getMissingPostDetail.rejected, (state) => {
+        state.error = true;
+      });
+
+    builder
       .addCase(__getCatchPost.fulfilled, (state, action) => {
         if (action.payload.length === 0) {
           state.catchLastPage = true;
@@ -83,6 +121,14 @@ export const petworkSlice = createSlice({
         state.catchPostLists = [...state.catchPostLists, ...action.payload];
       })
       .addCase(__getCatchPost.rejected, (state) => {
+        state.error = true;
+      });
+
+    builder
+      .addCase(__getCatchPostDetail.fulfilled, (state, action) => {
+        state.catchPostDetail = action.payload;
+      })
+      .addCase(__getCatchPostDetail.rejected, (state) => {
         state.error = true;
       });
   },

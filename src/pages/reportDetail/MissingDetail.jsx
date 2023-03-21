@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import {
@@ -8,30 +8,61 @@ import {
   PostBorderStyle,
 } from "../../style/Mixin";
 import ImageCarousel from "./components/ImageCarousel";
-import carouselImage1 from "../../asset/carousel/1.jpg";
-import carouselImage2 from "../../asset/carousel/2.jpg";
-import carouselImage3 from "../../asset/carousel/3.jpg";
 import InputContainer from "../../components/InputContainer";
 import Title from "./components/Title";
 import Location from "./components/Location";
 import { Body_400_10, Body_400_12, Body_500_14 } from "../../style/theme";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { __getMissingPostDetail } from "../../redux/modules/petworkSlice";
 
 const MissingDetail = () => {
-  const images = [carouselImage1, carouselImage2, carouselImage3];
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const { missingPostDetail } = useSelector((state) => state?.petwork);
+  console.log("missingPostDetail", missingPostDetail);
+  console.log("missing post id", id);
+
+  useEffect(() => {
+    dispatch(__getMissingPostDetail(id));
+  }, [id]);
+
+  if (JSON.stringify(missingPostDetail) === "{}") {
+    return <div>로딩중...</div>;
+  }
+
+  const titleInfo = {
+    state: "실종",
+    kindCd: missingPostDetail.kindCd,
+    upkind: missingPostDetail.upkind,
+    sexCd: missingPostDetail.sexCd,
+    info: [
+      missingPostDetail.neuterYn,
+      missingPostDetail.age,
+      missingPostDetail.colorCd,
+    ],
+  };
+
+  const locationInfo = {
+    state: "실종 위치",
+    happenLatitude: missingPostDetail.happenLatitude,
+    happenLongitude: missingPostDetail.happenLongitude,
+  };
+
   return (
     <Layout>
       <MissingDetailLayout>
-        <ImageCarousel images={images} />
+        <ImageCarousel images={missingPostDetail.postImages} />
         <TitleWrapper>
-          <Title></Title>
+          <Title titleInfo={titleInfo}></Title>
         </TitleWrapper>
-        <Location></Location>
+        <Location locationInfo={locationInfo}></Location>
         <InfoContainer>
           <InfoWrapper>
             <BodyTitleSvg>📍</BodyTitleSvg>
             <BodyTitleText>위치</BodyTitleText>
             <ContentTextWrapper>
-              <ContentText>경기 용인시 기흥구 동백8로 108</ContentText>
+              <ContentText>{missingPostDetail.happenPlace}</ContentText>
             </ContentTextWrapper>
           </InfoWrapper>
           <InfoWrapper>
@@ -39,8 +70,10 @@ const MissingDetail = () => {
             <BodyTitleText>실종일시</BodyTitleText>
             <ContentTextWrapper>
               <ContentTextBox>
-                <ContentOptionText>23.03.14 | </ContentOptionText>
-                &nbsp;<ContentText>18:30</ContentText>
+                <ContentOptionText>
+                  {missingPostDetail.happenDt} |{" "}
+                </ContentOptionText>
+                &nbsp;<ContentText>{missingPostDetail.happenHour}</ContentText>
               </ContentTextBox>
             </ContentTextWrapper>
           </InfoWrapper>
@@ -48,25 +81,21 @@ const MissingDetail = () => {
             <BodyTitleSvg>📍</BodyTitleSvg>
             <BodyTitleText>특징</BodyTitleText>
             <ContentTextWrapper>
-              <ContentText>파란색 눈, 턱과 발 흰털</ContentText>
+              <ContentText>{missingPostDetail.specialMark}</ContentText>
             </ContentTextWrapper>
           </InfoWrapper>
           <InfoWrapper>
             <BodyTitleSvg>📍</BodyTitleSvg>
             <BodyTitleText>메모</BodyTitleText>
             <ContentTextWrapper>
-              <ContentText>
-                어느 순간부터 지하주차장에 자주 출몰하는 친구예요. 고양이 치고
-                사람 손을 무서워하진 않아서 실종이나 유기된게 아닐까
-                추측해봅니다ㅠㅠ
-              </ContentText>
+              <ContentText>{missingPostDetail.content}</ContentText>
             </ContentTextWrapper>
           </InfoWrapper>
           <InfoWrapper>
             <BodyTitleSvg>📍</BodyTitleSvg>
             <BodyTitleText>사례금</BodyTitleText>
             <ContentTextWrapper>
-              <ContentText>500,000원</ContentText>
+              <ContentText>{missingPostDetail.gratuity}</ContentText>
             </ContentTextWrapper>
           </InfoWrapper>
         </InfoContainer>
