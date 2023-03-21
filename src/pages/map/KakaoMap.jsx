@@ -3,6 +3,7 @@ import Marker from '../../asset/marker.png'
 import { useSelector, useDispatch } from 'react-redux';
 import { __GETDATA } from "../../redux/modules/getdata";
 import { useLocation } from 'react-router-dom';
+import { __GetMissingData } from "../../redux/modules/missingSlice";
 import './Overlay.css';
 const { kakao } = window;
 
@@ -23,8 +24,11 @@ const KakaoMap = () => {
   //디비에 저장된 데이터 값 가져오기 
   useEffect(() => {
     dispatch(__GETDATA())
+    dispatch(__GetMissingData())
   }, []);
   // 유저가 직접올리는 것들 !
+  const data2 = useSelector((state) => state.postMissingData.data);
+  console.log("데이터 바인딩 할것들 ", data2?.data)
 
   const data = useSelector((state) => state.getData.data);
 
@@ -59,7 +63,7 @@ const KakaoMap = () => {
 
     // useEffect(() => {
     const overlayInfos = data?.map(info => {
-      console.log(info)
+      // console.log(info)
       return {
         type: info.type,
         title: info.title,
@@ -74,7 +78,6 @@ const KakaoMap = () => {
       let marker = new kakao.maps.Marker({
         map: mapRef.current,
         position: new kakao.maps.LatLng(el.lat, el.lng),
-        title: el.title,
         image: markerImage // 마커이미지 설정 
       });
 

@@ -11,14 +11,17 @@ import {
     ReportMissingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
     , ReportAnimalInfoCheckBoxTitle, ReportAnimalInfoCheckBoxSelete, ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
     ReportAnimalInfoBoxColumnColumn, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportInput, ReportLgInput,
-    ReportKakaoMapBox, ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox,
-    ReportAnimalSignificantBox, ReportAnimalSignificantBoxTitle, ReportAnimalSignificantBoxInputArea, ReportAnimalPictureArea,
-    ReportAnimalPictureAreaTitle, ReportAnimalPictureAreaInputBox, ReportAnimalPictureInput, ReportAnimalPicturePreview, ReportAnimalUserInfo
+    ReportKakaoMapBox, ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox, ReportAnimalSignificantBox, ReportAnimalSignificantBoxTitle,
+    ReportAnimalSignificantBoxInputArea, ReportAnimalPictureArea, ReportAnimalPictureAreaTitle, ReportAnimalPictureAreaInputBox, ReportAnimalPictureInput,
+    ReportAnimalPicturePreview, ReportAnimalUserInfo, PreviewImage,
 } from './components/reportstyle';
 import { NameValue, TimeValue, SeletegenderArr, seleteneuteredArr } from './components/data';
+import { __PostMissingData } from '../../redux/modules/missingSlice';
+import { useDispatch } from 'react-redux';
 
 const Missing = () => {
     let imageRef;
+    const dispatch = useDispatch();
     const { kakao } = window;
     // Selete로직 
 
@@ -37,7 +40,6 @@ const Missing = () => {
     }
 
     const [time, setTime] = useState(TimeValue[0].name)
-    // console.log(time)
     const onChangeTimeData = (newData) => {
         setTime(newData);
     }
@@ -61,6 +63,67 @@ const Missing = () => {
         setCurrentNeuteredEnValue(seleteneuteredArr[index].value)
     };
 
+    // 이미지로직
+
+    // 올린 이미지 담을 관리하는 State
+    const [showImages, setShowImages] = useState([]);
+
+    // 폼데이터로 이미지 관리하는 State
+    const [imageFormData, setImageFormData] = useState([]);
+    // 폼데이터로 보관중인 스테이트
+    const [formImagin, setFormformImagin] = useState(new FormData());
+
+    // 이미지 등록 로직 
+    const onChangeUploadHandler = async (e) => {
+        e.preventDefault();
+
+        const imageLists = e.target.files;
+        // 이미지 용량 줄여주는 로직 
+
+        console.log("폼데이터 보내야 할것들:", imageLists)
+        setImageFormData(imageLists)
+
+        let imageUrlLists = [...showImages];
+        for (let i = 0; i < imageLists.length; i++) {
+            const currentImageUrl = URL.createObjectURL(imageLists[i]);
+            imageUrlLists.push(currentImageUrl);
+        }
+        if (imageUrlLists.length > 3) {
+            setImageFormData(imageFormData.slice(0, 3));
+            imageUrlLists = imageUrlLists.slice(0, 3);
+        }
+        setShowImages(imageUrlLists);
+        // console.log(imageUrlLists)
+
+        const formImg = new FormData();
+
+
+        for (let i = 0; i < imageLists.length; i++) {
+            formImg.append("postImages", imageLists[i]);
+        }
+        // Array.from(imageLists).forEach((image) =>
+        //     formImg.append("postImages", image));
+        // for (let j = 0; j < imageLists.length; j++) {
+        //     formImg.append("postImages", imageLists[j])
+        // }
+        setFormformImagin(formImg);
+
+        for (let value of formImagin.values()) {
+            console.log("이미지폼데이터", value);
+        }
+    };
+
+    // for (let value of formData.values()) {
+    //     console.log(value);
+    // }
+    // 이미지 삭제로직 
+    const onClickDeleteHandler = (id) => {
+        setShowImages('');
+        setImageFormData('')
+    };
+
+    // console.log('폼데이터 최신 :', imageFormData.length)
+
     const {
         register, handleSubmit, formState: { errors }, reset,
         resetField, } = useForm({ mode: 'onChange' });
@@ -68,26 +131,46 @@ const Missing = () => {
     const onClickDeleteValue = (data) => {
         resetField(data)
     }
-
-    // form submit버튼
+    // POST 
     const onSubmitMissingHanlder = (data) => {
-        console.log(data)
-        console.log("종류 :", typeID)
-        console.log("품종 :", data.animaltypes + '종')
-        // console.log(currentGenderValue)
-        console.log("성별", currentGenderEnValue)
-        // console.log(currentNeuteredValue)
-        console.log("중성화", currentNeuteredEnValue)
-        console.log("kg :", data.animalkg)
-        console.log("색깔 :", data.animalcolor)
-        console.log("날짜 :", data.days)
-        console.log("특징 :", data.characteristic)
-        console.log("메모 :", data.memo)
-        console.log("사진 :", imageFile)
-        console.log("시간대:", time)
-        console.log("사례금 :", data.money)
-        console.log("전화번호 :", data.number)
-        console.log("지도 주소", addressDiv.innerHTML)
+
+        const formData = new FormData();
+
+        // imageFormData.forEach(image => {
+        //     formData.append('postImages', image);
+        // });
+
+        formData.append("upkind", typeID)
+        formData.append("sexCd", currentGenderEnValue)
+        formData.append("neuterYn", currentNeuteredEnValue)
+        formData.append("kindCd", data.animaltypes)
+        formData.append("age", data.animalAge)
+        formData.append("weight", data.animalkg)
+        formData.append("colorCd", data.animalcolor)
+        formData.append("happenPlace", addressDiv.innerHTML)
+        formData.append("happenDt", data.days)
+        formData.append("happenHour", time)
+        formData.append("specialMark", data.characteristic)
+        formData.append("content", data.memo)
+        formData.append("gratuity", data.money)
+        formData.append("contact", data.number)
+
+        // 이미지 폼데이터 믹스
+        for (const keyValue of formImagin) {
+            formData.append(keyValue[0], keyValue[1]);
+        }
+        // for (let key of formData.keys()) {
+        //     console.log(key);
+        // }
+
+        // 전체 폼데이터 콘솔 
+        for (let value of formData.values()) {
+            console.log("FormData", typeof (value));
+        }
+
+        // 사진이 해당하는것을 배열로 저장해야만 한다 
+        dispatch(__PostMissingData(formData))
+
     }
 
     const addressDiv = document.getElementById('address');
@@ -149,56 +232,6 @@ const Missing = () => {
         }
 
     }, [onSucces])
-
-
-
-
-
-
-    // 이미지로직
-    const [formImagin, setFormformImagin] = useState(new FormData());
-
-    const [imageFile, setImageFile] = useState({
-        imageFile: "",
-        viewUrl: "",
-    });
-
-    const [loaded, setLoaded] = useState(false);
-
-    const onChangeUploadHandler = async (e) => {
-        e.preventDefault();
-
-        const imageFile = e.target.files[0];
-        const options = {
-            maxSizeMB: 1,
-            maxWidthOrHeight: 1920,
-            useWebWorker: true,
-        };
-        try {
-            const compressedFile = await imageCompression(imageFile, options);
-            const formImg = new FormData();
-            formImg.append('image', compressedFile);
-            setFormformImagin(formImg);
-
-            const fileReader = new FileReader()
-            fileReader.readAsDataURL(compressedFile);
-
-            fileReader.onload = () => {
-                setImageFile({
-                    viewUrl: String(fileReader.result),
-                });
-                setLoaded(true);
-            };
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    const onClickDeleteHandler = () => {
-        setImageFile({
-            viewUrl: ""
-        });
-    };
 
     return (
         <Layout>
@@ -285,19 +318,12 @@ const Missing = () => {
 
                         <ReportAnimalInfoBoxColumn>
 
-
                             <ReportAnimalInfoBoxColumnRow>
                                 <p>나이</p>
                                 <ReportInput type="text" placeholder='입력하기'
                                     {...register("animalAge", {
-                                        pattern: {
-                                            value: /^[0-9]+$/,
-                                            message: "숫자만입력가능",
-                                        },
-                                        maxLength: {
-                                            value: 3,
-                                            message: "숫자만 입력! 3자리수 이하로 작성",
-                                        }
+                                        pattern: { value: /^[0-9]+$/, message: "숫자만입력가능", },
+                                        maxLength: { value: 3, message: "숫자만 입력! 3자리수 이하로 작성", }
                                     })} />
                                 <img src={cancel} onClick={(() => { onClickDeleteValue('animalAge') })} />
 
@@ -433,21 +459,31 @@ const Missing = () => {
                     <ReportAnimalPictureAreaTitle><p>사진첨부</p></ReportAnimalPictureAreaTitle>
                     <ReportAnimalPictureAreaInputBox>
                         <input
-                            type="file" accept="image/*" style={{ display: 'none' }}
+                            type="file" accept="image/*" style={{ display: 'none' }} multiple
                             ref={(refer) => (imageRef = refer)} onChange={onChangeUploadHandler}
-                            required />
+                        />
                         <ReportAnimalPictureInput onClick={() => imageRef.click()}>
                             <h3>+</h3>
                         </ReportAnimalPictureInput>
                         {
-                            imageFile?.viewUrl !== "" ? (
-                                <ReportAnimalPicturePreview>
-                                    <img src={imageFile.viewUrl} />
-                                    <div onClick={onClickDeleteHandler}>
-                                        <img src={imgdelete} /></div></ReportAnimalPicturePreview>
-                            ) : (
+                            showImages.length === 0 ? (
+
                                 <ReportAnimalPicturePreview>
                                     <div> <img src={imgdelete} /></div>프리뷰</ReportAnimalPicturePreview>
+                            ) : (
+                                <>
+                                    {
+                                        showImages.map((image, index) => (
+                                            <ReportAnimalPicturePreview key={index}>
+                                                <PreviewImage src={image} alt={`${image}-${index}`} />
+                                                <div onClick={(() => { onClickDeleteHandler(index) })}>
+                                                    <img src={imgdelete} /></div>
+                                            </ReportAnimalPicturePreview>
+                                        ))
+                                    }
+
+                                </>
+
                             )
                         }
                     </ReportAnimalPictureAreaInputBox>

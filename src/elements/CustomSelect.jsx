@@ -11,7 +11,10 @@ export const CustomSelect = ({ data, onChangeData, onChangeID }) => {
     setCurrentValue(e.target.getAttribute("value"));
     // 이코드로 상위컴포넌트로 가장최신값을 보낸다 
     onChangeData(e.target.getAttribute("value"))
-    onChangeID(e.target.id)
+    if (onChangeID !== null) {
+      onChangeID(e.target.id)
+    }
+
   };
 
 
