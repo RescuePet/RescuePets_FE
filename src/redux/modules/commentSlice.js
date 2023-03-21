@@ -52,7 +52,7 @@ export const commentSlice = createSlice({
 
     builder
       .addCase(__getCatchComment.fulfilled, (state, action) => {
-        state.missingComment = action.payload;
+        state.catchComment = action.payload;
       })
       .addCase(__getCatchComment.rejected, (state) => {
         state.error = true;

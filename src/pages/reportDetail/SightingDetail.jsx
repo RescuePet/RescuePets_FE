@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import {
-  Border_1_color,
   Border_2_color,
   FlexAttribute,
   PostBorderStyle,
@@ -11,18 +10,22 @@ import ImageCarousel from "./components/ImageCarousel";
 import InputContainer from "../../components/InputContainer";
 import Title from "./components/Title";
 import Location from "./components/Location";
-import { Body_400_10, Body_400_12, Body_500_14 } from "../../style/theme";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { __getCatchPostDetail } from "../../redux/modules/petworkSlice";
+import { __getCatchComment } from "../../redux/modules/commentSlice";
+import Comment from "./components/Comment";
 
 const SightingDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+
   const { catchPostDetail } = useSelector((state) => state.petwork);
-  console.log(catchPostDetail);
+  const { catchComment } = useSelector((state) => state?.comment);
+
   useEffect(() => {
     dispatch(__getCatchPostDetail(id));
+    dispatch(__getCatchComment(id));
   }, [id]);
 
   if (JSON.stringify(catchPostDetail) === "{}") {
@@ -93,46 +96,11 @@ const SightingDetail = () => {
         <CommentContainer>
           <CommentButtonWrapper></CommentButtonWrapper>
           <CommentListWrapper>
-            <CommentBox>
-              <UserInfo>
-                <UserImg></UserImg>
-                <UserBox>
-                  <UserName>밤빵이아빠</UserName>
-                  <CommentTime>43분전</CommentTime>
-                </UserBox>
-              </UserInfo>
-              <Comment>
-                어제 백현마을 모아미래도아파트 1단지 주차장에서
-                목격했어요sadfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf
-              </Comment>
-            </CommentBox>
-            <CommentBox>
-              <UserInfo>
-                <UserImg></UserImg>
-                <UserBox>
-                  <UserName>밤빵이아빠</UserName>
-                  <CommentTime>43분전</CommentTime>
-                </UserBox>
-              </UserInfo>
-              <Comment>
-                어제 백현마을 모아미래도아파트 1단지 주차장에서
-                목격했어요sadfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf
-              </Comment>
-            </CommentBox>
-
-            <CommentBox>
-              <UserInfo>
-                <UserImg></UserImg>
-                <UserBox>
-                  <UserName>밤빵이아빠</UserName>
-                  <CommentTime>43분전</CommentTime>
-                </UserBox>
-              </UserInfo>
-              <Comment>
-                어제 백현마을 모아미래도아파트 1단지 주차장에서
-                목격했어요sadfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf
-              </Comment>
-            </CommentBox>
+            {catchComment?.map((item) => {
+              return (
+                <Comment key={`catch-comment-${item.id}`} item={item}></Comment>
+              );
+            })}
           </CommentListWrapper>
         </CommentContainer>
         <FloatingChatButton></FloatingChatButton>
@@ -212,47 +180,6 @@ const CommentButtonWrapper = styled.div``;
 
 const CommentListWrapper = styled.div`
   ${FlexAttribute("column")}
-`;
-
-const CommentBox = styled.div`
-  ${FlexAttribute("column")}
-  width: 335px;
-  padding: 16px 0;
-  word-break: break-all;
-  :not(:last-child) {
-    ${Border_1_color}
-  }
-`;
-
-const UserImg = styled.div`
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background-color: #999999;
-`;
-
-const UserInfo = styled.div`
-  ${FlexAttribute("row")}
-`;
-
-const UserBox = styled.div`
-  margin-left: 16px;
-  margin-bottom: 8px;
-  ${FlexAttribute("column")}
-`;
-
-const UserName = styled.span`
-  ${Body_500_14}
-`;
-
-const CommentTime = styled.span`
-  ${Body_400_10}
-  color: #999999;
-`;
-
-const Comment = styled.span`
-  ${Body_400_12}
-  margin-left: 49px;
 `;
 
 const FloatingChatButton = styled.div`

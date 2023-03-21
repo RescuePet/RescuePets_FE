@@ -19,11 +19,9 @@ import { __getMissingComment } from "../../redux/modules/commentSlice";
 const MissingDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+
   const { missingPostDetail } = useSelector((state) => state?.petwork);
   const { missingComment } = useSelector((state) => state?.comment);
-  console.log(missingComment);
-  // console.log("missingPostDetail", missingPostDetail);
-  // console.log("missing post id", id);
 
   useEffect(() => {
     dispatch(__getMissingPostDetail(id));
