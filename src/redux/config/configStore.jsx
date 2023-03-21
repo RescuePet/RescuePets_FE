@@ -5,6 +5,7 @@ import menubar from "../modules/menubarSlice";
 import onboarding from "../modules/onboardingSlice";
 import getData from "../modules/getdata";
 import petwork from "../modules/petworkSlice";
+import comment from "../modules/commentSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     getData: getData.reducer,
     adoption,
     petwork,
+    comment,
   },
 });
 
