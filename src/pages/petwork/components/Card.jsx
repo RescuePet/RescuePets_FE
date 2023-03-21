@@ -9,7 +9,7 @@ const Card = ({ item }) => {
   return (
     <ListCard>
       <CardImgWrapper>
-        <CardImg src={item.postImages[0].imageURL}></CardImg>
+        <CardImg src={item.postImages[0]?.imageURL}></CardImg>
         <StateSpan>{item.upkind}</StateSpan>
       </CardImgWrapper>
       <CardInfoContainer>

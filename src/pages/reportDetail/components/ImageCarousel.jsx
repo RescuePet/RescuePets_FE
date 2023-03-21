@@ -25,7 +25,7 @@ const ImageCarousel = ({ images }) => {
       <StyledSlider {...settings}>
         {images.map((image, index) => (
           <div key={`carousel-image-${index}`}>
-            <Image src={image.imageURL} />
+            <Image src={image?.imageURL} />
           </div>
         ))}
       </StyledSlider>
