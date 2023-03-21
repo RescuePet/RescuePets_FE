@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 import { toggleCategory } from "../../../redux/modules/petworkSlice";
 import { Border_2_color, FlexAttribute } from "../../../style/Mixin";
@@ -7,27 +7,25 @@ import { Button_700_16 } from "../../../style/theme";
 
 const Category = () => {
   const dispatch = useDispatch();
-  const [activeButton, setActiveButton] =
-    useState("우리집 반려동물을 찾아주세요");
+  const category = useSelector((state) => state.petwork.category);
 
   useEffect(() => {
-    toggleCategoryHandler(activeButton);
-  }, [activeButton]);
+    toggleCategoryHandler(category);
+  }, [category]);
 
   const toggleCategoryHandler = (category) => {
     dispatch(toggleCategory(category));
-    setActiveButton(category);
   };
   return (
     <CategoryWrapper>
       <ActiveButton
-        active={activeButton === "우리집 반려동물을 찾아주세요"}
+        active={category === "우리집 반려동물을 찾아주세요"}
         onClick={() => toggleCategoryHandler("우리집 반려동물을 찾아주세요")}
       >
         실종
       </ActiveButton>
       <ActiveButton
-        active={activeButton === "길 잃은 동물을 발견했어요"}
+        active={category === "길 잃은 동물을 발견했어요"}
         onClick={() => toggleCategoryHandler("길 잃은 동물을 발견했어요")}
       >
         목격

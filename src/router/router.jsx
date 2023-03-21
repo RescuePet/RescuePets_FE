@@ -34,8 +34,8 @@ const Router = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/testreport" element={<ReportPosting />} />
         <Route path="/petwork" element={<PetworkList />} />
-        <Route path="/missingdetail" element={<MissingDetail />} />
-        <Route path="/sightingdetail" element={<SightingDetail />} />
+        <Route path="/missingdetail/:id" element={<MissingDetail />} />
+        <Route path="/sightingdetail/:id" element={<SightingDetail />} />
       </Routes>
     </BrowserRouter>
   );
