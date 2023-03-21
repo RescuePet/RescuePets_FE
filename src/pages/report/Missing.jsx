@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useForm } from "react-hook-form";
 import Layout from "../../layouts/Layout"
 import Button from "../../elements/Button"
@@ -93,30 +93,18 @@ const Missing = () => {
             imageUrlLists = imageUrlLists.slice(0, 3);
         }
         setShowImages(imageUrlLists);
-        // console.log(imageUrlLists)
 
         const formImg = new FormData();
-
 
         for (let i = 0; i < imageLists.length; i++) {
             formImg.append("postImages", imageLists[i]);
         }
-        // Array.from(imageLists).forEach((image) =>
-        //     formImg.append("postImages", image));
-        // for (let j = 0; j < imageLists.length; j++) {
-        //     formImg.append("postImages", imageLists[j])
-        // }
         setFormformImagin(formImg);
 
         for (let value of formImagin.values()) {
             console.log("이미지폼데이터", value);
         }
     };
-
-    // for (let value of formData.values()) {
-    //     console.log(value);
-    // }
-    // 이미지 삭제로직 
     const onClickDeleteHandler = (id) => {
         setShowImages('');
         setImageFormData('')
@@ -154,26 +142,22 @@ const Missing = () => {
         formData.append("content", data.memo)
         formData.append("gratuity", data.money)
         formData.append("contact", data.number)
-
-        // 이미지 폼데이터 믹스
+        formData.append("happenLatitude", addressLatDiv.innerHTML)
+        formData.append("happenLongitude", addressLngDiv.innerHTML)
         for (const keyValue of formImagin) {
             formData.append(keyValue[0], keyValue[1]);
         }
-        // for (let key of formData.keys()) {
-        //     console.log(key);
-        // }
 
-        // 전체 폼데이터 콘솔 
         for (let value of formData.values()) {
             console.log("FormData", typeof (value));
         }
 
-        // 사진이 해당하는것을 배열로 저장해야만 한다 
         dispatch(__PostMissingData(formData))
 
     }
-
     const addressDiv = document.getElementById('address');
+    const addressLatDiv = document.getElementById('addressLat')
+    const addressLngDiv = document.getElementById('addressLng')
     // 현재위치를 받아오는 로직
     const [long, setLong] = useState("");
     const [lati, setLati] = useState("");
@@ -194,6 +178,7 @@ const Missing = () => {
     useEffect(() => {
         const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
             mapOption = {
+                // 처음 마커 표시는 되는 곳 현재 나의 위치 
                 center: new kakao.maps.LatLng(lati, long), // 지도의 중심좌표
                 level: 5 // 지도의 확대 레벨
             };
@@ -217,17 +202,26 @@ const Missing = () => {
         let geocoder = new kakao.maps.services.Geocoder();
         kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
             searchDetailAddrFromCoords(mouseEvent.latLng, function (result, status) {
+                console.log(mouseEvent.latLng)
                 if (status === kakao.maps.services.Status.OK) {
                     marker.setPosition(mouseEvent.latLng);
+
                     marker.setMap(map);
                     const currentAddress = result[0]?.address?.address_name
                     const addressDiv = document.getElementById('address');
                     addressDiv.innerHTML = currentAddress;
+                    //  console.log(mouseEvent.latLng)
+                    const addressLatDiv = document.getElementById('addressLat')
+                    addressLatDiv.innerHTML = mouseEvent.latLng.Ma
+                    const addressLngDiv = document.getElementById('addressLng')
+                    addressLngDiv.innerHTML = mouseEvent.latLng.La
                 }
             });
         });
 
         const searchDetailAddrFromCoords = (coords, callback) => {
+            // console.log(coords.La)
+            // console.log(coords.Ma)
             geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
         }
 
@@ -382,6 +376,8 @@ const Missing = () => {
                         <p>실종위치 *</p>
                         <div>
                             <div><label id='address'></label></div>
+                            <div style={{ display: "none" }}><label id='addressLat'></label></div>
+                            <div style={{ display: "none" }}><label id='addressLng'></label></div>
                         </div>
                     </ReportKakaoMapBoxTitle>
                     {/* 맵에서 뿌려줄때 4~6초 걸린다 로딩일때 보여줄것을 만들어야한다  */}
