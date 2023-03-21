@@ -13,12 +13,16 @@ import {
   ReportAnimalInfoBoxColumnColumn, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportInput, ReportLgInput,
   ReportKakaoMapBox, ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox,
   ReportAnimalSignificantBox, ReportAnimalSignificantBoxTitle, ReportAnimalSignificantBoxInputArea, ReportAnimalPictureArea,
-  ReportAnimalPictureAreaTitle, ReportAnimalPictureAreaInputBox, ReportAnimalPictureInput, ReportAnimalPicturePreview, ReportAnimalUserInfo
+  ReportAnimalPictureAreaTitle, ReportAnimalPictureAreaInputBox, ReportAnimalPictureInput, ReportAnimalPicturePreview, PreviewImage
 } from './components/reportstyle';
 import { NameValue, TimeValue, SeletegenderArr, seleteneuteredArr } from './components/data';
+import { __PostMissingData } from '../../redux/modules/missingSlice';
+import { useDispatch } from 'react-redux';
+
 
 const Sighting = () => {
   let imageRef;
+  const dispatch = useDispatch();
   const { kakao } = window;
 
   // 종류데이터
@@ -58,33 +62,90 @@ const Sighting = () => {
     setCurrentNeuteredEnValue(seleteneuteredArr[index].value)
   };
 
+  // 올린 이미지 담을 관리하는 State
+  const [showImages, setShowImages] = useState([]);
+  // 폼데이터로 이미지 관리하는 State
+  const [imageFormData, setImageFormData] = useState([]);
+  // 폼데이터로 보관중인 스테이트
+  const [formImagin, setFormformImagin] = useState(new FormData());
+
+  const onChangeUploadHandler = async (e) => {
+    e.preventDefault();
+    const imageLists = e.target.files;
+    setImageFormData(imageLists)
+
+    let imageUrlLists = [...showImages];
+    for (let i = 0; i < imageLists.length; i++) {
+      const currentImageUrl = URL.createObjectURL(imageLists[i]);
+      imageUrlLists.push(currentImageUrl);
+    }
+    if (imageUrlLists.length > 3) {
+      setImageFormData(imageFormData.slice(0, 3));
+      imageUrlLists = imageUrlLists.slice(0, 3);
+    }
+    setShowImages(imageUrlLists);
+
+    const formImg = new FormData();
+    for (let i = 0; i < imageLists.length; i++) {
+      formImg.append("postImages", imageLists[i]);
+    }
+    setFormformImagin(formImg);
+
+    for (let value of formImagin.values()) {
+      console.log("이미지폼데이터", value);
+    }
+  };
+
+  const onClickDeleteHandler = (id) => {
+    setShowImages('');
+    setImageFormData('')
+  };
+
   // React-hook-form
   const {
     register, handleSubmit, formState: { errors },
     reset, resetField, } = useForm({ mode: 'onChange' });
-
-  // form submit 로직
-  const onSubmitSightingHanlder = (data) => {
-    console.log(data)
-    console.log("종류 :", typeID)
-    console.log("품종 :", data.animaltypes + '종')
-    console.log("성별", currentGenderEnValue)
-    console.log("중성화", currentNeuteredEnValue)
-    console.log(data.animalAge + '살')
-    console.log(data.animalkg + 'Kg')
-    console.log(data.animalcolor)
-    console.log(data.days)
-    console.log(time)
-    console.log(data.characteristic)
-    console.log(data.memo)
-    console.log("지도 주소", addressDiv.innerHTML)
-  }
   // 버튼을 누르면 선택된 usehookForm 제거 
   const onClickDeleteValue = (data) => {
     resetField(data)
   }
+
+  // form submit 로직
+  const onSubmitSightingHanlder = (data) => {
+    const formData = new FormData();
+    formData.append("upkind", typeID)
+    formData.append("sexCd", currentGenderEnValue)
+    formData.append("neuterYn", currentNeuteredEnValue)
+    formData.append("kindCd", data.animaltypes)
+    formData.append("age", data.animalAge)
+    formData.append("weight", data.animalkg)
+    formData.append("colorCd", data.animalcolor)
+    formData.append("happenPlace", addressDiv.innerHTML)
+    formData.append("happenLatitude", addressLatDiv.innerHTML)
+    formData.append("happenLongitude", addressLngDiv.innerHTML)
+    formData.append("happenDt", data.days)
+    formData.append("happenHour", time)
+    formData.append("specialMark", data.characteristic)
+    formData.append("content", data.memo)
+    formData.append("gratuity", data.money)
+    formData.append("contact", data.number)
+
+    for (const keyValue of formImagin) {
+      formData.append(keyValue[0], keyValue[1]);
+    }
+
+    for (let value of formData.values()) {
+      console.log("FormData", typeof (value));
+    }
+
+    dispatch(__PostMissingData(formData))
+  }
+
   // 카카오 맵 로직 
   const addressDiv = document.getElementById('address');
+  const addressLatDiv = document.getElementById('addressLat')
+  const addressLngDiv = document.getElementById('addressLng')
+
   const [long, setLong] = useState("");
   const [lati, setLati] = useState("");
   navigator.geolocation.getCurrentPosition(onSucces, onFailure);
@@ -123,68 +184,26 @@ const Sighting = () => {
     let geocoder = new kakao.maps.services.Geocoder();
     kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
       searchDetailAddrFromCoords(mouseEvent.latLng, function (result, status) {
-
+        console.log(mouseEvent.latLng)
         if (status === kakao.maps.services.Status.OK) {
           marker.setPosition(mouseEvent.latLng);
           marker.setMap(map);
           const currentAddress = result[0]?.address?.address_name
           const addressDiv = document.getElementById('address');
           addressDiv.innerHTML = currentAddress;
+          const addressLatDiv = document.getElementById('addressLat')
+          addressLatDiv.innerHTML = mouseEvent.latLng.Ma
+          const addressLngDiv = document.getElementById('addressLng')
+          addressLngDiv.innerHTML = mouseEvent.latLng.La
         }
       });
     });
+
     const searchDetailAddrFromCoords = (coords, callback) => {
       geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
     }
 
   }, [onSucces])
-
-  // 이미지 로직 
-  const [formImagin, setFormformImagin] = useState(new FormData());
-
-  const [imageFile, setImageFile] = useState({
-    imageFile: "",
-    viewUrl: "",
-  });
-
-  const [loaded, setLoaded] = useState(false);
-
-  const onChangeUploadHandler = async (e) => {
-    e.preventDefault();
-
-    const imageFile = e.target.files[0];
-
-    const options = {
-      maxSizeMB: 1,
-      maxWidthOrHeight: 1920,
-      useWebWorker: true,
-    };
-
-    try {
-      const compressedFile = await imageCompression(imageFile, options);
-      const formImg = new FormData();
-      formImg.append('image', compressedFile);
-      setFormformImagin(formImg);
-
-      const fileReader = new FileReader()
-      fileReader.readAsDataURL(compressedFile);
-
-      fileReader.onload = () => {
-        setImageFile({
-          viewUrl: String(fileReader.result),
-        });
-        setLoaded(true);
-      };
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const onClickDeleteHandler = () => {
-    setImageFile({
-      viewUrl: ""
-    });
-  };
 
   return (
     <Layout>
@@ -237,7 +256,7 @@ const Sighting = () => {
                     ))}
                 </ReportAnimalInfoCheckBoxSelete>
               </ReportAnimalInfoCheckBox>
-              {/* 중성화 */}
+
               <ReportAnimalInfoCheckBox>
                 <ReportAnimalInfoCheckBoxTitle> <p>중성화</p> </ReportAnimalInfoCheckBoxTitle>
                 <ReportAnimalInfoCheckBoxSelete>
@@ -255,23 +274,14 @@ const Sighting = () => {
               </ReportAnimalInfoCheckBox>
             </ReportAnimalInfoBox>
 
-            {/* 나이 체중 색상*/}
             <ReportAnimalInfoBox>
-              {/* 나이 체중  */}
               <ReportAnimalInfoBoxColumn>
-
                 <ReportAnimalInfoBoxColumnRow>
                   <p>나이</p>
                   <ReportInput type="text" placeholder='입력하기'
                     {...register("animalAge", {
-                      pattern: {
-                        value: /^[0-9]+$/,
-                        message: "숫자만입력가능",
-                      },
-                      maxLength: {
-                        value: 3,
-                        message: "숫자만 입력! 3자리수 이하로 작성",
-                      }
+                      pattern: { value: /^[0-9]+$/, message: "숫자만입력가능", },
+                      maxLength: { value: 3, message: "숫자만 입력! 3자리수 이하로 작성", }
                     })} />
                   <img src={cancel} onClick={(() => { onClickDeleteValue('animalAge') })} />
                   <span>{errors?.animalAge?.message}</span>
@@ -279,17 +289,10 @@ const Sighting = () => {
 
                 <ReportAnimalInfoBoxColumnRow>
                   <p>체중(Kg)</p>
-
                   <ReportInput type="text" placeholder='입력하기'
                     {...register("animalkg", {
-                      pattern: {
-                        value: /^[0-9]+$/,
-                        message: "숫자만입력가능",
-                      },
-                      maxLength: {
-                        value: 3,
-                        message: "숫자만 입력! 3자리수 이하로 작성",
-                      }
+                      pattern: { value: /^[0-9]+$/, message: "숫자만입력가능", },
+                      maxLength: { value: 3, message: "숫자만 입력! 3자리수 이하로 작성", }
                     })} />
                   <img src={cancel} onClick={(() => { onClickDeleteValue('animalkg') })} />
                   <span>{errors?.animalkg?.message}</span>
@@ -303,14 +306,8 @@ const Sighting = () => {
                   <ReportLgInput type="text" placeholder='입력하기'
                     {...register("animalcolor", {
                       // required: false,
-                      pattern: {
-                        value: /^[가-힣\s]+$/,
-                        message: "한글만 2 ~ 8글자 사이로 입력 ",
-                      },
-                      maxLength: {
-                        value: 8,
-                        message: "8글자 이하이어야 합니다.",
-                      },
+                      pattern: { value: /^[가-힣\s]+$/, message: "한글만 2 ~ 8글자 사이로 입력 ", },
+                      maxLength: { value: 8, message: "8글자 이하이어야 합니다.", },
                     })} />
                   <img src={cancel} onClick={(() => { onClickDeleteValue('animalcolor') })} />
                   <span>{errors?.animalcolor?.message}</span>
@@ -326,6 +323,8 @@ const Sighting = () => {
             <p>목격위치 *</p>
             <div>
               <div><label id='address'>주소</label></div>
+              <div style={{ display: "none" }}><label id='addressLat'></label></div>
+              <div style={{ display: "none" }}><label id='addressLng'></label></div>
             </div>
           </ReportKakaoMapBoxTitle>
           <ReportKakaoMapBoxMap id='map'></ReportKakaoMapBoxMap>
@@ -403,21 +402,26 @@ const Sighting = () => {
 
           <ReportAnimalPictureAreaInputBox>
             <input
-              type="file" accept="image/*" style={{ display: 'none' }}
+              type="file" accept="image/*" style={{ display: 'none' }} multiple
               ref={(refer) => (imageRef = refer)} onChange={onChangeUploadHandler}
               required />
             <ReportAnimalPictureInput onClick={() => imageRef.click()}>
               <h3>+</h3>
             </ReportAnimalPictureInput>
             {
-              imageFile?.viewUrl !== "" ? (
+              showImages.length === 0 ? (
                 <ReportAnimalPicturePreview>
-                  <img src={imageFile.viewUrl} />
-                  <div onClick={onClickDeleteHandler}>
-                    <img src={imgdelete} /></div></ReportAnimalPicturePreview>
+                  <div><img src={imgdelete} /></div>프리뷰</ReportAnimalPicturePreview>
               ) : (
-                <ReportAnimalPicturePreview>
-                  <div> <img src={imgdelete} /></div>프리뷰</ReportAnimalPicturePreview>
+                <>
+                  {showImages.map((image, index) => (
+                    <ReportAnimalPicturePreview key={index}>
+                      <PreviewImage src={image} alt={`${image}-${index}`} />
+                      <div onClick={(() => { onClickDeleteHandler(index) })}>
+                        <img src={imgdelete} /></div>
+                    </ReportAnimalPicturePreview>
+                  ))}
+                </>
               )
             }
           </ReportAnimalPictureAreaInputBox>

@@ -62,14 +62,13 @@ const KakaoMap = () => {
     const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
 
     // useEffect(() => {
-    const overlayInfos = data?.map(info => {
+    const overlayInfos = data2?.data?.map(info => {
       // console.log(info)
       return {
-        type: info.type,
         title: info.title,
         kind: info.kind,
-        lat: info.lat,
-        lng: info.lng,
+        lat: info.happenLatitude,
+        lng: info.happenLongitude,
         img: info.img,
         desc: info.desc
       };
@@ -78,6 +77,7 @@ const KakaoMap = () => {
       let marker = new kakao.maps.Marker({
         map: mapRef.current,
         position: new kakao.maps.LatLng(el.lat, el.lng),
+        title: el.title,
         image: markerImage // 마커이미지 설정 
       });
 

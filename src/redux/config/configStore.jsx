@@ -5,6 +5,7 @@ import menubar from "../modules/menubarSlice";
 import onboarding from "../modules/onboardingSlice";
 import getData from "../modules/getdata";
 import postMissingData from "../modules/missingSlice";
+import sighting from "../modules/sightingSlice";
 
 const store = configureStore({
   reducer: {
@@ -13,7 +14,8 @@ const store = configureStore({
     onboarding,
     getData: getData.reducer,
     adoption,
-    postMissingData
+    postMissingData,
+    sighting
   },
 });
 

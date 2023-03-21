@@ -23,13 +23,10 @@ const Missing = () => {
     let imageRef;
     const dispatch = useDispatch();
     const { kakao } = window;
-    // Selete로직 
 
     // 종류데이터
     const [type, setType] = useState(NameValue[0].name)
     const [typeID, setTypeID] = useState('DOG')
-
-    // console.log("EN :", typeID)
 
     const onChangeData = (newData) => {
         setType(newData);
@@ -100,18 +97,16 @@ const Missing = () => {
             formImg.append("postImages", imageLists[i]);
         }
         setFormformImagin(formImg);
-
         for (let value of formImagin.values()) {
             console.log("이미지폼데이터", value);
         }
     };
-    const onClickDeleteHandler = (id) => {
+
+    const onClickDeleteHandler = () => {
         setShowImages('');
         setImageFormData('')
     };
-
     // console.log('폼데이터 최신 :', imageFormData.length)
-
     const {
         register, handleSubmit, formState: { errors }, reset,
         resetField, } = useForm({ mode: 'onChange' });
@@ -121,13 +116,7 @@ const Missing = () => {
     }
     // POST 
     const onSubmitMissingHanlder = (data) => {
-
         const formData = new FormData();
-
-        // imageFormData.forEach(image => {
-        //     formData.append('postImages', image);
-        // });
-
         formData.append("upkind", typeID)
         formData.append("sexCd", currentGenderEnValue)
         formData.append("neuterYn", currentNeuteredEnValue)
@@ -136,14 +125,14 @@ const Missing = () => {
         formData.append("weight", data.animalkg)
         formData.append("colorCd", data.animalcolor)
         formData.append("happenPlace", addressDiv.innerHTML)
+        formData.append("happenLatitude", addressLatDiv.innerHTML)
+        formData.append("happenLongitude", addressLngDiv.innerHTML)
         formData.append("happenDt", data.days)
         formData.append("happenHour", time)
         formData.append("specialMark", data.characteristic)
         formData.append("content", data.memo)
         formData.append("gratuity", data.money)
         formData.append("contact", data.number)
-        formData.append("happenLatitude", addressLatDiv.innerHTML)
-        formData.append("happenLongitude", addressLngDiv.innerHTML)
         for (const keyValue of formImagin) {
             formData.append(keyValue[0], keyValue[1]);
         }
@@ -151,10 +140,9 @@ const Missing = () => {
         for (let value of formData.values()) {
             console.log("FormData", typeof (value));
         }
-
         dispatch(__PostMissingData(formData))
-
     }
+
     const addressDiv = document.getElementById('address');
     const addressLatDiv = document.getElementById('addressLat')
     const addressLngDiv = document.getElementById('addressLng')
@@ -220,8 +208,6 @@ const Missing = () => {
         });
 
         const searchDetailAddrFromCoords = (coords, callback) => {
-            // console.log(coords.La)
-            // console.log(coords.Ma)
             geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
         }
 
@@ -238,11 +224,8 @@ const Missing = () => {
                 </ReportHeader>
 
                 <ReportAnimalInfoArea>
-
                     <ReportanimaltypesBox>
-
                         <ReportanimaltypesTitle>동물 정보 *</ReportanimaltypesTitle>
-
                         <ReportanimaltypesSelect>
 
                             <div>
@@ -278,28 +261,23 @@ const Missing = () => {
                                             value={el.value}
                                             className={index === currentGenderTab ? "submenu focused" : "submenu"}
                                             onClick={() => selectMGenderHandler(index)}
-                                        >
-                                            {el.gender}
+                                        >{el.gender}
                                         </li>
                                     ))}
                             </ReportAnimalInfoCheckBoxSelete>
-
                         </ReportAnimalInfoCheckBox>
 
                         <ReportAnimalInfoCheckBox>
                             <ReportAnimalInfoCheckBoxTitle> <p>중성화</p> </ReportAnimalInfoCheckBoxTitle>
                             <ReportAnimalInfoCheckBoxSelete>
-
-                                {
-                                    seleteneuteredArr.map((el, index) => (
-                                        <li
-                                            key={index}
-                                            className={index === currentNeuteredTab ? "submenu focused" : "submenu"}
-                                            onClick={() => selectNeuteredHandler(index)}
-                                        >
-                                            {el.neutered}
-                                        </li>
-                                    ))}
+                                {seleteneuteredArr.map((el, index) => (
+                                    <li
+                                        key={index}
+                                        className={index === currentNeuteredTab ? "submenu focused" : "submenu"}
+                                        onClick={() => selectNeuteredHandler(index)} >
+                                        {el.neutered}
+                                    </li>
+                                ))}
 
                             </ReportAnimalInfoCheckBoxSelete>
 
@@ -307,9 +285,7 @@ const Missing = () => {
 
                     </ReportAnimalInfoBox>
 
-                    {/* 나이 체중 색상   */}
                     <ReportAnimalInfoBox>
-
                         <ReportAnimalInfoBoxColumn>
 
                             <ReportAnimalInfoBoxColumnRow>
@@ -320,30 +296,19 @@ const Missing = () => {
                                         maxLength: { value: 3, message: "숫자만 입력! 3자리수 이하로 작성", }
                                     })} />
                                 <img src={cancel} onClick={(() => { onClickDeleteValue('animalAge') })} />
-
                                 <span>{errors?.animalAge?.message}</span>
                             </ReportAnimalInfoBoxColumnRow>
 
                             <ReportAnimalInfoBoxColumnRow>
                                 <p>체중(Kg)</p>
-
                                 <ReportInput type="text" placeholder='입력하기'
                                     {...register("animalkg", {
-                                        pattern: {
-                                            value: /^[0-9]+$/,
-                                            message: "숫자만입력가능",
-                                        },
-                                        maxLength: {
-                                            value: 4,
-                                            message: "4글자 이하이어야 합니다.",
-                                        }
+                                        pattern: { value: /^[0-9]+$/, message: "숫자만입력가능", },
+                                        maxLength: { value: 4, message: "4글자 이하이어야 합니다.", }
                                     })} />
                                 <img src={cancel} onClick={(() => { onClickDeleteValue('animalkg') })} />
                                 <span>{errors?.animalkg?.message}</span>
-
-
                             </ReportAnimalInfoBoxColumnRow>
-
                         </ReportAnimalInfoBoxColumn>
 
                         <ReportAnimalInfoBoxColumn>
@@ -353,14 +318,8 @@ const Missing = () => {
                                     type="text" placeholder='입력하기'
                                     {...register("animalcolor", {
                                         required: false,
-                                        pattern: {
-                                            value: /^[가-힣\s]+$/,
-                                            message: "한글만 2 ~ 8글자 사이로 입력 ",
-                                        },
-                                        maxLength: {
-                                            value: 8,
-                                            message: "8글자 이하이어야 합니다.",
-                                        },
+                                        pattern: { value: /^[가-힣\s]+$/, message: "한글만 2 ~ 8글자 사이로 입력 ", },
+                                        maxLength: { value: 8, message: "8글자 이하이어야 합니다.", },
                                     })} />
                                 <img src={cancel} onClick={(() => { onClickDeleteValue('animalcolor') })} />
                                 <span>{errors?.animalcolor?.message}</span>
@@ -410,7 +369,6 @@ const Missing = () => {
                     <ReportAnimalSignificantBoxTitle>
                         <p> 특이사항 </p>
                     </ReportAnimalSignificantBoxTitle>
-
                     <ReportAnimalSignificantBoxInputArea>
                         <div>
                             <p>특징</p>
@@ -463,29 +421,22 @@ const Missing = () => {
                         </ReportAnimalPictureInput>
                         {
                             showImages.length === 0 ? (
-
                                 <ReportAnimalPicturePreview>
                                     <div> <img src={imgdelete} /></div>프리뷰</ReportAnimalPicturePreview>
                             ) : (
                                 <>
-                                    {
-                                        showImages.map((image, index) => (
-                                            <ReportAnimalPicturePreview key={index}>
-                                                <PreviewImage src={image} alt={`${image}-${index}`} />
-                                                <div onClick={(() => { onClickDeleteHandler(index) })}>
-                                                    <img src={imgdelete} /></div>
-                                            </ReportAnimalPicturePreview>
-                                        ))
-                                    }
-
+                                    {showImages.map((image, index) => (
+                                        <ReportAnimalPicturePreview key={index}>
+                                            <PreviewImage src={image} alt={`${image}-${index}`} />
+                                            <div onClick={(() => { onClickDeleteHandler(index) })}>
+                                                <img src={imgdelete} /></div>
+                                        </ReportAnimalPicturePreview>
+                                    ))}
                                 </>
-
                             )
                         }
                     </ReportAnimalPictureAreaInputBox>
-
                 </ReportAnimalPictureArea>
-
                 <ReportAnimalUserInfo>
                     <div>
                         <p>사례금</p>
