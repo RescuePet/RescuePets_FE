@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import {
@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { __getMissingPostDetail } from "../../redux/modules/petworkSlice";
 import Comment from "./components/Comment";
 import {
+  toggleEditDone,
   __getMissingComment,
   __postMissingComment,
 } from "../../redux/modules/commentSlice";
@@ -22,14 +23,26 @@ import {
 const MissingDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const scrollRef = useRef();
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
-  const { missingComment } = useSelector((state) => state?.comment);
+  const { missingComment, editDone } = useSelector((state) => state?.comment);
+
+  console.log(editDone);
 
   useEffect(() => {
     dispatch(__getMissingPostDetail(id));
     dispatch(__getMissingComment(id));
   }, [id]);
+
+  useEffect(() => {
+    if (editDone) {
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+    return () => {
+      dispatch(toggleEditDone(false));
+    };
+  }, [missingComment]);
 
   if (JSON.stringify(missingPostDetail) === "{}") {
     return <div>로딩중...</div>;
@@ -53,18 +66,19 @@ const MissingDetail = () => {
     happenLongitude: missingPostDetail.happenLongitude,
   };
 
-  const submitHandler = (content) => {
+  const submitHandler = async (content) => {
     let data = {
       id: id,
       content: content,
     };
     dispatch(__postMissingComment(data)).then(() => {
+      console.log("1");
       dispatch(__getMissingComment(id));
     });
   };
 
   return (
-    <Layout>
+    <Layout ref={scrollRef}>
       <MissingDetailLayout>
         <ImageCarousel images={missingPostDetail.postImages} />
         <TitleWrapper>

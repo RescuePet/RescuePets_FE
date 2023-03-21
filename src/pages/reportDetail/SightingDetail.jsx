@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { __getCatchPostDetail } from "../../redux/modules/petworkSlice";
 import {
+  toggleEditDone,
   __getCatchComment,
   __postCatchComment,
 } from "../../redux/modules/commentSlice";
@@ -24,12 +25,21 @@ const SightingDetail = () => {
   const dispatch = useDispatch();
 
   const { catchPostDetail } = useSelector((state) => state.petwork);
-  const { catchComment } = useSelector((state) => state?.comment);
+  const { catchComment, editDone } = useSelector((state) => state?.comment);
 
   useEffect(() => {
     dispatch(__getCatchPostDetail(id));
     dispatch(__getCatchComment(id));
   }, [id]);
+
+  useEffect(() => {
+    if (editDone) {
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+    return () => {
+      dispatch(toggleEditDone(false));
+    };
+  }, [catchComment]);
 
   if (JSON.stringify(catchPostDetail) === "{}") {
     return <div>로딩 중</div>;

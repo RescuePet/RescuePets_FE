@@ -67,12 +67,17 @@ const initialState = {
   error: false,
   missingComment: [],
   catchComment: [],
+  editDone: false,
 };
 
 export const commentSlice = createSlice({
   name: "comment",
   initialState,
-  reducers: {},
+  reducers: {
+    toggleEditDone: (state, action) => {
+      state.editDone = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(__getMissingComment.fulfilled, (state, action) => {
@@ -83,13 +88,30 @@ export const commentSlice = createSlice({
       });
 
     builder
+      .addCase(__postMissingComment.fulfilled, (state) => {
+        state.editDone = true;
+      })
+      .addCase(__postMissingComment.rejected, (state) => {
+        state.error = true;
+      });
+
+    builder
       .addCase(__getCatchComment.fulfilled, (state, action) => {
         state.catchComment = action.payload;
       })
       .addCase(__getCatchComment.rejected, (state) => {
         state.error = true;
       });
+
+    builder
+      .addCase(__postCatchComment.fulfilled, (state) => {
+        state.editDone = true;
+      })
+      .addCase(__postCatchComment.rejected, (state) => {
+        state.error = true;
+      });
   },
 });
 
+export const { toggleEditDone } = commentSlice.actions;
 export default commentSlice.reducer;
