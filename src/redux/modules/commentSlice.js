@@ -9,7 +9,23 @@ export const __getMissingComment = createAsyncThunk(
       const response = await instance.get(
         `api/pets/missing/comments/${payload}`
       );
-      console.log("missing comment", response.data);
+      return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
+// Post missing comment
+export const __postMissingComment = createAsyncThunk(
+  "postMissingComment",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await instance.post(
+        `api/pets/missing/comments/${payload.id}`,
+        { content: payload.content }
+      );
+      console.log("post missing comment", response.data);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       throw new Error(error.response.data.message);
@@ -23,7 +39,23 @@ export const __getCatchComment = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await instance.get(`api/pets/catch/comments/${payload}`);
-      console.log("catch comment", response.data);
+      return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
+// Post catch comment
+export const __postCatchComment = createAsyncThunk(
+  "postCatchComment",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await instance.post(
+        `api/pets/catch/comments/${payload.id}`,
+        { content: payload.content }
+      );
+      console.log("post catch comment", response.data);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       throw new Error(error.response.data.message);

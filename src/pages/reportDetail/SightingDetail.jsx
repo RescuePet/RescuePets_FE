@@ -13,7 +13,10 @@ import Location from "./components/Location";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { __getCatchPostDetail } from "../../redux/modules/petworkSlice";
-import { __getCatchComment } from "../../redux/modules/commentSlice";
+import {
+  __getCatchComment,
+  __postCatchComment,
+} from "../../redux/modules/commentSlice";
 import Comment from "./components/Comment";
 
 const SightingDetail = () => {
@@ -48,6 +51,16 @@ const SightingDetail = () => {
     state: "목격 위치",
     happenLatitude: catchPostDetail.happenLatitude,
     happenLongitude: catchPostDetail.happenLongitude,
+  };
+
+  const submitHandler = (content) => {
+    let data = {
+      id: id,
+      content: content,
+    };
+    dispatch(__postCatchComment(data)).then(() => {
+      dispatch(__getCatchComment(id));
+    });
   };
 
   return (
@@ -105,7 +118,10 @@ const SightingDetail = () => {
         </CommentContainer>
         <FloatingChatButton></FloatingChatButton>
       </MissingDetailLayout>
-      <InputContainer placeholder="댓글을 입력해주세요."></InputContainer>
+      <InputContainer
+        placeholder="댓글을 입력해주세요."
+        submitHandler={submitHandler}
+      ></InputContainer>
     </Layout>
   );
 };

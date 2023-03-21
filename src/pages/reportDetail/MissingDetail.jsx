@@ -14,7 +14,10 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { __getMissingPostDetail } from "../../redux/modules/petworkSlice";
 import Comment from "./components/Comment";
-import { __getMissingComment } from "../../redux/modules/commentSlice";
+import {
+  __getMissingComment,
+  __postMissingComment,
+} from "../../redux/modules/commentSlice";
 
 const MissingDetail = () => {
   const { id } = useParams();
@@ -48,6 +51,16 @@ const MissingDetail = () => {
     state: "실종 위치",
     happenLatitude: missingPostDetail.happenLatitude,
     happenLongitude: missingPostDetail.happenLongitude,
+  };
+
+  const submitHandler = (content) => {
+    let data = {
+      id: id,
+      content: content,
+    };
+    dispatch(__postMissingComment(data)).then(() => {
+      dispatch(__getMissingComment(id));
+    });
   };
 
   return (
@@ -115,7 +128,10 @@ const MissingDetail = () => {
           <FloatingChatButton></FloatingChatButton>
         </CommentContainer>
       </MissingDetailLayout>
-      <InputContainer placeholder="댓글을 입력해주세요."></InputContainer>
+      <InputContainer
+        placeholder="댓글을 입력해주세요."
+        submitHandler={submitHandler}
+      ></InputContainer>
     </Layout>
   );
 };
