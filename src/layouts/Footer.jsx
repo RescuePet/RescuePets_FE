@@ -7,10 +7,15 @@ import FooterIconNetwork from "../asset/FooterIconNetwork.svg";
 import "./Footer.css";
 import { useDispatch } from "react-redux";
 import { toggleMenu } from "../redux/modules/menubarSlice";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
   // payload로 값 보내기 위한 훅
   const dispatch = useDispatch();
+  const navigate = useNavigate()
+
+  // const MoveToMissing = navigate('/missing')
+  // const MoveToSighting = navigate('/sighting')
 
   const [menuBar, setMenuBar] = useState(false);
 
@@ -34,8 +39,8 @@ const Footer = () => {
     <FooterContiner>
       {menuBar === false ? null : (
         <Navigation>
-          <FooterMenuList>? 실종 글 작성하기 </FooterMenuList>
-          <FooterMenuList>🚨 목격 글 작성하기</FooterMenuList>
+          <FooterMenuList >? 실종 글 작성하기 </FooterMenuList>
+          <FooterMenuList >🚨 목격 글 작성하기</FooterMenuList>
         </Navigation>
       )}
 
@@ -43,27 +48,28 @@ const Footer = () => {
                 onClick={onClickMenuBarHandler}></FooterIconToggleBtn> */}
 
       <FooterEachIconContiner>
-        {" "}
-        <img src={FooterIconHome} /> <p>홈</p>{" "}
+        <img src={FooterIconHome} />
+        <p>홈</p>
       </FooterEachIconContiner>
       <FooterEachIconContiner>
-        {" "}
-        <img src={FooterIconNetwork} /> <p>펫페크워크</p>{" "}
+        <img src={FooterIconNetwork} />
+        <p>펫페크워크</p>
       </FooterEachIconContiner>
       <FooterEachIconContiner>
-        {" "}
-        <img src={FooterIconChat} /> <p>채팅</p>{" "}
+        <img src={FooterIconChat} />
+        <p>채팅</p>
       </FooterEachIconContiner>
       <FooterEachIconContiner>
-        {" "}
-        <img src={FooterIconMypage} /> <p>마이페이지</p>{" "}
+
+        <img src={FooterIconMypage} />
+        <p>마이페이지</p>
       </FooterEachIconContiner>
       <FooterEachIconContiner>
-        {" "}
+
         <FooterIconToggleBtn
           className="toggleBtn"
           onClick={onClickMenuBarHandler}
-        ></FooterIconToggleBtn>{" "}
+        ></FooterIconToggleBtn>
       </FooterEachIconContiner>
     </FooterContiner>
   );
@@ -72,7 +78,7 @@ const Footer = () => {
 export default Footer;
 
 const FooterContiner = styled.div`
-  width: 100%;
+  width: 23.4375rem;
   height: 4.75rem;
   border-top: 1px solid gray;
   padding-top: 10px;

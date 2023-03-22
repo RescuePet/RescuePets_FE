@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Marker from '../../asset/marker.png'
 import { useSelector, useDispatch } from 'react-redux';
 import { __GETDATA } from "../../redux/modules/getdata";
+import { useLocation } from 'react-router-dom';
+import { __GetMissingData } from "../../redux/modules/missingSlice";
+import { __GetCatchData } from "../../redux/modules/catchSlice";
+import './Overlay.css';
+const { kakao } = window;
 
 const KakaoMap = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  // 메뉴바 로직 리덕스에 저장된 값 가져오기
 
-  // 리덕스에 저장된 값 가져오기 
   const menutoggle = useSelector((state) => {
     return state.menubar.toggle;
   })
@@ -16,135 +22,187 @@ const KakaoMap = () => {
   useEffect(() => {
     setMapBg(menutoggle)
   }, [menutoggle])
-
-  const { kakao } = window;
-
+  //디비에 저장된 데이터 값 가져오기 
   useEffect(() => {
-    dispatch(__GETDATA())
+    dispatch(__GetMissingData())
+    dispatch(__GetCatchData())
   }, []);
-
-
   // 유저가 직접올리는 것들 !
-  const data = useSelector((state) => state.getData.data);
-  // console.log(data)
+  const missingData = useSelector((state) => state.MissingData.data);
+  console.log("실종데이터 ", missingData?.data)
+  const catchData = useSelector((state) => state.catchData.data);
+  console.log("목격데이터", catchData?.data)
+
+  const [long, setLong] = useState("");
+  const [lati, setLati] = useState("");
+  navigator.geolocation.getCurrentPosition(onSucces, onFailure);
+  function onSucces(position) {
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
+    setLong(lng);
+    setLati(lat);
+  }
+  function onFailure() {
+    alert("위치 정보를 찾을수 없습니다.");
+  }
+
+  const mapRef = useRef();
 
   useEffect(() => {
-    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-      mapOption = {
-        center: new kakao.maps.LatLng(37.450701, 126.570667), // 지도의 중심좌표
-        level: 10 // 지도의 확대 레벨 
+    const container = document.getElementById('myMap');
+    const options = {
+      // 처음 들어갈 현재 위치 기준으로 지도 생성 
+      center: new kakao.maps.LatLng(lati, long),
+      level: 10,
+    };
+    mapRef.current = new kakao.maps.Map(container, options);
+    // }, [location]);
+    const imageSrc = `${Marker}` // 마커이미지의 주소입니다    
+    const imageSize = new kakao.maps.Size(24, 34) // 마커이미지의 크기입니다
+    const imageOption = { offset: new kakao.maps.Point(10, 20) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+    const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
+
+    // 실종글 작성 마커 인포 생성 로직 
+    missingData?.data?.map((item) => {
+      let marker = new kakao.maps.Marker({
+        map: mapRef.current,
+        position: new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
+        image: markerImage // 마커이미지 설정 
+      })
+      let position = new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude);
+      // 인포 정보 생성 로직 
+      const content = document.createElement('div');
+      content.classList.add('contentDiv');
+
+      const contentImgArea = document.createElement('img');
+      contentImgArea.classList.add("contentImgArea");
+      contentImgArea.src = `${item.postImages[0].imageURL}`;
+      content.appendChild(contentImgArea);
+
+      const contentTextArea = document.createElement('div');
+      contentTextArea.classList.add("contentTextArea");
+      content.appendChild(contentTextArea);
+
+      const contentTextTitle = document.createElement('h2');
+      contentTextTitle.classList.add('contentTextTitle');
+      contentTextTitle.innerText = `${item.specialMark}`;
+      contentTextArea.appendChild(contentTextTitle)
+
+      const contentTextdesc = document.createElement('div');
+      contentTextdesc.classList.add('contentTextDesc');
+      contentTextdesc.innerText = `${item.kindCd}`;
+      contentTextArea.appendChild(contentTextdesc)
+
+      const contentTextBtnBox = document.createElement('div');
+      contentTextBtnBox.classList.add('contentTextBtnBox')
+      contentTextArea.appendChild(contentTextBtnBox)
+
+      const contentTextDetailBtn = document.createElement('button');
+      contentTextDetailBtn.classList.add('contentTextDetailBtn');
+      contentTextDetailBtn.appendChild(document.createTextNode('상세'));
+      contentTextBtnBox.appendChild(contentTextDetailBtn)
+
+      const closeBtn = document.createElement('button');
+      closeBtn.classList.add("contentTextDeleteBtn")
+      closeBtn.appendChild(document.createTextNode('X'));
+      contentTextBtnBox.appendChild(closeBtn)
+
+      let customOverlay = new kakao.maps.CustomOverlay({
+        position: position,
+        content: content,
+        position: marker.getPosition()
+      });
+      // 닫기 이벤트 추가
+      closeBtn.onclick = function () {
+        customOverlay.setMap(null);
       };
 
-    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+      // 목격글 작성 마커 인포 생성 로직 
+      catchData?.data.map((item) => {
+        let marker = new kakao.maps.Marker({
+          map: mapRef.current,
+          position: new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
+          image: markerImage // 마커이미지 설정 
+        })
+        let position = new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude);
+        // 인포 정보 생성 로직 
+        const content = document.createElement('div');
+        content.classList.add('contentDiv');
 
-    // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
-    if (navigator.geolocation) {
-      // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-      navigator.geolocation.getCurrentPosition(function (position) {
-        const lat = position.coords.latitude, // 위도
-          lon = position.coords.longitude; // 경도
+        const contentImgArea = document.createElement('img');
+        contentImgArea.classList.add("contentImgArea");
+        contentImgArea.src = `${item.postImages[0].imageURL}`;
+        content.appendChild(contentImgArea);
 
-        const locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-          message = '<div class="isgood">현재위치</div>'; // 인포윈도우에 표시될 내용입니다
-        // 마커와 인포윈도우를 표시합니다
-        displayMarker(locPosition, message);
+        const contentTextArea = document.createElement('div');
+        contentTextArea.classList.add("contentTextArea");
+        content.appendChild(contentTextArea);
+
+        const contentTextTitle = document.createElement('h2');
+        contentTextTitle.classList.add('contentTextTitle');
+        contentTextTitle.innerText = `${item.specialMark}`;
+        contentTextArea.appendChild(contentTextTitle)
+        // 
+
+        const contentTextdesc = document.createElement('div');
+        contentTextdesc.classList.add('contentTextDesc');
+        contentTextdesc.innerText = `${item.kindCd}`;
+        contentTextArea.appendChild(contentTextdesc)
+
+        const contentTextBtnBox = document.createElement('div');
+        contentTextBtnBox.classList.add('contentTextBtnBox')
+        contentTextArea.appendChild(contentTextBtnBox)
+
+        const contentTextDetailBtn = document.createElement('button');
+        contentTextDetailBtn.classList.add('contentTextDetailBtn');
+        contentTextDetailBtn.appendChild(document.createTextNode('상세'));
+        contentTextBtnBox.appendChild(contentTextDetailBtn)
+
+
+        const closeBtn = document.createElement('button');
+        closeBtn.classList.add("contentTextDeleteBtn")
+        closeBtn.appendChild(document.createTextNode('X'));
+        contentTextBtnBox.appendChild(closeBtn)
+
+        let customOverlay = new kakao.maps.CustomOverlay({
+          position: position,
+          content: content,
+          position: marker.getPosition()
+        });
+        // 닫기 이벤트 추가
+        closeBtn.onclick = function () {
+          customOverlay.setMap(null);
+        };
+
+        kakao.maps.event.addListener(marker, 'click', function () {
+          customOverlay.setMap(mapRef.current);
+        });
+
       });
 
-    }
-    else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
-      const locPosition = new kakao.maps.LatLng(33.450701, 126.570667),
-        message = 'geolocation을 사용할수 없어요..'
-      // 마커와 인포윈도우를 표시합니다
-      displayMarker(locPosition, message);
-    }
+      kakao.maps.event.addListener(marker, 'click', function () {
+        customOverlay.setMap(mapRef.current);
+      });
 
-    // 커스텀오버레이 
-    const imageSrc = `${Marker}` // 마커이미지의 주소입니다    
-    const imageSize = new kakao.maps.Size(44, 59) // 마커이미지의 크기입니다
-    const imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-
-    // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
-    const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
-    const markerPosition = new kakao.maps.LatLng(37.54699, 127.09598); // 마커가 표시될 위치입니다
-
-
-    // 마커를 생성합니다
-    var marker2 = new kakao.maps.Marker({
-      position: markerPosition,
-      image: markerImage // 마커이미지 설정 
     });
 
-    // 마커가 지도 위에 표시되도록 설정합니다
-    marker2.setMap(map);
-
-    // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-    var content = '<div class="customoverlay">' +
-      '  <a href="https://map.kakao.com/link/map/11394059" target="_blank">' +
-      '    <span class="title">구의야구공원</span>' +
-      '  </a>' +
-      '</div>';
-
-    // 커스텀 오버레이가 표시될 위치입니다 
-    var position = new kakao.maps.LatLng(37.54699, 125.09598);
-
-    // 커스텀 오버레이를 생성합니다
-    var customOverlay = new kakao.maps.CustomOverlay({
-      map: map,
-      position: position,
-      yAnchor: 1
-    });
-
-    // 현재있는 위치기반으로 지도에 마커와 인포윈도우를 표시하는 함수입니다! 
-    function displayMarker(locPosition, message) {
-
-      // 현재 위치마커를 생성합니다
-      const marker = new kakao.maps.Marker({
-        map: map,
-        position: locPosition
-      });
-
-      const iwContent = message, // 인포윈도우에 표시할 내용
-        iwRemoveable = true;
-
-      // 현재위치 인포윈도우를 생성합니다
-      const infowindow = new kakao.maps.InfoWindow({
-        content: iwContent,
-        removable: iwRemoveable
-      });
-
-      // 현재 인포윈도우를 마커위에 표시합니다 
-      infowindow.open(map, marker);
-
-      // 지도 중심좌표를 접속위치로 변경합니다
-      map.setCenter(locPosition);
-    }
-
-
-    data?.map((item) => {
-      new kakao.maps.Marker({
-        map: map,
-        position: new kakao.maps.LatLng(item.lat, item.lng),
-        title: item.title,
-      });
-    })
-    // 마커가 생성될때 바로 화면상에 새로생성된 마커를 보여주기 위해 의존성배열에 Data를 넣어주었다! 
-  }, [data])
-
+    // 의존성배열에 현재주소를 가지고오면 
+  }, [onSucces]);
 
   return (
     <>
       {
         mapBg === false ? (
-          <div id="map" style={{ width: "100%", height: "90vh", filter: "brightness(20%)" }}></div>
+          <div id="myMap" style={{ width: "100%", height: "90vh", filter: "brightness(20%)" }}></div>
         )
           :
           (
-            <div id="map" style={{ width: "100%", height: "90vh" }}></div>
+            <div id="myMap" style={{ width: "100%", height: "90vh" }}></div>
           )
       }
     </>
   );
-}
-
+};
 
 export default KakaoMap;
