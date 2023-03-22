@@ -379,9 +379,11 @@ export const ReportAnimalSignificantBoxInputArea = styled.div`
 
 export const ReportAnimalPictureArea = styled.div`
   position: relative;
-  width: 8.25rem;
+  width: 18.75rem;
   height: 5.75rem;
-  margin-right: 12.5rem;
+  margin-right: 2.1875rem;
+  /* border: 1px solid blue; */
+  
 `;
 export const ReportAnimalPictureAreaTitle = styled.div`
   width: 100%;
@@ -394,8 +396,10 @@ export const ReportAnimalPictureAreaTitle = styled.div`
 export const ReportAnimalPictureAreaInputBox = styled.div`
   width: 100%;
   height: 80%;
-${props => props.theme.FlexCenter}
+  display: flex;
+  align-items: center;
   gap: 0px 20px;
+  /* border: 1px solid blue; */
 `;
 
 export const ReportAnimalPictureInput = styled.div`
@@ -403,7 +407,7 @@ export const ReportAnimalPictureInput = styled.div`
  height: 56px;
  background: #666666;
  border-radius: 4px;
- /* border: 1px solid red; */
+ /* border: 1px solid gray; */
  ${props => props.theme.FlexCenter}
  > h3 {
   color: #FFFFFF;
@@ -464,3 +468,10 @@ export const ReportAnimalUserInfo = styled.div`
     }
   }
 `;
+
+
+export const PreviewImage = styled.img`
+  width: 100%;
+  height: 100%;
+  border: 1px solid #CCCCCC;
+`

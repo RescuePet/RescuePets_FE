@@ -11,10 +11,11 @@ import ChatList from "../pages/chat/ChatList";
 import ChatRoom from "../pages/chat/ChatRoom";
 import Home from "../pages/home/Home";
 import Missing from "../pages/report/Missing";
-import Sighting from "../pages/report/Sighting";
 import PetworkList from "../pages/petwork/PetworkList";
 import MissingDetail from "../pages/reportDetail/MissingDetail";
 import SightingDetail from "../pages/reportDetail/SightingDetail";
+import Catch from "../pages/report/Catch";
+
 
 const Router = () => {
   return (
@@ -30,7 +31,8 @@ const Router = () => {
         <Route path="/chatlist" element={<ChatList />} />
         <Route path="/chatroom/:postname/:id" element={<ChatRoom />} />
         <Route path="/missing" element={<Missing />} />
-        <Route path="/sighting" element={<Sighting />} />
+        <Route path="/catch" element={<Catch />} />
+        <Route path="/reportdetail" element={<ReportDetail />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/testreport" element={<ReportPosting />} />
         <Route path="/petwork" element={<PetworkList />} />
