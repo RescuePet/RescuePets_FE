@@ -8,7 +8,7 @@ const Receive = ({ message }) => {
     <ReceiveBox>
       <ReceiveMessage>
         <ReceiveSpan>{message}</ReceiveSpan>
-        <ReceiveTimeSpan>오후 06:15</ReceiveTimeSpan>
+        {/* <ReceiveTimeSpan>오후 06:15</ReceiveTimeSpan> */}
       </ReceiveMessage>
     </ReceiveBox>
   );

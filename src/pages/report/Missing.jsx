@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import Layout from "../../layouts/Layout"
-import Button from "../../elements/Button"
+import Layout from "../../layouts/Layout";
+import Button from "../../elements/Button";
 import cancel from "../../asset/delete.svg";
-import imageCompression from 'browser-image-compression';
+import imageCompression from "browser-image-compression";
 import imgdelete from "../../asset/imgDelete.svg";
-import Marker from "../../asset/marker.png"
-import { CustomSelect } from "../../elements/CustomSelect"
-import {
-    ReportMissingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
+import Marker from "../../asset/marker.png";
+import { CustomSelect } from "../../elements/CustomSelect";
+import { ReportMissingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
     , ReportAnimalInfoCheckBoxTitle, ReportAnimalInfoCheckBoxSelete, ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
     ReportAnimalInfoBoxColumnColumn, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportInput, ReportLgInput,
     ReportKakaoMapBox, ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox, ReportAnimalSignificantBox, ReportAnimalSignificantBoxTitle,

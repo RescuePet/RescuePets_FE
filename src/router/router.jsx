@@ -4,7 +4,6 @@ import AdoptionDetail from "../pages/adoptionDetail/AdoptionDetail";
 import OnBoarding from "../pages/onboarding/OnBoarding";
 import Map from "../pages/map/Map";
 import Profile from "../pages/profile/Profile";
-import ReportDetail from "../pages/reportDetail/ReportDetail";
 import Signin from "../pages/sign/Signin";
 import Signup from "../pages/sign/Signup";
 import ReportPosting from "../test/ReportPosting";
@@ -12,7 +11,11 @@ import ChatList from "../pages/chat/ChatList";
 import ChatRoom from "../pages/chat/ChatRoom";
 import Home from "../pages/home/Home";
 import Missing from "../pages/report/Missing";
+import PetworkList from "../pages/petwork/PetworkList";
+import MissingDetail from "../pages/reportDetail/MissingDetail";
+import SightingDetail from "../pages/reportDetail/SightingDetail";
 import Catch from "../pages/report/Catch";
+
 
 const Router = () => {
   return (
@@ -26,12 +29,15 @@ const Router = () => {
         <Route path="/adoptiondetail/:id" element={<AdoptionDetail />} />
         <Route path="/map" element={<Map />} />
         <Route path="/chatlist" element={<ChatList />} />
-        <Route path="/chatroom" element={<ChatRoom />} />
+        <Route path="/chatroom/:postname/:id" element={<ChatRoom />} />
         <Route path="/missing" element={<Missing />} />
         <Route path="/catch" element={<Catch />} />
         <Route path="/reportdetail" element={<ReportDetail />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/testreport" element={<ReportPosting />} />
+        <Route path="/petwork" element={<PetworkList />} />
+        <Route path="/missingdetail/:id" element={<MissingDetail />} />
+        <Route path="/sightingdetail/:id" element={<SightingDetail />} />
       </Routes>
     </BrowserRouter>
   );
