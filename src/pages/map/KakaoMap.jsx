@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import Marker from '../../asset/marker.png'
 import { useSelector, useDispatch } from 'react-redux';
 import { __GETDATA } from "../../redux/modules/getdata";
-import { useLocation } from 'react-router-dom';
 import { __GetMissingData } from "../../redux/modules/missingSlice";
 import { __GetCatchData } from "../../redux/modules/catchSlice";
 import './Overlay.css';
@@ -10,8 +9,6 @@ const { kakao } = window;
 
 const KakaoMap = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
-  // 메뉴바 로직 리덕스에 저장된 값 가져오기
 
   const menutoggle = useSelector((state) => {
     return state.menubar.toggle;
@@ -53,12 +50,12 @@ const KakaoMap = () => {
     const options = {
       // 처음 들어갈 현재 위치 기준으로 지도 생성 
       center: new kakao.maps.LatLng(lati, long),
-      level: 10,
+      level: 12,
     };
     mapRef.current = new kakao.maps.Map(container, options);
-    // }, [location]);
+
     const imageSrc = `${Marker}` // 마커이미지의 주소입니다    
-    const imageSize = new kakao.maps.Size(24, 34) // 마커이미지의 크기입니다
+    const imageSize = new kakao.maps.Size(16, 20) // 마커이미지의 크기입니다
     const imageOption = { offset: new kakao.maps.Point(10, 20) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
     const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
@@ -119,7 +116,7 @@ const KakaoMap = () => {
       };
 
       // 목격글 작성 마커 인포 생성 로직 
-      catchData?.data.map((item) => {
+      catchData?.data?.map((item) => {
         let marker = new kakao.maps.Marker({
           map: mapRef.current,
           position: new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
