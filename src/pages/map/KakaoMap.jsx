@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import Marker from '../../asset/marker.png'
+import Mymarker from "../../asset/mymarker.png"
 import { useSelector, useDispatch } from 'react-redux';
 import { __GETDATA } from "../../redux/modules/getdata";
 import { __GetMissingData } from "../../redux/modules/missingSlice";
@@ -50,15 +51,36 @@ const KakaoMap = () => {
     const options = {
       // 처음 들어갈 현재 위치 기준으로 지도 생성 
       center: new kakao.maps.LatLng(lati, long),
-      level: 12,
+      level: 2,
     };
     mapRef.current = new kakao.maps.Map(container, options);
+
+    const MyimageSrc = `${Mymarker}` // 마커이미지의 주소입니다    
+    const MyimageSize = new kakao.maps.Size(56, 56)// 마커이미지의 크기입니다
+    const MyimageOption = { offset: new kakao.maps.Point(10, 20) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+    // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+    let MymarkerImage = new kakao.maps.MarkerImage(MyimageSrc, MyimageSize, MyimageOption)
+    const MymarkerPosition = new kakao.maps.LatLng(lati, long); // 마커가 표시될 위치입니다
+
+    // // 마커를 생성합니다
+    let marker = new kakao.maps.Marker({
+      position: MymarkerPosition,
+      image: MymarkerImage // 마커이미지 설정 
+    });
+
+    // // 마커가 지도 위에 표시되도록 설정합니다
+    marker.setMap(mapRef.current);
+
+
+
+
 
     const imageSrc = `${Marker}` // 마커이미지의 주소입니다    
     const imageSize = new kakao.maps.Size(16, 20) // 마커이미지의 크기입니다
     const imageOption = { offset: new kakao.maps.Point(10, 20) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-    const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
+    let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
 
     // 실종글 작성 마커 인포 생성 로직 
     missingData?.data?.map((item) => {
