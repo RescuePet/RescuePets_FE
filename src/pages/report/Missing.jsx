@@ -7,7 +7,8 @@ import imageCompression from "browser-image-compression";
 import imgdelete from "../../asset/imgDelete.svg";
 import Marker from "../../asset/marker.png";
 import { CustomSelect } from "../../elements/CustomSelect";
-import { ReportMissingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
+import {
+    ReportMissingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
     , ReportAnimalInfoCheckBoxTitle, ReportAnimalInfoCheckBoxSelete, ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
     ReportAnimalInfoBoxColumnColumn, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportInput, ReportLgInput,
     ReportKakaoMapBox, ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox, ReportAnimalSignificantBox, ReportAnimalSignificantBoxTitle,
@@ -63,39 +64,44 @@ const Missing = () => {
 
     // 올린 이미지 담을 관리하는 State
     const [showImages, setShowImages] = useState([]);
-
     // 폼데이터로 이미지 관리하는 State
     const [imageFormData, setImageFormData] = useState([]);
     // 폼데이터로 보관중인 스테이트
     const [formImagin, setFormformImagin] = useState(new FormData());
+    const [image, setImage] = useState([]);
 
-    // 이미지 등록 로직 
     const onChangeUploadHandler = async (e) => {
         e.preventDefault();
 
         const imageLists = e.target.files;
-        // 이미지 용량 줄여주는 로직 
-
-        console.log("폼데이터 보내야 할것들:", imageLists)
+        setImage([...imageLists])
+        // console.log("폼데이터 보내야 할것들:", imageLists)
         setImageFormData(imageLists)
+
+        setFormformImagin([...formImagin], ...e.target.files)
 
         let imageUrlLists = [...showImages];
         for (let i = 0; i < imageLists.length; i++) {
             const currentImageUrl = URL.createObjectURL(imageLists[i]);
             imageUrlLists.push(currentImageUrl);
+            image.push(imageLists[i])
         }
         if (imageUrlLists.length > 3) {
+            alert('이미지는 3장 이하만 가능합니다!')
             setImageFormData(imageFormData.slice(0, 3));
             imageUrlLists = imageUrlLists.slice(0, 3);
+            image = image.slice(0, 3)
         }
         setShowImages(imageUrlLists);
-
+        // console.log("Real", image)
         const formImg = new FormData();
-
-        for (let i = 0; i < imageLists.length; i++) {
-            formImg.append("postImages", imageLists[i]);
+        // console.log("Real", image.length)
+        for (let i = 0; i < image.length; i++) {
+            formImg.append("postImages", image[i]);
         }
+        // 폼데이터를 폼데이터에 담고 진행 
         setFormformImagin(formImg);
+
         for (let value of formImagin.values()) {
             console.log("이미지폼데이터", value);
         }
@@ -103,9 +109,12 @@ const Missing = () => {
 
     const onClickDeleteHandler = () => {
         setShowImages('');
+        setFormformImagin('')
         setImageFormData('')
+        // setImage(null)
+        window.location.reload()
     };
-    // console.log('폼데이터 최신 :', imageFormData.length)
+    console.log('폼데이터 최신 :', imageFormData.length)
     const {
         register, handleSubmit, formState: { errors }, reset,
         resetField, } = useForm({ mode: 'onChange' });
@@ -137,7 +146,7 @@ const Missing = () => {
         }
 
         for (let value of formData.values()) {
-            console.log("FormData", typeof (value));
+            console.log("FormData", value);
         }
         dispatch(__PostMissingData(formData))
     }
@@ -192,7 +201,6 @@ const Missing = () => {
                 console.log(mouseEvent.latLng)
                 if (status === kakao.maps.services.Status.OK) {
                     marker.setPosition(mouseEvent.latLng);
-
                     marker.setMap(map);
                     const currentAddress = result[0]?.address?.address_name
                     const addressDiv = document.getElementById('address');

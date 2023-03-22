@@ -67,17 +67,26 @@ const Catch = () => {
   const [imageFormData, setImageFormData] = useState([]);
   // 폼데이터로 보관중인 스테이트
   const [formImagin, setFormformImagin] = useState(new FormData());
+  const [image, setImage] = useState([]);
 
   const onChangeUploadHandler = async (e) => {
     e.preventDefault();
+
     const imageLists = e.target.files;
+    setImage([...imageLists])
+    console.log("폼데이터 보내야 할것들:", imageLists)
     setImageFormData(imageLists)
 
+    setFormformImagin([...formImagin], ...e.target.files)
+
     let imageUrlLists = [...showImages];
+    // 미리보기를 띄워주는 로직
     for (let i = 0; i < imageLists.length; i++) {
       const currentImageUrl = URL.createObjectURL(imageLists[i]);
       imageUrlLists.push(currentImageUrl);
+      image.push(imageLists[i])
     }
+    // 갯수제한을 걸어주는 로직 
     if (imageUrlLists.length > 3) {
       setImageFormData(imageFormData.slice(0, 3));
       imageUrlLists = imageUrlLists.slice(0, 3);
@@ -85,9 +94,11 @@ const Catch = () => {
     setShowImages(imageUrlLists);
 
     const formImg = new FormData();
-    for (let i = 0; i < imageLists.length; i++) {
-      formImg.append("postImages", imageLists[i]);
+    // console.log("Real", image.length)
+    for (let i = 0; i < image.length; i++) {
+      formImg.append("postImages", image[i]);
     }
+    // 폼데이터를 폼데이터에 담고 진행 
     setFormformImagin(formImg);
 
     for (let value of formImagin.values()) {
@@ -134,7 +145,7 @@ const Catch = () => {
     }
 
     for (let value of formData.values()) {
-      console.log("FormData", typeof (value));
+      console.log("FormData", value);
     }
 
     dispatch(__PostCatchData(formData))
