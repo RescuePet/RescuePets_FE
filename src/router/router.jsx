@@ -16,7 +16,6 @@ import MissingDetail from "../pages/reportDetail/MissingDetail";
 import SightingDetail from "../pages/reportDetail/SightingDetail";
 import Catch from "../pages/report/Catch";
 
-
 const Router = () => {
   return (
     <BrowserRouter>
@@ -32,7 +31,6 @@ const Router = () => {
         <Route path="/chatroom/:postname/:id" element={<ChatRoom />} />
         <Route path="/missing" element={<Missing />} />
         <Route path="/catch" element={<Catch />} />
-        <Route path="/reportdetail" element={<ReportDetail />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/testreport" element={<ReportPosting />} />
         <Route path="/petwork" element={<PetworkList />} />
