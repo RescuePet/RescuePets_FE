@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { __GETDATA } from "../../redux/modules/getdata";
 import { useLocation } from 'react-router-dom';
 import { __GetMissingData } from "../../redux/modules/missingSlice";
+import { __GetSightingData } from "../../redux/modules/sightingSlice";
 import './Overlay.css';
 const { kakao } = window;
 
@@ -23,14 +24,14 @@ const KakaoMap = () => {
   }, [menutoggle])
   //디비에 저장된 데이터 값 가져오기 
   useEffect(() => {
-    dispatch(__GETDATA())
     dispatch(__GetMissingData())
+    dispatch(__GetSightingData())
   }, []);
   // 유저가 직접올리는 것들 !
-  const data2 = useSelector((state) => state.postMissingData.data);
-  console.log("데이터 바인딩 할것들 ", data2?.data)
-
-  const data = useSelector((state) => state.getData.data);
+  const missingData = useSelector((state) => state.postMissingData.data);
+  console.log("실종데이터 ", missingData?.data)
+  const sightingData = useSelector((state) => state.sighting.data);
+  console.log("목격데이터", sightingData?.data)
 
   const [long, setLong] = useState("");
   const [lati, setLati] = useState("");
@@ -50,6 +51,7 @@ const KakaoMap = () => {
   useEffect(() => {
     const container = document.getElementById('myMap');
     const options = {
+      // 처음 들어갈 현재 위치 기준으로 지도 생성 
       center: new kakao.maps.LatLng(lati, long),
       level: 10,
     };
@@ -61,36 +63,20 @@ const KakaoMap = () => {
 
     const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
 
-    // useEffect(() => {
-    const overlayInfos = data2?.data?.map(info => {
-      // console.log(info)
-      return {
-        title: info.title,
-        kind: info.kind,
-        lat: info.happenLatitude,
-        lng: info.happenLongitude,
-        img: info.img,
-        desc: info.desc
-      };
-    });
-    overlayInfos.forEach(el => {
+    missingData?.data?.map((item) => {
       let marker = new kakao.maps.Marker({
         map: mapRef.current,
-        position: new kakao.maps.LatLng(el.lat, el.lng),
-        title: el.title,
+        position: new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
         image: markerImage // 마커이미지 설정 
-      });
-
-      let position = new kakao.maps.LatLng(el.lat, el.lng);
-
-
-      // content HTMLElement 생성
+      })
+      let position = new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude);
+      // 인포 정보 생성 로직 
       const content = document.createElement('div');
       content.classList.add('contentDiv');
 
       const contentImgArea = document.createElement('img');
       contentImgArea.classList.add("contentImgArea");
-      contentImgArea.src = `${el.img}`;
+      contentImgArea.src = `${item.postImages[0].imageURL}`;
       content.appendChild(contentImgArea);
 
       const contentTextArea = document.createElement('div');
@@ -99,13 +85,13 @@ const KakaoMap = () => {
 
       const contentTextTitle = document.createElement('h2');
       contentTextTitle.classList.add('contentTextTitle');
-      contentTextTitle.innerText = `${el.title}`;
+      contentTextTitle.innerText = `${item.specialMark}`;
       contentTextArea.appendChild(contentTextTitle)
       // 
 
       const contentTextdesc = document.createElement('div');
       contentTextdesc.classList.add('contentTextDesc');
-      contentTextdesc.innerText = `${el.desc}`;
+      contentTextdesc.innerText = `${item.kindCd}`;
       contentTextArea.appendChild(contentTextdesc)
 
       const contentTextBtnBox = document.createElement('div');
@@ -116,7 +102,6 @@ const KakaoMap = () => {
       contentTextDetailBtn.classList.add('contentTextDetailBtn');
       contentTextDetailBtn.appendChild(document.createTextNode('상세'));
       contentTextBtnBox.appendChild(contentTextDetailBtn)
-
 
       const closeBtn = document.createElement('button');
       closeBtn.classList.add("contentTextDeleteBtn")
@@ -134,11 +119,79 @@ const KakaoMap = () => {
       };
 
 
+      sightingData?.data.map((item) => {
+        let marker = new kakao.maps.Marker({
+          map: mapRef.current,
+          position: new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
+          image: markerImage // 마커이미지 설정 
+        })
+        let position = new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude);
+        // 인포 정보 생성 로직 
+        const content = document.createElement('div');
+        content.classList.add('contentDiv');
+
+        const contentImgArea = document.createElement('img');
+        contentImgArea.classList.add("contentImgArea");
+        contentImgArea.src = `${item.postImages[0].imageURL}`;
+        content.appendChild(contentImgArea);
+
+        const contentTextArea = document.createElement('div');
+        contentTextArea.classList.add("contentTextArea");
+        content.appendChild(contentTextArea);
+
+        const contentTextTitle = document.createElement('h2');
+        contentTextTitle.classList.add('contentTextTitle');
+        contentTextTitle.innerText = `${item.specialMark}`;
+        contentTextArea.appendChild(contentTextTitle)
+        // 
+
+        const contentTextdesc = document.createElement('div');
+        contentTextdesc.classList.add('contentTextDesc');
+        contentTextdesc.innerText = `${item.kindCd}`;
+        contentTextArea.appendChild(contentTextdesc)
+
+        const contentTextBtnBox = document.createElement('div');
+        contentTextBtnBox.classList.add('contentTextBtnBox')
+        contentTextArea.appendChild(contentTextBtnBox)
+
+        const contentTextDetailBtn = document.createElement('button');
+        contentTextDetailBtn.classList.add('contentTextDetailBtn');
+        contentTextDetailBtn.appendChild(document.createTextNode('상세'));
+        contentTextBtnBox.appendChild(contentTextDetailBtn)
+
+
+        const closeBtn = document.createElement('button');
+        closeBtn.classList.add("contentTextDeleteBtn")
+        closeBtn.appendChild(document.createTextNode('X'));
+        contentTextBtnBox.appendChild(closeBtn)
+
+        let customOverlay = new kakao.maps.CustomOverlay({
+          position: position,
+          content: content,
+          position: marker.getPosition()
+        });
+        // 닫기 이벤트 추가
+        closeBtn.onclick = function () {
+          customOverlay.setMap(null);
+        };
+
+
+        kakao.maps.event.addListener(marker, 'click', function () {
+          customOverlay.setMap(mapRef.current);
+        });
+
+      });
+
+
+
+
+
       kakao.maps.event.addListener(marker, 'click', function () {
         customOverlay.setMap(mapRef.current);
       });
 
     });
+
     // 의존성배열에 현재주소를 가지고오면 
   }, [onSucces]);
 

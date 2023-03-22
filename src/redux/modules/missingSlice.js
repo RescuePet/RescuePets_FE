@@ -41,11 +41,7 @@ const initialState = {
 export const postMissingData = createSlice({
     name: "postMissingData",
     initialState,
-    reducers: {
-        toggleCategory: (state, action) => {
-            state.category = action.payload;
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder.addCase(__PostMissingData.pending, (state) => {
             state.loading = true;

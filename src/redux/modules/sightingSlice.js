@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { instance } from "../../utils/api";
 
-// 실종 글 불러오기
+// 목격 글 불러오기
 export const __GetSightingData = createAsyncThunk(
     "getSightingData",
     async (arg, thunkAPI) => {
@@ -15,7 +15,7 @@ export const __GetSightingData = createAsyncThunk(
     }
 );
 
-// 실종 글 작성
+// 목격 글 작성
 export const __PostSightingData = createAsyncThunk(
     "postSightingData",
     async (payload, thunkAPI) => {
