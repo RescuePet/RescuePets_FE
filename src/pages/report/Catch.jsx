@@ -149,6 +149,7 @@ const Catch = () => {
     }
 
     dispatch(__PostCatchData(formData))
+    // reset()
   }
 
   // 카카오 맵 로직 
@@ -158,17 +159,24 @@ const Catch = () => {
 
   const [long, setLong] = useState("");
   const [lati, setLati] = useState("");
-  navigator.geolocation.getCurrentPosition(onSucces, onFailure);
 
-  function onSucces(position) {
-    const lat = position.coords.latitude;
-    const lng = position.coords.longitude;
-    setLong(lng);
-    setLati(lat);
-  }
-  function onFailure() {
-    alert("위치 정보를 찾을수 없습니다.");
-  }
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(onSucces, onFailure);
+    // 성공
+    // 여기는 렌더링이 초기에 한번만 일어나게 해야만한다 
+    function onSucces(position) {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      setLong(lng);
+      setLati(lat);
+    }
+    console.log(onSucces)
+    // 실패
+    function onFailure() {
+      alert("위치 정보를 찾을수 없습니다.");
+    }
+  }, [])
+
   useEffect(() => {
     const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
       mapOption = {
@@ -213,7 +221,7 @@ const Catch = () => {
       geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
     }
 
-  }, [onSucces])
+  }, [long])
 
   return (
     <Layout>

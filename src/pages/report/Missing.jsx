@@ -169,7 +169,6 @@ const Missing = () => {
             setLong(lng);
             setLati(lat);
         }
-
         console.log(onSucces)
         // 실패
         function onFailure() {
@@ -208,19 +207,12 @@ const Missing = () => {
         kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
             searchDetailAddrFromCoords(mouseEvent.latLng, function (result, status) {
                 console.log(mouseEvent.latLng)
-                if (status === kakao.maps.services.Status.OK) {
-                    // setLati(mouseEvent.latLng.Ma)
-                    // setLong(mouseEvent.latLng.La)
-                    // console.log(mouseEvent.latLng.Ma)
-                    // console.log(mouseEvent.latLng.La)
-                    // 마커를 이동시킨다 
+                if (status === kakao.maps.services.Status.OK) { 
                     marker.setPosition(mouseEvent.latLng);
-                    // 마커를 이동시킨 화면에 보여준다
                     marker.setMap(map);
                     const currentAddress = result[0]?.address?.address_name
                     const addressDiv = document.getElementById('address');
                     addressDiv.innerHTML = currentAddress;
-                    //  console.log(mouseEvent.latLng)
                     const addressLatDiv = document.getElementById('addressLat')
                     addressLatDiv.innerHTML = mouseEvent.latLng.Ma
                     const addressLngDiv = document.getElementById('addressLng')
