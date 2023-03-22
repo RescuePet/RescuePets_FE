@@ -27,6 +27,12 @@ const Signin = () => {
     setValue({ [e.target.name]: "" });
   };
 
+  const URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=4768a30284d23053b4b63c32c225e1d4&redirect_uri=http://localhost:3000/home`;
+
+  const kakaoSignUp = () => {
+    window.location.href = URL;
+  };
+
   return (
     <Layout>
       <SignContainer>
@@ -69,7 +75,9 @@ const Signin = () => {
           <Button TabBtn2 type="submit" form="signin">
             로그인
           </Button>
-          <Button TabBtn>카카오톡으로 로그인</Button>
+          <Button TabBtn onClick={() => kakaoSignUp()}>
+            카카오톡으로 로그인
+          </Button>
         </ButtonWrapper>
         <SignUpWrapper>
           <SignUpSpan>회원가입</SignUpSpan>
