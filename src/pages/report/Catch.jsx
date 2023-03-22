@@ -16,7 +16,7 @@ import {
   ReportAnimalPictureAreaTitle, ReportAnimalPictureAreaInputBox, ReportAnimalPictureInput, ReportAnimalPicturePreview, PreviewImage
 } from './components/reportstyle';
 import { NameValue, TimeValue, SeletegenderArr, seleteneuteredArr } from './components/data';
-import { __PostMissingData } from '../../redux/modules/missingSlice';
+import { __PostCatchData } from '../../redux/modules/catchSlice';
 import { useDispatch } from 'react-redux';
 
 const Catch = () => {
@@ -137,7 +137,7 @@ const Catch = () => {
       console.log("FormData", typeof (value));
     }
 
-    dispatch(__PostMissingData(formData))
+    dispatch(__PostCatchData(formData))
   }
 
   // 카카오 맵 로직 
