@@ -276,7 +276,7 @@ const Catch = () => {
             <ReportAnimalInfoBox>
               <ReportAnimalInfoBoxColumn>
                 <ReportAnimalInfoBoxColumnRow>
-                  <p>나이</p>
+                  <p>추정나이</p>
                   <ReportInput type="text" placeholder='입력하기'
                     {...register("animalAge", {
                       pattern: { value: /^[0-9]+$/, message: "숫자만입력가능", },
@@ -287,7 +287,7 @@ const Catch = () => {
                 </ReportAnimalInfoBoxColumnRow>
 
                 <ReportAnimalInfoBoxColumnRow>
-                  <p>체중(Kg)</p>
+                  <p>추정체중(Kg)</p>
                   <ReportInput type="text" placeholder='입력하기'
                     {...register("animalkg", {
                       pattern: { value: /^[0-9]+$/, message: "숫자만입력가능", },
