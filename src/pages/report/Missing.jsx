@@ -114,7 +114,7 @@ const Missing = () => {
         // setImage(null)
         window.location.reload()
     };
-    console.log('폼데이터 최신 :', imageFormData.length)
+    // console.log('폼데이터 최신 :', imageFormData.length)
     const {
         register, handleSubmit, formState: { errors }, reset,
         resetField, } = useForm({ mode: 'onChange' });
@@ -149,6 +149,7 @@ const Missing = () => {
             console.log("FormData", value);
         }
         dispatch(__PostMissingData(formData))
+        // reset()
     }
 
     const addressDiv = document.getElementById('address');
@@ -157,18 +158,26 @@ const Missing = () => {
     // 현재위치를 받아오는 로직
     const [long, setLong] = useState("");
     const [lati, setLati] = useState("");
-    navigator.geolocation.getCurrentPosition(onSucces, onFailure);
-    // 성공
-    function onSucces(position) {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        setLong(lng);
-        setLati(lat);
-    }
-    // 실패
-    function onFailure() {
-        alert("위치 정보를 찾을수 없습니다.");
-    }
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(onSucces, onFailure);
+        // 성공
+        // 여기는 렌더링이 초기에 한번만 일어나게 해야만한다 
+        function onSucces(position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            setLong(lng);
+            setLati(lat);
+        }
+
+        console.log(onSucces)
+        // 실패
+        function onFailure() {
+            alert("위치 정보를 찾을수 없습니다.");
+        }
+    }, [])
+
+
     // 지도를 그려쥬는 로직
 
     useEffect(() => {
@@ -200,7 +209,13 @@ const Missing = () => {
             searchDetailAddrFromCoords(mouseEvent.latLng, function (result, status) {
                 console.log(mouseEvent.latLng)
                 if (status === kakao.maps.services.Status.OK) {
+                    // setLati(mouseEvent.latLng.Ma)
+                    // setLong(mouseEvent.latLng.La)
+                    // console.log(mouseEvent.latLng.Ma)
+                    // console.log(mouseEvent.latLng.La)
+                    // 마커를 이동시킨다 
                     marker.setPosition(mouseEvent.latLng);
+                    // 마커를 이동시킨 화면에 보여준다
                     marker.setMap(map);
                     const currentAddress = result[0]?.address?.address_name
                     const addressDiv = document.getElementById('address');
@@ -218,7 +233,7 @@ const Missing = () => {
             geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
         }
 
-    }, [onSucces])
+    }, [long])
 
     return (
         <Layout>
