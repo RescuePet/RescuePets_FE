@@ -80,6 +80,7 @@ const BackButton = styled.img`
   width: 15px;
   height: 15px;
   background-color: #666666;
+  cursor: pointer;
 `;
 
 const PrevTo = styled.div`

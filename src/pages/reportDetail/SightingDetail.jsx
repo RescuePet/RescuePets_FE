@@ -11,7 +11,7 @@ import InputContainer from "../../components/InputContainer";
 import Title from "./components/Title";
 import Location from "./components/Location";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { __getCatchPostDetail } from "../../redux/modules/petworkSlice";
 import {
   toggleEditDone,
@@ -19,10 +19,12 @@ import {
   __postCatchComment,
 } from "../../redux/modules/commentSlice";
 import Comment from "./components/Comment";
+import { instance } from "../../utils/api";
 
 const SightingDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { catchPostDetail } = useSelector((state) => state.petwork);
   const { catchComment, editDone } = useSelector((state) => state?.comment);
@@ -66,11 +68,18 @@ const SightingDetail = () => {
   const submitHandler = (content) => {
     let data = {
       id: id,
-      content: content,
+      content: content.message,
     };
     dispatch(__postCatchComment(data)).then(() => {
       dispatch(__getCatchComment(id));
     });
+  };
+
+  const chatHandler = async () => {
+    console.log("hi");
+    const postname = "catch-room";
+    await instance.post(`/chat/catch-room/${id}`);
+    navigate(`/chatroom/${postname}/${id}`);
   };
 
   return (
@@ -126,7 +135,7 @@ const SightingDetail = () => {
             })}
           </CommentListWrapper>
         </CommentContainer>
-        <FloatingChatButton></FloatingChatButton>
+        <FloatingChatButton onClick={() => chatHandler()}></FloatingChatButton>
       </MissingDetailLayout>
       <InputContainer
         placeholder="댓글을 입력해주세요."

@@ -8,7 +8,7 @@ const Send = ({ message }) => {
     <SendBox>
       <SendMessage>
         <ContentText>{message}</ContentText>
-        <SendTimeSpan>오후 06:15</SendTimeSpan>
+        {/* <SendTimeSpan>오후 06:15</SendTimeSpan> */}
       </SendMessage>
     </SendBox>
   );

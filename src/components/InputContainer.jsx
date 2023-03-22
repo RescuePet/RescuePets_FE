@@ -14,7 +14,7 @@ const InputContainer = ({ placeholder, submitHandler }) => {
         </div>
         <InputWrapper
           onSubmit={handleSubmit((register) => {
-            submitHandler(register.message);
+            submitHandler(register);
             reset();
           })}
         >

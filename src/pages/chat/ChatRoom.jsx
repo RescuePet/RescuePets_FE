@@ -12,13 +12,13 @@ import InputContainer from "../../components/InputContainer";
 import Send from "./components/Send";
 import Receive from "./components/Receive";
 import { instance } from "../../utils/api";
+import { useParams } from "react-router-dom";
 
 const socket = new SockJS(`${process.env.REACT_APP_CHAT_TEST}/ws/chat`);
 const ws = Stomp.over(socket);
-ws.debug = null;
 
 const ChatRoom = () => {
-  const postId = 1;
+  const { id, postname } = useParams();
   const sender = JSON.parse(localStorage.getItem("userInfo"));
   const [roomId, setRoomId] = useState("");
   const [currentChat, setCurrentChat] = useState([]);
@@ -30,14 +30,15 @@ const ChatRoom = () => {
 
   useEffect(() => {
     instance
-      .post(`/chat/catch-room/${postId}`)
+      .post(`/chat/${postname}/${id}`)
       .then((response) => {
+        console.log(response.data);
         setRoomId(response.data);
         wsConnectSubscribe(response.data);
         return instance.get(`/room/${response.data}`);
       })
       .then((response) => {
-        setCurrentChat([...response.data.dto]);
+        setCurrentChat([...response.data.data.dto]);
         return;
       });
 

@@ -28,7 +28,7 @@ const Router = () => {
         <Route path="/adoptiondetail/:id" element={<AdoptionDetail />} />
         <Route path="/map" element={<Map />} />
         <Route path="/chatlist" element={<ChatList />} />
-        <Route path="/chatroom" element={<ChatRoom />} />
+        <Route path="/chatroom/:postname/:id" element={<ChatRoom />} />
         <Route path="/missing" element={<Missing />} />
         <Route path="/sighting" element={<Sighting />} />
         <Route path="/profile" element={<Profile />} />

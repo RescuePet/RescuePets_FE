@@ -26,7 +26,7 @@ instance.interceptors.response.use((response) => {
   if (response.config.url === "/api/member/login") {
     const TOKEN = response.headers.authorization;
     Cookies.set("Token", TOKEN);
-    localStorage.setItem("userInfo", JSON.stringify(response.data));
+    localStorage.setItem("userInfo", JSON.stringify(response.data.data));
     return response;
   }
   return response;

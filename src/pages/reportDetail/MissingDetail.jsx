@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import {
@@ -10,7 +10,7 @@ import ImageCarousel from "./components/ImageCarousel";
 import InputContainer from "../../components/InputContainer";
 import Title from "./components/Title";
 import Location from "./components/Location";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { __getMissingPostDetail } from "../../redux/modules/petworkSlice";
 import Comment from "./components/Comment";
@@ -19,16 +19,18 @@ import {
   __getMissingComment,
   __postMissingComment,
 } from "../../redux/modules/commentSlice";
+import { instance } from "../../utils/api";
 
 const MissingDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const scrollRef = useRef();
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
   const { missingComment, editDone } = useSelector((state) => state?.comment);
 
-  console.log(editDone);
+  console.log(missingPostDetail);
 
   useEffect(() => {
     dispatch(__getMissingPostDetail(id));
@@ -69,12 +71,18 @@ const MissingDetail = () => {
   const submitHandler = async (content) => {
     let data = {
       id: id,
-      content: content,
+      content: content.message,
     };
     dispatch(__postMissingComment(data)).then(() => {
-      console.log("1");
       dispatch(__getMissingComment(id));
     });
+  };
+
+  const chatHandler = async () => {
+    console.log("hi");
+    const postname = "missing-room";
+    await instance.post(`/chat/missing-room/${id}`);
+    navigate(`/chatroom/${postname}/${id}`);
   };
 
   return (
@@ -139,7 +147,9 @@ const MissingDetail = () => {
               );
             })}
           </CommentListWrapper>
-          <FloatingChatButton></FloatingChatButton>
+          <FloatingChatButton
+            onClick={() => chatHandler()}
+          ></FloatingChatButton>
         </CommentContainer>
       </MissingDetailLayout>
       <InputContainer
@@ -228,7 +238,7 @@ const FloatingChatButton = styled.div`
   right: 20px;
   width: 56px;
   height: 56px;
-  z-index: 10;
+  z-index: 50;
   background-color: #666666;
   border-radius: 50%;
   box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.25);
