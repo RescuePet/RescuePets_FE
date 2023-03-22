@@ -19,8 +19,7 @@ import { NameValue, TimeValue, SeletegenderArr, seleteneuteredArr } from './comp
 import { __PostMissingData } from '../../redux/modules/missingSlice';
 import { useDispatch } from 'react-redux';
 
-
-const Sighting = () => {
+const Catch = () => {
   let imageRef;
   const dispatch = useDispatch();
   const { kakao } = window;
@@ -433,4 +432,4 @@ const Sighting = () => {
   )
 }
 
-export default Sighting
+export default Catch

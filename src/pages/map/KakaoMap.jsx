@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { __GETDATA } from "../../redux/modules/getdata";
 import { useLocation } from 'react-router-dom';
 import { __GetMissingData } from "../../redux/modules/missingSlice";
-import { __GetSightingData } from "../../redux/modules/sightingSlice";
+import { __GetCatchData } from "../../redux/modules/catchSlice";
 import './Overlay.css';
 const { kakao } = window;
 
@@ -25,13 +25,13 @@ const KakaoMap = () => {
   //디비에 저장된 데이터 값 가져오기 
   useEffect(() => {
     dispatch(__GetMissingData())
-    dispatch(__GetSightingData())
+    dispatch(__GetCatchData())
   }, []);
   // 유저가 직접올리는 것들 !
-  const missingData = useSelector((state) => state.postMissingData.data);
+  const missingData = useSelector((state) => state.MissingData.data);
   console.log("실종데이터 ", missingData?.data)
-  const sightingData = useSelector((state) => state.sighting.data);
-  console.log("목격데이터", sightingData?.data)
+  const catchData = useSelector((state) => state.catchData.data);
+  console.log("목격데이터", catchData?.data)
 
   const [long, setLong] = useState("");
   const [lati, setLati] = useState("");
@@ -63,6 +63,7 @@ const KakaoMap = () => {
 
     const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
 
+    // 실종글 작성 마커 인포 생성 로직 
     missingData?.data?.map((item) => {
       let marker = new kakao.maps.Marker({
         map: mapRef.current,
@@ -87,7 +88,6 @@ const KakaoMap = () => {
       contentTextTitle.classList.add('contentTextTitle');
       contentTextTitle.innerText = `${item.specialMark}`;
       contentTextArea.appendChild(contentTextTitle)
-      // 
 
       const contentTextdesc = document.createElement('div');
       contentTextdesc.classList.add('contentTextDesc');
@@ -118,8 +118,8 @@ const KakaoMap = () => {
         customOverlay.setMap(null);
       };
 
-
-      sightingData?.data.map((item) => {
+      // 목격글 작성 마커 인포 생성 로직 
+      catchData?.data.map((item) => {
         let marker = new kakao.maps.Marker({
           map: mapRef.current,
           position: new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
@@ -175,16 +175,11 @@ const KakaoMap = () => {
           customOverlay.setMap(null);
         };
 
-
         kakao.maps.event.addListener(marker, 'click', function () {
           customOverlay.setMap(mapRef.current);
         });
 
       });
-
-
-
-
 
       kakao.maps.event.addListener(marker, 'click', function () {
         customOverlay.setMap(mapRef.current);

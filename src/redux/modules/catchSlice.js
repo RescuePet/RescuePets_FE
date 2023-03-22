@@ -2,8 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { instance } from "../../utils/api";
 
 // 목격 글 불러오기
-export const __GetSightingData = createAsyncThunk(
-    "getSightingData",
+export const __GetCatchData = createAsyncThunk(
+    "getCatchData",
     async (arg, thunkAPI) => {
         try {
             const response = await instance.get('/api/pets/catch/all');
@@ -16,8 +16,8 @@ export const __GetSightingData = createAsyncThunk(
 );
 
 // 목격 글 작성
-export const __PostSightingData = createAsyncThunk(
-    "postSightingData",
+export const __PostCatchData = createAsyncThunk(
+    "postgetCatchData",
     async (payload, thunkAPI) => {
         console.log(payload)
         try {
@@ -35,40 +35,40 @@ const initialState = {
     loading: false,
 };
 
-export const Sighting = createSlice({
-    name: "Sighting",
+export const catchData = createSlice({
+    name: "catchData",
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(__PostSightingData.pending, (state) => {
+        builder.addCase(__PostCatchData.pending, (state) => {
             state.loading = true;
             state.error = null;
         });
-        builder.addCase(__PostSightingData.fulfilled, (state, action) => {
+        builder.addCase(__PostCatchData.fulfilled, (state, action) => {
             state.loading = false;
             // state.data = action.payload;
             state.error = null;
         });
-        builder.addCase(__PostSightingData.rejected, (state, action) => {
+        builder.addCase(__PostCatchData.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
         });
 
 
-        builder.addCase(__GetSightingData.pending, (state) => {
+        builder.addCase(__GetCatchData.pending, (state) => {
             state.loading = true;
             state.error = null;
         });
-        builder.addCase(__GetSightingData.fulfilled, (state, action) => {
+        builder.addCase(__GetCatchData.fulfilled, (state, action) => {
             state.loading = false;
             state.data = action.payload;
             state.error = null;
         });
-        builder.addCase(__GetSightingData.rejected, (state, action) => {
+        builder.addCase(__GetCatchData.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
         });
     },
 });
 
-export default Sighting.reducer;
+export default catchData.reducer;

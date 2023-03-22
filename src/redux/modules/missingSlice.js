@@ -8,7 +8,6 @@ export const __GetMissingData = createAsyncThunk(
     async (arg, thunkAPI) => {
         try {
             const response = await instance.get('/api/pets/missing/all');
-            console.log("response", response);
             return thunkAPI.fulfillWithValue(response.data);
         } catch (error) {
             console.log(error.response);
@@ -24,7 +23,6 @@ export const __PostMissingData = createAsyncThunk(
         console.log(payload)
         try {
             const response = await instance.post('/api/pets/missing/', payload);
-            console.log("response", response);
         } catch (error) {
             console.log(error.response);
         }
@@ -38,8 +36,8 @@ const initialState = {
 
 };
 
-export const postMissingData = createSlice({
-    name: "postMissingData",
+export const MissingData = createSlice({
+    name: "MissingData",
     initialState,
     reducers: {},
     extraReducers: (builder) => {
@@ -74,4 +72,4 @@ export const postMissingData = createSlice({
     },
 });
 
-export default postMissingData.reducer;
+export default MissingData.reducer;
