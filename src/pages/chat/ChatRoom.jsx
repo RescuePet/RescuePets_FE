@@ -14,14 +14,13 @@ import Receive from "./components/Receive";
 import { instance } from "../../utils/api";
 import { useParams } from "react-router-dom";
 
-const socket = new SockJS(`${process.env.REACT_APP_CHAT_TEST}/ws/chat`);
-const ws = Stomp.over(socket);
-
 const ChatRoom = () => {
   const { id, postname } = useParams();
   const sender = JSON.parse(localStorage.getItem("userInfo"));
   const [roomId, setRoomId] = useState("");
   const [currentChat, setCurrentChat] = useState([]);
+  const socket = new SockJS(`${process.env.REACT_APP_CHAT_TEST}/ws/chat`);
+  const ws = Stomp.over(socket);
 
   const TOKEN = Cookies.get("Token");
   let headers = {
@@ -29,10 +28,17 @@ const ChatRoom = () => {
   };
 
   useEffect(() => {
+    connectChatroom();
+    return () => {
+      onbeforeunloda();
+    };
+  }, []);
+
+  // 연결 async
+  const connectChatroom = async () => {
     instance
       .post(`/chat/${postname}/${id}`)
       .then((response) => {
-        console.log(response.data);
         setRoomId(response.data);
         wsConnectSubscribe(response.data);
         return instance.get(`/room/${response.data}`);
@@ -41,11 +47,7 @@ const ChatRoom = () => {
         setCurrentChat([...response.data.data.dto]);
         return;
       });
-
-    return () => {
-      onbeforeunloda();
-    };
-  }, []);
+  };
 
   // 연결 시 실행
   const waitForConnection = (ws, callback) => {
