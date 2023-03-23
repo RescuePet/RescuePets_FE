@@ -67,17 +67,26 @@ const Catch = () => {
   const [imageFormData, setImageFormData] = useState([]);
   // 폼데이터로 보관중인 스테이트
   const [formImagin, setFormformImagin] = useState(new FormData());
+  const [image, setImage] = useState([]);
 
   const onChangeUploadHandler = async (e) => {
     e.preventDefault();
+
     const imageLists = e.target.files;
+    setImage([...imageLists])
+    console.log("폼데이터 보내야 할것들:", imageLists)
     setImageFormData(imageLists)
 
+    setFormformImagin([...formImagin], ...e.target.files)
+
     let imageUrlLists = [...showImages];
+    // 미리보기를 띄워주는 로직
     for (let i = 0; i < imageLists.length; i++) {
       const currentImageUrl = URL.createObjectURL(imageLists[i]);
       imageUrlLists.push(currentImageUrl);
+      image.push(imageLists[i])
     }
+    // 갯수제한을 걸어주는 로직 
     if (imageUrlLists.length > 3) {
       setImageFormData(imageFormData.slice(0, 3));
       imageUrlLists = imageUrlLists.slice(0, 3);
@@ -85,9 +94,11 @@ const Catch = () => {
     setShowImages(imageUrlLists);
 
     const formImg = new FormData();
-    for (let i = 0; i < imageLists.length; i++) {
-      formImg.append("postImages", imageLists[i]);
+    // console.log("Real", image.length)
+    for (let i = 0; i < image.length; i++) {
+      formImg.append("postImages", image[i]);
     }
+    // 폼데이터를 폼데이터에 담고 진행 
     setFormformImagin(formImg);
 
     for (let value of formImagin.values()) {
@@ -134,10 +145,11 @@ const Catch = () => {
     }
 
     for (let value of formData.values()) {
-      console.log("FormData", typeof (value));
+      console.log("FormData", value);
     }
 
     dispatch(__PostCatchData(formData))
+    // reset()
   }
 
   // 카카오 맵 로직 
@@ -147,17 +159,24 @@ const Catch = () => {
 
   const [long, setLong] = useState("");
   const [lati, setLati] = useState("");
-  navigator.geolocation.getCurrentPosition(onSucces, onFailure);
 
-  function onSucces(position) {
-    const lat = position.coords.latitude;
-    const lng = position.coords.longitude;
-    setLong(lng);
-    setLati(lat);
-  }
-  function onFailure() {
-    alert("위치 정보를 찾을수 없습니다.");
-  }
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(onSucces, onFailure);
+    // 성공
+    // 여기는 렌더링이 초기에 한번만 일어나게 해야만한다 
+    function onSucces(position) {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      setLong(lng);
+      setLati(lat);
+    }
+    console.log(onSucces)
+    // 실패
+    function onFailure() {
+      alert("위치 정보를 찾을수 없습니다.");
+    }
+  }, [])
+
   useEffect(() => {
     const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
       mapOption = {
@@ -167,7 +186,7 @@ const Catch = () => {
     const map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
     const imageSrc = `${Marker}` // 마커이미지의 주소입니다    
-    const imageSize = new kakao.maps.Size(32, 34) // 마커이미지의 크기입니다
+    const imageSize = new kakao.maps.Size(16, 20)// 마커이미지의 크기입니다
     const imageOption = { offset: new kakao.maps.Point(10, 20) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
     const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
@@ -202,7 +221,7 @@ const Catch = () => {
       geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
     }
 
-  }, [onSucces])
+  }, [long])
 
   return (
     <Layout>
