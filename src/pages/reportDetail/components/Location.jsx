@@ -9,7 +9,6 @@ const Location = ({ locationInfo }) => {
   console.log(locationInfo)
 
   useEffect(() => {
-
     const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
       mapOption = {
         center: new kakao.maps.LatLng(locationInfo.happenLatitude, locationInfo.happenLongitude), // 지도의 중심좌표
@@ -33,10 +32,6 @@ const Location = ({ locationInfo }) => {
     marker.setMap(map);
 
   }, [locationInfo])
-
-  // state
-  // happenLatitude
-  // happenLongitude
 
   return (
     <LocationContainer>
