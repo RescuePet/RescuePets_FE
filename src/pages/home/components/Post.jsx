@@ -36,7 +36,7 @@ const Post = ({ item }) => {
 };
 
 const PostContainer = styled.div`
-  ${FlexAttribute("row", "space-between", "")}
+  ${FlexAttribute("row", "space-between", "center")}
   margin-top: 16px;
   width: 335px;
   border: 1px solid ${(props) => props.theme.color.text_disable};
@@ -66,7 +66,7 @@ const KindSpan = styled.span`
 `;
 
 const InformationWrapper = styled.div`
-  padding: 10px 15px;
+  padding: 8px 15px;
   width: 213px;
 `;
 
@@ -82,14 +82,12 @@ const TitleBox = styled.div`
 `;
 
 const TextBox = styled.div`
-  ${FlexAttribute("row", "", "center")}
-  margin-top: 4px;
-  img {
-    margin-bottom: 1px;
-  }
+  ${FlexAttribute("row", "", "flex-start")}
+  margin-top: 2px;
   span {
-    font-size: 12px;
+    ${(props) => props.theme.Body_400_12}
     color: #999999;
+    line-height: 18px;
   }
 `;
 

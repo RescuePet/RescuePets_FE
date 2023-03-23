@@ -20,8 +20,8 @@ const Title = ({ titleData }) => {
 };
 
 const TitleWrapper = styled.div`
-  ${FlexAttribute("row", "space-between", "center")}
-  width: 335px;
+  ${FlexAttribute("row", "space-evenly", "center")}
+  width: 100%;
   margin: 16px auto;
   ${PostTitleBorderStyle}
 `;
