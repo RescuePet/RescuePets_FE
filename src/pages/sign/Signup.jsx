@@ -2,11 +2,16 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import arrow from "../../asset/arrow.svg";
+import back from "../../asset/Back.svg";
 import eye from "../../asset/eye.svg";
 import Layout from "../../layouts/Layout";
 import { __signupUser } from "../../redux/modules/signSlice";
-import { FlexAttribute, SignSvgStyle } from "../../style/Mixin";
+import {
+  FlexAttribute,
+  SignSvgStyle,
+  Border_2_color,
+  Border_1_color,
+} from "../../style/Mixin";
 import Button from "../../elements/Button";
 import { CustomSelect } from "../../elements/CustomSelect";
 import { useNavigate } from "react-router-dom";
@@ -63,7 +68,9 @@ const Signup = () => {
     <Layout>
       <SignContainer onSubmit={handleSubmit(onSubmitSignupHandler)}>
         <SignHeader>
-          <div>이전</div>
+          <div onClick={() => navigate("/signin")}>
+            <img src={back} alt="back" />
+          </div>
           <div>회원가입</div>
           <div></div>
         </SignHeader>
@@ -164,8 +171,8 @@ const Signup = () => {
           </div>
         </SignIdNincknameBox>
         <SignBtnBox>
-          <Button type="submit" TabBtn2>
-            회원가입
+          <Button assistiveFillButton type="submit" TabBtn2>
+            가입완료
           </Button>
         </SignBtnBox>
       </SignContainer>
@@ -181,18 +188,23 @@ const SignContainer = styled.form`
 
 const SignHeader = styled.div`
   width: 100%;
-  height: 4rem;
+  height: 80px;
   padding-top: 20px;
-  border-bottom: 0.25rem solid #eeeeee;
+  ${Border_2_color}
   font-size: 1.125rem;
   font-weight: 700;
-  ${FlexAttribute("", "center", "space-around")}
-  color: #222222;
-  > div {
+  ${FlexAttribute("row", "", "center")};
+  color: ${(props) => props.theme.color.text_nomal};
+  div {
     height: 100%;
     width: 33.3%;
     ${(props) => props.theme.FlexCenter}
     ${(props) => props.theme.Title_700_18}
+  }
+  img {
+    width: 24px;
+    height: 24px;
+    margin-right: 50px;
   }
 `;
 
@@ -266,24 +278,24 @@ const SignsmInput = styled.input`
   width: 9.75rem;
   height: 1.5625rem;
   margin-top: 5px;
-  border-bottom: 2px solid #eeeeee;
+  ${Border_1_color}
   background: transparent;
-  font-size: 12px;
+  ${(props) => props.theme.Body_400_12}
   cursor: pointer;
   ::placeholder {
-    color: #666666;
+    color: ${(props) => props.theme.color.text_assistive};
   }
 `;
 const SignLgInput = styled.input`
   width: 20.9375rem;
   height: 1.5625rem;
   margin-top: 5px;
-  border-bottom: 2px solid #eeeeee;
+  ${Border_1_color}
   background: transparent;
   font-size: 12px;
   cursor: pointer;
   ::placeholder {
-    color: #666666;
+    color: ${(props) => props.theme.color.text_assistive};
   }
 `;
 

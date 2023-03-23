@@ -24,18 +24,23 @@ const BtnStyle = styled.button`
   ${(props) =>
     props.emptyButton &&
     css`
+      ${(props) => props.theme.Body_700_14}
+      color: ${(props) => props.theme.color.black};
       border: 1px solid ${(props) => props.theme.color.primary_nomal};
     `}
     ${(props) =>
     props.fillButton &&
     css`
+      ${(props) => props.theme.Body_700_14}
+      color: ${(props) => props.theme.color.white};
       background: ${(props) => props.theme.color.primary_nomal};
     `}
     ${(props) =>
     props.assistiveFillButton &&
     css`
+      ${(props) => props.theme.Body_700_14}
       color: ${(props) => props.theme.color.white};
-      background: #d9d9d9;
+      background: ${(props) => props.theme.color.text_assistive};
     `}
 `;
 
