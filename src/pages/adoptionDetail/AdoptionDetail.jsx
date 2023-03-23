@@ -3,10 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { __getAdoptionDetail } from "../../redux/modules/adoptioonSlice";
-
 import styled from "styled-components";
 import { FlexAttribute, PostBorderStyle } from "../../style/Mixin";
-
 import Layout from "../../layouts/Layout";
 import Shelter from "./components/Shelter";
 import Location from "./components/Location";
@@ -28,7 +26,7 @@ const AdoptionDetail = () => {
     dispatch(__getAdoptionDetail(id));
   }, []);
   const detailInfo = useSelector((state) => state.adoption);
-
+  console.log(detailInfo)
   // 비동기처리 시 detailInfo가 없을 경우를 고려
   if (JSON.stringify(detailInfo.adiotionDetail) === "{}") {
     return <div>Loading...</div>;
@@ -42,6 +40,7 @@ const AdoptionDetail = () => {
   };
 
   const locationData = {
+    address: detailInfo.adiotionDetail.careAddr,
     careNm: detailInfo.adiotionDetail.careNm,
     careTel: detailInfo.adiotionDetail.careTel,
   };
