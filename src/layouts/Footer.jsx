@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import FooterIconChat from "../asset/FooterIconChat.svg";
-import FooterIconMypage from "../asset/FooterIconMypage.svg";
-import FooterIconHome from "../asset/FooterIconHome.svg";
-import FooterIconNetwork from "../asset/FooterIconNetwork.svg";
+import FooterIconChat from "../asset/footericon/FooterIconChat.svg";
+import FooterIconMypage from "../asset/footericon/FooterIconMypage.svg";
+import FooterIconHome from "../asset/footericon/FooterIconHome.svg";
+import FooterIconNetwork from "../asset/footericon/FooterIconNetwork.svg";
 import "./Footer.css";
 import { useDispatch } from "react-redux";
 import { toggleMenu } from "../redux/modules/menubarSlice";

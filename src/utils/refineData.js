@@ -1,3 +1,7 @@
+import male from "../asset/male.svg";
+import female from "../asset/female.svg";
+import questionmark from "../asset/questionmark.svg";
+
 const refineData = (item) => {
   const refinedata = {
     kind: "",
@@ -12,11 +16,11 @@ const refineData = (item) => {
       refinedata.kind = "강아지";
     }
     if (item.sexCd === "Q") {
-      refinedata.sexCd = "❓";
+      refinedata.sexCd = questionmark;
     } else if (item.sexCd === "M") {
-      refinedata.sexCd = "🚹";
+      refinedata.sexCd = male;
     } else if (item.sexCd === "F") {
-      refinedata.sexCd = "🚺";
+      refinedata.sexCd = female;
     }
     if (item.neuterYn === "U") {
       refinedata.information.push("모름");

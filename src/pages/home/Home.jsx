@@ -12,11 +12,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { __getAdoptionList } from "../../redux/modules/adoptioonSlice";
 import { Link } from "react-router-dom";
 import Footer from "../../layouts/Footer";
+import refresh from "../../asset/refresh.svg";
+import profile from "../../asset/profile.svg";
+import search from "../../asset/search.svg";
 
 const Home = () => {
   const images = [carouselImage1, carouselImage2, carouselImage3];
   const dispatch = useDispatch();
   const [ref, inView] = useInView();
+  const userImage = localStorage.getItem("profileImage");
 
   const [page, setPage] = useState(1);
 
@@ -38,13 +42,15 @@ const Home = () => {
     <Layout>
       <HomeContainer>
         <Header>
+          <img src={userImage == null ? profile : userImage} alt="profile" />
           <span>안녕하세요! 펫벤져스님</span>
+          <img src={search} alt="" />
         </Header>
         <Carousel images={images} />
         <PostContainer>
           <TitleBox>
             <h2>새로운 가족을 맞이해보세요</h2>
-            <span>전체 보기 &gt;</span>
+            <img src={refresh} alt="refresh page" />
           </TitleBox>
           {adoptionLists.map((item, index) => {
             return (
@@ -65,17 +71,22 @@ const Home = () => {
 };
 
 const Header = styled.div`
-  ${FlexAttribute("row", "center")}
+  ${FlexAttribute("row", "space-between", "center")}
   margin: 0 auto;
   width: 335px;
   height: 80px;
   padding-top: 40px;
+  padding-bottom: 9px;
   font-size: 18px;
   font-weight: 700;
+  span {
+    flex-basis: 240px;
+  }
 `;
 
 const PostContainer = styled.div`
   ${FlexAttribute("column", "", "center")}
+  padding-bottom: 76px;
 `;
 
 const HomeContainer = styled.div`

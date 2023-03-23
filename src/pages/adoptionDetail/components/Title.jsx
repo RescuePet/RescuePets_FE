@@ -13,7 +13,7 @@ const Title = ({ titleData }) => {
     <TitleWrapper>
       <State>{titleData.state}</State>
       <SemiText>{titleData.kindCd}</SemiText>
-      <SexCd>{titleData.sexCd}</SexCd>
+      <SexCd src={titleData.sexCd} />
       <RegularText>{titleData.information}</RegularText>
     </TitleWrapper>
   );
@@ -37,7 +37,7 @@ const SemiText = styled.span`
   ${Body_400_14}
 `;
 
-const SexCd = styled.span`
+const SexCd = styled.img`
   flex-basis: 30px;
 `;
 
