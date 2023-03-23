@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Layout from "../../layouts/Layout";
 import Button from "../../elements/Button";
 import cancel from "../../asset/delete.svg";
+import Location from "./components/Location";
 import imageCompression from "browser-image-compression";
 import imgdelete from "../../asset/imgDelete.svg";
-import Marker from "../../asset/marker.png";
 import { CustomSelect } from "../../elements/CustomSelect";
+
 import {
     ReportMissingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
     , ReportAnimalInfoCheckBoxTitle, ReportAnimalInfoCheckBoxSelete, ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
     ReportAnimalInfoBoxColumnColumn, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportInput, ReportLgInput,
-    ReportKakaoMapBox, ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox, ReportAnimalSignificantBox, ReportAnimalSignificantBoxTitle,
+    ReportAnimalDayBox, ReportAnimalSignificantBox, ReportAnimalSignificantBoxTitle,
     ReportAnimalSignificantBoxInputArea, ReportAnimalPictureArea, ReportAnimalPictureAreaTitle, ReportAnimalPictureAreaInputBox, ReportAnimalPictureInput,
     ReportAnimalPicturePreview, ReportAnimalUserInfo, PreviewImage,
 } from './components/reportstyle';
@@ -151,81 +152,11 @@ const Missing = () => {
         dispatch(__PostMissingData(formData))
         // reset()
     }
-
+    // 주소
     const addressDiv = document.getElementById('address');
+    // 좌표값들 
     const addressLatDiv = document.getElementById('addressLat')
     const addressLngDiv = document.getElementById('addressLng')
-    // 현재위치를 받아오는 로직
-    const [long, setLong] = useState("");
-    const [lati, setLati] = useState("");
-
-    useEffect(() => {
-        navigator.geolocation.getCurrentPosition(onSucces, onFailure);
-        // 성공
-        // 여기는 렌더링이 초기에 한번만 일어나게 해야만한다 
-        function onSucces(position) {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
-            setLong(lng);
-            setLati(lat);
-        }
-        console.log(onSucces)
-        // 실패
-        function onFailure() {
-            alert("위치 정보를 찾을수 없습니다.");
-        }
-    }, [])
-
-
-    // 지도를 그려쥬는 로직
-
-    useEffect(() => {
-        const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-            mapOption = {
-                // 처음 마커 표시는 되는 곳 현재 나의 위치 
-                center: new kakao.maps.LatLng(lati, long), // 지도의 중심좌표
-                level: 5 // 지도의 확대 레벨
-            };
-
-        const map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-
-        const imageSrc = `${Marker}` // 마커이미지의 주소입니다    
-        const imageSize = new kakao.maps.Size(32, 34) // 마커이미지의 크기입니다
-        const imageOption = { offset: new kakao.maps.Point(10, 20) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-
-        const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
-        // 지도를 클릭한 위치에 표출할 마커입니다
-        const marker = new kakao.maps.Marker({
-            // 지도 중심좌표에 마커를 생성합니다 
-            position: map.getCenter(),
-            image: markerImage // 마커이미지 설정 
-        });
-        // 지도에 마커를 표시합니다
-        marker.setMap(map);
-
-        let geocoder = new kakao.maps.services.Geocoder();
-        kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
-            searchDetailAddrFromCoords(mouseEvent.latLng, function (result, status) {
-                console.log(mouseEvent.latLng)
-                if (status === kakao.maps.services.Status.OK) { 
-                    marker.setPosition(mouseEvent.latLng);
-                    marker.setMap(map);
-                    const currentAddress = result[0]?.address?.address_name
-                    const addressDiv = document.getElementById('address');
-                    addressDiv.innerHTML = currentAddress;
-                    const addressLatDiv = document.getElementById('addressLat')
-                    addressLatDiv.innerHTML = mouseEvent.latLng.Ma
-                    const addressLngDiv = document.getElementById('addressLng')
-                    addressLngDiv.innerHTML = mouseEvent.latLng.La
-                }
-            });
-        });
-
-        const searchDetailAddrFromCoords = (coords, callback) => {
-            geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
-        }
-
-    }, [long])
 
     return (
         <Layout>
@@ -343,20 +274,9 @@ const Missing = () => {
 
                     </ReportAnimalInfoBox>
                 </ReportAnimalInfoArea>
-
-                <ReportKakaoMapBox>
-                    <ReportKakaoMapBoxTitle>
-                        <p>실종위치 *</p>
-                        <div>
-                            <div><label id='address'></label></div>
-                            <div style={{ display: "none" }}><label id='addressLat'></label></div>
-                            <div style={{ display: "none" }}><label id='addressLng'></label></div>
-                        </div>
-                    </ReportKakaoMapBoxTitle>
-                    {/* 맵에서 뿌려줄때 4~6초 걸린다 로딩일때 보여줄것을 만들어야한다  */}
-                    <ReportKakaoMapBoxMap id='map'></ReportKakaoMapBoxMap>
-                </ReportKakaoMapBox>
-
+                {/* 실종 로직  */}
+                <Location />
+                {/* 실종 로직 */}
                 <ReportAnimalDayBox>
                     <p>실종일시 *</p>
                     <div>

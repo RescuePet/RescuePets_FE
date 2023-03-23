@@ -21,7 +21,7 @@ const Home = () => {
   const [page, setPage] = useState(1);
 
   let adoptionLists = useSelector((state) => state.adoption.adoptionLists);
-
+  // console.log(adoptionLists)
   const payloadSettings = {
     page: page,
     size: 5,

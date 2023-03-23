@@ -85,12 +85,12 @@ home.interceptors.request.use(
 
 home.interceptors.response.use((response) => {
   if (response.config.url.replace(/[0-9]/g, "") === "/api/pets/details/") {
-    const refinedata = refineData(response.data);
-    const newData = { ...response.data, refinedata };
+    const refinedata = refineData(response.data.data);
+    const newData = { ...response.data.data, refinedata };
     response.data = newData;
     return response;
   } else if (response.config.url.split("?")[0] === "/api/pets/info-list") {
-    let newArray = [...response.data.publicPetResponsDto];
+    let newArray = [...response.data.data.publicPetResponsDto];
     newArray.map((item) => {
       const refinedata = refineData(item);
       const newData = { ...item.data, refinedata };
