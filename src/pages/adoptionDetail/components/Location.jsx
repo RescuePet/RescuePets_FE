@@ -42,7 +42,7 @@ const Location = ({ locationData }) => {
         map.setCenter(coords);
       }
       else {
-        console.log('위치를 찾을수가 없어요 ㅠㅗㅠ')
+        console.log('위치를 찾을수가 없어요 ㅠㅗㅜ')
       }
     })
 

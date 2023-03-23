@@ -257,7 +257,7 @@ export const Option = styled.li`
 `;
 
 export const ReportKakaoMapBox = styled.div`
- position: relative;
+  position: relative;
   width: 20.9375rem;
   height: 14.875rem;
   margin: 0 auto;
@@ -290,8 +290,8 @@ export const ReportKakaoMapBoxTitle = styled.div`
             }
         }
     }
-    
 `;
+
 export const ReportKakaoMapBoxMap = styled.div`
     z-index: 15;
     width: 100%;
