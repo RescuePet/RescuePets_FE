@@ -8,6 +8,8 @@ import "./Footer.css";
 import { useDispatch } from "react-redux";
 import { toggleMenu } from "../redux/modules/menubarSlice";
 import { useNavigate } from "react-router-dom";
+import reportmissing from "../asset/reportmissing.svg";
+import reportcatch from "../asset/reportcatch.svg";
 
 const Footer = () => {
   // payload로 값 보내기 위한 훅
@@ -26,10 +28,8 @@ const Footer = () => {
     setMenuBarToggle(!menuBarToggle);
     dispatch(toggleMenu(menuBarToggle));
     const ToggleBtn = document.querySelector(".toggleBtn");
-    // console.log(ToggleBtn)
-    // console.log(menuBar)
     if (menuBar === true) {
-      ToggleBtn.classListNaNpxove("active");
+      ToggleBtn.classList.remove("active");
     } else {
       ToggleBtn.classList.add("active");
     }
@@ -58,10 +58,16 @@ const Footer = () => {
           className="toggleBtn"
           onClick={onClickMenuBarHandler}
         ></FooterIconToggleBtn>
-        {menuBar === false ? null : (
+        {menuBar && (
           <Navigation>
-            <FooterMenuList>? 실종 글 작성하기 </FooterMenuList>
-            <FooterMenuList>🚨 목격 글 작성하기</FooterMenuList>
+            <FooterMenuList onClick={() => navigate("/missing")}>
+              <img src={reportmissing} alt="missing" />
+              <span>실종 글 작성하기</span>
+            </FooterMenuList>
+            <FooterMenuList onClick={() => navigate("/catch")}>
+              <img src={reportcatch} alt="catch" />
+              <span>목격 글 작성하기</span>
+            </FooterMenuList>
           </Navigation>
         )}
         {menuBar && <ToggleBackground />}
@@ -109,6 +115,11 @@ const FooterMenuList = styled.div`
   color: ${(props) => props.theme.color.white};
   ${(props) => props.theme.FlexCenter};
   cursor: pointer;
+  span {
+    ${(props) => props.theme.Body_400_14};
+    line-height: 24px;
+    vertical-align: middle;
+  }
 `;
 
 // 모달 보이게 하는 검정색 원형

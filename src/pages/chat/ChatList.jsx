@@ -1,6 +1,5 @@
 import React from "react";
 import Layout from "../../layouts/Layout";
-import Footer from "../../layouts/Footer";
 import { HeaderStyle } from "../../style/Mixin";
 import styled from "styled-components";
 import { Title_700_18 } from "../../style/theme";
@@ -14,7 +13,6 @@ const ChatList = () => {
       </ChatHeader>
       <ChatListBox></ChatListBox>
       <ChatListBox></ChatListBox>
-      <Footer></Footer>
     </Layout>
   );
 };

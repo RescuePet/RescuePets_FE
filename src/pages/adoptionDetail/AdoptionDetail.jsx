@@ -4,18 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { __getAdoptionDetail } from "../../redux/modules/adoptioonSlice";
 import styled from "styled-components";
-import { FlexAttribute, PostBorderStyle } from "../../style/Mixin";
 import Layout from "../../layouts/Layout";
 import Shelter from "./components/Shelter";
 import Location from "./components/Location";
 import Title from "./components/Title";
-import Footer from "../../layouts/Footer";
 
 import backwhite from "../../asset/backwhite.svg";
 import location from "../../asset/location.svg";
 import calendar from "../../asset/calendar.svg";
 import specialmark from "../../asset/specialmark.svg";
 import user from "../../asset/user.svg";
+import { PostBorderStyle } from "../../style/Mixin";
 
 const AdoptionDetail = () => {
   const { id } = useParams();
@@ -26,7 +25,7 @@ const AdoptionDetail = () => {
     dispatch(__getAdoptionDetail(id));
   }, []);
   const detailInfo = useSelector((state) => state.adoption);
-  console.log(detailInfo)
+  console.log(detailInfo);
   // 비동기처리 시 detailInfo가 없을 경우를 고려
   if (JSON.stringify(detailInfo.adiotionDetail) === "{}") {
     return <div>Loading...</div>;
@@ -76,34 +75,26 @@ const AdoptionDetail = () => {
 
   return (
     <Layout>
-      <DetailContainer>
-        <ImageContainer image={detailInfo.adiotionDetail.popfile}>
-          <Image src={detailInfo.adiotionDetail.popfile} />
-          <BackButton onClick={() => navigate(-1)}>
-            <img src={backwhite} alt="back" />
-          </BackButton>
-        </ImageContainer>
-        <div>
-          <Title titleData={titleData}></Title>
-          <Location locationData={locationData}></Location>
-          <ShelterContainer>
-            {shelterData.map((item, index) => {
-              return (
-                <Shelter key={`shelter-item-${index}`} item={item}></Shelter>
-              );
-            })}
-          </ShelterContainer>
-        </div>
-      </DetailContainer>
-      <Footer></Footer>
+      <ImageContainer image={detailInfo.adiotionDetail.popfile}>
+        <Image src={detailInfo.adiotionDetail.popfile} />
+        <BackButton onClick={() => navigate(-1)}>
+          <img src={backwhite} alt="back" />
+        </BackButton>
+      </ImageContainer>
+      <div>
+        <Title titleData={titleData}></Title>
+        <Location locationData={locationData}></Location>
+        <ShelterContainer>
+          {shelterData.map((item, index) => {
+            return (
+              <Shelter key={`shelter-item-${index}`} item={item}></Shelter>
+            );
+          })}
+        </ShelterContainer>
+      </div>
     </Layout>
   );
 };
-
-const DetailContainer = styled.div`
-  ${FlexAttribute("column")}
-  width: 100%;
-`;
 
 const ImageContainer = styled.div`
   position: relative;

@@ -10,7 +10,6 @@ import carouselImage2 from "../../asset/carousel/2.png";
 import { useDispatch, useSelector } from "react-redux";
 import { __getAdoptionList } from "../../redux/modules/adoptioonSlice";
 import { Link } from "react-router-dom";
-import Footer from "../../layouts/Footer";
 import refresh from "../../asset/refresh.svg";
 import profile from "../../asset/profile.svg";
 import search from "../../asset/search.svg";
