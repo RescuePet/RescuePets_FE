@@ -109,7 +109,7 @@ const Navigation = styled.div`
 const FooterMenuList = styled.div`
   width: 9.6875rem;
   height: 2.75rem;
-  z-index: 20;
+  z-index: 50;
   border-radius: 4px;
   background: ${(props) => props.theme.color.text_nomal};
   color: ${(props) => props.theme.color.white};
@@ -124,7 +124,7 @@ const FooterMenuList = styled.div`
 
 // 모달 보이게 하는 검정색 원형
 const FooterIconToggleBtn = styled.div`
-  z-index: 20;
+  z-index: 50;
   position: absolute;
   bottom: -10px;
   width: 40px;
@@ -168,7 +168,7 @@ const FooterEachIconContiner = styled.div`
 const ToggleBackground = styled.div`
   position: fixed;
   inset: 0;
-  z-index: 11;
+  z-index: 40;
   background-color: rgba(34, 34, 34, 0.5);
   width: 100%;
   height: 100%;

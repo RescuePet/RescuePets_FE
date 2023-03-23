@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import { Title_700_18 } from "../../style/theme";
 import { HeaderStyle, FlexAttribute } from "../../style/Mixin";
-import Footer from "../../layouts/Footer";
 import Card from "./components/Card";
 import Category from "./components/Category";
 import { useDispatch, useSelector } from "react-redux";
