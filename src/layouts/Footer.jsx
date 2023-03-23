@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import FooterIconChat from "../asset/FooterIconChat.svg";
-import FooterIconMypage from "../asset/FooterIconMypage.svg";
-import FooterIconHome from "../asset/FooterIconHome.svg";
-import FooterIconNetwork from "../asset/FooterIconNetwork.svg";
+import FooterIconChat from "../asset/footericon/FooterIconChat.svg";
+import FooterIconMypage from "../asset/footericon/FooterIconMypage.svg";
+import FooterIconHome from "../asset/footericon/FooterIconHome.svg";
+import FooterIconNetwork from "../asset/footericon/FooterIconNetwork.svg";
 import "./Footer.css";
 import { useDispatch } from "react-redux";
 import { toggleMenu } from "../redux/modules/menubarSlice";
@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 const Footer = () => {
   // payload로 값 보내기 위한 훅
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // const MoveToMissing = navigate('/missing')
   // const MoveToSighting = navigate('/sighting')
@@ -39,8 +39,8 @@ const Footer = () => {
     <FooterContiner>
       {menuBar === false ? null : (
         <Navigation>
-          <FooterMenuList >? 실종 글 작성하기 </FooterMenuList>
-          <FooterMenuList >🚨 목격 글 작성하기</FooterMenuList>
+          <FooterMenuList>? 실종 글 작성하기 </FooterMenuList>
+          <FooterMenuList>🚨 목격 글 작성하기</FooterMenuList>
         </Navigation>
       )}
 
@@ -48,24 +48,22 @@ const Footer = () => {
                 onClick={onClickMenuBarHandler}></FooterIconToggleBtn> */}
 
       <FooterEachIconContiner>
-        <img src={FooterIconHome} />
+        <img src={FooterIconHome} alt="home" />
         <p>홈</p>
       </FooterEachIconContiner>
       <FooterEachIconContiner>
-        <img src={FooterIconNetwork} />
-        <p>펫페크워크</p>
+        <img src={FooterIconNetwork} alt="petwork" />
+        <p>펫트워크</p>
       </FooterEachIconContiner>
       <FooterEachIconContiner>
-        <img src={FooterIconChat} />
+        <img src={FooterIconChat} alt="chat" />
         <p>채팅</p>
       </FooterEachIconContiner>
       <FooterEachIconContiner>
-
-        <img src={FooterIconMypage} />
+        <img src={FooterIconMypage} alt="profile" />
         <p>마이페이지</p>
       </FooterEachIconContiner>
       <FooterEachIconContiner>
-
         <FooterIconToggleBtn
           className="toggleBtn"
           onClick={onClickMenuBarHandler}
@@ -136,7 +134,6 @@ const FooterIconToggleBtn = styled.div`
   height: 40px;
   background: #222222;
   border-radius: 50%;
-  /* filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.25)); */
   ${(props) => props.theme.FlexCenter}
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
   &::before {
@@ -148,16 +145,12 @@ const FooterIconToggleBtn = styled.div`
     color: #ffff;
     transition: 1.5s;
   }
-  /* &:active::before {
-    transform: rotate(225deg);
-    } */
 `;
 
 const FooterEachIconContiner = styled.div`
   position: relative;
   ${(props) => props.theme.FlexCenter}
   flex-direction: row;
-  /* border: 1px solid red; */
   > img {
     position: absolute;
     bottom: 5px;

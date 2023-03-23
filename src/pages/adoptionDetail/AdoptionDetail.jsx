@@ -11,6 +11,12 @@ import Location from "./components/Location";
 import Title from "./components/Title";
 import Footer from "../../layouts/Footer";
 
+import backwhite from "../../asset/backwhite.svg";
+import location from "../../asset/location.svg";
+import calendar from "../../asset/calendar.svg";
+import specialmark from "../../asset/specialmark.svg";
+import user from "../../asset/user.svg";
+
 const AdoptionDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -40,16 +46,26 @@ const AdoptionDetail = () => {
   };
 
   const shelterData = [
-    { option: "주소", data: detailInfo.adiotionDetail.careAddr },
     {
+      icon: location,
+      option: "주소",
+      data: detailInfo.adiotionDetail.careAddr,
+    },
+    {
+      icon: calendar,
       option: "공고기간",
       data: [
         detailInfo.adiotionDetail.noticeSdt,
         detailInfo.adiotionDetail.noticeEdt,
       ].join("~"),
     },
-    { option: "특이사항", data: detailInfo.adiotionDetail.specialMark },
     {
+      icon: specialmark,
+      option: "특이사항",
+      data: detailInfo.adiotionDetail.specialMark,
+    },
+    {
+      icon: user,
       option: "담당부서",
       data: [
         detailInfo.adiotionDetail.orgNm,
@@ -61,9 +77,11 @@ const AdoptionDetail = () => {
   return (
     <Layout>
       <DetailContainer>
-        <ImageContainer>
+        <ImageContainer image={detailInfo.adiotionDetail.popfile}>
           <Image src={detailInfo.adiotionDetail.popfile} />
-          <BackButton onClick={() => navigate(-1)}>backbutton</BackButton>
+          <BackButton onClick={() => navigate(-1)}>
+            <img src={backwhite} alt="back" />
+          </BackButton>
         </ImageContainer>
         <div>
           <Title titleData={titleData}></Title>
@@ -91,20 +109,23 @@ const ImageContainer = styled.div`
   position: relative;
   width: 100%;
   height: 240px;
-  background-color: #d9d9d9;
+  background-image: url(${(props) => props.image});
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
 
 const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: contain;
+  backdrop-filter: blur(2px);
 `;
 
-const BackButton = styled.button`
+const BackButton = styled.div`
   position: absolute;
-  top: 0;
-  left: 0;
-  transform: translate(20%, 100%);
+  top: 26px;
+  left: 20px;
+  /* transform: translate(20%, 100%); */
   z-index: 10;
   background-color: transparent;
   cursor: pointer;
@@ -112,6 +133,7 @@ const BackButton = styled.button`
 
 const ShelterContainer = styled.div`
   ${PostBorderStyle}
+  padding-top: 16px;
 `;
 
 export default AdoptionDetail;

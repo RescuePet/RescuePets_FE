@@ -74,10 +74,10 @@ const Signin = () => {
           <span>자동로그인</span>
         </AutoSignInWrapper>
         <ButtonWrapper>
-          <Button TabBtn2 type="submit" form="signin">
+          <Button fillButton type="submit" form="signin">
             로그인
           </Button>
-          <Button TabBtn onClick={() => kakaoSignUp()}>
+          <Button emptyButton onClick={() => kakaoSignUp()}>
             카카오톡으로 로그인
           </Button>
         </ButtonWrapper>

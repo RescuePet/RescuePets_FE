@@ -6,14 +6,12 @@ export const __getAdoptionList = createAsyncThunk(
   "getAdoptionList",
   async (payload, thunkAPI) => {
     try {
-      // const response = await home.get(
-      //   `/api/pets/info-list?page=${payload.page}&size=${payload.size}`
-      // );
+      console.log("hihi");
       const response = await home.get(
         `/api/pets/info-list?page=${payload.page}&size=${payload.size}&sortBy=happenDt`
       );
-      console.log(response)
-      return thunkAPI.fulfillWithValue(response.data);
+      console.log(response.data);
+      return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       console.log(error.response.data.message);
       throw new Error(error.response.data.message);

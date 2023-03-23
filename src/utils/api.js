@@ -44,7 +44,6 @@ instance.interceptors.request.use(
 );
 
 instance.interceptors.response.use((response) => {
-  console.log(response);
   if (response.config.url === "/api/member/login") {
     const TOKEN = response.headers.authorization;
     const REFRESH = response.headers.refresh;
@@ -53,7 +52,6 @@ instance.interceptors.response.use((response) => {
     localStorage.setItem("userInfo", JSON.stringify(response.data.data));
     return response;
   } else if (response.config.url.split("?")[0] === "/member/kakao/callback/") {
-    console.log("kakapsignin");
     const TOKEN = response.headers.authorization;
     const REFRESH = response.headers.refresh;
     Cookies.set("Token", TOKEN);
@@ -73,9 +71,9 @@ home.interceptors.request.use(
     const headers = config.headers;
     const TOKEN = Cookies.get("Token");
     if (TOKEN) {
-      headers.Authorization = TOKEN;
+      const token = await checkAccess(TOKEN);
+      headers.Authorization = token;
     }
-    console.log("request -> ", config.url);
     return config;
   },
   (error) => {

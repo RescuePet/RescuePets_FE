@@ -5,14 +5,14 @@ import { FlexAttribute } from "../../../style/Mixin";
 const Shelter = ({ item }) => {
   return (
     <ShelterWrapper>
-      <BodyTitleSvg>📍</BodyTitleSvg>
+      <BodyTitleSvg src={item.icon}></BodyTitleSvg>
       <BodyTitleText>{item.option}</BodyTitleText>
       <ContentTextWrapper>
         {typeof item.data === "object" ? (
           <>
             <ContentText>{item.data[0]}</ContentText>
             <ContentTextBox>
-              <ContentOptionText>TEL | </ContentOptionText>
+              <ContentOptionText>TEL |&nbsp;</ContentOptionText>
               <ContentText>{item.data[1]}</ContentText>
             </ContentTextBox>
           </>
@@ -28,22 +28,22 @@ const ShelterWrapper = styled.div`
   ${FlexAttribute("row", "space-evenly")}
 `;
 
-const BodyTitleSvg = styled.div`
-  flex-basis: 20px;
+const BodyTitleSvg = styled.img`
+  flex-basis: 24px;
+  height: 24px;
 `;
 
 const BodyTitleText = styled.span`
   flex-basis: 50px;
-  padding-top: 2px;
   font-weight: 400;
   font-size: 14px;
-  line-height: 16px;
+  line-height: 24px;
   color: #999999;
+  vertical-align: middle;
 `;
 
 const ContentTextWrapper = styled.div`
   flex-basis: 220px;
-  margin-top: 2px;
   span:first-child {
     margin-bottom: 8px;
   }
@@ -56,15 +56,16 @@ const ContentTextBox = styled.div`
 const ContentOptionText = styled.span`
   font-weight: 400;
   font-size: 14px;
-  line-height: 16px;
+  line-height: 24px;
   color: #666666;
 `;
 
 const ContentText = styled.span`
   display: inline-block;
+
   font-weight: 400;
   font-size: 14px;
-  line-height: 16px;
+  line-height: 24px;
   color: #222222;
 `;
 

@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import { Body_500_14 } from "../style/theme";
 
 const Button = ({ children, ...props }) => {
   return (
@@ -15,20 +16,31 @@ const BtnStyle = styled.button`
   width: 20.9375rem;
   height: 3.5rem;
   border: none;
-  font-weight: bold;
+  border-radius: 0.25rem;
+  ${Body_500_14}
   cursor: pointer;
   outline: none;
-  border-radius: 0.25rem;
   ${(props) => props.theme.FlexCenter}
   ${(props) =>
-    props.TabBtn &&
+    props.emptyButton &&
     css`
-      border: 1px solid #d9d9d9;
+      ${(props) => props.theme.Body_700_14}
+      color: ${(props) => props.theme.color.black};
+      border: 1px solid ${(props) => props.theme.color.primary_nomal};
     `}
     ${(props) =>
-    props.TabBtn2 &&
+    props.fillButton &&
     css`
-      background: #d9d9d9;
+      ${(props) => props.theme.Body_700_14}
+      color: ${(props) => props.theme.color.white};
+      background: ${(props) => props.theme.color.primary_nomal};
+    `}
+    ${(props) =>
+    props.assistiveFillButton &&
+    css`
+      ${(props) => props.theme.Body_700_14}
+      color: ${(props) => props.theme.color.white};
+      background: ${(props) => props.theme.color.text_assistive};
     `}
 `;
 

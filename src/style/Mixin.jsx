@@ -41,12 +41,14 @@ export const SignSvgStyle = css`
 
 export const StateSpanStyle = css`
   padding: 2px;
-  border: 1px solid black;
+  border: 1px solid ${(props) => props.theme.color.white};
   border-radius: 8px;
-  background-color: transparent;
+  background-color: rgba(138, 138, 138, 0.5);
   text-align: center;
   font-weight: 500;
   font-size: 10px;
+  color: ${(props) => props.theme.color.white};
+  box-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.1);
 `;
 
 export const InfoTitleTextStyle = css`

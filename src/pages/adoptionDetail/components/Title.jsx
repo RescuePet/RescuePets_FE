@@ -13,15 +13,15 @@ const Title = ({ titleData }) => {
     <TitleWrapper>
       <State>{titleData.state}</State>
       <SemiText>{titleData.kindCd}</SemiText>
-      <SexCd>{titleData.sexCd}</SexCd>
+      <SexCd src={titleData.sexCd} />
       <RegularText>{titleData.information}</RegularText>
     </TitleWrapper>
   );
 };
 
 const TitleWrapper = styled.div`
-  ${FlexAttribute("row", "space-between", "center")}
-  width: 335px;
+  ${FlexAttribute("row", "space-evenly", "center")}
+  width: 100%;
   margin: 16px auto;
   ${PostTitleBorderStyle}
 `;
@@ -37,7 +37,7 @@ const SemiText = styled.span`
   ${Body_400_14}
 `;
 
-const SexCd = styled.span`
+const SexCd = styled.img`
   flex-basis: 30px;
 `;
 
