@@ -9,7 +9,7 @@ import information from "../../../asset/information.svg";
 const Post = ({ item }) => {
   return (
     <PostContainer>
-      <ThunbnailWrapper>
+      <ThunbnailWrapper image={item.filename}>
         <Tuumbnail src={item.filename}></Tuumbnail>
         <KindSpan>{item.data.refinedata.kind}</KindSpan>
       </ThunbnailWrapper>
@@ -46,16 +46,23 @@ const PostContainer = styled.div`
 
 const ThunbnailWrapper = styled.div`
   position: relative;
-  ${FlexAttribute("row", "center", "center")}
+  ${FlexAttribute("row", "center", "center")};
   width: 120px;
   height: 120px;
   border-radius: 4px;
-  background-color: ${(props) => props.theme.color.text_disable};
   overflow: hidden;
+  background-image: url(${(props) => props.image});
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
 
 const Tuumbnail = styled.img`
+  width: 120px;
+  height: 120px;
   object-fit: contain;
+  position: absolute;
+  z-index: 10;
+  backdrop-filter: blur(3px);
 `;
 
 const KindSpan = styled.span`
@@ -63,6 +70,7 @@ const KindSpan = styled.span`
   position: absolute;
   top: 10px;
   left: 10px;
+  z-index: 10;
 `;
 
 const InformationWrapper = styled.div`

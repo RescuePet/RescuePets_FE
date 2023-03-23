@@ -5,9 +5,8 @@ import Layout from "../../layouts/Layout";
 import { useInView } from "react-intersection-observer";
 import Post from "./components/Post";
 import Carousel from "./components/Carousel";
-import carouselImage1 from "../../asset/carousel/1.jpg";
-import carouselImage2 from "../../asset/carousel/2.jpg";
-import carouselImage3 from "../../asset/carousel/3.jpg";
+import carouselImage1 from "../../asset/carousel/1.png";
+import carouselImage2 from "../../asset/carousel/2.png";
 import { useDispatch, useSelector } from "react-redux";
 import { __getAdoptionList } from "../../redux/modules/adoptioonSlice";
 import { Link } from "react-router-dom";
@@ -17,7 +16,7 @@ import profile from "../../asset/profile.svg";
 import search from "../../asset/search.svg";
 
 const Home = () => {
-  const images = [carouselImage1, carouselImage2, carouselImage3];
+  const images = [carouselImage1, carouselImage2];
   const dispatch = useDispatch();
   const [ref, inView] = useInView();
   const userImage = localStorage.getItem("profileImage");
@@ -44,7 +43,7 @@ const Home = () => {
         <Header>
           <img src={userImage == null ? profile : userImage} alt="profile" />
           <span>안녕하세요! 펫벤져스님</span>
-          <img src={search} alt="" />
+          <img src={search} alt="search" />
         </Header>
         <Carousel images={images} />
         <PostContainer>

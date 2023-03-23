@@ -78,7 +78,7 @@ const AdoptionDetail = () => {
   return (
     <Layout>
       <DetailContainer>
-        <ImageContainer>
+        <ImageContainer image={detailInfo.adiotionDetail.popfile}>
           <Image src={detailInfo.adiotionDetail.popfile} />
           <BackButton onClick={() => navigate(-1)}>
             <img src={backwhite} alt="back" />
@@ -110,13 +110,16 @@ const ImageContainer = styled.div`
   position: relative;
   width: 100%;
   height: 240px;
-  background-color: #d9d9d9;
+  background-image: url(${(props) => props.image});
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
 
 const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: contain;
+  backdrop-filter: blur(2px);
 `;
 
 const BackButton = styled.div`
