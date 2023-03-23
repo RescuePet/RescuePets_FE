@@ -12,7 +12,7 @@ const Layout = ({ children }) => {
 const WebLayout = styled.div`
   width: 100%;
   height: 100%;
-  background-color: #333;
+  background-color: #ffffff;
 `;
 
 const Box = styled.div`

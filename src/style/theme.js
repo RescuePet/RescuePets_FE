@@ -1,5 +1,28 @@
 import { css } from "styled-components";
 
+export const color = {
+  primary_nomal: "#FF9900",
+  primary_strong: "#FF8A00",
+  primary_heavy: "#FF7A00",
+  primary_altemative: "#FFC672",
+  primary_assistive: "#FFE4BC",
+  text_strong: "#000000",
+  text_nomal: "#171717",
+  text_alternative: "#8A8A8A",
+  text_assistive: "#C4C4C4",
+  text_disable: "#DCDCDC",
+  background_primary: "#FFFFFF",
+  background_secondary: "#F2F2F7",
+  background_tertiary: "#F2F2F7",
+  line_nomal: "#E1E2E4",
+  line_alternative: "#F4F4F5",
+  status_alert: "#714FD1",
+  status_caution: "#D6459C",
+  status_positive: "#005247",
+  white: "#ffffff",
+  black: "#000000",
+};
+
 export const FlexCenter = css`
   display: flex;
   justify-content: center;
@@ -94,6 +117,6 @@ export const Body_300_10 = css`
 export const Span_alert = css`
   padding-top: 5px;
   font-size: 12px;
-  color: #EA5455;
-  ${props => props.theme.FlexCenter}
+  color: #ea5455;
+  ${(props) => props.theme.FlexCenter}
 `;
