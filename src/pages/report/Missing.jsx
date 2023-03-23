@@ -129,7 +129,7 @@ const Missing = () => {
 
 
     const watchForPlace = addressDiv
-    // console.log(watchForPlace.innerText)
+
     useEffect(() => {
         if (
             watch("animaltypes") !== "" &&
@@ -139,8 +139,8 @@ const Missing = () => {
             watch("animalkg") !== "" &&
             watch("address") !== "" &&
             watch("animalcolor") !== "" &&
+            addressDiv?.innerHTML !== "" &&
             watch("days") !== ""
-            // watchForPlace.innerText !== ""
         ) {
             console.log('성공')
             setIsActive(false);
