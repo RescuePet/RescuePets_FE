@@ -62,7 +62,6 @@ const Missing = () => {
         setCurrentNeuteredEnValue(seleteneuteredArr[index].value)
     };
 
-    // 이미지로직
 
     // 올린 이미지 담을 관리하는 State
     const [showImages, setShowImages] = useState([]);
@@ -118,18 +117,16 @@ const Missing = () => {
     };
     // console.log('폼데이터 최신 :', imageFormData.length)
     const {
-        register, onChange, handleSubmit, formState: { errors }, reset,
-        resetField, getValues, watch } = useForm({ mode: 'onChange' });
+        register, handleSubmit, formState: { errors }, reset,
+        resetField, watch } = useForm({ mode: 'onChange' });
     // 주소
     const addressDiv = document.getElementById('address');
     // 좌표값들 
     const addressLatDiv = document.getElementById('addressLat')
     const addressLngDiv = document.getElementById('addressLng')
+
+    // 입력값에 따라 버튼 활성화
     const [isActive, setIsActive] = useState(false);
-
-
-    const watchForPlace = addressDiv
-
     useEffect(() => {
         if (
             watch("animaltypes") !== "" &&
@@ -156,32 +153,36 @@ const Missing = () => {
     }
     // POST 
     const onSubmitMissingHanlder = (data) => {
-        const formData = new FormData();
-        formData.append("upkind", typeID)
-        formData.append("sexCd", currentGenderEnValue)
-        formData.append("neuterYn", currentNeuteredEnValue)
-        formData.append('petName', data.animalName)
-        formData.append("kindCd", data.animaltypes)
-        formData.append("age", data.animalAge)
-        formData.append("weight", data.animalkg)
-        formData.append("colorCd", data.animalcolor)
-        formData.append("happenPlace", addressDiv.innerHTML)
-        formData.append("happenLatitude", addressLatDiv.innerHTML)
-        formData.append("happenLongitude", addressLngDiv.innerHTML)
-        formData.append("happenDt", data.days)
-        formData.append("happenHour", time)
-        formData.append("specialMark", data.characteristic)
-        formData.append("content", data.memo)
-        formData.append("gratuity", data.money)
-        formData.append("contact", data.number)
-        for (const keyValue of formImagin) {
-            formData.append(keyValue[0], keyValue[1]);
-        }
+        if (addressDiv?.innerHTML === '') {
+            alert('지도에 위치를 표기해주세요')
+        } else {
+            const formData = new FormData();
+            formData.append("upkind", typeID)
+            formData.append("sexCd", currentGenderEnValue)
+            formData.append("neuterYn", currentNeuteredEnValue)
+            formData.append('petName', data.animalName)
+            formData.append("kindCd", data.animaltypes)
+            formData.append("age", data.animalAge)
+            formData.append("weight", data.animalkg)
+            formData.append("colorCd", data.animalcolor)
+            formData.append("happenPlace", addressDiv.innerHTML)
+            formData.append("happenLatitude", addressLatDiv.innerHTML)
+            formData.append("happenLongitude", addressLngDiv.innerHTML)
+            formData.append("happenDt", data.days)
+            formData.append("happenHour", time)
+            formData.append("specialMark", data.characteristic)
+            formData.append("content", data.memo)
+            formData.append("gratuity", data.money)
+            formData.append("contact", data.number)
+            for (const keyValue of formImagin) {
+                formData.append(keyValue[0], keyValue[1]);
+            }
 
-        for (let value of formData.values()) {
-            console.log("FormData", value);
+            for (let value of formData.values()) {
+                console.log("FormData", value);
+            }
+            dispatch(__PostMissingData(formData))
         }
-        dispatch(__PostMissingData(formData))
         // reset()
     }
 
@@ -453,13 +454,9 @@ const Missing = () => {
                 </ReportAnimalUserInfo>
 
 
-                {/* <Button type="submit" fillButton>작성 완료</Button> */}
                 {
-                    isActive === true ? <Button type="submit" disable assistiveFillButton>작성 완료</Button> :
-                        (
-                            <Button type="submit" fillButton>작성 완료</Button>
-                        )
-                    // PostBtn
+                isActive === true ? <Button type="submit" disable assistiveFillButton>작성 완료</Button>
+                    : (<Button type="submit" fillButton>작성 완료</Button>)
                 }
 
             </ReportMissingContainer >
