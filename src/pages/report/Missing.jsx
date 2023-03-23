@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Layout from "../../layouts/Layout";
 import Button from "../../elements/Button";
@@ -12,7 +12,7 @@ import {
     ReportMissingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
     , ReportAnimalInfoCheckBoxTitle, ReportAnimalInfoCheckBoxSelete, ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
     ReportAnimalInfoBoxColumnColumn, ReportanimaltypesBox, ReportanimaltypesTitle, ReportanimaltypesSelect, ReportInput, ReportLgInput,
-    ReportKakaoMapBox, ReportKakaoMapBoxTitle, ReportKakaoMapBoxMap, ReportAnimalDayBox, ReportAnimalSignificantBox, ReportAnimalSignificantBoxTitle,
+    ReportAnimalDayBox, ReportAnimalSignificantBox, ReportAnimalSignificantBoxTitle,
     ReportAnimalSignificantBoxInputArea, ReportAnimalPictureArea, ReportAnimalPictureAreaTitle, ReportAnimalPictureAreaInputBox, ReportAnimalPictureInput,
     ReportAnimalPicturePreview, ReportAnimalUserInfo, PreviewImage,
 } from './components/reportstyle';

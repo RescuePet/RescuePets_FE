@@ -256,50 +256,6 @@ export const Option = styled.li`
   }
 `;
 
-export const ReportKakaoMapBox = styled.div`
-  position: relative;
-  width: 20.9375rem;
-  height: 14.875rem;
-  margin: 0 auto;
-  ${props => props.theme.FlexColumn}
-  gap: 10px 0;
-`;
-
-export const ReportKakaoMapBoxTitle = styled.div`
-    width: 100%;
-    height: 20%;
-    > p {
-        width: 100%;
-        height: 20%;
-        ${props => props.theme.Body_400_14}
-        color: #222222;
-    }
-    > div {
-        width: 100%;
-        height: 80%;
-        padding-top: 20px;
-        font-size: 12px;
-        ${props => props.theme.FlexRow}
-        > div {
-            width: 100%;
-            height: 100%;
-            border-bottom: 2px solid #EEEEEE;
-            > label {
-                width: 9.75rem;
-                border-bottom: 2px solid #EEEEEE;
-            }
-        }
-    }
-`;
-
-export const ReportKakaoMapBoxMap = styled.div`
-    z-index: 15;
-    width: 100%;
-    height: 80%;
-    ${props => props.theme.FlexCenter}
-`
-
-
 export const ReportAnimalDayBox = styled.div`
   width: 20.9375rem;
   height: 5.5rem;
