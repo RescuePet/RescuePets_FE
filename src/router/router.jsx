@@ -15,6 +15,7 @@ import PetworkList from "../pages/petwork/PetworkList";
 import MissingDetail from "../pages/reportDetail/MissingDetail";
 import SightingDetail from "../pages/reportDetail/SightingDetail";
 import Catch from "../pages/report/Catch";
+import KakaoSignin from "../pages/sign/KakaoSignin";
 
 const Router = () => {
   return (
@@ -36,6 +37,7 @@ const Router = () => {
         <Route path="/petwork" element={<PetworkList />} />
         <Route path="/missingdetail/:id" element={<MissingDetail />} />
         <Route path="/sightingdetail/:id" element={<SightingDetail />} />
+        <Route path="/kakaologin" element={<KakaoSignin />} />
       </Routes>
     </BrowserRouter>
   );

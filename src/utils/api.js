@@ -44,7 +44,16 @@ instance.interceptors.request.use(
 );
 
 instance.interceptors.response.use((response) => {
+  console.log(response);
   if (response.config.url === "/api/member/login") {
+    const TOKEN = response.headers.authorization;
+    const REFRESH = response.headers.refresh;
+    Cookies.set("Token", TOKEN);
+    Cookies.set("Refresh", REFRESH);
+    localStorage.setItem("userInfo", JSON.stringify(response.data.data));
+    return response;
+  } else if (response.config.url.split("?")[0] === "/member/kakao/callback/") {
+    console.log("kakapsignin");
     const TOKEN = response.headers.authorization;
     const REFRESH = response.headers.refresh;
     Cookies.set("Token", TOKEN);

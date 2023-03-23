@@ -9,10 +9,12 @@ import Layout from "../../layouts/Layout";
 import { __signinUser } from "../../redux/modules/signSlice";
 import { FlexAttribute, HeaderStyle, SignSvgStyle } from "../../style/Mixin";
 import Button from "../../elements/Button";
+import { useNavigate } from "react-router-dom";
 
 const Signin = () => {
   const [value, setValue] = useState({ email: "", password: "" });
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleInput = (e) => {
     setValue({ ...value, [e.target.name]: e.target.value });
@@ -27,7 +29,7 @@ const Signin = () => {
     setValue({ [e.target.name]: "" });
   };
 
-  const URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=4768a30284d23053b4b63c32c225e1d4&redirect_uri=http://localhost:3000/home`;
+  const URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_SIGN_ID}&redirect_uri=http://localhost:3000/kakaologin`;
 
   const kakaoSignUp = () => {
     window.location.href = URL;
@@ -80,7 +82,7 @@ const Signin = () => {
           </Button>
         </ButtonWrapper>
         <SignUpWrapper>
-          <SignUpSpan>회원가입</SignUpSpan>
+          <SignUpSpan onClick={() => navigate("/signup")}>회원가입</SignUpSpan>
           <BrSpan>|</BrSpan>
           <Forgot>아이디/비밀번호찾기</Forgot>
         </SignUpWrapper>
