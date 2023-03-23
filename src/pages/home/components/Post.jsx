@@ -61,7 +61,6 @@ const Tuumbnail = styled.img`
   height: 120px;
   object-fit: contain;
   position: absolute;
-  z-index: 10;
   backdrop-filter: blur(3px);
 `;
 
@@ -70,7 +69,6 @@ const KindSpan = styled.span`
   position: absolute;
   top: 10px;
   left: 10px;
-  z-index: 10;
 `;
 
 const InformationWrapper = styled.div`

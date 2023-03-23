@@ -66,12 +66,12 @@ const Image = styled.img`
 
 const PrevTo = styled.div`
   left: 10px;
-  z-index: 10;
+  z-index: 1;
 `;
 
 const NextTo = styled.div`
   right: 10px;
-  z-index: 10;
+  z-index: 1;
 `;
 
 export default Carousel;

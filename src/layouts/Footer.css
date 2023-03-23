@@ -1,5 +1,4 @@
 .active::before {
-    /* 225 */
-    transform: rotate(180deg);
-
+  /* 225 */
+  transform: rotate(45deg);
 }

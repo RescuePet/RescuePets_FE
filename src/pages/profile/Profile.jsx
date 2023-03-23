@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
-import { FlexAttribute, HeaderStyle } from "../../style/Mixin";
+import { HeaderStyle } from "../../style/Mixin";
 import { Body_400_12, Title_700_18 } from "../../style/theme";
 import ProfileSetList from "./components/ProfileSetList";
 import UserInformation from "./components/UserInformation";
@@ -9,23 +9,15 @@ import UserInformation from "./components/UserInformation";
 const Profile = () => {
   return (
     <Layout>
-      <ProfileLayout>
-        <ProfileHeader>
-          <HeaderTitle>My Page</HeaderTitle>
-        </ProfileHeader>
-        <UserInformation />
-        <ProfileSetList />
-        <Withdrawal>회원탈퇴</Withdrawal>
-      </ProfileLayout>
+      <ProfileHeader>
+        <HeaderTitle>My Page</HeaderTitle>
+      </ProfileHeader>
+      <UserInformation />
+      <ProfileSetList />
+      <Withdrawal>회원탈퇴</Withdrawal>
     </Layout>
   );
 };
-
-const ProfileLayout = styled.div`
-  ${FlexAttribute("column")}
-  width: 100%;
-  background-color: #ffffff;
-`;
 
 const ProfileHeader = styled.div`
   ${HeaderStyle}
