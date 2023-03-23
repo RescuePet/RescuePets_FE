@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useForm } from "react-hook-form";
 import Layout from "../../layouts/Layout"
 import Button from "../../elements/Button"
@@ -6,7 +6,6 @@ import cancel from "../../asset/delete.svg";
 import Location from "./components/Location";
 import imageCompression from 'browser-image-compression';
 import imgdelete from "../../asset/imgDelete.svg";
-import Marker from "../../asset/marker.png"
 import { CustomSelect } from "../../elements/CustomSelect"
 import {
   ReportSightingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
@@ -22,7 +21,6 @@ import { useDispatch } from 'react-redux';
 const Catch = () => {
   let imageRef;
   const dispatch = useDispatch();
-  const { kakao } = window;
 
   // 종류데이터
   const [type, setType] = useState(NameValue[0].name)
@@ -40,6 +38,10 @@ const Catch = () => {
   const onChangeTimeData = (newData) => {
     setTime(newData);
   }
+  // 콘솔없애기 위한 로직 
+  const onChangeTimeValeu = () => {
+  }
+
 
   // Tab 로직 
   const [currentGenderTab, setCurrentGenderTab] = useState(0); //tab
@@ -120,6 +122,11 @@ const Catch = () => {
     resetField(data)
   }
 
+  // 주소 좌표값을 보내기 위한 것들 
+  const addressDiv = document.getElementById('address');
+  const addressLatDiv = document.getElementById('addressLat')
+  const addressLngDiv = document.getElementById('addressLng')
+
   // form submit 로직
   const onSubmitSightingHanlder = (data) => {
     const formData = new FormData();
@@ -152,10 +159,6 @@ const Catch = () => {
     // reset()
   }
 
-  // 카카오 맵 로직 
-  const addressDiv = document.getElementById('address');
-  const addressLatDiv = document.getElementById('addressLat')
-  const addressLngDiv = document.getElementById('addressLng')
 
   return (
     <Layout>
@@ -269,19 +272,10 @@ const Catch = () => {
           </ReportAnimalInfoBox>
         </ReportAnimalInfoArea>
 
+        {/* 카카오맵 */}
         <Location />
+        {/* 카카오맵  */}
 
-        {/* <ReportKakaoMapBox>
-          <ReportKakaoMapBoxTitle>
-            <p>목격위치 *</p>
-            <div>
-              <div><label id='address'>주소</label></div>
-              <div style={{ display: "none" }}><label id='addressLat'></label></div>
-              <div style={{ display: "none" }}><label id='addressLng'></label></div>
-            </div>
-          </ReportKakaoMapBoxTitle>
-          <ReportKakaoMapBoxMap id='map'></ReportKakaoMapBoxMap>
-        </ReportKakaoMapBox> */}
 
         <ReportAnimalDayBox>
           <p>목격일시 *</p>
@@ -303,7 +297,7 @@ const Catch = () => {
             {/* 시간대 */}
             <div>
               <p>시간대</p>
-              <CustomSelect data={TimeValue} onChangeData={onChangeTimeData} />
+              <CustomSelect data={TimeValue} onChangeData={onChangeTimeData} onChangeID={onChangeTimeValeu} />
             </div>
           </div>
         </ReportAnimalDayBox>
