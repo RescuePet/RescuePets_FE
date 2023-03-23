@@ -127,6 +127,7 @@ const Missing = () => {
 
     // 입력값에 따라 버튼 활성화
     const [isActive, setIsActive] = useState(false);
+
     useEffect(() => {
         if (
             watch("animaltypes") !== "" &&
@@ -455,8 +456,8 @@ const Missing = () => {
 
 
                 {
-                isActive === true ? <Button type="submit" disable assistiveFillButton>작성 완료</Button>
-                    : (<Button type="submit" fillButton>작성 완료</Button>)
+                    isActive === true ? <Button type="submit" disable assistiveFillButton>작성 완료</Button>
+                        : (<Button type="submit" fillButton>작성 완료</Button>)
                 }
 
             </ReportMissingContainer >

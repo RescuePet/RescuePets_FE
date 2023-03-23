@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
@@ -12,22 +13,37 @@ import Button from "../../elements/Button";
 import { useNavigate } from "react-router-dom";
 
 const Signin = () => {
-  const [value, setValue] = useState({ email: "", password: "" });
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {
+    register, handleSubmit, formState: { errors }, reset,
+    resetField, watch } = useForm({ mode: 'onChange' });
 
-  const handleInput = (e) => {
-    setValue({ ...value, [e.target.name]: e.target.value });
-  };
+  // 삭제로직
+  const onClickDeleteValue = (data) => {
+    resetField(data)
+  }
+  // 입력값에 따라 버튼 활성화
+  const [isActive, setIsActive] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(__signinUser({ email: value.email, password: value.password }));
-  };
 
-  const cancelInput = (e) => {
-    setValue({ [e.target.name]: "" });
-  };
+  const watchAll = Object.values(watch());
+
+  useEffect(() => {
+    if (watchAll.every((el) => el)) {
+      setIsActive(true);
+    } else {
+      setIsActive(false);
+    }
+  }, [watchAll]);
+
+
+  const onSubmitSigninHanler = (data) => {
+    console.log(data)
+    dispatch(__signinUser({ email: data.email, password: data.password }));
+  }
+
+
 
   const URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_SIGN_ID}&redirect_uri=http://localhost:3000/kakaologin`;
 
@@ -37,36 +53,45 @@ const Signin = () => {
 
   return (
     <Layout>
-      <SignContainer>
+      <SignContainer onSubmit={handleSubmit(onSubmitSigninHanler)} >
         <SignHeader>
           <span>로그인</span>
         </SignHeader>
-        <SignForm id="signin" action="" onSubmit={handleSubmit}>
+        <SignForm >
           <SignText>아이디</SignText>
           <InputWrapper>
-            <SignInput
-              name="email"
-              value={value.email || ""}
-              onChange={handleInput}
-              placeholder="이메일 주소"
+            <SignInput name="email" placeholder="이메일 주소"
+              {...register("email", {
+                pattern: {
+                  value: /^[a-zA-Z0-9]+$/,
+                  message: "영문 숫자 2 ~ 8글자 사이로 입력",
+                },
+                maxLength: {
+                  value: 12,
+                  message: "12글자이내 작성"
+                },
+              })}
             />
-            <img onClick={cancelInput} src={cancel} alt="cancel" name="email" />
+            <img onClick={(() => { onClickDeleteValue("email") })} src={cancel} alt="cancel" name="email" />
+            <span>{errors?.email?.message}</span>
           </InputWrapper>
           <SignText>비밀번호</SignText>
           <InputWrapper>
-            <SignInput
-              name="password"
-              value={value.password || ""}
-              onChange={handleInput}
-              type="password"
-              placeholder="영문, 숫자, 특수문자 조합 8자리 이상"
+            <SignInput name="password" type="password" placeholder="영문, 숫자, 특수문자 조합 8자리 이상"
+              {...register("password", {
+                required: true,
+                pattern: {
+                  value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,12}$/,
+                  message: "8~12 자리 숫자, 문자, 특수문자 최소 1개",
+                },
+                maxLength: {
+                  value: 12,
+                  message: "8~12 자리 숫자, 문자, 특수문자 최소 1개",
+                },
+              })}
             />
-            <img
-              onClick={cancelInput}
-              src={cancel}
-              alt="cancel"
-              name="password"
-            />
+            <img onClick={(() => { onClickDeleteValue("password") })} src={cancel} alt="cancel" name="password" />
+            <span>{errors?.password?.message}</span>
           </InputWrapper>
         </SignForm>
         <AutoSignInWrapper>
@@ -74,10 +99,14 @@ const Signin = () => {
           <span>자동로그인</span>
         </AutoSignInWrapper>
         <ButtonWrapper>
-          <Button fillButton type="submit" form="signin">
-            로그인
-          </Button>
-          <Button emptyButton onClick={() => kakaoSignUp()}>
+
+
+          {
+            isActive === false ? <Button type="submit" disable assistiveFillButton>로그인</Button>
+              : (<Button type="submit" fillButton>로그인</Button>)
+          }
+
+          <Button type="button" emptyButton onClick={() => kakaoSignUp()}>
             카카오톡으로 로그인
           </Button>
         </ButtonWrapper>
@@ -91,7 +120,7 @@ const Signin = () => {
   );
 };
 
-const SignContainer = styled.div`
+const SignContainer = styled.form`
   ${FlexAttribute("column")}
   width: 100%;
 `;
@@ -101,7 +130,7 @@ const SignHeader = styled.div`
   ${HeaderStyle}
 `;
 
-const SignForm = styled.form`
+const SignForm = styled.div`
   ${FlexAttribute("column", "center")}
   margin: 0px 20px 0px 20px;
   img {
@@ -115,10 +144,22 @@ const SignText = styled.span`
 `;
 
 const InputWrapper = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   ${FlexAttribute("row", "", "center")}
   border-bottom: .125rem solid #eeeeee;
+  > img {
+    position: absolute;
+    right: 0;
+  }
+  > span {
+    position: absolute;
+    top: 50px;
+    right: 50%;
+    ${props => props.theme.Span_alert}
+  }
+
 `;
 
 const SignInput = styled.input`
