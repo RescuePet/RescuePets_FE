@@ -19,11 +19,9 @@ export const __signinUser = createAsyncThunk(
 export const __signupUser = createAsyncThunk(
   "signupUser",
   async (payload, thunkAPI) => {
-    console.log(payload)
+    console.log(payload);
     try {
-      const response = await instance.post("/api/member/signup", payload);
-      const TOKEN = response.headers.authorization;
-      Cookies.set("Token", TOKEN);
+      await instance.post("/api/member/signup", payload);
       return thunkAPI.fulfillWithValue("success");
     } catch (error) {
       throw new Error(error.response.data.message);
