@@ -100,43 +100,33 @@ const ChatRoom = () => {
 
   return (
     <Layout>
-      <ChatRoomLayout>
-        <ChatRoomHeader>
-          <HeaderTitle>밤빵이아빠</HeaderTitle>
-        </ChatRoomHeader>
-        <ChatRoomBody>
-          {currentChat.length !== 0 &&
-            currentChat.map((item, index) => {
-              if (item.sender === sender.nickname) {
-                return (
-                  <Send
-                    key={`send-item-${index}`}
-                    message={item.message}
-                  ></Send>
-                );
-              } else {
-                return (
-                  <Receive
-                    key={`receive-item-${index}`}
-                    message={item.message}
-                  ></Receive>
-                );
-              }
-            })}
-        </ChatRoomBody>
-        <InputContainer
-          placeholder="메세지를 입력해주세요."
-          submitHandler={submitHandler}
-        ></InputContainer>
-      </ChatRoomLayout>
+      <ChatRoomHeader>
+        <HeaderTitle>밤빵이아빠</HeaderTitle>
+      </ChatRoomHeader>
+      <ChatRoomBody>
+        {currentChat.length !== 0 &&
+          currentChat.map((item, index) => {
+            if (item.sender === sender.nickname) {
+              return (
+                <Send key={`send-item-${index}`} message={item.message}></Send>
+              );
+            } else {
+              return (
+                <Receive
+                  key={`receive-item-${index}`}
+                  message={item.message}
+                ></Receive>
+              );
+            }
+          })}
+      </ChatRoomBody>
+      <InputContainer
+        placeholder="메세지를 입력해주세요."
+        submitHandler={submitHandler}
+      ></InputContainer>
     </Layout>
   );
 };
-
-const ChatRoomLayout = styled.div`
-  ${FlexAttribute("column")}
-  width: 100%;
-`;
 
 const ChatRoomHeader = styled.div`
   ${FlexAttribute("row", "center", "center")}

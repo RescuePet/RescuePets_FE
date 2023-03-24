@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 import { toggleCategory } from "../../../redux/modules/petworkSlice";
@@ -41,7 +41,7 @@ const CategoryWrapper = styled.div`
   position: sticky;
   top: 0;
   z-index: 10;
-  background-color: white;
+  background-color: ${(props) => props.theme.color.white}; ;
 `;
 
 const ActiveButton = styled.button`
@@ -53,7 +53,7 @@ const ActiveButton = styled.button`
   ${(props) =>
     props.active
       ? css`
-          border-bottom: 2px solid #999999;
+          border-bottom: 2px solid ${(props) => props.theme.color.primary_nomal}; ;
         `
       : css`
           border-bottom: 2px solid transparent;

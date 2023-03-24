@@ -1,21 +1,23 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-import FooterIconChat from "../asset/footericon/FooterIconChat.svg";
-import FooterIconMypage from "../asset/footericon/FooterIconMypage.svg";
-import FooterIconHome from "../asset/footericon/FooterIconHome.svg";
-import FooterIconNetwork from "../asset/footericon/FooterIconNetwork.svg";
+import styled, { css } from "styled-components";
 import "./Footer.css";
 import { useDispatch } from "react-redux";
 import { toggleMenu } from "../redux/modules/menubarSlice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import reportmissing from "../asset/reportmissing.svg";
+import reportcatch from "../asset/reportcatch.svg";
+import { FlexAttribute } from "../style/Mixin";
+
+import FooterIconHome from "../asset/footericon/FooterIconHome";
+import FooterIconNetwork from "../asset/footericon/FooterIconNetwork";
+import FooterIconChat from "../asset/footericon/FooterIconChat";
+import FooterIconProfile from "../asset/footericon/FooterIconProfile";
 
 const Footer = () => {
   // payload로 값 보내기 위한 훅
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // const MoveToMissing = navigate('/missing')
-  // const MoveToSighting = navigate('/sighting')
+  const location = useLocation();
 
   const [menuBar, setMenuBar] = useState(false);
 
@@ -26,8 +28,6 @@ const Footer = () => {
     setMenuBarToggle(!menuBarToggle);
     dispatch(toggleMenu(menuBarToggle));
     const ToggleBtn = document.querySelector(".toggleBtn");
-    // console.log(ToggleBtn)
-    // console.log(menuBar)
     if (menuBar === true) {
       ToggleBtn.classList.remove("active");
     } else {
@@ -37,38 +37,55 @@ const Footer = () => {
 
   return (
     <FooterContiner>
-      {menuBar === false ? null : (
-        <Navigation>
-          <FooterMenuList>? 실종 글 작성하기 </FooterMenuList>
-          <FooterMenuList>🚨 목격 글 작성하기</FooterMenuList>
-        </Navigation>
-      )}
-
-      {/* <FooterIconToggleBtn className='toggleBtn'
-                onClick={onClickMenuBarHandler}></FooterIconToggleBtn> */}
-
-      <FooterEachIconContiner>
-        <img src={FooterIconHome} alt="home" />
-        <p>홈</p>
+      <FooterEachIconContiner
+        active={location.pathname === "/home"}
+        onClick={() => navigate("/home")}
+      >
+        <FooterIconHome></FooterIconHome>
+        <span>홈</span>
       </FooterEachIconContiner>
-      <FooterEachIconContiner>
-        <img src={FooterIconNetwork} alt="petwork" />
-        <p>펫트워크</p>
+      <FooterEachIconContiner
+        active={
+          location.pathname === "/map" || location.pathname === "/petwork"
+        }
+        onClick={() => navigate("/map")}
+      >
+        <FooterIconNetwork></FooterIconNetwork>
+        <span>펫트워크</span>
       </FooterEachIconContiner>
-      <FooterEachIconContiner>
-        <img src={FooterIconChat} alt="chat" />
-        <p>채팅</p>
+      <FooterEachIconContiner
+        active={location.pathname === "/chatlist"}
+        onClick={() => navigate("/chatlist")}
+      >
+        <FooterIconChat></FooterIconChat>
+        <span>채팅</span>
       </FooterEachIconContiner>
-      <FooterEachIconContiner>
-        <img src={FooterIconMypage} alt="profile" />
-        <p>마이페이지</p>
+      <FooterEachIconContiner
+        active={location.pathname === "/profile"}
+        onClick={() => navigate("/profile")}
+      >
+        <FooterIconProfile></FooterIconProfile>
+        <span>마이페이지</span>
       </FooterEachIconContiner>
-      <FooterEachIconContiner>
+      <div>
         <FooterIconToggleBtn
           className="toggleBtn"
           onClick={onClickMenuBarHandler}
         ></FooterIconToggleBtn>
-      </FooterEachIconContiner>
+        {menuBar && (
+          <Navigation>
+            <FooterMenuList onClick={() => navigate("/missing")}>
+              <img src={reportmissing} alt="missing" />
+              <span>실종 글 작성하기</span>
+            </FooterMenuList>
+            <FooterMenuList onClick={() => navigate("/catch")}>
+              <img src={reportcatch} alt="catch" />
+              <span>목격 글 작성하기</span>
+            </FooterMenuList>
+          </Navigation>
+        )}
+        {menuBar && <ToggleBackground />}
+      </div>
     </FooterContiner>
   );
 };
@@ -76,90 +93,132 @@ const Footer = () => {
 export default Footer;
 
 const FooterContiner = styled.div`
-  width: 23.4375rem;
-  height: 4.75rem;
-  border-top: 1px solid gray;
-  padding-top: 10px;
-  ${(props) => props.theme.FlexCenter}
-  gap: 10px 72px;
+  ${FlexAttribute("row", "space-around", "center")}
+  width: 430px;
+  height: 74px;
+  border-top: 1px solid ${(props) => props.theme.color.text_disable};
   position: fixed;
   bottom: 0;
-  z-index: 10;
-  background-color: white;
+  background-color: ${(props) => props.theme.color.white};
   @media screen and (max-width: 431px) {
+    width: 100%;
     position: fixed;
-    bottom: 0%;
-    z-index: 11;
+    bottom: 0;
   }
 `;
 
 // 메뉴바 모달
 const Navigation = styled.div`
   position: absolute;
-  left: 50%;
+  right: 10px;
   bottom: 40px;
   width: 200px;
   height: 170px;
-  /* border: 1px solid #fff;
-    border-radius: 25px; */
-  /* opacity: 0.9; */
   ${(props) => props.theme.FlexColumn}
-  gap: 10px 0;
-  /* &::after{
-      content: "";
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      margin-left: -0.625rem;
-      border-width: 0.625rem;
-      border-style: solid;
-      color: #eee;
-      border-color: #fff transparent transparent transparent;
-    } */
 `;
 
 const FooterMenuList = styled.div`
   width: 9.6875rem;
   height: 2.75rem;
-  background: #666;
-  color: #fff;
+  z-index: 50;
+  margin-top: 10px;
+  border-radius: 4px;
+  background: ${(props) => props.theme.color.text_nomal};
+  color: ${(props) => props.theme.color.white};
   ${(props) => props.theme.FlexCenter};
+  cursor: pointer;
+  span {
+    ${(props) => props.theme.Body_400_14};
+    line-height: 24px;
+    vertical-align: middle;
+  }
 `;
 
 // 모달 보이게 하는 검정색 원형
 const FooterIconToggleBtn = styled.div`
-  position: absolute;
-  bottom: -10px;
+  position: relative;
+  z-index: 50;
+  ${FlexAttribute("row", "center")}
   width: 40px;
   height: 40px;
-  background: #222222;
+  background: ${(props) => props.theme.color.text_nomal};
   border-radius: 50%;
-  ${(props) => props.theme.FlexCenter}
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  font-weight: 300;
   &::before {
+    height: 40px;
+    width: 40px;
     content: "+";
-    position: absolute;
-    top: 0;
+    text-align: center;
     font-size: 3em;
     font-weight: 300;
-    color: #ffff;
-    transition: 1.5s;
+    color: ${(props) => props.theme.color.white};
+    transition: 1s;
   }
 `;
 
 const FooterEachIconContiner = styled.div`
-  position: relative;
-  ${(props) => props.theme.FlexCenter}
-  flex-direction: row;
-  > img {
-    position: absolute;
-    bottom: 5px;
+  ${FlexAttribute("column", "", "center")};
+  width: 30px;
+  cursor: pointer;
+  span {
+    ${(props) => props.theme.Body_400_12};
+    color: ${(props) => props.theme.color.text_alternative};
+    white-space: nowrap;
   }
-  > p {
-    width: 80px;
-    top: 5px;
-    position: absolute;
-    font-size: 12px;
-    text-align: center;
+  ${(props) =>
+    props.active &&
+    css`
+  span {
+      color: ${(props) => props.theme.color.primary_nomal};
+    }
+    path {
+      fill: ${(props) => props.theme.color.primary_nomal};
+    }
+    circle {
+      fill: ${(props) => props.theme.color.primary_nomal};
+    }
+    .default {
+      fill: ${(props) => props.theme.color.white};
+    }
   }
+  `}
+  :hover {
+    span {
+      color: ${(props) => props.theme.color.primary_strong};
+    }
+    path {
+      fill: ${(props) => props.theme.color.primary_strong};
+    }
+    circle {
+      fill: ${(props) => props.theme.color.primary_strong};
+    }
+    .default {
+      fill: ${(props) => props.theme.color.white};
+    }
+  }
+  :active {
+    span {
+      color: ${(props) => props.theme.color.primary_heavy};
+    }
+    path {
+      fill: ${(props) => props.theme.color.primary_heavy};
+    }
+    circle {
+      fill: ${(props) => props.theme.color.primary_heavy};
+    }
+    .default {
+      fill: ${(props) => props.theme.color.white};
+    }
+  }
+`;
+
+const ToggleBackground = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background-color: rgba(34, 34, 34, 0.5);
+  width: 100%;
+  height: 100%;
 `;
