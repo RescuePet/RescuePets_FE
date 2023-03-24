@@ -1,23 +1,22 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import FooterIconChat from "../asset/footericon/FooterIconChat.svg";
-import FooterIconMypage from "../asset/footericon/FooterIconMypage.svg";
-import FooterIconHome from "../asset/footericon/FooterIconHome.svg";
-import FooterIconNetwork from "../asset/footericon/FooterIconNetwork.svg";
 import "./Footer.css";
 import { useDispatch } from "react-redux";
 import { toggleMenu } from "../redux/modules/menubarSlice";
 import { useNavigate } from "react-router-dom";
 import reportmissing from "../asset/reportmissing.svg";
 import reportcatch from "../asset/reportcatch.svg";
+import { FlexAttribute } from "../style/Mixin";
+
+import FooterIconHome from "../asset/footericon/FooterIconHome";
+import FooterIconNetwork from "../asset/footericon/FooterIconNetwork";
+import FooterIconChat from "../asset/footericon/FooterIconChat";
+import FooterIconProfile from "../asset/footericon/FooterIconProfile";
 
 const Footer = () => {
   // payload로 값 보내기 위한 훅
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // const MoveToMissing = navigate('/missing')
-  // const MoveToSighting = navigate('/sighting')
 
   const [menuBar, setMenuBar] = useState(false);
 
@@ -38,20 +37,20 @@ const Footer = () => {
   return (
     <FooterContiner>
       <FooterEachIconContiner>
-        <img src={FooterIconHome} alt="home" />
-        <p>홈</p>
+        <FooterIconHome></FooterIconHome>
+        <span>홈</span>
       </FooterEachIconContiner>
       <FooterEachIconContiner>
-        <img src={FooterIconNetwork} alt="petwork" />
-        <p>펫트워크</p>
+        <FooterIconNetwork></FooterIconNetwork>
+        <span>펫트워크</span>
       </FooterEachIconContiner>
       <FooterEachIconContiner>
-        <img src={FooterIconChat} alt="chat" />
-        <p>채팅</p>
+        <FooterIconChat></FooterIconChat>
+        <span>채팅</span>
       </FooterEachIconContiner>
       <FooterEachIconContiner>
-        <img src={FooterIconMypage} alt="profile" />
-        <p>마이페이지</p>
+        <FooterIconProfile></FooterIconProfile>
+        <span>마이페이지</span>
       </FooterEachIconContiner>
       <FooterEachIconContiner>
         <FooterIconToggleBtn
@@ -79,12 +78,10 @@ const Footer = () => {
 export default Footer;
 
 const FooterContiner = styled.div`
-  width: 428px;
-  height: 76px;
+  ${FlexAttribute("row", "space-around", "center")}
+  width: 430px;
+  height: 74px;
   border-top: 1px solid ${(props) => props.theme.color.text_disable};
-  padding-top: 10px;
-  ${(props) => props.theme.FlexCenter}
-  gap: 10px 72px;
   position: fixed;
   bottom: 0;
   background-color: ${(props) => props.theme.color.white};
@@ -103,7 +100,6 @@ const Navigation = styled.div`
   width: 200px;
   height: 170px;
   ${(props) => props.theme.FlexColumn}
-  gap: 10px 0;
 `;
 
 const FooterMenuList = styled.div`
@@ -124,21 +120,19 @@ const FooterMenuList = styled.div`
 
 // 모달 보이게 하는 검정색 원형
 const FooterIconToggleBtn = styled.div`
+  position: relative;
   z-index: 50;
-  position: absolute;
-  bottom: -10px;
+  ${FlexAttribute("row", "center")}
   width: 40px;
   height: 40px;
   background: ${(props) => props.theme.color.text_nomal};
   border-radius: 50%;
-  ${(props) => props.theme.FlexCenter}
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
   cursor: pointer;
+  font-weight: 300;
   &::before {
-    position: absolute;
     height: 40px;
     width: 40px;
-    top: 0;
     content: "+";
     text-align: center;
     font-size: 3em;
@@ -149,19 +143,41 @@ const FooterIconToggleBtn = styled.div`
 `;
 
 const FooterEachIconContiner = styled.div`
-  position: relative;
-  ${(props) => props.theme.FlexCenter}
-  flex-direction: row;
-  > img {
-    position: absolute;
-    bottom: 5px;
+  ${FlexAttribute("column", "", "center")};
+  width: 30px;
+  cursor: pointer;
+  span {
+    ${(props) => props.theme.Body_400_12};
+    color: ${(props) => props.theme.color.text_alternative};
+    white-space: nowrap;
   }
-  > p {
-    width: 80px;
-    top: 5px;
-    position: absolute;
-    font-size: 12px;
-    text-align: center;
+  :hover {
+    span {
+      color: ${(props) => props.theme.color.primary_strong};
+    }
+    path {
+      fill: ${(props) => props.theme.color.primary_strong};
+    }
+    circle {
+      fill: ${(props) => props.theme.color.primary_strong};
+    }
+    .default {
+      fill: ${(props) => props.theme.color.white};
+    }
+  }
+  :active {
+    span {
+      color: ${(props) => props.theme.color.primary_heavy};
+    }
+    path {
+      fill: ${(props) => props.theme.color.primary_heavy};
+    }
+    circle {
+      fill: ${(props) => props.theme.color.primary_heavy};
+    }
+    .default {
+      fill: ${(props) => props.theme.color.white};
+    }
   }
 `;
 

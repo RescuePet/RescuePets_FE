@@ -27,8 +27,6 @@ const MobileLayout = styled.div`
   width: 430px;
   height: 100%;
   margin: 0 auto;
-  border-left: 1px solid ${(props) => props.theme.color.text_assistive};
-  border-right: 1px solid ${(props) => props.theme.color.text_assistive};
   background-color: ${(props) => props.theme.color.white};
   // 430px이하일떄 넣어줌
   // 데스크탑용의 가장 큰 화면 사이즈의 레이아웃을 기본으로 하고, 점차 축소하는 형태로 CSS를 작성합니다.(스마트폰 화면에 적용)

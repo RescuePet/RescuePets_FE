@@ -78,12 +78,9 @@ const InformationWrapper = styled.div`
 
 const TitleBox = styled.div`
   ${FlexAttribute("row", "", "center")}
-
   h2 {
-    font-size: 14px;
-  }
-  img {
-    padding-bottom: 1px;
+    ${(props) => props.theme.Body_400_14};
+    padding-top: 2px;
   }
 `;
 

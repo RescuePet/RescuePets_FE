@@ -29,7 +29,6 @@ const Reset = createGlobalStyle`
   }
   * {
     box-sizing: border-box;
-    /* background-color: #ffffff; */
   }
   @media screen and (max-width: 430px) { 
     * {
