@@ -6,7 +6,6 @@ import cancel from "../../asset/delete.svg";
 import Location from "./components/Location";
 import imageCompression from 'browser-image-compression';
 import imgdelete from "../../asset/imgDelete.svg";
-import Marker from "../../asset/marker.png"
 import { CustomSelect } from "../../elements/CustomSelect"
 import {
   ReportSightingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
@@ -22,7 +21,6 @@ import { useDispatch } from 'react-redux';
 const Catch = () => {
   let imageRef;
   const dispatch = useDispatch();
-  const { kakao } = window;
 
   // 종류데이터
   const [type, setType] = useState(NameValue[0].name)
@@ -40,6 +38,10 @@ const Catch = () => {
   const onChangeTimeData = (newData) => {
     setTime(newData);
   }
+  // 콘솔없애기 위한 로직 
+  const onChangeTimeValeu = () => {
+  }
+
 
   // Tab 로직 
   const [currentGenderTab, setCurrentGenderTab] = useState(0); //tab
@@ -74,7 +76,7 @@ const Catch = () => {
 
     const imageLists = e.target.files;
     setImage([...imageLists])
-    console.log("폼데이터 보내야 할것들:", imageLists)
+    // console.log("폼데이터 보내야 할것들:", imageLists)
     setImageFormData(imageLists)
 
     setFormformImagin([...formImagin], ...e.target.files)
@@ -109,53 +111,82 @@ const Catch = () => {
   const onClickDeleteHandler = (id) => {
     setShowImages('');
     setImageFormData('')
+    window.location.reload()
   };
 
   // React-hook-form
   const {
     register, handleSubmit, formState: { errors },
-    reset, resetField, } = useForm({ mode: 'onChange' });
+    reset, resetField, watch } = useForm({ mode: 'onChange' });
   // 버튼을 누르면 선택된 usehookForm 제거 
   const onClickDeleteValue = (data) => {
     resetField(data)
   }
 
-  // form submit 로직
-  const onSubmitSightingHanlder = (data) => {
-    const formData = new FormData();
-    formData.append("upkind", typeID)
-    formData.append("sexCd", currentGenderEnValue)
-    formData.append("neuterYn", currentNeuteredEnValue)
-    formData.append("kindCd", data.animaltypes)
-    formData.append("age", data.animalAge)
-    formData.append("weight", data.animalkg)
-    formData.append("colorCd", data.animalcolor)
-    formData.append("happenPlace", addressDiv.innerHTML)
-    formData.append("happenLatitude", addressLatDiv.innerHTML)
-    formData.append("happenLongitude", addressLngDiv.innerHTML)
-    formData.append("happenDt", data.days)
-    formData.append("happenHour", time)
-    formData.append("specialMark", data.characteristic)
-    formData.append("content", data.memo)
-    formData.append("gratuity", data.money)
-    formData.append("contact", data.number)
-
-    for (const keyValue of formImagin) {
-      formData.append(keyValue[0], keyValue[1]);
-    }
-
-    for (let value of formData.values()) {
-      console.log("FormData", value);
-    }
-
-    dispatch(__PostCatchData(formData))
-    // reset()
-  }
-
-  // 카카오 맵 로직 
+  // 주소 좌표값을 보내기 위한 것들 
   const addressDiv = document.getElementById('address');
   const addressLatDiv = document.getElementById('addressLat')
   const addressLngDiv = document.getElementById('addressLng')
+
+  // 입력값에 따라 버튼 활성화
+  const [isActive, setIsActive] = useState(false);
+  useEffect(() => {
+    if (
+      watch("animaltypes") !== "" &&
+      // watch("animaltypes") !== "" &&
+      watch("animalAge") !== "" &&
+      watch("animalkg") !== "" &&
+      watch("address") !== "" &&
+      watch("animalcolor") !== "" &&
+      addressDiv?.innerHTML !== "" &&
+      watch("days") !== ""
+    ) {
+      // console.log('성공')
+      setIsActive(false);
+    } else {
+      // console.log('실패')
+      setIsActive(true);
+    }
+  }, [watch()]);
+
+
+
+  // form submit 로직
+  const onSubmitSightingHanlder = (data) => {
+    if (addressDiv?.innerHTML === '') {
+      alert('지도에 위치를 표기해주세요')
+    } else {
+      const formData = new FormData();
+      formData.append("upkind", typeID)
+      formData.append("sexCd", currentGenderEnValue)
+      formData.append("neuterYn", currentNeuteredEnValue)
+      formData.append("kindCd", data.animaltypes)
+      formData.append("age", data.animalAge)
+      formData.append("weight", data.animalkg)
+      formData.append("colorCd", data.animalcolor)
+      formData.append("happenPlace", addressDiv.innerHTML)
+      formData.append("happenLatitude", addressLatDiv.innerHTML)
+      formData.append("happenLongitude", addressLngDiv.innerHTML)
+      formData.append("happenDt", data.days)
+      formData.append("happenHour", time)
+      formData.append("specialMark", data.characteristic)
+      formData.append("content", data.memo)
+      formData.append("gratuity", data.money)
+      formData.append("contact", data.number)
+
+      for (const keyValue of formImagin) {
+        formData.append(keyValue[0], keyValue[1]);
+      }
+
+      for (let value of formData.values()) {
+        console.log("FormData", value);
+      }
+
+      dispatch(__PostCatchData(formData))
+      // reset()
+    }
+  }
+
 
   return (
     <Layout>
@@ -184,6 +215,7 @@ const Catch = () => {
                 <p>품종</p>
                 <ReportInput type="text" placeholder="입력하기"
                   {...register("animaltypes", {
+                    required: true,
                     pattern: { value: /^[ㄱ-ㅎ|가-힣]+$/, message: "한글만 2 ~ 8글자 사이로 입력", },
                   })} />
                 <img src={cancel} onClick={(() => { onClickDeleteValue('animaltypes') })} />
@@ -232,6 +264,7 @@ const Catch = () => {
                   <p>추정나이</p>
                   <ReportInput type="text" placeholder='입력하기'
                     {...register("animalAge", {
+                      required: true,
                       pattern: { value: /^[0-9]+$/, message: "숫자만입력가능", },
                       maxLength: { value: 3, message: "숫자만 입력! 3자리수 이하로 작성", }
                     })} />
@@ -243,6 +276,7 @@ const Catch = () => {
                   <p>추정체중(Kg)</p>
                   <ReportInput type="text" placeholder='입력하기'
                     {...register("animalkg", {
+                      required: false,
                       pattern: { value: /^[0-9]+$/, message: "숫자만입력가능", },
                       maxLength: { value: 3, message: "숫자만 입력! 3자리수 이하로 작성", }
                     })} />
@@ -257,7 +291,7 @@ const Catch = () => {
                   <p>색상</p>
                   <ReportLgInput type="text" placeholder='입력하기'
                     {...register("animalcolor", {
-                      // required: false,
+                      required: true,
                       pattern: { value: /^[가-힣\s]+$/, message: "한글만 2 ~ 8글자 사이로 입력 ", },
                       maxLength: { value: 8, message: "8글자 이하이어야 합니다.", },
                     })} />
@@ -269,29 +303,18 @@ const Catch = () => {
           </ReportAnimalInfoBox>
         </ReportAnimalInfoArea>
 
+        {/* 카카오맵 */}
         <Location />
-
-        {/* <ReportKakaoMapBox>
-          <ReportKakaoMapBoxTitle>
-            <p>목격위치 *</p>
-            <div>
-              <div><label id='address'>주소</label></div>
-              <div style={{ display: "none" }}><label id='addressLat'></label></div>
-              <div style={{ display: "none" }}><label id='addressLng'></label></div>
-            </div>
-          </ReportKakaoMapBoxTitle>
-          <ReportKakaoMapBoxMap id='map'></ReportKakaoMapBoxMap>
-        </ReportKakaoMapBox> */}
+        {/* 카카오맵  */}
 
         <ReportAnimalDayBox>
           <p>목격일시 *</p>
-          {/* 날짜 */}
           <div>
-            {/* 날짜 */}
             <div>
               <p>날짜</p>
               <ReportInput type="text" placeholder='2022-07-14'
                 {...register("days", {
+                  required: true,
                   pattern: {
                     value: /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/,
                     message: "20xx-xx-xx 형식으로 입력",
@@ -303,7 +326,7 @@ const Catch = () => {
             {/* 시간대 */}
             <div>
               <p>시간대</p>
-              <CustomSelect data={TimeValue} onChangeData={onChangeTimeData} />
+              <CustomSelect data={TimeValue} onChangeData={onChangeTimeData} onChangeID={onChangeTimeValeu} />
             </div>
           </div>
         </ReportAnimalDayBox>
@@ -318,14 +341,8 @@ const Catch = () => {
               <ReportLgInput type="text" placeholder='입력하기'
                 {...register("characteristic", {
                   required: false,
-                  pattern: {
-                    value: /^[가-힣\s]+$/,
-                    message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message: "20글자 이하이어야 합니다.",
-                  },
+                  pattern: { value: /^[가-힣\s]+$/, message: "한글만 20글자 안으로 입력 띄워쓰기 X ", },
+                  maxLength: { value: 20, message: "20글자 이하이어야 합니다.", },
                 })} />
               <img src={cancel} onClick={(() => { onClickDeleteValue('characteristic') })} />
               <span>{errors?.characteristic?.message}</span>
@@ -335,14 +352,8 @@ const Catch = () => {
               <ReportLgInput type="text" placeholder='입력하기'
                 {...register("memo", {
                   required: false,
-                  pattern: {
-                    value: /^[가-힣\s]+$/,
-                    message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message: "20글자 이하이어야 합니다.",
-                  },
+                  pattern: { value: /^[가-힣\s]+$/, message: "한글만 20글자 안으로 입력 띄워쓰기 X ", },
+                  maxLength: { value: 20, message: "20글자 이하이어야 합니다.", },
                 })} />
               <img src={cancel} onClick={(() => { onClickDeleteValue('memo') })} />
               <span>{errors?.memo?.message}</span>
@@ -380,7 +391,10 @@ const Catch = () => {
           </ReportAnimalPictureAreaInputBox>
         </ReportAnimalPictureArea>
 
-        <Button type="submit" TabBtn2>작성 완료</Button>
+        {
+          isActive === true ? <Button type="submit" disable assistiveFillButton>작성 완료</Button>
+            : (<Button type="submit" fillButton>작성 완료</Button>)
+        }
       </ReportSightingContainer>
     </Layout >
   )

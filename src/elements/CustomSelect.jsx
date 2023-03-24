@@ -13,7 +13,9 @@ export const CustomSelect = ({ data, onChangeData, onChangeID }) => {
     // 이코드로 상위컴포넌트로 가장최신값을 보낸다
     onChangeData(e.target.getAttribute("value"));
     if (onChangeID !== null) {
-      onChangeID(e.target.id);
+      onChangeID(e.target.id)
+    } else {
+      onChangeID(e.target.id)
     }
   };
 
@@ -53,6 +55,8 @@ const SelectBox = styled.div`
     color: #999999;
     font-size: 20px;
   }
+  
+  
 `;
 const Label = styled.label`
   margin-left: 4px;

@@ -120,8 +120,8 @@ export const ReportAnimalInfoCheckBoxSelete = styled.ul`
      }
     .focused {
      //선택된 Tabmenu 에만 적용되는 CSS를 구현
-    border: 1px solid #666666;
-    color: #666666
+    border: 1px solid #FF9900;
+    color: #FF9900
     }
 `;
 
@@ -205,56 +205,58 @@ export const ReportLgInput = styled.input`
   border-bottom: 2px solid #EEEEEE;
   background: transparent;
   font-size: 12px;
-`
+// `
 
-export const SelectBox = styled.div`
-  position: relative;
-  width: 9.75rem;
-  height: 1.5625rem;
-  border-bottom: 2px solid #EEEEEE;
-  padding: 8px 0 20px 0;
-  /* align-self: center; */
-  /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
-  cursor: pointer;
-  &::before {
-    content: "⌵";
-    position: absolute;
-    top: 1px;
-    right: 8px;
-    color: #999999;
-    font-size: 20px;
-  }
-`;
-export const Label = styled.label`
-  font-size: 14px;
-  margin-left: 4px;
-  text-align: center;
-`;
+// export const SelectBox = styled.div`
+//   position: relative;
+//   width: 9.75rem;
+//   height: 1.5625rem;
+//   border-bottom: 2px solid #EEEEEE;
+//   padding: 8px 0 20px 0;
+//   /* align-self: center; */
+//   /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
+//   cursor: pointer;
+//   &::before {
+//     content: "⌵";
+//     position: absolute;
+//     top: 1px;
+//     right: 8px;
+//     color: #999999;
+//     font-size: 20px;
+//   }
 
-export const SelectOptions = styled.ul`
-  position: absolute;
-  list-style: none;
-  top: 35px;
-  left: 0;
-  width: 100%;
-  overflow: scroll;
-  height: 100px;
-  max-height: ${(props) => (props.show ? "none" : "0")};
-  padding: 0;
-  border-radius: 8px;
-  background-color: #eeeeee;
-  color: #222222;
-  z-index: 10;
-`;
 
-export const Option = styled.li`
-  font-size: 14px;
-  padding: 6px 8px;
-  transition: background-color 0.2s ease-in;
-  &:hover {
-    background-color: #595959;
-  }
-`;
+// `;
+// export const Label = styled.label`
+//   font-size: 14px;
+//   margin-left: 4px;
+//   text-align: center;
+// `;
+
+// export const SelectOptions = styled.ul`
+//   position: absolute;
+//   list-style: none;
+//   top: 35px;
+//   left: 0;
+//   width: 100%;
+//   overflow: scroll;
+//   height: 100px;
+//   max-height: ${(props) => (props.show ? "none" : "0")};
+//   padding: 0;
+//   border-radius: 8px;
+//   background-color: #eeeeee;
+//   color: #222222;
+//   z-index: 10;
+// `;
+
+// export const Option = styled.li`
+//   font-size: 14px;
+//   padding: 6px 8px;
+//   transition: background-color 0.2s ease-in;
+//   &:hover {
+//     background-color: #595959;
+//   }
+// `;
 
 export const ReportAnimalDayBox = styled.div`
   width: 20.9375rem;

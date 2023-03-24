@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
@@ -33,6 +33,7 @@ const Signup = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    watch
   } = useForm({ mode: "onChange" });
 
   // 비밀번호 체크 로직
@@ -44,6 +45,29 @@ const Signup = () => {
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
+  // 입력값에 따라 버튼 활성화
+  const [isActive, setIsActive] = useState(false);
+
+  const watchAll = Object.values(watch());
+
+  useEffect(() => {
+    // react-hook-form 만든 값들이 전부 입력이 되면 
+    if (watchAll.every((el) => el)) {
+      // 비밀번호 같다면 
+      if (watchAll[1] === watchAll[2]) {
+        setIsActive(true);
+      }
+      // 비밀번호와 비밀번호 체크가 다르다면
+      else {
+        setIsActive(false);
+      }
+    }
+    // react-hook-form 만든 값들이 전부 입력이 되지않으며
+    else {
+      setIsActive(false);
+    }
+  }, [watchAll]);
+
   const onSubmitSignupHandler = (data) => {
     if (data.password === data.checkpassword) {
       // console.log(data)
@@ -171,9 +195,12 @@ const Signup = () => {
           </div>
         </SignIdNincknameBox>
         <SignBtnBox>
-          <Button assistiveFillButton type="submit" TabBtn2>
-            가입완료
-          </Button>
+
+          {
+            isActive === false ? <Button type="submit" disable assistiveFillButton>로그인</Button>
+              : (<Button type="submit" fillButton>로그인</Button>)
+          }
+
         </SignBtnBox>
       </SignContainer>
     </Layout>

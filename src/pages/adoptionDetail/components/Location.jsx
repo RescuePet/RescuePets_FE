@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import sheltermarker from "../../../asset/sheltermarker.png"
+import sheltermarker from "../../../asset/marker/sheltermarker.png"
 import { ContentTextStyle } from "../../../style/Mixin";
 import { Body_400_14, BorderRadius } from "../../../style/theme";
 import {
