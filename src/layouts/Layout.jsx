@@ -1,15 +1,19 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { FlexAttribute } from "../style/Mixin";
 import Footer from "./Footer";
 
 const Layout = ({ children }) => {
+  const location = useLocation();
   return (
     <>
       <WebLayout>
         <MobileLayout>
           {children}
-          <Footer></Footer>
+          {location.pathname !== "/" ||
+            location.pathname !== "/signin" ||
+            (location.pathname !== "/signup" && <Footer></Footer>)}
         </MobileLayout>
       </WebLayout>
     </>
