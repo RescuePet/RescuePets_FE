@@ -9,6 +9,10 @@ const Location = () => {
     const [long, setLong] = useState("");
     const [lati, setLati] = useState("");
 
+    // 툴팁 로직
+
+
+
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(onSucces, onFailure);
         // 성공
@@ -71,13 +75,23 @@ const Location = () => {
 
     }, [long])
 
+
+    const [isHovering, setIsHovering] = useState(false);
+
+
+
     return (
         <ReportKakaoMapContainer>
             <ReportKakaoMapBoxTitle>
                 <ReportKakaomapTitleInfoBox>
                     <p>실종위치 <span>*</span></p>
-                    <img src={questionmark} />
-                    <div>툴팁</div>
+                    <img id="img"
+                        src={questionmark}
+                        onMouseOver={() => setIsHovering(true)}
+                        onMouseOut={() => setIsHovering(false)}
+                    />
+                    {/* <div className="tooltip">지도상에서 마커를 움직여 위치를 표현해주세요</div> */}
+                    {isHovering === true ? <div className="tooltip">지도상에서 마커를 움직여 위치를 표현해주세요.</div> : null}
                 </ReportKakaomapTitleInfoBox>
                 <ReportKakaomapTitleValueBox>
                     <div><label id='address'></label></div>
@@ -105,6 +119,8 @@ const ReportKakaoMapContainer = styled.div`
 const ReportKakaoMapBoxTitle = styled.div`
 width: 100%;
 height: 6.25rem;
+
+
 `;
 
 const ReportKakaomapTitleInfoBox = styled.div`
@@ -132,14 +148,32 @@ const ReportKakaomapTitleInfoBox = styled.div`
         height: 100%;
         left: 50px;
         bottom: 2.5px;
+       
     }
     > div {
-        width: 70%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+        position: relative;
+        ${props => props.theme.FlexCenter}
+        left: 35px;
+        top: -2.5px;
+        width: 14.3125rem;
+        height: 1.5rem;
+        background: #FFFFFF;
+        border: 1px solid #C4C4C4;
+        font-size: 12px;
+        color: #8A8A8A;
+	    border-radius: .4em;
+        &::after {
+            content: '';
+            position: absolute;
+            top: 5%;
+            left:-10px;
+            margin-left: -10px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent #C4C4C4 transparent transparent;
+            }     
+           }
+
 `;
 
 const ReportKakaomapTitleValueBox = styled.div`
@@ -147,7 +181,7 @@ const ReportKakaomapTitleValueBox = styled.div`
     height: 70%;
     padding-top: 20px;
     font-size: 12px;
-    border: 1px solid green;
+    /* border: 1px solid green; */
     ${props => props.theme.FlexRow}
     > div {
         width: 100%;

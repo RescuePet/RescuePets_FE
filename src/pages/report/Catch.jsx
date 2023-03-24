@@ -141,10 +141,10 @@ const Catch = () => {
       addressDiv?.innerHTML !== "" &&
       watch("days") !== ""
     ) {
-      console.log('성공')
+      // console.log('성공')
       setIsActive(false);
     } else {
-      console.log('실패')
+      // console.log('실패')
       setIsActive(true);
     }
   }, [watch()]);
