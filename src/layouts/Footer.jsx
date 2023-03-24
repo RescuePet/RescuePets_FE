@@ -65,7 +65,7 @@ const Footer = () => {
         <FooterIconProfile></FooterIconProfile>
         <span>마이페이지</span>
       </FooterEachIconContiner>
-      <FooterEachIconContiner>
+      <div>
         <FooterIconToggleBtn
           className="toggleBtn"
           onClick={onClickMenuBarHandler}
@@ -83,7 +83,7 @@ const Footer = () => {
           </Navigation>
         )}
         {menuBar && <ToggleBackground />}
-      </FooterEachIconContiner>
+      </div>
     </FooterContiner>
   );
 };
@@ -108,8 +108,8 @@ const FooterContiner = styled.div`
 // 메뉴바 모달
 const Navigation = styled.div`
   position: absolute;
-  right: -50px;
-  bottom: 5px;
+  right: 10px;
+  bottom: 40px;
   width: 200px;
   height: 170px;
   ${(props) => props.theme.FlexColumn}
@@ -119,6 +119,7 @@ const FooterMenuList = styled.div`
   width: 9.6875rem;
   height: 2.75rem;
   z-index: 50;
+  margin-top: 10px;
   border-radius: 4px;
   background: ${(props) => props.theme.color.text_nomal};
   color: ${(props) => props.theme.color.white};
