@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import "./Footer.css";
 import { useDispatch } from "react-redux";
 import { toggleMenu } from "../redux/modules/menubarSlice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import reportmissing from "../asset/reportmissing.svg";
 import reportcatch from "../asset/reportcatch.svg";
 import { FlexAttribute } from "../style/Mixin";
@@ -17,6 +17,7 @@ const Footer = () => {
   // payload로 값 보내기 위한 훅
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [menuBar, setMenuBar] = useState(false);
 
@@ -36,19 +37,31 @@ const Footer = () => {
 
   return (
     <FooterContiner>
-      <FooterEachIconContiner>
+      <FooterEachIconContiner
+        active={location.pathname === "/home"}
+        onClick={() => navigate("/home")}
+      >
         <FooterIconHome></FooterIconHome>
         <span>홈</span>
       </FooterEachIconContiner>
-      <FooterEachIconContiner>
+      <FooterEachIconContiner
+        active={location.pathname === "/petwork"}
+        onClick={() => navigate("/petwork")}
+      >
         <FooterIconNetwork></FooterIconNetwork>
         <span>펫트워크</span>
       </FooterEachIconContiner>
-      <FooterEachIconContiner>
+      <FooterEachIconContiner
+        active={location.pathname === "/chatlist"}
+        onClick={() => navigate("/chatlist")}
+      >
         <FooterIconChat></FooterIconChat>
         <span>채팅</span>
       </FooterEachIconContiner>
-      <FooterEachIconContiner>
+      <FooterEachIconContiner
+        active={location.pathname === "/profile"}
+        onClick={() => navigate("/profile")}
+      >
         <FooterIconProfile></FooterIconProfile>
         <span>마이페이지</span>
       </FooterEachIconContiner>
@@ -151,6 +164,23 @@ const FooterEachIconContiner = styled.div`
     color: ${(props) => props.theme.color.text_alternative};
     white-space: nowrap;
   }
+  ${(props) =>
+    props.active &&
+    css`
+  span {
+      color: ${(props) => props.theme.color.primary_nomal};
+    }
+    path {
+      fill: ${(props) => props.theme.color.primary_nomal};
+    }
+    circle {
+      fill: ${(props) => props.theme.color.primary_nomal};
+    }
+    .default {
+      fill: ${(props) => props.theme.color.white};
+    }
+  }
+  `}
   :hover {
     span {
       color: ${(props) => props.theme.color.primary_strong};
