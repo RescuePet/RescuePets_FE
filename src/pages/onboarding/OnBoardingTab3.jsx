@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 import { onboarding } from "../../redux/modules/onboardingSlice";
 import { Body_500_14 } from "../../style/theme";
 
+import onboarding3 from "../../asset/onboarding/3.png";
+
 const OnBoardingTab3 = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,11 +22,7 @@ const OnBoardingTab3 = () => {
     <>
       <TabContainer>
         <TabHander onClick={onClickTabBtn}>FIRST PAGE</TabHander>
-        <TabImageBox>
-          <div>
-            <img />
-          </div>
-        </TabImageBox>
+        <TabImageBox src={onboarding3} />
         <TabTextBox>
           <h3>유기동물의 가족이 되어주세요!</h3>
         </TabTextBox>
@@ -51,13 +49,12 @@ const OnBoardingTab3 = () => {
 export default OnBoardingTab3;
 
 const TabContainer = styled.div`
-  width: 100%;
-  height: 100vh;
-  /* border: 1px solid red; */
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding-top: 10px;
+  padding: 30px 16px;
+  width: 100%;
+  height: 100vh;
 `;
 
 const TabHander = styled.div`
@@ -73,16 +70,10 @@ const TabHander = styled.div`
   color: ${(props) => props.theme.color.text_alternative};
 `;
 
-const TabImageBox = styled.div`
-  width: 80%;
-  height: 50%;
-  ${(props) => props.theme.FlexColumn}
-  div {
-    width: 264px;
-    height: 264px;
-    background: #cccccc;
-    border-radius: 50%;
-  }
+const TabImageBox = styled.img`
+  margin: auto 0;
+  width: 240px;
+  height: 193px;
 `;
 
 const TabTextBox = styled.div`

@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 import { onboarding } from "../../redux/modules/onboardingSlice";
 import { Body_500_14 } from "../../style/theme";
 
+import onboarding2 from "../../asset/onboarding/2.png";
+
 const OnBoardingTab2 = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,9 +27,7 @@ const OnBoardingTab2 = (props) => {
         >
           SKIP
         </TabHander>
-        <TabImageBox>
-          <div></div>
-        </TabImageBox>
+        <TabImageBox src={onboarding2}></TabImageBox>
 
         <TabTextBox>
           <h3>편하고 빠르게 잃어버린 반려동물을 등록해보세요!</h3>
@@ -53,12 +53,12 @@ const OnBoardingTab2 = (props) => {
 export default OnBoardingTab2;
 
 const TabContainer = styled.div`
-  width: 100%;
-  height: 100vh;
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding-top: 10px;
+  padding: 30px 16px;
+  width: 100%;
+  height: 100vh;
 `;
 
 const TabHander = styled.div`
@@ -74,16 +74,10 @@ const TabHander = styled.div`
   color: ${(props) => props.theme.color.text_alternative};
 `;
 
-const TabImageBox = styled.div`
-  width: 80%;
-  height: 50%;
-  ${(props) => props.theme.FlexColumn}
-  div {
-    width: 264px;
-    height: 264px;
-    background: #cccccc;
-    border-radius: 50%;
-  }
+const TabImageBox = styled.img`
+  margin: auto 0;
+  width: 182px;
+  height: 242px;
 `;
 
 const TabTextBox = styled.div`
