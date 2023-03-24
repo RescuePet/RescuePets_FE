@@ -79,6 +79,11 @@ const Header = styled.div`
   span {
     flex-basis: 240px;
   }
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
 `;
 
 const PostContainer = styled.div`
