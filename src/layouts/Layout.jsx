@@ -10,8 +10,8 @@ const Layout = ({ children }) => {
   console.log(location.pathname !== "/signin");
   console.log(
     location.pathname !== "/" &&
-      location.pathname !== "/signin" &&
-      location.pathname !== "/signup"
+    location.pathname !== "/signin" &&
+    location.pathname !== "/signup"
   );
   return (
     <>
@@ -20,7 +20,9 @@ const Layout = ({ children }) => {
           {children}
           {location.pathname !== "/" &&
             location.pathname !== "/signin" &&
-            location.pathname !== "/signup" && <Footer></Footer>}
+            location.pathname !== "/signup" &&
+            location.pathname !== "/missing" &&
+            location.pathname !== "/catch" && <Footer></Footer>}
         </MobileLayout>
       </WebLayout>
     </>

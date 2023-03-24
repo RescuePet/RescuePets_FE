@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { FloatingPetwork } from "./components/FloatingPetwork";
 import missingmarker from '../../asset/marker/missingmarker.png'
 import catchmarker from '../../asset/marker/catchmarker.png'
 import Mymarker from "../../asset/marker/mymarker.png"
@@ -223,11 +224,13 @@ const KakaoMap = () => {
     <>
       {
         mapBg === false ? (
-          <div id="myMap" style={{ width: "100%", height: "90vh", filter: "brightness(20%)" }}></div>
+          <div id="myMap" style={{ width: "100%", height: "91vh", filter: "brightness(20%)", position: "relative" }}></div>
         )
           :
           (
-            <div id="myMap" style={{ width: "100%", height: "90vh" }}></div>
+            <div id="myMap" style={{ width: "100%", height: "91vh", position: "relative" }}>
+              <FloatingPetwork />
+            </div>
           )
       }
     </>
