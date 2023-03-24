@@ -5,13 +5,13 @@ import { useDispatch } from "react-redux";
 import { toggleMenu } from "../redux/modules/menubarSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 import reportmissing from "../asset/reportmissing.svg";
-import reportcatch from "../asset/reportcatch.svg";
 import { FlexAttribute } from "../style/Mixin";
 
 import FooterIconHome from "../asset/footericon/FooterIconHome";
 import FooterIconNetwork from "../asset/footericon/FooterIconNetwork";
 import FooterIconChat from "../asset/footericon/FooterIconChat";
 import FooterIconProfile from "../asset/footericon/FooterIconProfile";
+import Reportcatch from "../asset/Reportcatch";
 
 const Footer = () => {
   // payload로 값 보내기 위한 훅
@@ -79,7 +79,7 @@ const Footer = () => {
               <span>실종 글 작성하기</span>
             </FooterMenuList>
             <FooterMenuList onClick={() => navigate("/catch")}>
-              <img src={reportcatch} alt="catch" />
+              <Reportcatch></Reportcatch>
               <span>목격 글 작성하기</span>
             </FooterMenuList>
           </Navigation>

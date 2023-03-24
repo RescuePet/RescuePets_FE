@@ -2,15 +2,16 @@ import React from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import { HeaderStyle } from "../../style/Mixin";
-import { Body_400_12, Title_700_18 } from "../../style/theme";
+import { Body_400_12 } from "../../style/theme";
 import ProfileSetList from "./components/ProfileSetList";
 import UserInformation from "./components/UserInformation";
+import profileHeader from "./../../asset/header/profileheader.png";
 
 const Profile = () => {
   return (
     <Layout>
       <ProfileHeader>
-        <HeaderTitle>My Page</HeaderTitle>
+        <HeaderImage src={profileHeader} />
       </ProfileHeader>
       <UserInformation />
       <ProfileSetList />
@@ -23,9 +24,10 @@ const ProfileHeader = styled.div`
   ${HeaderStyle}
 `;
 
-const HeaderTitle = styled.span`
-  ${Title_700_18}
-  margin-left: 25px;
+const HeaderImage = styled.img`
+  width: 140px;
+  height: 30px;
+  margin-left: 18px;
 `;
 
 const Withdrawal = styled.button`

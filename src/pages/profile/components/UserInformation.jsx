@@ -3,10 +3,12 @@ import styled from "styled-components";
 import { Border_1_color, FlexAttribute } from "../../../style/Mixin";
 import { Body_400_12, Button_700_16 } from "../../../style/theme";
 
+import defaultProfile from "../../../asset/profile.svg";
+
 const UserInformation = () => {
   return (
     <UserInfoContainer>
-      <UserImage></UserImage>
+      <UserImage src={defaultProfile}></UserImage>
       <UserName>펫벤져스</UserName>
       <UserEmail>rescuepets@naver.com</UserEmail>
       <UserActivityWrapper>
@@ -33,12 +35,10 @@ const UserInfoContainer = styled.div`
   ${Border_1_color}
 `;
 
-const UserImage = styled.div`
+const UserImage = styled.img`
   width: 80px;
   height: 80px;
-  margin-bottom: 16px;
-  border-radius: 50%;
-  background-color: #999999;
+  margin-bottom: 14px;
 `;
 
 const UserName = styled.span`
