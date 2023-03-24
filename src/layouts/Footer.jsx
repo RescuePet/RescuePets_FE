@@ -45,8 +45,10 @@ const Footer = () => {
         <span>홈</span>
       </FooterEachIconContiner>
       <FooterEachIconContiner
-        active={location.pathname === "/petwork"}
-        onClick={() => navigate("/petwork")}
+        active={
+          location.pathname === "/map" || location.pathname === "/petwork"
+        }
+        onClick={() => navigate("/map")}
       >
         <FooterIconNetwork></FooterIconNetwork>
         <span>펫트워크</span>
