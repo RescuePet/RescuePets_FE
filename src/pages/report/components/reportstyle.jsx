@@ -6,16 +6,13 @@ export const ReportMissingContainer = styled.form`
   height: 83.375rem;
   ${FlexAttribute("column", "center", "center")}   
   gap: 10px 0;
-  /* border: 1px solid #000; */
 `;
 export const ReportSightingContainer = styled.form`
   width: 100%;
   height: 72rem;
   padding-top: 30px;
-  /* ${FlexAttribute("column", "center", "center")}    */
   ${FlexAttribute("column", "", "center")}   
   gap: 10px 0;
-  /* border: 1px solid #000; */
 `;
 
 export const ReportHeader = styled.div`
@@ -30,7 +27,6 @@ export const ReportHeader = styled.div`
     height: 100%;
     width: 33.3%;
     ${props => props.theme.FlexCenter}
-    /* border: 1px solid red; */
     ${props => props.theme.Title_700_18}
   }
 `;
@@ -39,15 +35,12 @@ export const ReportAnimalInfoArea = styled.div`
   width: 20.9375rem;
   height: 23rem;
   margin: 0 auto;
-  /* border: 1px solid red; */
 `;
 
 export const ReportAnimalInfoBox = styled.div`
   width: 100%;
   height: 8.125rem;
-  /* border: 1px solid #0f0f0f; */
   margin: 0 auto;
-  /* ${props => props.theme.FlexColumn} */
 `;
 
 export const ReportanimaltypesTitle = styled.div`
@@ -63,15 +56,13 @@ export const ReportanimaltypesSelect = styled.div`
   height: 3.75rem;
   display: flex;
   align-items: center;
-  /* border: 1px solid red; */
   > div {
     position: relative;
     width: 50%;
     height: 100%;
-    /* border: 1px solid blue; */
     padding: 10px 0 20px 0;
     > p {
-    color: #666666;
+    color: ${props => props.theme.color.gary};
     ${props => props.theme.Body_400_12}
     }
     > img {
@@ -89,15 +80,14 @@ export const ReportanimaltypesSelect = styled.div`
 export const ReportAnimalInfoCheckBox = styled.div`
     width: 100%;
     height: 50%;
-    /* border: 1px solid red; */
     ${props => props.theme.FlexColumn}
 `;
 export const ReportAnimalInfoCheckBoxTitle = styled.div`
     width: 100%;
     height: 20%;
     > p {
-        color: #666666;
-        font-size: 12px;
+        color: ${props => props.theme.color.gary};
+        ${props => props.theme.Body_400_12}
     }
 `;
 export const ReportAnimalInfoCheckBoxSelete = styled.ul`
@@ -118,10 +108,9 @@ export const ReportAnimalInfoCheckBoxSelete = styled.ul`
         ${props => props.theme.FlexCenter}
         ${props => props.theme.Body_400_12}  
      }
-    .focused {
-     //선택된 Tabmenu 에만 적용되는 CSS를 구현
-    border: 1px solid #FF9900;
-    color: #FF9900
+    .focused { 
+    border: 1px solid  ${props => props.theme.color.primary_nomal};
+    color: ${props => props.theme.color.primary_nomal};
     }
 `;
 
@@ -129,10 +118,8 @@ export const ReportAnimalInfoBoxColumn = styled.div`
   width: 100%;
   height: 50%;
   margin-top: 5px;
-  /* border: 1px solid blue; */
   font-size: 12px;
   ${props => props.theme.FlexRow}
- 
 `;
 
 // 나이/체중
@@ -140,9 +127,8 @@ export const ReportAnimalInfoBoxColumnRow = styled.div`
   position: relative;
   width: 50%;
   height: 100%;
-  /* border: 1px solid red; */
   > p { 
-    color: #666666;
+    color: ${props => props.theme.color.gary};
     ${props => props.theme.Body_400_12}
   }
   > img {
@@ -162,7 +148,7 @@ export const ReportAnimalInfoBoxColumnColumn = styled.div`
   width: 100%;
   height: 100%;
   > p {
-    color: #666666;
+    color: ${props => props.theme.color.gary};
     ${props => props.theme.Body_400_12}
   }
   > img {
@@ -184,15 +170,12 @@ export const ReportanimaltypesBox = styled.div`
 `;
 
 
-
-
-
 export const ReportInput = styled.input`
   width: 9.75rem;
   height: 1.5625rem;
   margin-top: 5px;
   /* border: 1px solid red; */
-  border-bottom: 2px solid #EEEEEE;
+  border-bottom: 2px solid ${props => props.theme.color.input_border};
   background: transparent;
   font-size: 12px;
 `;
@@ -202,61 +185,10 @@ export const ReportLgInput = styled.input`
   height: 1.5625rem;
   margin-top: 5px;
   /* border: 1px solid red; */
-  border-bottom: 2px solid #EEEEEE;
+  border-bottom: 2px solid${props => props.theme.color.input_border};
   background: transparent;
   font-size: 12px;
-// `
-
-// export const SelectBox = styled.div`
-//   position: relative;
-//   width: 9.75rem;
-//   height: 1.5625rem;
-//   border-bottom: 2px solid #EEEEEE;
-//   padding: 8px 0 20px 0;
-//   /* align-self: center; */
-//   /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
-//   cursor: pointer;
-//   &::before {
-//     content: "⌵";
-//     position: absolute;
-//     top: 1px;
-//     right: 8px;
-//     color: #999999;
-//     font-size: 20px;
-//   }
-
-
-// `;
-// export const Label = styled.label`
-//   font-size: 14px;
-//   margin-left: 4px;
-//   text-align: center;
-// `;
-
-// export const SelectOptions = styled.ul`
-//   position: absolute;
-//   list-style: none;
-//   top: 35px;
-//   left: 0;
-//   width: 100%;
-//   overflow: scroll;
-//   height: 100px;
-//   max-height: ${(props) => (props.show ? "none" : "0")};
-//   padding: 0;
-//   border-radius: 8px;
-//   background-color: #eeeeee;
-//   color: #222222;
-//   z-index: 10;
-// `;
-
-// export const Option = styled.li`
-//   font-size: 14px;
-//   padding: 6px 8px;
-//   transition: background-color 0.2s ease-in;
-//   &:hover {
-//     background-color: #595959;
-//   }
-// `;
+`;
 
 export const ReportAnimalDayBox = styled.div`
   width: 20.9375rem;
@@ -277,8 +209,8 @@ export const ReportAnimalDayBox = styled.div`
       height: 100%;
        p {
         padding-top: 10px;
-        color: #666666;
-        font-size: 12px;
+        color: ${props => props.theme.color.gary};
+        ${props => props.theme.Body_400_12}
       }
       img {
         position: absolute;
@@ -319,7 +251,7 @@ export const ReportAnimalSignificantBoxInputArea = styled.div`
     width: 100%;
     height: 50%;
     > p {
-      color: #666666;
+      color: ${props => props.theme.color.gray};
       ${props => props.theme.Body_400_12}
       padding-top: 10px;
     }
@@ -357,15 +289,13 @@ export const ReportAnimalPictureAreaInputBox = styled.div`
   display: flex;
   align-items: center;
   gap: 0px 20px;
-  /* border: 1px solid blue; */
 `;
 
 export const ReportAnimalPictureInput = styled.div`
  width: 56px;
  height: 56px;
- background: #666666;
+ background: ${props => props.theme.color.gary};
  border-radius: 4px;
- /* border: 1px solid gray; */
  ${props => props.theme.FlexCenter}
  > h3 {
   color: #FFFFFF;
@@ -378,14 +308,13 @@ export const ReportAnimalPicturePreview = styled.div`
  width: 56px;
  height: 56px;
  background: #EEEEEE;
- border-radius: 4px;
- /* border: 1px solid red; */
+ border-radius: .25rem;
  ${props => props.theme.FlexCenter}
  > div {
   position: absolute;
   ${props => props.theme.FlexCenter}
-  width: 16px;
-  height: 16px;
+  width: 1rem;
+  height: 1rem;
   background: #FFFFFF;
   top: -5px;
   right: -5px;
@@ -403,16 +332,13 @@ export const ReportAnimalUserInfo = styled.div`
   width: 20.9375rem;
   height: 5.5rem;
   margin-top: 10px;
-  /* border: 1px solid red; */
   ${props => props.theme.FlexRow}
   > div {
     position: relative;
     width: 50%;
     height: 100%;
     > p {
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 20px;
+     ${props => props.theme.Body_400_20_14}
     }
     > img {
         position: absolute;
@@ -427,9 +353,7 @@ export const ReportAnimalUserInfo = styled.div`
   }
 `;
 
-
 export const PreviewImage = styled.img`
   width: 100%;
   height: 100%;
-  border: 1px solid #CCCCCC;
 `

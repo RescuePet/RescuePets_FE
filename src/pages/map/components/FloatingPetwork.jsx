@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import floating from '../../../asset/floating.png'
+import floating from "../../../asset/floating.png"
 
 export const FloatingPetwork = () => {
     const navigate = useNavigate()
