@@ -7,12 +7,13 @@ import {
 } from "../../../style/Mixin";
 import styled from "styled-components";
 import { Body_400_14, Body_400_12, Body_300_10 } from "../../../style/theme";
+import profile from "../../../asset/profile.svg";
 
 const ChatListBox = () => {
   return (
     <ChatRoomListContainer>
       <ClickDiv>
-        <ProfileImage />
+        <ProfileImage src={profile} />
         <TextWrapper>
           <UserName>크롱크롱</UserName>
           <Contents>
@@ -40,10 +41,9 @@ const ClickDiv = styled.div`
   cursor: pointer;
 `;
 
-const ProfileImage = styled.div`
+const ProfileImage = styled.img`
   width: 40px;
   height: 40px;
-  background-color: pink;
   border-radius: 50%;
 `;
 
