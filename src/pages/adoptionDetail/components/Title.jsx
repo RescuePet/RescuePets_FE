@@ -9,6 +9,7 @@ import {
 } from "../../../style/Mixin";
 
 const Title = ({ titleData }) => {
+  console.log(titleData)
   return (
     <TitleWrapper>
       <State>{titleData.state}</State>

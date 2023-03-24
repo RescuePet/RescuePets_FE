@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Body_400_12, Body_400_14, BorderRadius } from "../../../style/theme";
 import { FlexAttribute, PostBorderStyle } from "../../../style/Mixin";
-import Marker from "../../../asset/marker.png"
+import Marker from "../../../asset/marker/marker.png"
 
 const Location = ({ locationInfo }) => {
   const { kakao } = window;

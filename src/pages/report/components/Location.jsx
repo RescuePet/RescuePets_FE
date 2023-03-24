@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Marker from "../../../asset/marker.png"
+import Marker from "../../../asset/marker/marker.png"
+import questionmark from "../../../asset/questionmark.svg"
 
 const Location = () => {
     const { kakao } = window;
@@ -25,27 +26,25 @@ const Location = () => {
         }
     }, [])
     useEffect(() => {
-        const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+        const mapContainer = document.getElementById('map'),
             mapOption = {
-                // 처음 마커 표시는 되는 곳 현재 나의 위치 
-                center: new kakao.maps.LatLng(lati, long), // 지도의 중심좌표
-                level: 5 // 지도의 확대 레벨
+                center: new kakao.maps.LatLng(lati, long),
+                level: 5
             };
 
-        const map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+        const map = new kakao.maps.Map(mapContainer, mapOption);
 
-        const imageSrc = `${Marker}` // 마커이미지의 주소입니다    
-        const imageSize = new kakao.maps.Size(16, 20) // 마커이미지의 크기입니다
-        const imageOption = { offset: new kakao.maps.Point(10, 20) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+        const imageSrc = `${Marker}`
+        const imageSize = new kakao.maps.Size(24, 24)
+        const imageOption = { offset: new kakao.maps.Point(10, 20) };
 
         const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
-        // 지도를 클릭한 위치에 표출할 마커입니다
+
         const marker = new kakao.maps.Marker({
-            // 지도 중심좌표에 마커를 생성합니다 
             position: map.getCenter(),
-            image: markerImage // 마커이미지 설정 
+            image: markerImage
         });
-        // 지도에 마커를 표시합니다
+
         marker.setMap(map);
 
         let geocoder = new kakao.maps.services.Geocoder();
@@ -75,12 +74,16 @@ const Location = () => {
     return (
         <ReportKakaoMapContainer>
             <ReportKakaoMapBoxTitle>
-                <p>실종위치 *</p>
-                <div>
+                <ReportKakaomapTitleInfoBox>
+                    <p>실종위치 <span>*</span></p>
+                    <img src={questionmark} />
+                    <div>툴팁</div>
+                </ReportKakaomapTitleInfoBox>
+                <ReportKakaomapTitleValueBox>
                     <div><label id='address'></label></div>
                     <div style={{ display: "none" }}><label id='addressLat'></label></div>
                     <div style={{ display: "none" }}><label id='addressLng'></label></div>
-                </div>
+                </ReportKakaomapTitleValueBox>
             </ReportKakaoMapBoxTitle>
             <ReportKakaoMapBoxMap id='map'></ReportKakaoMapBoxMap>
         </ReportKakaoMapContainer>
@@ -92,7 +95,7 @@ export default Location;
 const ReportKakaoMapContainer = styled.div`
   position: relative;
   width: 20.9375rem;
-  height: 14.875rem;
+  height: 18.75rem;
   margin: 0 auto;
   ${props => props.theme.FlexColumn}
   gap: 10px 0;
@@ -101,18 +104,50 @@ const ReportKakaoMapContainer = styled.div`
 
 const ReportKakaoMapBoxTitle = styled.div`
 width: 100%;
-height: 20%;
-> p {
+height: 6.25rem;
+`;
+
+const ReportKakaomapTitleInfoBox = styled.div`
+    position: relative;
     width: 100%;
-    height: 20%;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    > p {
+    width: 15%;
+    height: 100%;
+    position: relative;
+    text-align: left;
     ${props => props.theme.Body_400_14}
     color: #222222;
+    > span {
+        position: absolute;
+        top: 2.5px;
+    }
 }
-> div {
+    > img {
+        position: absolute;
+        width: 10%;
+        height: 100%;
+        left: 50px;
+        bottom: 2.5px;
+    }
+    > div {
+        width: 70%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+`;
+
+const ReportKakaomapTitleValueBox = styled.div`
     width: 100%;
-    height: 80%;
+    height: 70%;
     padding-top: 20px;
     font-size: 12px;
+    border: 1px solid green;
     ${props => props.theme.FlexRow}
     > div {
         width: 100%;
@@ -123,12 +158,11 @@ height: 20%;
             border-bottom: 2px solid #EEEEEE;
         }
     }
-}
 `;
 
 const ReportKakaoMapBoxMap = styled.div`
     z-index: 15;
     width: 100%;
-    height: 80%;
+    height: 10rem;
     ${props => props.theme.FlexCenter}
 `

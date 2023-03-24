@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
-import missingmarker from '../../asset/missingmarker.png'
-import catchmarker from '../../asset/catchmarker.png'
-import Marker from '../../asset/marker.png'
-import Mymarker from "../../asset/mymarker.png"
+import missingmarker from '../../asset/marker/missingmarker.png'
+import catchmarker from '../../asset/marker/catchmarker.png'
+import Mymarker from "../../asset/marker/mymarker.png"
 import { useSelector, useDispatch } from 'react-redux';
 import { __GETDATA } from "../../redux/modules/getdata";
 import { __GetMissingData } from "../../redux/modules/missingSlice";
