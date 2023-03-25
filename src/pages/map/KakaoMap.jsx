@@ -4,7 +4,6 @@ import missingmarker from '../../asset/marker/missingmarker.png'
 import catchmarker from '../../asset/marker/catchmarker.png'
 import Mymarker from "../../asset/marker/mymarker.png"
 import { useSelector, useDispatch } from 'react-redux';
-import { __GETDATA } from "../../redux/modules/getdata";
 import { __GetMissingData } from "../../redux/modules/missingSlice";
 import { __GetCatchData } from "../../redux/modules/catchSlice";
 import './Overlay.css';

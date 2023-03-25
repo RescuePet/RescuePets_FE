@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import { HeaderStyle } from "../../style/Mixin";
@@ -6,7 +6,12 @@ import { Body_400_12, Title_700_18 } from "../../style/theme";
 import ProfileSetList from "./components/ProfileSetList";
 import UserInformation from "./components/UserInformation";
 
+
+
 const Profile = () => {
+  // 로그
+
+
   return (
     <Layout>
       <ProfileHeader>
