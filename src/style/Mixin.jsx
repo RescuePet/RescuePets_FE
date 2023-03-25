@@ -27,10 +27,8 @@ export const FlexAttribute = (direction, justify, align) => css`
 export const HeaderStyle = css`
   width: 100%;
   height: 5rem;
-  padding-top: 2.5rem;
+  padding-top: 38px;
   ${Border_2_color}
-  font-size: 1.125rem;
-  font-weight: 700;
 `;
 
 export const SignSvgStyle = css`

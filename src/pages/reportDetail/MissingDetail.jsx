@@ -81,7 +81,6 @@ const MissingDetail = () => {
   const chatHandler = async () => {
     console.log("hi");
     const postname = "missing-room";
-    await instance.post(`/chat/missing-room/${id}`);
     navigate(`/chatroom/${postname}/${id}`);
   };
 
