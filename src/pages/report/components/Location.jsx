@@ -20,7 +20,6 @@ const Location = () => {
             setLong(lng);
             setLati(lat);
         }
-        console.log(onSucces)
         // 실패
         function onFailure() {
             alert("위치 정보를 찾을수 없습니다.");
@@ -52,7 +51,6 @@ const Location = () => {
         let geocoder = new kakao.maps.services.Geocoder();
         kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
             searchDetailAddrFromCoords(mouseEvent.latLng, function (result, status) {
-                console.log(mouseEvent.latLng)
                 if (status === kakao.maps.services.Status.OK) {
                     marker.setPosition(mouseEvent.latLng);
                     marker.setMap(map);
@@ -90,7 +88,7 @@ const Location = () => {
                     <div style={{ display: "none" }}><label id='addressLat'></label></div>
                     <div style={{ display: "none" }}><label id='addressLng'></label></div>
                 </ReportKakaomapTitleValueBox>
-                
+
             </ReportKakaoMapBoxTitle>
             <ReportKakaoMapBoxMap id='map'></ReportKakaoMapBoxMap>
         </ReportKakaoMapContainer>
@@ -143,7 +141,7 @@ const ReportKakaomapTitleInfoBox = styled.div`
     > div {
         position: relative;
         ${props => props.theme.FlexCenter}
-        left: 35px;
+        left: 57px;
         top: -2.5px;
         width: 14.3125rem;
         height: 1.5rem;

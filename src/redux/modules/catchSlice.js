@@ -19,12 +19,12 @@ export const __GetCatchData = createAsyncThunk(
 export const __PostCatchData = createAsyncThunk(
     "postgetCatchData",
     async (payload, thunkAPI) => {
-        console.log(payload)
         try {
-            const response = await instance.post('/api/pets/catch/', payload);
-            console.log("response", response);
+            await instance.post('/api/pets/catch/', payload);
+            return thunkAPI.fulfillWithValue("success");
         } catch (error) {
             console.log(error.response);
+            throw new Error(error.response.data.message);
         }
     }
 );

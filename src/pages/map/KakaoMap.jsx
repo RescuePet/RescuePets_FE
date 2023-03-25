@@ -28,9 +28,9 @@ const KakaoMap = () => {
     dispatch(__GetCatchData())
   }, []);
   // 유저가 직접올리는 것들 !
-  const missingData = useSelector((state) => state.MissingData.data);
+  const missingData = useSelector((state) => state.MissingData?.data);
   console.log("실종데이터 ", missingData?.data)
-  const catchData = useSelector((state) => state.catchData.data);
+  const catchData = useSelector((state) => state.catchData?.data);
   console.log("목격데이터", catchData?.data)
 
   const [long, setLong] = useState("");
@@ -57,30 +57,28 @@ const KakaoMap = () => {
     };
     mapRef.current = new kakao.maps.Map(container, options);
 
-    const MyimageSrc = `${Mymarker}` // 마커이미지의 주소입니다    
-    const MyimageSize = new kakao.maps.Size(36, 36)// 마커이미지의 크기입니다
-    const MyimageOption = { offset: new kakao.maps.Point(10, 20) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+    // 현재위치에 마커 생성 로직 
+    const MyimageSrc = `${Mymarker}`
+    const MyimageSize = new kakao.maps.Size(36, 36)
+    const MyimageOption = { offset: new kakao.maps.Point(10, 20) };
 
-    // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
     let MymarkerImage = new kakao.maps.MarkerImage(MyimageSrc, MyimageSize, MyimageOption)
-    const MymarkerPosition = new kakao.maps.LatLng(lati, long); // 마커가 표시될 위치입니다
+    const MymarkerPosition = new kakao.maps.LatLng(lati, long);
 
-    // // 마커를 생성합니다
     let marker = new kakao.maps.Marker({
       position: MymarkerPosition,
       image: MymarkerImage // 마커이미지 설정 
     });
 
-    // // 마커가 지도 위에 표시되도록 설정합니다
     marker.setMap(mapRef.current);
 
 
 
 
     // 목격글 마커 
-    const missingimageSrc = `${missingmarker}` // 마커이미지의 주소입니다    
-    const missingimageSize = new kakao.maps.Size(16, 20) // 마커이미지의 크기입니다
-    const missingimageOption = { offset: new kakao.maps.Point(10, 20) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+    const missingimageSrc = `${missingmarker}`
+    const missingimageSize = new kakao.maps.Size(16, 20)
+    const missingimageOption = { offset: new kakao.maps.Point(10, 20) };
 
     let missingmarkerImage = new kakao.maps.MarkerImage(missingimageSrc, missingimageSize, missingimageOption)
 
@@ -89,10 +87,10 @@ const KakaoMap = () => {
       let marker = new kakao.maps.Marker({
         map: mapRef.current,
         position: new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
-        image: missingmarkerImage // 마커이미지 설정 
+        image: missingmarkerImage
       })
       let position = new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude);
-      // 인포 정보 생성 로직 
+      // 인포 인포박스 생성 로직 
       const content = document.createElement('div');
       content.classList.add('contentDiv');
 
@@ -142,18 +140,19 @@ const KakaoMap = () => {
 
 
       // 목격글 마커 
-      const catchimageSrc = `${catchmarker}` // 마커이미지의 주소입니다    
-      const catchimageSize = new kakao.maps.Size(16, 20) // 마커이미지의 크기입니다
-      const catchimageOption = { offset: new kakao.maps.Point(10, 20) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+      const catchimageSrc = `${catchmarker}`
+      const catchimageSize = new kakao.maps.Size(16, 20)
+      const catchimageOption = { offset: new kakao.maps.Point(10, 20) };
 
       let catchmarkerImage = new kakao.maps.MarkerImage(catchimageSrc, catchimageSize, catchimageOption)
 
       // 목격글 작성 마커 인포 생성 로직 
       catchData?.data?.map((item) => {
+        console.log(item)
         let marker = new kakao.maps.Marker({
           map: mapRef.current,
           position: new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
-          image: catchmarkerImage // 마커이미지 설정 
+          image: catchmarkerImage
         })
         let position = new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude);
         // 인포 정보 생성 로직 

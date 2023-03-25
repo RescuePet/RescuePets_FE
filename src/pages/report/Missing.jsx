@@ -7,7 +7,6 @@ import Location from "./components/Location";
 import imageCompression from "browser-image-compression";
 import imgdelete from "../../asset/imgDelete.svg";
 import { CustomSelect } from "../../elements/CustomSelect";
-
 import {
     ReportMissingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
     , ReportAnimalInfoCheckBoxTitle, ReportAnimalInfoCheckBoxSelete, ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
@@ -19,10 +18,13 @@ import {
 import { NameValue, TimeValue, SeletegenderArr, seleteneuteredArr } from './components/data';
 import { __PostMissingData } from '../../redux/modules/missingSlice';
 import { useDispatch } from 'react-redux';
+import close from "../../asset/Close.svg";
+import { useNavigate } from 'react-router-dom';
 
 const Missing = () => {
     let imageRef;
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // 종류데이터
     const [type, setType] = useState(NameValue[0].name)
@@ -188,6 +190,12 @@ const Missing = () => {
     }
 
 
+    // 이전페이지로 이동 
+    const MoveToBackPage = () => {
+        navigate(-1)
+    }
+
+
 
 
     return (
@@ -197,7 +205,7 @@ const Missing = () => {
                 <ReportHeader>
                     <div></div>
                     <div>실종 글 작성하기</div>
-                    <div>x</div>
+                    <div><img src={close} onClick={MoveToBackPage} /></div>
                 </ReportHeader>
 
                 <ReportAnimalInfoArea>

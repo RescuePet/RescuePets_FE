@@ -21,6 +21,7 @@ export const ReportHeader = styled.div`
   border-bottom: 0.25rem solid #eeeeee;
   font-size: 1.125rem;
   font-weight: 700;
+  /* border: 1px solid red; */
   ${FlexAttribute("", "center", "space-around")}   
   color: #222222;
   > div {
@@ -30,6 +31,8 @@ export const ReportHeader = styled.div`
     ${props => props.theme.Title_700_18}
   }
 `;
+
+
 
 export const ReportAnimalInfoArea = styled.div`
   width: 20.9375rem;
