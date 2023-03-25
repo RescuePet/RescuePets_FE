@@ -84,7 +84,8 @@ const Location = () => {
                 </ReportKakaomapTitleInfoBox>
 
                 <ReportKakaomapTitleValueBox>
-                    <div><label id='address'></label></div>
+                    <p>위치</p>
+                    <div id='address'></div>
                     <div style={{ display: "none" }}><label id='addressLat'></label></div>
                     <div style={{ display: "none" }}><label id='addressLng'></label></div>
                 </ReportKakaomapTitleValueBox>
@@ -167,17 +168,20 @@ const ReportKakaomapTitleInfoBox = styled.div`
 const ReportKakaomapTitleValueBox = styled.div`
     width: 100%;
     height: 70%;
-    padding-top: 20px;
     font-size: 12px;
-    ${props => props.theme.FlexRow}
+    ${props => props.theme.Flex}
+    padding-top: 10px;
+    > p {
+        width: 100%;
+        height: 30%;
+        color: ${props => props.theme.color.gary};
+    }
     > div {
         width: 100%;
-        height: 100%;
-        border-bottom: 2px solid #EEEEEE;
-        > label {
-            width: 9.75rem;
-            border-bottom: 2px solid #EEEEEE;
-        }
+        height: 1.8125rem;
+        border-bottom: 1px solid ${props => props.theme.color.text_alternative};
+        display: flex;
+        align-items: center;
     }
 `;
 

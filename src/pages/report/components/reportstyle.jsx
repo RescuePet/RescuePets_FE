@@ -178,7 +178,7 @@ export const ReportInput = styled.input`
   height: 1.5625rem;
   margin-top: 5px;
   /* border: 1px solid red; */
-  border-bottom: 2px solid ${props => props.theme.color.input_border};
+  border-bottom: 1px solid ${props => props.theme.color.text_alternative};
   background: transparent;
   font-size: 12px;
 `;
@@ -188,7 +188,7 @@ export const ReportLgInput = styled.input`
   height: 1.5625rem;
   margin-top: 5px;
   /* border: 1px solid red; */
-  border-bottom: 2px solid${props => props.theme.color.input_border};
+  border-bottom: 1px solid ${props => props.theme.color.text_alternative};
   background: transparent;
   font-size: 12px;
 `;
