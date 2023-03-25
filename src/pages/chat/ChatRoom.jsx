@@ -17,12 +17,17 @@ import { useParams } from "react-router-dom";
 const ChatRoom = () => {
   const { id, postname } = useParams();
   const sender = JSON.parse(localStorage.getItem("userInfo"));
-  const [roomId, setRoomId] = useState("");
   const [currentChat, setCurrentChat] = useState([]);
+  console.log(process.env.REACT_APP_CHAT_TEST);
   const socket = new SockJS(`${process.env.REACT_APP_CHAT_TEST}/ws/chat`);
   const ws = Stomp.over(socket);
 
+  let postchatroomid = "";
+
+  const [roomId, setRoomId] = useState("");
+
   const TOKEN = Cookies.get("Token");
+
   let headers = {
     Access_Token: TOKEN,
   };
@@ -30,16 +35,21 @@ const ChatRoom = () => {
   useEffect(() => {
     connectChatroom();
     return () => {
-      onbeforeunloda();
+      wsDisconnect();
     };
   }, []);
 
   // 연결 async
   const connectChatroom = async () => {
+    console.log("post room", postname);
+    console.log("post id", id);
     instance
       .post(`/chat/${postname}/${id}`)
       .then((response) => {
+        console.log(response.data);
         setRoomId(response.data);
+        postchatroomid = response.data;
+        console.log("response data", roomId);
         wsConnectSubscribe(response.data);
         return instance.get(`/room/${response.data}`);
       })
@@ -74,10 +84,11 @@ const ChatRoom = () => {
     });
   };
 
-  const onbeforeunloda = () => {
+  const wsDisconnect = () => {
     try {
+      ws.unsubscribe("sub-0");
       ws.disconnect(() => {
-        ws.unsubscribe("sub-0");
+        console.log("WebSocket disconnected.");
         clearTimeout(waitForConnection);
       });
     } catch (e) {}
@@ -94,6 +105,7 @@ const ChatRoom = () => {
       message: message,
     };
     waitForConnection(ws, () => {
+      console.log("send roomId", roomId);
       ws.send(`/pub/${roomId}`, {}, JSON.stringify(sendSettings));
     });
   };
