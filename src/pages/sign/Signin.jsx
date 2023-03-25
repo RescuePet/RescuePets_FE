@@ -63,11 +63,11 @@ const Signin = () => {
             <SignInput name="email" placeholder="이메일 주소"
               {...register("email", {
                 pattern: {
-                  value: /^[a-zA-Z0-9]+$/,
+                  value: /^[a-z0-9\.\-_]+@([a-z0-9\-]+\.)+[a-z]{2,6}$/,
                   message: "영문 숫자 2 ~ 8글자 사이로 입력",
                 },
                 maxLength: {
-                  value: 12,
+                  value: 20,
                   message: "12글자이내 작성"
                 },
               })}

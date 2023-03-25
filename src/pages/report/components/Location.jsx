@@ -9,9 +9,6 @@ const Location = () => {
     const [long, setLong] = useState("");
     const [lati, setLati] = useState("");
 
-    // 툴팁 로직
-
-
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(onSucces, onFailure);
@@ -29,6 +26,7 @@ const Location = () => {
             alert("위치 정보를 찾을수 없습니다.");
         }
     }, [])
+
     useEffect(() => {
         const mapContainer = document.getElementById('map'),
             mapOption = {
@@ -76,28 +74,23 @@ const Location = () => {
     }, [long])
 
 
-    const [isHovering, setIsHovering] = useState(false);
-
-
-
     return (
         <ReportKakaoMapContainer>
             <ReportKakaoMapBoxTitle>
+
                 <ReportKakaomapTitleInfoBox>
                     <p>실종위치 <span>*</span></p>
                     <img id="img"
-                        src={questionmark}
-                        onMouseOver={() => setIsHovering(true)}
-                        onMouseOut={() => setIsHovering(false)}
-                    />
-                    {/* <div className="tooltip">지도상에서 마커를 움직여 위치를 표현해주세요</div> */}
-                    {isHovering === true ? <div className="tooltip">지도상에서 마커를 움직여 위치를 표현해주세요.</div> : null}
+                        src={questionmark} />
+                    <div className="tooltip">지도상에서 마커를 움직여 위치를 표현해주세요</div>
                 </ReportKakaomapTitleInfoBox>
+
                 <ReportKakaomapTitleValueBox>
                     <div><label id='address'></label></div>
                     <div style={{ display: "none" }}><label id='addressLat'></label></div>
                     <div style={{ display: "none" }}><label id='addressLng'></label></div>
                 </ReportKakaomapTitleValueBox>
+                
             </ReportKakaoMapBoxTitle>
             <ReportKakaoMapBoxMap id='map'></ReportKakaoMapBoxMap>
         </ReportKakaoMapContainer>
@@ -113,14 +106,11 @@ const ReportKakaoMapContainer = styled.div`
   margin: 0 auto;
   ${props => props.theme.FlexColumn}
   gap: 10px 0;
-  /* border: 1px solid red; */
   `;
 
 const ReportKakaoMapBoxTitle = styled.div`
 width: 100%;
 height: 6.25rem;
-
-
 `;
 
 const ReportKakaomapTitleInfoBox = styled.div`
@@ -137,11 +127,11 @@ const ReportKakaomapTitleInfoBox = styled.div`
     text-align: left;
     ${props => props.theme.Body_400_14}
     color: #222222;
-    > span {
+        > span {
         position: absolute;
         top: 2.5px;
+      }
     }
-}
     > img {
         position: absolute;
         width: 10%;
@@ -171,8 +161,8 @@ const ReportKakaomapTitleInfoBox = styled.div`
             border-width: 10px;
             border-style: solid;
             border-color: transparent #C4C4C4 transparent transparent;
-            }     
-           }
+        }     
+    }
 
 `;
 
@@ -181,7 +171,6 @@ const ReportKakaomapTitleValueBox = styled.div`
     height: 70%;
     padding-top: 20px;
     font-size: 12px;
-    /* border: 1px solid green; */
     ${props => props.theme.FlexRow}
     > div {
         width: 100%;
