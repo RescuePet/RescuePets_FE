@@ -6,13 +6,6 @@ import Footer from "./Footer";
 
 const Layout = ({ children }) => {
   const location = useLocation();
-  console.log(location);
-  console.log(location.pathname !== "/signin");
-  console.log(
-    location.pathname !== "/" &&
-    location.pathname !== "/signin" &&
-    location.pathname !== "/signup"
-  );
   return (
     <>
       <WebLayout>

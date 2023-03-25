@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-
 import cancel from "../../asset/cancel.svg";
 import check from "../../asset/check.svg";
-
 import Layout from "../../layouts/Layout";
 import { __signinUser } from "../../redux/modules/signSlice";
 import { FlexAttribute, HeaderStyle, SignSvgStyle } from "../../style/Mixin";
@@ -39,9 +37,26 @@ const Signin = () => {
 
 
   const onSubmitSigninHanler = (data) => {
-    console.log(data)
-    dispatch(__signinUser({ email: data.email, password: data.password }));
+    const siginInfo = {
+      email: data.email,
+      password: data.password
+    }
+    dispatch(__signinUser(siginInfo))
   }
+
+  const siginMessage = useSelector((state) => {
+    return state?.users?.message
+  })
+  // console.log(siginMessage)
+
+  if (siginMessage === 'success') {
+    console.log('로그인성공')
+    navigate('/home')
+  } else if (siginMessage === '아이디,비밀번호를 확인해주세요') {
+    console.log('로그인실패')
+    // alert('로그인 실패')
+  }
+
 
 
 
@@ -64,11 +79,11 @@ const Signin = () => {
               {...register("email", {
                 pattern: {
                   value: /^[a-z0-9\.\-_]+@([a-z0-9\-]+\.)+[a-z]{2,6}$/,
-                  message: "영문 숫자 2 ~ 8글자 사이로 입력",
+                  message: "이메일 형식으로 작성",
                 },
                 maxLength: {
-                  value: 20,
-                  message: "12글자이내 작성"
+                  value: 30,
+                  message: "30글자이내 작성"
                 },
               })}
             />
