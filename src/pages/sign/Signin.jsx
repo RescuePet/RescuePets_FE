@@ -9,10 +9,15 @@ import { __signinUser } from "../../redux/modules/signSlice";
 import { FlexAttribute, HeaderStyle, SignSvgStyle } from "../../style/Mixin";
 import Button from "../../elements/Button";
 import { useNavigate } from "react-router-dom";
+import { useModalState } from "../../hooks/useModalState";
+import { CheckModal } from "../../elements/Modal";
 
 const Signin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loginModal, toggleModal] = useModalState(false);
+
+
   const {
     register, handleSubmit, formState: { errors }, reset,
     resetField, watch } = useForm({ mode: 'onChange' });
@@ -41,24 +46,26 @@ const Signin = () => {
       email: data.email,
       password: data.password
     }
+    // 토
+    toggleModal()
     dispatch(__signinUser(siginInfo))
   }
 
-  const siginMessage = useSelector((state) => {
+  // 에러 메시지만 받아서 처리하면 좋을거같음 
+  const Message = useSelector((state) => {
     return state?.users?.message
   })
-  // console.log(siginMessage)
+  console.log(Message)
 
-  if (siginMessage === 'success') {
+  // 로그인 성공시 
+  if (Message === 'success') {
     console.log('로그인성공')
     navigate('/home')
-  } else if (siginMessage === '아이디,비밀번호를 확인해주세요') {
+  } else if (Message === '아이디,비밀번호를 확인해주세요') {
+    // toggleModal()
     console.log('로그인실패')
     // alert('로그인 실패')
   }
-
-
-
 
   const URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_SIGN_ID}&redirect_uri=http://localhost:3000/kakaologin`;
 
@@ -109,6 +116,22 @@ const Signin = () => {
             <span>{errors?.password?.message}</span>
           </InputWrapper>
         </SignForm>
+        {Message == '아이디,비밀번호를 확인해주세요' ? (
+          <CheckModal
+            isOpen={loginModal}
+            toggle={toggleModal}
+            onClose={toggleModal}
+          >아이디 비밀번호를 확인해주세요!</CheckModal>
+        )
+          :
+          (
+            <CheckModal
+              isOpen={loginModal}
+              toggle={toggleModal}
+              onClose={toggleModal}
+            >로그인 성공 </CheckModal>
+          )
+        }
         <AutoSignInWrapper>
           <img src={check} alt="check" />
           <span>자동로그인</span>

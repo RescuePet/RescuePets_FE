@@ -18,7 +18,7 @@ const Layout = ({ children }) => {
       if (isSignin()) {
         console.log('토큰있음')
       } else {
-        alert('로그인 시간이 만료되었습니다. 다시 로그인 해주세요');
+        // alert('로그인 시간이 만료되었습니다. 다시 로그인 해주세요');
         navigate('/signin')
         console.log("토큰없음")
       }
