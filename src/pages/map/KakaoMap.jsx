@@ -76,6 +76,11 @@ const KakaoMap = () => {
 
     marker.setMap(mapRef.current);
 
+  }, [long])
+
+
+  useEffect(() => {
+
 
 
 
@@ -104,23 +109,20 @@ const KakaoMap = () => {
 
         const polyline = new kakao.maps.Polyline({
           path: linePath, // 선을 구성하는 좌표배열 입니다
-          strokeWeight: 1, // 선의 두께 입니다
+          strokeWeight: 0, // 선의 두께 입니다
           strokeColor: '#FFAE00', // 선의 색깔입니다
           strokeOpacity: 0, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
         });
-        polyline.setMap(); // 지도에 올린다.
+
+
         // // 선의 총 거리를 계산합니다 이값을 item이라는 객체안에 넣어애만한다
         const distance = Math.round(polyline.getLength())
-        // console.log(typeof distance)
         const Km = { km: distance }
-        console.log(Km)
+
         const newItem = {
           ...Km, ...item
         }
-        console.log(newItem)
-        // item["distance"] = distance;
         setNewCatchData(newItem)
-        console.log(item)
         polyline.setMap(mapRef.current);
       });
 
@@ -152,7 +154,6 @@ const KakaoMap = () => {
       kakao.maps.event.addListener(marker, 'click', function () {
         console.log(item)
         toggleModal()
-        setNewCatchData(item)
         // 현재 내위치랑 클릭한 마커에 위치를 가져오는 로직 거리도 구해야만한다 
         const linePath = [
           new kakao.maps.LatLng(lati, long),
@@ -161,14 +162,23 @@ const KakaoMap = () => {
 
         const polyline = new kakao.maps.Polyline({
           path: linePath, // 선을 구성하는 좌표배열 입니다
-          strokeWeight: 10, // 선의 두께 입니다
+          strokeWeight: 0, // 선의 두께 입니다
           strokeColor: '#FFAE00', // 선의 색깔입니다
-          strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-          strokeStyle: 'solid' // 선의 스타일입니다
+          strokeOpacity: 0, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
         });
+        const distance = Math.round(polyline.getLength())
+        const Km = { km: distance }
 
+        const newItem = {
+          ...Km, ...item
+        }
+        setNewCatchData(newItem)
         polyline.setMap(mapRef.current);
+
       });
+
+
+
     });
 
 

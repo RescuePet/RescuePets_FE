@@ -92,6 +92,7 @@ export const ModalTitle = styled.div`
   font-weight: bold;
   color: #333333;
   gap: 0 20px;
+  border: 1px solid red;
   > p {
 
   }
@@ -99,6 +100,12 @@ export const ModalTitle = styled.div`
     
   }
 `;
+
+const ModlaMainInfo = styled.div`
+    width: 100%;
+    height: 50%;
+    border: 1px solid red;
+`
 
 // 마커 클릭시 보여줄 모달 
 export function MarkerModal(props) {
@@ -119,14 +126,14 @@ export function MarkerModal(props) {
                 <h4>{data?.id}번</h4>
                 <p>{KMDATA}Km</p>
             </ModalTitle>
-            <div>
+            <ModlaMainInfo>
                 위치 : {data?.happenPlace}
-                {
+                {/* {
                     data?.postImages?.map((item, index) => {
                         return <img src={item?.imageURL} key={index} style={{ width: "100px", height: "100px" }} />
                     })
-                }
-            </div>
+                } */}
+            </ModlaMainInfo>
         </Modal >
     );
 }
