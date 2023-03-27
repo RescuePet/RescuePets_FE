@@ -27,12 +27,12 @@ import informationIcon from "../../asset/information.svg";
 import memo from "../../asset/memo.svg";
 import gratuity from "../../asset/gratuity.svg";
 import PostInformation from "./components/PostInformation";
+import FloatingButton from "./components/FloatingButton";
 
 const MissingDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const scrollRef = useRef();
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
   const { missingComment, editDone } = useSelector((state) => state?.comment);
@@ -84,13 +84,12 @@ const MissingDetail = () => {
   };
 
   const chatHandler = async () => {
-    console.log("hi");
     const postname = "missing-room";
     navigate(`/chatroom/${postname}/${id}`);
   };
 
   return (
-    <Layout ref={scrollRef}>
+    <Layout>
       <MissingDetailLayout>
         <ImageCarousel images={missingPostDetail.postImages} />
         <TitleWrapper>
@@ -171,10 +170,8 @@ const MissingDetail = () => {
               );
             })}
           </CommentListWrapper>
-          <FloatingChatButton
-            onClick={() => chatHandler()}
-          ></FloatingChatButton>
         </CommentContainer>
+        <FloatingButton onClick={chatHandler}></FloatingButton>
       </MissingDetailLayout>
       <InputContainer
         placeholder="댓글을 입력해주세요."
@@ -259,19 +256,6 @@ const CommentContainer = styled.div`
 
 const CommentListWrapper = styled.div`
   ${FlexAttribute("column")}
-`;
-
-const FloatingChatButton = styled.div`
-  position: fixed;
-  bottom: 96px;
-  right: 20px;
-  width: 56px;
-  height: 56px;
-  z-index: 50;
-  background-color: #666666;
-  border-radius: 50%;
-  box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
 `;
 
 export default MissingDetail;

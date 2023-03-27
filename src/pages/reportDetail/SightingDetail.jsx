@@ -26,6 +26,7 @@ import time from "../../asset/time.svg";
 import informationIcon from "../../asset/information.svg";
 import memo from "../../asset/memo.svg";
 import PostInformation from "./components/PostInformation";
+import FloatingButton from "./components/FloatingButton";
 
 const SightingDetail = () => {
   const { id } = useParams();
@@ -154,7 +155,12 @@ const SightingDetail = () => {
             })}
           </CommentListWrapper>
         </CommentContainer>
-        <FloatingChatButton onClick={() => chatHandler()}></FloatingChatButton>
+        <FloatingButton
+          onClick={() => {
+            console.log("hihi");
+            chatHandler();
+          }}
+        ></FloatingButton>
       </MissingDetailLayout>
       <InputContainer
         placeholder="댓글을 입력해주세요."
@@ -240,19 +246,6 @@ const CommentContainer = styled.div`
 
 const CommentListWrapper = styled.div`
   ${FlexAttribute("column")}
-`;
-
-const FloatingChatButton = styled.div`
-  position: fixed;
-  bottom: 96px;
-  right: 20px;
-  width: 56px;
-  height: 56px;
-  z-index: 10;
-  background-color: #666666;
-  border-radius: 50%;
-  box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
 `;
 
 export default SightingDetail;
