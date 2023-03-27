@@ -5,6 +5,8 @@ import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
+import back from "../../../asset/backwhite.svg";
+
 const ImageCarousel = ({ images }) => {
   const navigate = useNavigate();
   const settings = {
@@ -24,12 +26,15 @@ const ImageCarousel = ({ images }) => {
     <Container>
       <StyledSlider {...settings}>
         {images.map((image, index) => (
-          <div key={`carousel-image-${index}`}>
+          <ImageWrapper
+            key={`carousel-image-${index}`}
+            imageUrl={image?.imageURL}
+          >
             <Image src={image?.imageURL} />
-          </div>
+          </ImageWrapper>
         ))}
       </StyledSlider>
-      <BackButton onClick={() => navigate(-1)}></BackButton>
+      <BackButton src={back} onClick={() => navigate(-1)} />
     </Container>
   );
 };
@@ -67,19 +72,27 @@ const Container = styled.div`
   position: relative;
 `;
 
+const ImageWrapper = styled.div`
+  width: 100%;
+  height: 240px;
+  background-image: url(${(props) => props.imageUrl});
+  background-repeat: no-repeat;
+  background-size: 100% 240px;
+`;
+
 const Image = styled.img`
   width: 100%;
   height: 240px;
-  object-fit: cover;
+  object-fit: contain;
+  backdrop-filter: blur(3px);
 `;
 
 const BackButton = styled.img`
   position: absolute;
   top: 40px;
   left: 27px;
-  width: 15px;
-  height: 15px;
-  background-color: #666666;
+  width: 24px;
+  height: 24px;
   cursor: pointer;
 `;
 

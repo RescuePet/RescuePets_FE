@@ -14,7 +14,7 @@ const Card = ({ item }) => {
   const refineData = petworkRefineData(item);
   return (
     <ListCard>
-      <CardImgWrapper>
+      <CardImgWrapper imgae={item.postImages[0]?.imageURL}>
         <CardImg src={item.postImages[0]?.imageURL}></CardImg>
         <StateSpan>{refineData.upkind}</StateSpan>
       </CardImgWrapper>
@@ -45,11 +45,18 @@ const ListCard = styled.div`
 
 const CardImgWrapper = styled.div`
   position: relative;
+  width: 160px;
+  height: 120px;
+  background-image: url(${(props) => props.imgae});
+  background-repeat: no-repeat;
+  background-size: 160px 120px;
 `;
 
 const CardImg = styled.img`
   width: 160px;
   height: 120px;
+  object-fit: contain;
+  backdrop-filter: blur(3px);
 `;
 
 const StateSpan = styled.span`
