@@ -274,7 +274,7 @@ const Catch = () => {
             <ReportAnimalInfoBox>
               <ReportAnimalInfoBoxColumn>
                 <ReportAnimalInfoBoxColumnRow>
-                  <p>추정나이</p>
+                  <p>추정나이(살)</p>
                   <ReportInput type="text" placeholder='입력하기'
                     {...register("animalAge", {
                       required: true,
@@ -325,12 +325,12 @@ const Catch = () => {
           <div>
             <div>
               <p>날짜</p>
-              <ReportInput type="text" placeholder='2022-07-14'
+              <ReportInput type="text" placeholder='20xx.xx.xx'
                 {...register("days", {
                   required: true,
                   pattern: {
-                    value: /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/,
-                    message: "20xx-xx-xx 형식으로 입력",
+                    value: /^\d{4}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[01])$/,
+                    message: "20xx.xx.xx 형식으로 입력",
                   },
                 })} />
               <img src={cancel} onClick={(() => { onClickDeleteValue('days') })} />

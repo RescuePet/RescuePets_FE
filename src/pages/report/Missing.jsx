@@ -284,7 +284,7 @@ const Missing = () => {
                             </ReportAnimalInfoBoxColumnRow>
 
                             <ReportAnimalInfoBoxColumnRow>
-                                <p>나이</p>
+                                <p>나이(살)</p>
                                 <ReportInput type="text" placeholder='입력하기'
                                     // onChange={onChangeAge}
                                     {...register("animalAge", {
@@ -335,13 +335,13 @@ const Missing = () => {
                     <div>
                         <div>
                             <p>날짜</p>
-                            <ReportInput type="text" placeholder='2022-07-14'
+                            <ReportInput type="text" placeholder='20xx.xx.xx'
                                 // onChange={onChangeDays}
                                 {...register("days", {
                                     required: true,
                                     pattern: {
-                                        value: /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/,
-                                        message: "20xx-xx-xx 형식으로 입력",
+                                        value: /^\d{4}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[01])$/,
+                                        message: "20xx.xx.xx 형식으로 입력",
                                     },
                                 })} />
                             <img src={cancel} onClick={(() => { onClickDeleteValue('days') })} />
@@ -428,7 +428,7 @@ const Missing = () => {
                 </ReportAnimalPictureArea>
                 <ReportAnimalUserInfo>
                     <div>
-                        <p>사례금</p>
+                        <p>사례금(원)</p>
                         <ReportInput type="text" placeholder='입력하기'
                             {...register("money", {
                                 required: false, // 필수 X 
