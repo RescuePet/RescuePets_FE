@@ -19,14 +19,15 @@ const ChatRoom = () => {
   const sender = JSON.parse(localStorage.getItem("userInfo"));
   const [currentChat, setCurrentChat] = useState([]);
   console.log(process.env.REACT_APP_CHAT_TEST);
-
   const socket = new SockJS(`${process.env.REACT_APP_CHAT_TEST}/ws/chat`);
-  console.log("socket", socket);
   const ws = Stomp.over(socket);
-
+  ws.debug = (log) => {
+    console.log("debug", log);
+  };
+  console.log("socket", socket);
   console.log("ws", ws);
 
-  let postchatroomid = "";
+  let postchatroomid;
 
   const [roomId, setRoomId] = useState("");
 
@@ -45,22 +46,17 @@ const ChatRoom = () => {
 
   // 연결 async
   const connectChatroom = async () => {
-    console.log("post room", postname);
-    console.log("post id", id);
-    instance
-      .post(`/chat/${postname}/${id}`)
-      .then((response) => {
-        console.log(response.data);
-        setRoomId(response.data);
-        postchatroomid = response.data;
-        console.log("response data", roomId);
-        wsConnectSubscribe(response.data);
-        return instance.get(`/room/${response.data}`);
-      })
-      .then((response) => {
-        setCurrentChat([...response.data.data.dto]);
-        return;
-      });
+    try {
+      const response = await instance.post(`/chat/${postname}/${id}`);
+      const chatdata = await instance.get(`/room/${response.data}`);
+      console.log("try response", response.data);
+      setRoomId(response.data);
+      console.log("roomId", roomId);
+      wsConnectSubscribe(response.data);
+      setCurrentChat([...chatdata.data.data.dto]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // 연결 시 실행
@@ -81,6 +77,7 @@ const ChatRoom = () => {
 
   const wsConnectSubscribe = (roomId) => {
     ws.connect(headers, {}, () => {
+      console.log("hihihihihi");
       ws.subscribe(`/sub/${roomId}`, (response) => {
         let data = JSON.parse(response.body);
         setCurrentChat((prev) => [...prev, data]);
@@ -91,10 +88,13 @@ const ChatRoom = () => {
   const wsDisconnect = () => {
     try {
       ws.unsubscribe("sub-0");
-      ws.disconnect(() => {
-        console.log("WebSocket disconnected.");
-        clearTimeout(waitForConnection);
-      });
+      ws.disconnect(
+        () => {
+          console.log("WebSocket disconnected.");
+          clearTimeout(waitForConnection);
+        },
+        { Access_Token: TOKEN }
+      );
     } catch (e) {}
   };
 

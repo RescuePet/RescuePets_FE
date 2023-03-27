@@ -8,11 +8,12 @@ import {
 import styled from "styled-components";
 import { Body_400_14, Body_400_12, Body_300_10 } from "../../../style/theme";
 import profile from "../../../asset/profile.svg";
+import { Link } from "react-router-dom";
 
 const ChatListBox = ({ item }) => {
   return (
     <ChatRoomListContainer>
-      <ClickDiv>
+      <ClickDiv to="/">
         <ProfileImage
           src={item.profileImage !== null ? item.profileImage : profile}
         />
@@ -35,7 +36,7 @@ const ChatRoomListContainer = styled.div`
   padding-top: 16px;
 `;
 
-const ClickDiv = styled.div`
+const ClickDiv = styled(Link)`
   ${FlexAttribute("row", "space-evenly", "center")}
   cursor: pointer;
 `;
