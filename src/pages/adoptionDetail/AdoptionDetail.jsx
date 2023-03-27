@@ -15,8 +15,9 @@ import calendar from "../../asset/calendar.svg";
 import specialmark from "../../asset/specialmark.svg";
 import user from "../../asset/user.svg";
 import Clippingwhite from "../../asset/Clippingwhite";
-import { PostBorderStyle } from "../../style/Mixin";
+import { FlexAttribute, PostBorderStyle } from "../../style/Mixin";
 import AdoptionInformation from "./components/AdoptionInformation";
+import Button from "../../elements/Button";
 
 const AdoptionDetail = () => {
   const { id } = useParams();
@@ -96,6 +97,9 @@ const AdoptionDetail = () => {
         </ShelterContainer>
       </div>
       <AdoptionInformation></AdoptionInformation>
+      <ButtonWrapper>
+        <Button fillButton>문의하기</Button>
+      </ButtonWrapper>
     </Layout>
   );
 };
@@ -135,6 +139,11 @@ const ScrapState = styled(Clippingwhite)`
 const ShelterContainer = styled.div`
   ${PostBorderStyle}
   padding-top: 16px;
+`;
+
+const ButtonWrapper = styled.div`
+  ${FlexAttribute("row", "center", "center")}
+  margin-top: 24px;
 `;
 
 export default AdoptionDetail;
