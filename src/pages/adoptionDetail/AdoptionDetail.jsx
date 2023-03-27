@@ -14,6 +14,7 @@ import location from "../../asset/location.svg";
 import calendar from "../../asset/calendar.svg";
 import specialmark from "../../asset/specialmark.svg";
 import user from "../../asset/user.svg";
+import Clippingwhite from "../../asset/Clippingwhite";
 import { PostBorderStyle } from "../../style/Mixin";
 
 const AdoptionDetail = () => {
@@ -80,6 +81,7 @@ const AdoptionDetail = () => {
         <BackButton onClick={() => navigate(-1)}>
           <img src={backwhite} alt="back" />
         </BackButton>
+        <ScrapState />
       </ImageContainer>
       <div>
         <Title titleData={titleData}></Title>
@@ -116,9 +118,15 @@ const BackButton = styled.div`
   position: absolute;
   top: 26px;
   left: 20px;
-  /* transform: translate(20%, 100%); */
   z-index: 10;
-  background-color: transparent;
+  cursor: pointer;
+`;
+
+const ScrapState = styled(Clippingwhite)`
+  position: absolute;
+  top: 26px;
+  right: 20px;
+  z-index: 10;
   cursor: pointer;
 `;
 
