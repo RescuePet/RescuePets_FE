@@ -90,85 +90,80 @@ const MissingDetail = () => {
 
   return (
     <Layout>
-      <MissingDetailLayout>
-        <ImageCarousel images={missingPostDetail.postImages} />
-        <TitleWrapper>
-          <Title titleInfo={titleInfo}></Title>
-        </TitleWrapper>
-        <Location locationInfo={locationInfo}></Location>
-        <InfoContainer>
+      <ImageCarousel images={missingPostDetail.postImages} />
+      <TitleWrapper>
+        <Title titleInfo={titleInfo}></Title>
+      </TitleWrapper>
+      <Location locationInfo={locationInfo}></Location>
+      <InfoContainer>
+        <InfoWrapper>
+          <BodyTitleWrapper>
+            <BodyTitleSvg src={location} />
+            <BodyTitleText>위치</BodyTitleText>
+          </BodyTitleWrapper>
+          <ContentTextWrapper>
+            <ContentText>{missingPostDetail.happenPlace}</ContentText>
+          </ContentTextWrapper>
+        </InfoWrapper>
+        <InfoWrapper>
+          <BodyTitleWrapper>
+            <BodyTitleSvg src={time} />
+            <BodyTitleText>실종일시</BodyTitleText>
+          </BodyTitleWrapper>
+          <ContentTextWrapper>
+            <ContentTextBox>
+              <ContentOptionText>
+                {missingPostDetail.happenDt} |{" "}
+              </ContentOptionText>
+              &nbsp;<ContentText>{missingPostDetail.happenHour}</ContentText>
+            </ContentTextBox>
+          </ContentTextWrapper>
+        </InfoWrapper>
+        {missingPostDetail.specialMark && (
           <InfoWrapper>
             <BodyTitleWrapper>
-              <BodyTitleSvg src={location} />
-              <BodyTitleText>위치</BodyTitleText>
+              <BodyTitleSvg src={informationIcon} />
+              <BodyTitleText>특징</BodyTitleText>
             </BodyTitleWrapper>
             <ContentTextWrapper>
-              <ContentText>{missingPostDetail.happenPlace}</ContentText>
+              <ContentText>{missingPostDetail.specialMark}</ContentText>
             </ContentTextWrapper>
           </InfoWrapper>
+        )}
+        {missingPostDetail.content && (
           <InfoWrapper>
             <BodyTitleWrapper>
-              <BodyTitleSvg src={time} />
-              <BodyTitleText>실종일시</BodyTitleText>
+              <BodyTitleSvg src={memo} />
+              <BodyTitleText>메모</BodyTitleText>
             </BodyTitleWrapper>
             <ContentTextWrapper>
-              <ContentTextBox>
-                <ContentOptionText>
-                  {missingPostDetail.happenDt} |{" "}
-                </ContentOptionText>
-                &nbsp;<ContentText>{missingPostDetail.happenHour}</ContentText>
-              </ContentTextBox>
+              <ContentText>{missingPostDetail.content}</ContentText>
             </ContentTextWrapper>
           </InfoWrapper>
-          {missingPostDetail.specialMark && (
-            <InfoWrapper>
-              <BodyTitleWrapper>
-                <BodyTitleSvg src={informationIcon} />
-                <BodyTitleText>특징</BodyTitleText>
-              </BodyTitleWrapper>
-              <ContentTextWrapper>
-                <ContentText>{missingPostDetail.specialMark}</ContentText>
-              </ContentTextWrapper>
-            </InfoWrapper>
-          )}
-          {missingPostDetail.content && (
-            <InfoWrapper>
-              <BodyTitleWrapper>
-                <BodyTitleSvg src={memo} />
-                <BodyTitleText>메모</BodyTitleText>
-              </BodyTitleWrapper>
-              <ContentTextWrapper>
-                <ContentText>{missingPostDetail.content}</ContentText>
-              </ContentTextWrapper>
-            </InfoWrapper>
-          )}
-          {missingPostDetail.gratuity && (
-            <InfoWrapper>
-              <BodyTitleWrapper>
-                <BodyTitleSvg src={gratuity} />
-                <BodyTitleText>사례금</BodyTitleText>
-              </BodyTitleWrapper>
-              <ContentTextWrapper>
-                <ContentText>{missingPostDetail.gratuity}원</ContentText>
-              </ContentTextWrapper>
-            </InfoWrapper>
-          )}
-        </InfoContainer>
-        <PostInformation comment={missingComment.length}></PostInformation>
-        <CommentContainer>
-          <CommentListWrapper>
-            {missingComment?.map((item) => {
-              return (
-                <Comment
-                  key={`missing-comment-${item.id}`}
-                  item={item}
-                ></Comment>
-              );
-            })}
-          </CommentListWrapper>
-        </CommentContainer>
-        <FloatingButton onClick={chatHandler}></FloatingButton>
-      </MissingDetailLayout>
+        )}
+        {missingPostDetail.gratuity && (
+          <InfoWrapper>
+            <BodyTitleWrapper>
+              <BodyTitleSvg src={gratuity} />
+              <BodyTitleText>사례금</BodyTitleText>
+            </BodyTitleWrapper>
+            <ContentTextWrapper>
+              <ContentText>{missingPostDetail.gratuity}원</ContentText>
+            </ContentTextWrapper>
+          </InfoWrapper>
+        )}
+      </InfoContainer>
+      <PostInformation comment={missingComment.length}></PostInformation>
+      <CommentContainer>
+        <CommentListWrapper>
+          {missingComment?.map((item) => {
+            return (
+              <Comment key={`missing-comment-${item.id}`} item={item}></Comment>
+            );
+          })}
+        </CommentListWrapper>
+      </CommentContainer>
+      <FloatingButton onClick={chatHandler}></FloatingButton>
       <InputContainer
         placeholder="댓글을 입력해주세요."
         submitHandler={submitHandler}
@@ -176,12 +171,6 @@ const MissingDetail = () => {
     </Layout>
   );
 };
-
-const MissingDetailLayout = styled.div`
-  ${FlexAttribute("column", "", "")}
-  padding-bottom: 4.75rem;
-  width: 100%;
-`;
 
 const TitleWrapper = styled.div`
   ${FlexAttribute("row", "center", "center")}
