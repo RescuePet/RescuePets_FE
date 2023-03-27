@@ -30,7 +30,8 @@ export const __signupUser = createAsyncThunk(
 );
 
 const initialState = {
-  message: "",
+  Signinmessage: "",
+  Signupmessage: "",
 };
 
 export const signsSlice = createSlice({
@@ -40,18 +41,18 @@ export const signsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(__signinUser.fulfilled, (state, action) => {
-        state.message = action.payload;
+        state.Signinmessage = action.payload;
         console.log("sign in ", state.message);
       })
       .addCase(__signinUser.rejected, (state, action) => {
-        state.message = action.error.message;
+        state.Signinmessage = action.error.message;
       })
       .addCase(__signupUser.fulfilled, (state, action) => {
-        state.message = action.payload;
+        state.Signupmessage = action.payload;
         console.log("sign up ", state.message);
       })
       .addCase(__signupUser.rejected, (state, action) => {
-        state.message = action.error.message;
+        state.Signupmessage = action.error.message;
       });
   },
 });

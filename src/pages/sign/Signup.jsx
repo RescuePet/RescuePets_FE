@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import back from "../../asset/Back.svg";
@@ -15,8 +15,14 @@ import {
 import Button from "../../elements/Button";
 import { CustomSelect } from "../../elements/CustomSelect";
 import { useNavigate } from "react-router-dom";
+import { useModalState } from "../../hooks/useModalState";
+import { CheckModal } from "../../elements/Modal";
 
 const Signup = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [loginModal, toggleModal] = useModalState(false);
+
   const data = [
     { id: 0, name: "naver.com" },
     { id: 1, name: "gmail.com" },
@@ -29,17 +35,12 @@ const Signup = () => {
   };
 
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    watch
+    register, handleSubmit, formState: { errors }, reset, watch
   } = useForm({ mode: "onChange" });
 
   // 비밀번호 체크 로직
   const [showPassword, setShowPassword] = useState(false);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+
 
   //비밀번호 이모티콘
   const toggleShowPassword = () => {
@@ -80,13 +81,35 @@ const Signup = () => {
         password: data.password,
         nickname: data.nickname,
       };
+      toggleModal()
       dispatch(__signupUser(userInfo));
       reset();
-      navigate("/signin");
+      // navigate("/signin");
     } else {
       alert("비밀번호 오류");
     }
   };
+
+  const SignUpmessage = useSelector((state) => {
+    return state?.users?.Signupmessage
+  })
+  useEffect(() => {
+    if (SignUpmessage === "중복된 이메일이 존재합니다.") {
+      console.log('에러')
+      // 모달 띄우기
+    } else if (SignUpmessage === "중복된 닉네임이 존재합니다.") {
+      console.log("오류띄우기")
+    } else if (SignUpmessage === "success") {
+      // 로그인 성공 
+      console.log("회원가입 성공")
+      setTimeout(function () {
+        navigate('/signin')
+      }, 1000);
+    }
+  }, [SignUpmessage])
+
+  // console.log(Message)
+
 
   return (
     <Layout>
@@ -203,6 +226,19 @@ const Signup = () => {
 
         </SignBtnBox>
       </SignContainer>
+
+      {
+        SignUpmessage === null ? null : (
+          <CheckModal
+            isOpen={loginModal}
+            toggle={toggleModal}
+            onClose={toggleModal}>
+            {SignUpmessage}
+          </CheckModal>
+
+        )
+      }
+
     </Layout>
   );
 };

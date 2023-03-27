@@ -13,10 +13,10 @@ import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
 
 const Signin = () => {
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginModal, toggleModal] = useModalState(false);
-
 
   const {
     register, handleSubmit, formState: { errors }, reset,
@@ -52,21 +52,24 @@ const Signin = () => {
   }
 
   // 에러 메시지만 받아서 처리하면 좋을 듯
-  const Message = useSelector((state) => {
-    return state?.users?.message
+  const SignInMessage = useSelector((state) => {
+    return state?.users?.Signinmessage
   })
-
+  // console.log(SignInMessage)
   // 로그인 성공시 
   useEffect(() => {
-    if (Message === 'success') {
+    if (SignInMessage === 'success') {
       console.log('로그인성공')
-      navigate('/home')
-    } else if (Message === '아이디,비밀번호를 확인해주세요') {
+      setTimeout(function () {
+        navigate('/home')
+      }, 1000);
+      // navigate('/home')
+    } else if (SignInMessage === '아이디,비밀번호를 확인해주세요') {
       // toggleModal()
       console.log('로그인실패')
       // alert('로그인 실패')
     }
-  }, [Message])
+  }, [SignInMessage])
 
   const URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_SIGN_ID}&redirect_uri=http://localhost:3000/kakaologin`;
 
@@ -117,21 +120,15 @@ const Signin = () => {
             <span>{errors?.password?.message}</span>
           </InputWrapper>
         </SignForm>
-        {Message == '아이디,비밀번호를 확인해주세요' ? (
+        {SignInMessage === null ? null : (
           <CheckModal
             isOpen={loginModal}
             toggle={toggleModal}
-            onClose={toggleModal}
-          >아이디 비밀번호를 확인해주세요!</CheckModal>
+            onClose={toggleModal}>
+            {SignInMessage}
+          </CheckModal>
+
         )
-          :
-          (
-            <CheckModal
-              isOpen={loginModal}
-              toggle={toggleModal}
-              onClose={toggleModal}
-            >로그인 성공 </CheckModal>
-          )
         }
         <AutoSignInWrapper>
           <img src={check} alt="check" />
