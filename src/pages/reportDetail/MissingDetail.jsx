@@ -21,6 +21,12 @@ import {
 } from "../../redux/modules/commentSlice";
 import petworkRefineData from "../../utils/petworkRefine";
 
+import location from "../../asset/location.svg";
+import time from "../../asset/time.svg";
+import informationIcon from "../../asset/information.svg";
+import memo from "../../asset/memo.svg";
+import gratuity from "../../asset/gratuity.svg";
+
 const MissingDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -92,14 +98,14 @@ const MissingDetail = () => {
         <Location locationInfo={locationInfo}></Location>
         <InfoContainer>
           <InfoWrapper>
-            <BodyTitleSvg>📍</BodyTitleSvg>
+            <BodyTitleSvg src={location} />
             <BodyTitleText>위치</BodyTitleText>
             <ContentTextWrapper>
               <ContentText>{missingPostDetail.happenPlace}</ContentText>
             </ContentTextWrapper>
           </InfoWrapper>
           <InfoWrapper>
-            <BodyTitleSvg>📍</BodyTitleSvg>
+            <BodyTitleSvg src={time} />
             <BodyTitleText>실종일시</BodyTitleText>
             <ContentTextWrapper>
               <ContentTextBox>
@@ -111,7 +117,7 @@ const MissingDetail = () => {
             </ContentTextWrapper>
           </InfoWrapper>
           <InfoWrapper>
-            <BodyTitleSvg>📍</BodyTitleSvg>
+            <BodyTitleSvg src={informationIcon} />
             <BodyTitleText>특징</BodyTitleText>
             <ContentTextWrapper>
               <ContentText>
@@ -122,7 +128,7 @@ const MissingDetail = () => {
             </ContentTextWrapper>
           </InfoWrapper>
           <InfoWrapper>
-            <BodyTitleSvg>📍</BodyTitleSvg>
+            <BodyTitleSvg src={memo} />
             <BodyTitleText>메모</BodyTitleText>
             <ContentTextWrapper>
               <ContentText>
@@ -134,7 +140,7 @@ const MissingDetail = () => {
           </InfoWrapper>
           {missingPostDetail.gratuity && (
             <InfoWrapper>
-              <BodyTitleSvg>📍</BodyTitleSvg>
+              <BodyTitleSvg src={gratuity} />
               <BodyTitleText>사례금</BodyTitleText>
               <ContentTextWrapper>
                 <ContentText>{missingPostDetail.gratuity}원</ContentText>
@@ -189,9 +195,7 @@ const InfoWrapper = styled.div`
   ${FlexAttribute("row", "space-evenly")}
 `;
 
-const BodyTitleSvg = styled.div`
-  flex-basis: 20px;
-`;
+const BodyTitleSvg = styled.img``;
 
 const BodyTitleText = styled.span`
   flex-basis: 50px;

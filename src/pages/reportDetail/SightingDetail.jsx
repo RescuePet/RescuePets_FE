@@ -19,7 +19,12 @@ import {
   __postCatchComment,
 } from "../../redux/modules/commentSlice";
 import Comment from "./components/Comment";
-import { instance } from "../../utils/api";
+import petworkRefineData from "../../utils/petworkRefine";
+
+import location from "../../asset/location.svg";
+import time from "../../asset/time.svg";
+import informationIcon from "../../asset/information.svg";
+import memo from "../../asset/memo.svg";
 
 const SightingDetail = () => {
   const { id } = useParams();
@@ -47,16 +52,14 @@ const SightingDetail = () => {
     return <div>로딩 중</div>;
   }
 
+  const refineData = petworkRefineData(catchPostDetail);
+
   const titleInfo = {
     state: "목격",
     kindCd: catchPostDetail.kindCd,
-    upkind: catchPostDetail.upkind,
-    sexCd: catchPostDetail.sexCd,
-    info: [
-      catchPostDetail.neuterYn,
-      catchPostDetail.age,
-      catchPostDetail.colorCd,
-    ],
+    upkind: refineData.upkind,
+    sexCd: refineData.sexCd,
+    info: refineData.information.join("/"),
   };
 
   const locationInfo = {
@@ -91,14 +94,14 @@ const SightingDetail = () => {
         <Location locationInfo={locationInfo}></Location>
         <InfoContainer>
           <InfoWrapper>
-            <BodyTitleSvg>📍</BodyTitleSvg>
+            <BodyTitleSvg src={location} />
             <BodyTitleText>위치</BodyTitleText>
             <ContentTextWrapper>
               <ContentText>{catchPostDetail.happenPlace}</ContentText>
             </ContentTextWrapper>
           </InfoWrapper>
           <InfoWrapper>
-            <BodyTitleSvg>📍</BodyTitleSvg>
+            <BodyTitleSvg src={time} />
             <BodyTitleText>발견일시</BodyTitleText>
             <ContentTextWrapper>
               <ContentTextBox>
@@ -110,17 +113,25 @@ const SightingDetail = () => {
             </ContentTextWrapper>
           </InfoWrapper>
           <InfoWrapper>
-            <BodyTitleSvg>📍</BodyTitleSvg>
+            <BodyTitleSvg src={informationIcon} />
             <BodyTitleText>특징</BodyTitleText>
             <ContentTextWrapper>
-              <ContentText>{catchPostDetail.specialMark}</ContentText>
+              <ContentText>
+                {catchPostDetail.specialMark !== null
+                  ? catchPostDetail.specialMark
+                  : "없음"}
+              </ContentText>
             </ContentTextWrapper>
           </InfoWrapper>
           <InfoWrapper>
-            <BodyTitleSvg>📍</BodyTitleSvg>
+            <BodyTitleSvg src={memo} />
             <BodyTitleText>메모</BodyTitleText>
             <ContentTextWrapper>
-              <ContentText>{catchPostDetail.content}</ContentText>
+              <ContentText>
+                {catchPostDetail.content !== null
+                  ? catchPostDetail.content
+                  : "없음"}
+              </ContentText>
             </ContentTextWrapper>
           </InfoWrapper>
         </InfoContainer>
@@ -166,7 +177,7 @@ const InfoWrapper = styled.div`
   ${FlexAttribute("row", "space-evenly")}
 `;
 
-const BodyTitleSvg = styled.div`
+const BodyTitleSvg = styled.img`
   flex-basis: 20px;
 `;
 

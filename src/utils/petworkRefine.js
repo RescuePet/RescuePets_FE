@@ -28,7 +28,7 @@ const petworkRefineData = (item) => {
   } else if (item.neuterYN === "NO") {
     refineNeuterYN = "중성화 X";
   } else {
-    refineNeuterYN = "모름";
+    refineNeuterYN = "중성화 ?";
   }
   refineData.information.push(refineNeuterYN);
   refineData.information.push(item.age + "살");
