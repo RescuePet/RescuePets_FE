@@ -10,7 +10,7 @@ import ImageCarousel from "./components/ImageCarousel";
 import InputContainer from "../../components/InputContainer";
 import Title from "./components/Title";
 import Location from "./components/Location";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { __getMissingPostDetail } from "../../redux/modules/petworkSlice";
 import Comment from "./components/Comment";
@@ -19,7 +19,7 @@ import {
   __getMissingComment,
   __postMissingComment,
 } from "../../redux/modules/commentSlice";
-import { instance } from "../../utils/api";
+import petworkRefineData from "../../utils/petworkRefine";
 
 const MissingDetail = () => {
   const { id } = useParams();
@@ -50,16 +50,14 @@ const MissingDetail = () => {
     return <div>로딩중...</div>;
   }
 
+  const refineData = petworkRefineData(missingPostDetail);
+
   const titleInfo = {
     state: "실종",
     kindCd: missingPostDetail.kindCd,
-    upkind: missingPostDetail.upkind,
-    sexCd: missingPostDetail.sexCd,
-    info: [
-      missingPostDetail.neuterYn,
-      missingPostDetail.age,
-      missingPostDetail.colorCd,
-    ],
+    upkind: refineData.upkind,
+    sexCd: refineData.sexCd,
+    info: refineData.information.join("/"),
   };
 
   const locationInfo = {
@@ -116,23 +114,33 @@ const MissingDetail = () => {
             <BodyTitleSvg>📍</BodyTitleSvg>
             <BodyTitleText>특징</BodyTitleText>
             <ContentTextWrapper>
-              <ContentText>{missingPostDetail.specialMark}</ContentText>
+              <ContentText>
+                {missingPostDetail.specialMark !== null
+                  ? missingPostDetail.specialMark
+                  : "없음"}
+              </ContentText>
             </ContentTextWrapper>
           </InfoWrapper>
           <InfoWrapper>
             <BodyTitleSvg>📍</BodyTitleSvg>
             <BodyTitleText>메모</BodyTitleText>
             <ContentTextWrapper>
-              <ContentText>{missingPostDetail.content}</ContentText>
+              <ContentText>
+                {missingPostDetail.content !== null
+                  ? missingPostDetail.content
+                  : "없음"}
+              </ContentText>
             </ContentTextWrapper>
           </InfoWrapper>
-          <InfoWrapper>
-            <BodyTitleSvg>📍</BodyTitleSvg>
-            <BodyTitleText>사례금</BodyTitleText>
-            <ContentTextWrapper>
-              <ContentText>{missingPostDetail.gratuity}</ContentText>
-            </ContentTextWrapper>
-          </InfoWrapper>
+          {missingPostDetail.gratuity && (
+            <InfoWrapper>
+              <BodyTitleSvg>📍</BodyTitleSvg>
+              <BodyTitleText>사례금</BodyTitleText>
+              <ContentTextWrapper>
+                <ContentText>{missingPostDetail.gratuity}원</ContentText>
+              </ContentTextWrapper>
+            </InfoWrapper>
+          )}
         </InfoContainer>
         <CommentContainer>
           <CommentButtonWrapper></CommentButtonWrapper>

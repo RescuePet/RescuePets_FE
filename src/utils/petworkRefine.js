@@ -31,7 +31,7 @@ const petworkRefineData = (item) => {
     refineNeuterYN = "모름";
   }
   refineData.information.push(refineNeuterYN);
-  refineData.information.push(item.age);
+  refineData.information.push(item.age + "살");
   refineData.information.push(item.colorCd);
   return refineData;
 };

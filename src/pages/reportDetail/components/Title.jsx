@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Body_400_12, Body_400_14 } from "../../../style/theme";
+import { Body_400_14 } from "../../../style/theme";
 import {
   ContentInformationStyle,
   FlexAttribute,
@@ -12,8 +12,8 @@ const Title = ({ titleInfo }) => {
     <TitleWrapper>
       <State>{titleInfo.state}</State>
       <SemiText>{titleInfo.kindCd}</SemiText>
-      <SexCd>{titleInfo.sexCd}/</SexCd>
-      <RegularText>{titleInfo.info.join("/")}</RegularText>
+      <img src={titleInfo.sexCd} alt="missingSex" />
+      <RegularText>{titleInfo.info}</RegularText>
     </TitleWrapper>
   );
 };
@@ -32,10 +32,6 @@ const SemiText = styled.span`
   flex-basis: 80px;
   text-align: center;
   ${Body_400_14}
-`;
-
-const SexCd = styled.span`
-  ${Body_400_12}
 `;
 
 const RegularText = styled.span`
