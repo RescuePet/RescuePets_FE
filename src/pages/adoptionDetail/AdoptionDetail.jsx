@@ -16,6 +16,8 @@ import specialmark from "../../asset/specialmark.svg";
 import user from "../../asset/user.svg";
 import Clippingwhite from "../../asset/Clippingwhite";
 import { PostBorderStyle } from "../../style/Mixin";
+import PostInformation from "../reportDetail/components/PostInformation";
+import AdoptionInformation from "./components/AdoptionInformation";
 
 const AdoptionDetail = () => {
   const { id } = useParams();
@@ -94,6 +96,7 @@ const AdoptionDetail = () => {
           })}
         </ShelterContainer>
       </div>
+      <AdoptionInformation></AdoptionInformation>
     </Layout>
   );
 };
