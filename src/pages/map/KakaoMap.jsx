@@ -250,7 +250,6 @@ const KakaoMap = () => {
                 toggle={toggleModal}
                 onClose={toggleModal}
                 data={newCatchData}>
-                하이용
               </MarkerModal>
               <FloatingPetwork />
             </div>

@@ -9,24 +9,24 @@ const Layout = ({ children }) => {
   const location = useLocation();
 
   // 이미지 닉네임 만 넣어서 변경
+  const navigate = useNavigate()
+  //  signing , signup 만 제외하고 토큰없으면 로그인으로 이동시키기 
+  // useEffect(() => {
+  //   // 로그인 회원가입을 제외하고 토큰이 있다면 
+  //   if (location.pathname !== "/signup" && location.pathname !== "/signin" && location.pathname !== "/") {
 
-  const navigate = useNavigate();
-  //  signing , signup 만 제외하고 토큰없으면 로그인으로 이동시키기
-  useEffect(() => {
-    // 로그인 회원가입을 제외하고 토큰이 있다면
-    if (location.pathname !== "/signup" && location.pathname !== "/signin") {
-      if (isSignin()) {
-        console.log("토큰있음");
-      } else {
-        // alert('로그인 시간이 만료되었습니다. 다시 로그인 해주세요');
-        navigate("/signin");
-        console.log("토큰없음");
-      }
-    } else {
-      console.log("userPage");
-    }
-  }, []);
-  //  notFound.page
+  //     if (isSignin()) {
+  //       console.log('토큰있음')
+  //     } else {
+  //       // alert('로그인 시간이 만료되었습니다. 다시 로그인 해주세요');
+  //       // navigate('/signin')
+  //       console.log("토큰없음")
+  //     }
+  //   } else {
+  //     console.log('userPage')
+  //   }
+  // }, [])
+  //  notFound.page 
 
   return (
     <>

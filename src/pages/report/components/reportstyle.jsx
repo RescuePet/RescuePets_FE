@@ -58,14 +58,13 @@ export const ReportanimaltypesSelect = styled.div`
   width: 20.9375rem;
   height: 3.75rem;
   display: flex;
-  align-items: center;
   > div {
     position: relative;
     width: 50%;
     height: 100%;
     padding: 10px 0 20px 0;
     > p {
-    color: ${props => props.theme.color.gary};
+    color: ${props => props.theme.color.gray};
     ${props => props.theme.Body_400_12}
     }
     > img {
@@ -89,7 +88,7 @@ export const ReportAnimalInfoCheckBoxTitle = styled.div`
     width: 100%;
     height: 20%;
     > p {
-        color: ${props => props.theme.color.gary};
+        color: ${props => props.theme.color.gray};
         ${props => props.theme.Body_400_12}
     }
 `;
@@ -131,7 +130,7 @@ export const ReportAnimalInfoBoxColumnRow = styled.div`
   width: 50%;
   height: 100%;
   > p { 
-    color: ${props => props.theme.color.gary};
+    color: ${props => props.theme.color.gray};
     ${props => props.theme.Body_400_12}
   }
   > img {
@@ -151,7 +150,7 @@ export const ReportAnimalInfoBoxColumnColumn = styled.div`
   width: 100%;
   height: 100%;
   > p {
-    color: ${props => props.theme.color.gary};
+    color: ${props => props.theme.color.gray};
     ${props => props.theme.Body_400_12}
   }
   > img {
@@ -212,7 +211,7 @@ export const ReportAnimalDayBox = styled.div`
       height: 100%;
        p {
         padding-top: 10px;
-        color: ${props => props.theme.color.gary};
+        color: ${props => props.theme.color.gray};
         ${props => props.theme.Body_400_12}
       }
       img {
@@ -297,7 +296,9 @@ export const ReportAnimalPictureAreaInputBox = styled.div`
 export const ReportAnimalPictureInput = styled.div`
  width: 56px;
  height: 56px;
- background: ${props => props.theme.color.gary};
+ /* gary */
+ background: ${props => props.theme.color.gray};
+ /* background: gray; */
  border-radius: 4px;
  ${props => props.theme.FlexCenter}
  > h3 {
