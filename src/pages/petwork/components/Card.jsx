@@ -9,6 +9,7 @@ import petworkRefineData from "../../../utils/petworkRefine";
 import location from "../../../asset/location.svg";
 import time from "../../../asset/time.svg";
 import informationIcon from "../../../asset/information.svg";
+import clippingEmpty from "../../../asset/clippingwhite.svg";
 
 const Card = ({ item }) => {
   const refineData = petworkRefineData(item);
@@ -17,6 +18,7 @@ const Card = ({ item }) => {
       <CardImgWrapper imgae={item.postImages[0]?.imageURL}>
         <CardImg src={item.postImages[0]?.imageURL}></CardImg>
         <StateSpan>{refineData.upkind}</StateSpan>
+        <ScrapState src={clippingEmpty} />
       </CardImgWrapper>
       <CardInfoContainer>
         <CardTitleWrapper>
@@ -64,6 +66,13 @@ const StateSpan = styled.span`
   position: absolute;
   top: 16px;
   left: 16px;
+`;
+
+const ScrapState = styled.img`
+  position: absolute;
+  top: 11px;
+  right: 16px;
+  z-index: 99;
 `;
 
 const CardInfoContainer = styled.div`
