@@ -1,19 +1,53 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Border_1_color, FlexAttribute } from "../../../style/Mixin";
 import { Body_400_12, Button_700_16 } from "../../../style/theme";
 
 import defaultProfile from "../../../asset/profile.svg";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  __getMyCatchPost,
+  __getMyMissingPost,
+} from "../../../redux/modules/profileSlice";
 
 const UserInformation = () => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const disapatch = useDispatch();
+
+  const missingPayload = {
+    page: 1,
+    size: 1000,
+  };
+
+  const catchPayload = {
+    page: 1,
+    size: 1000,
+  };
+
+  useEffect(() => {
+    disapatch(__getMyMissingPost(missingPayload));
+    disapatch(__getMyCatchPost(catchPayload));
+  }, []);
+
+  const { myMissing, myCatch } = useSelector((state) => state.profile);
+
+  console.log("myMissing", myMissing);
+  console.log("myCatch", myCatch);
+
   return (
     <UserInfoContainer>
-      <UserImage src={defaultProfile}></UserImage>
-      <UserName>펫벤져스</UserName>
-      <UserEmail>rescuepets@naver.com</UserEmail>
+      <UserImage
+        src={
+          userInfo.profileImage !== null
+            ? userInfo.profileImage
+            : defaultProfile
+        }
+      ></UserImage>
+      <UserName>{userInfo.nickname}</UserName>
+      <UserEmail>{userInfo.email}</UserEmail>
       <UserActivityWrapper>
         <CountBox>
-          <CountSpan>11</CountSpan>
+          <CountSpan>{myMissing.length + myCatch.length}</CountSpan>
           <TitleSpan>작성 글</TitleSpan>
         </CountBox>
         <CountBox>
@@ -39,6 +73,8 @@ const UserImage = styled.img`
   width: 80px;
   height: 80px;
   margin-bottom: 14px;
+  border-radius: 50%;
+  background-color: tran;
 `;
 
 const UserName = styled.span`

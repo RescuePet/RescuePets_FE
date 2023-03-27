@@ -7,6 +7,7 @@ import petwork from "../modules/petworkSlice";
 import comment from "../modules/commentSlice";
 import MissingData from "../modules/missingSlice";
 import catchData from "../modules/catchSlice";
+import profile from "../modules/profileSlice";
 
 const store = configureStore({
   reducer: {
@@ -17,7 +18,8 @@ const store = configureStore({
     comment,
     adoption,
     MissingData,
-    catchData
+    catchData,
+    profile,
   },
 });
 
