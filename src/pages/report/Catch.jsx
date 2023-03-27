@@ -5,7 +5,6 @@ import Button from "../../elements/Button"
 import cancel from "../../asset/delete.svg";
 import Location from "./components/Location";
 import imageCompression from 'browser-image-compression';
-import imgdelete from "../../asset/imgDelete.svg";
 import { CustomSelect } from "../../elements/CustomSelect"
 import {
   ReportSightingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
@@ -16,12 +15,15 @@ import {
 } from './components/reportstyle';
 import { NameValue, TimeValue, SeletegenderArr, seleteneuteredArr } from './components/data';
 import { __PostCatchData } from '../../redux/modules/catchSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import imgdelete from "../../asset/imgDelete.svg";
+import close from "../../asset/Close.svg";
+import { useNavigate } from 'react-router-dom';
 
 const Catch = () => {
   let imageRef;
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   // 종류데이터
   const [type, setType] = useState(NameValue[0].name)
   const [typeID, setTypeID] = useState('DOG')
@@ -76,7 +78,7 @@ const Catch = () => {
 
     const imageLists = e.target.files;
     setImage([...imageLists])
-    // console.log("폼데이터 보내야 할것들:", imageLists)
+
     setImageFormData(imageLists)
 
     setFormformImagin([...formImagin], ...e.target.files)
@@ -139,8 +141,7 @@ const Catch = () => {
       watch("address") !== "" &&
       watch("animalcolor") !== "" &&
       addressDiv?.innerHTML !== "" &&
-      watch("days") !== ""
-    ) {
+      watch("days") !== "") {
       // console.log('성공')
       setIsActive(false);
     } else {
@@ -178,16 +179,28 @@ const Catch = () => {
         formData.append(keyValue[0], keyValue[1]);
       }
 
-      for (let value of formData.values()) {
-        console.log("FormData", value);
-      }
+      // for (let value of formData.values()) {
+      //   console.log("FormData", value);
+      // }
 
       dispatch(__PostCatchData(formData))
-      // reset()
+      reset()
+      alert('등록완료')
     }
   }
 
 
+
+  const message = useSelector((state) => {
+    return state
+  })
+
+  // 이전페이지로 이동 
+  const MoveToBackPage = () => {
+    navigate(-1)
+  }
+
+  console.log(message)
   return (
     <Layout>
       <ReportSightingContainer onSubmit={handleSubmit(onSubmitSightingHanlder)}>
@@ -195,7 +208,7 @@ const Catch = () => {
         <ReportHeader>
           <div></div>
           <div>목격 글 작성하기</div>
-          <div>x</div>
+          <div><img src={close} onClick={MoveToBackPage} /></div>
         </ReportHeader>
 
         <ReportAnimalInfoArea>

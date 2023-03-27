@@ -21,6 +21,8 @@ export const color = {
   status_positive: "#005247",
   white: "#ffffff",
   black: "#000000",
+  gary: "#666666",
+  input_border: "#EEEEEE"
 };
 
 export const FlexCenter = css`

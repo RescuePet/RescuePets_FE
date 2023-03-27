@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import floating from '../../../asset/floating.png'
+import floating from "../../../asset/floating.png"
 
 export const FloatingPetwork = () => {
     const navigate = useNavigate()
@@ -19,7 +19,7 @@ export const FloatingPetwork = () => {
 const FloatingPetNetworkContainer = styled.div`
     position: absolute;
     ${(props) => props.theme.FlexCenter}
-    z-index: 2;
+    z-index: 19;
     background: ${props => props.theme.color.white};
     top: 90%;
     width: 3.5rem;
