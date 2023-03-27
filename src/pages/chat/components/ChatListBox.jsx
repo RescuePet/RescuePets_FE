@@ -9,21 +9,20 @@ import styled from "styled-components";
 import { Body_400_14, Body_400_12, Body_300_10 } from "../../../style/theme";
 import profile from "../../../asset/profile.svg";
 
-const ChatListBox = () => {
+const ChatListBox = ({ item }) => {
   return (
     <ChatRoomListContainer>
       <ClickDiv>
-        <ProfileImage src={profile} />
+        <ProfileImage
+          src={item.profileImage !== null ? item.profileImage : profile}
+        />
         <TextWrapper>
-          <UserName>크롱크롱</UserName>
-          <Contents>
-            아는 지인분이 보호중인 고양이가 있다고 사진 보내주셨는데 닮은 것
-            같아서 연락드려...
-          </Contents>
+          <UserName>{item.roomName}</UserName>
+          <Contents>{item.lastChat}</Contents>
         </TextWrapper>
         <InfoWrapper>
-          <Time>오전 09:39</Time>
-          <MessageCount>1</MessageCount>
+          {/* <Time>오전 09:39</Time>
+          <MessageCount>1</MessageCount> */}
         </InfoWrapper>
       </ClickDiv>
     </ChatRoomListContainer>

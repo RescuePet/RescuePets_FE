@@ -8,6 +8,7 @@ import comment from "../modules/commentSlice";
 import MissingData from "../modules/missingSlice";
 import catchData from "../modules/catchSlice";
 import profile from "../modules/profileSlice";
+import myChat from "../modules/chatSlice";
 
 const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
     MissingData,
     catchData,
     profile,
+    myChat,
   },
 });
 
