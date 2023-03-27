@@ -4,23 +4,33 @@ import styled from "styled-components";
 import { FlexAttribute, StateSpanStyle } from "../../../style/Mixin";
 import { Body_400_14 } from "../../../style/theme";
 import CardInfo from "./CardInfo";
+import petworkRefineData from "../../../utils/petworkRefine";
+
+import location from "../../../asset/location.svg";
+import time from "../../../asset/time.svg";
+import informationIcon from "../../../asset/information.svg";
+import ClippingEmpty from "../../../asset/Clippingwhite.jsx";
 
 const Card = ({ item }) => {
+  const refineData = petworkRefineData(item);
   return (
     <ListCard>
-      <CardImgWrapper>
+      <CardImgWrapper imgae={item.postImages[0]?.imageURL}>
         <CardImg src={item.postImages[0]?.imageURL}></CardImg>
-        <StateSpan>{item.upkind}</StateSpan>
+        <StateSpan>{refineData.upkind}</StateSpan>
+        <ScrapState />
       </CardImgWrapper>
       <CardInfoContainer>
         <CardTitleWrapper>
           <CardTitle>{item.kindCd}</CardTitle>
-          <SexSvg>{item.sexCd}</SexSvg>
+          <img src={refineData.sexCd} alt="petworkSex" />
         </CardTitleWrapper>
         <CardInfoWrapper>
-          <CardInfo>{item.happenPlace}</CardInfo>
-          <CardInfo>{item.happenDt}</CardInfo>
-          <CardInfo>{item.neuterYn}</CardInfo>
+          <CardInfo svg={location}>{item.happenPlace}</CardInfo>
+          <CardInfo svg={time}>{item.happenDt}</CardInfo>
+          <CardInfo svg={informationIcon}>
+            {refineData.information.join("/")}
+          </CardInfo>
         </CardInfoWrapper>
       </CardInfoContainer>
     </ListCard>
@@ -29,7 +39,7 @@ const Card = ({ item }) => {
 
 const ListCard = styled.div`
   width: 160px;
-  height: 226px;
+  height: 236px;
   border: 1px solid #eeeeee;
   border-radius: 4px;
   overflow: hidden;
@@ -37,12 +47,18 @@ const ListCard = styled.div`
 
 const CardImgWrapper = styled.div`
   position: relative;
+  width: 160px;
+  height: 120px;
+  background-image: url(${(props) => props.imgae});
+  background-repeat: no-repeat;
+  background-size: 160px 120px;
 `;
 
 const CardImg = styled.img`
   width: 160px;
   height: 120px;
-  background-color: #999999;
+  object-fit: contain;
+  backdrop-filter: blur(3px);
 `;
 
 const StateSpan = styled.span`
@@ -50,6 +66,13 @@ const StateSpan = styled.span`
   position: absolute;
   top: 16px;
   left: 16px;
+`;
+
+const ScrapState = styled(ClippingEmpty)`
+  position: absolute;
+  top: 11px;
+  right: 16px;
+  z-index: 99;
 `;
 
 const CardInfoContainer = styled.div`
@@ -62,17 +85,12 @@ const CardTitleWrapper = styled.div`
 
 const CardTitle = styled.span`
   ${Body_400_14}
-`;
-
-const SexSvg = styled.div`
-  width: 16px;
-  height: 16px;
-  margin-left: 8px;
-  background-color: red;
+  line-height: 24px;
 `;
 
 const CardInfoWrapper = styled.div`
   ${FlexAttribute("column")}
+  padding-bottom: 16px;
 `;
 
 export default Card;

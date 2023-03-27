@@ -14,6 +14,8 @@ import {
 } from "../../redux/modules/petworkSlice";
 import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
+import petworkHeader from "../../asset/header/petworkheader.png";
+import refresh from "../../asset/refresh.svg";
 
 const PetworkList = () => {
   const [missingRef, missingInView] = useInView();
@@ -42,13 +44,13 @@ const PetworkList = () => {
   return (
     <Layout>
       <PetworkHeader>
-        <HeaderTitle>Petwork</HeaderTitle>
+        <HeaderImage src={petworkHeader}></HeaderImage>
       </PetworkHeader>
       <Category></Category>
       <ListContainer>
         <ListTitleWrapper>
           <ListTitle>{petwork.category}</ListTitle>
-          <RefreshButton></RefreshButton>
+          <RefreshButton src={refresh}></RefreshButton>
         </ListTitleWrapper>
         <ListCardContainer>
           {petwork.category === "우리집 반려동물을 찾아주세요"
@@ -88,9 +90,9 @@ const PetworkHeader = styled.div`
   border: none;
 `;
 
-const HeaderTitle = styled.span`
-  ${Title_700_18}
-  margin-left: 25px;
+const HeaderImage = styled.img`
+  width: 157px;
+  height: 30px;
 `;
 
 const ListContainer = styled.div`
@@ -108,11 +110,7 @@ const ListTitle = styled.span`
   padding-top: 2px;
 `;
 
-const RefreshButton = styled.img`
-  width: 14px;
-  height: 14px;
-  background-color: #999999;
-`;
+const RefreshButton = styled.img``;
 
 const ListCardContainer = styled.div`
   display: grid;

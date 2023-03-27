@@ -22,7 +22,7 @@ export const color = {
   white: "#ffffff",
   black: "#000000",
   gary: "#666666",
-  input_border: "#EEEEEE"
+  input_border: "#EEEEEE",
 };
 
 export const FlexCenter = css`
