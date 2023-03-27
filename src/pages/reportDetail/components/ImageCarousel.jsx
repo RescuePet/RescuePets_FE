@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 import back from "../../../asset/backwhite.svg";
-import clippingEmpty from "../../../asset/clippingwhite.svg";
+import ClippingEmpty from "../../../asset/Clippingwhite.jsx";
 
 const ImageCarousel = ({ images }) => {
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ const ImageCarousel = ({ images }) => {
         ))}
       </StyledSlider>
       <BackButton src={back} onClick={() => navigate(-1)} />
-      <ScrapButton src={clippingEmpty} />
+      <ScrapButton />
     </Container>
   );
 };
@@ -98,7 +98,7 @@ const BackButton = styled.img`
   cursor: pointer;
 `;
 
-const ScrapButton = styled.img`
+const ScrapButton = styled(ClippingEmpty)`
   position: absolute;
   top: 40px;
   right: 27px;
