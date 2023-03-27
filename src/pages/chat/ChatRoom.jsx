@@ -16,6 +16,8 @@ import { useParams } from "react-router-dom";
 
 const ChatRoom = () => {
   const { id, postname } = useParams();
+  console.log("params id", id);
+  console.log("params postname", postname);
   const sender = JSON.parse(localStorage.getItem("userInfo"));
   const [currentChat, setCurrentChat] = useState([]);
   console.log(process.env.REACT_APP_CHAT_TEST);
@@ -49,11 +51,12 @@ const ChatRoom = () => {
     try {
       const response = await instance.post(`/chat/${postname}/${id}`);
       const chatdata = await instance.get(`/room/${response.data}`);
-      console.log("try response", response.data);
+      console.log("chatData", chatdata);
+      console.log("try response", response.data.messages);
       setRoomId(response.data);
       console.log("roomId", roomId);
       wsConnectSubscribe(response.data);
-      setCurrentChat([...chatdata.data.data.dto]);
+      setCurrentChat([...chatdata.data.data.messages]);
     } catch (error) {
       console.log(error);
     }
