@@ -9,10 +9,10 @@ const Layout = ({ children }) => {
   const location = useLocation();
 
   // 이미지 닉네임 만 넣어서 변경
-  const navigate = useNavigate()
-  //  signing , signup 만 제외하고 토큰없으면 로그인으로 이동시키기 
+  const navigate = useNavigate();
+  //  signing , signup 만 제외하고 토큰없으면 로그인으로 이동시키기
   // useEffect(() => {
-  //   // 로그인 회원가입을 제외하고 토큰이 있다면 
+  //   // 로그인 회원가입을 제외하고 토큰이 있다면
   //   if (location.pathname !== "/signup" && location.pathname !== "/signin" && location.pathname !== "/") {
 
   //     if (isSignin()) {
@@ -26,7 +26,7 @@ const Layout = ({ children }) => {
   //     console.log('userPage')
   //   }
   // }, [])
-  //  notFound.page 
+  //  notFound.page
 
   return (
     <>
@@ -59,6 +59,7 @@ const MobileLayout = styled.div`
   width: 430px;
   height: 100%;
   margin: 0 auto;
+  padding-bottom: 76px;
   background-color: ${(props) => props.theme.color.white};
   // 430px이하일떄 넣어줌
   // 데스크탑용의 가장 큰 화면 사이즈의 레이아웃을 기본으로 하고, 점차 축소하는 형태로 CSS를 작성합니다.(스마트폰 화면에 적용)
@@ -66,6 +67,7 @@ const MobileLayout = styled.div`
     margin: 0 auto;
     width: 100%;
     height: 100%;
+    padding-bottom: 76px;
     background-color: ${(props) => props.theme.color.white};
   }
 `;

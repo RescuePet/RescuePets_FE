@@ -47,40 +47,38 @@ const PetworkList = () => {
         <HeaderImage src={petworkHeader}></HeaderImage>
       </PetworkHeader>
       <Category></Category>
-      <ListContainer>
-        <ListTitleWrapper>
-          <ListTitle>{petwork.category}</ListTitle>
-          <RefreshButton src={refresh}></RefreshButton>
-        </ListTitleWrapper>
-        <ListCardContainer>
-          {petwork.category === "우리집 반려동물을 찾아주세요"
-            ? petwork?.missingPostLists?.map((item, index) => {
-                return (
-                  <Link
-                    key={`missing-post-${index}`}
-                    to={`/missingdetail/${item.id}`}
-                  >
-                    <Card item={item}></Card>
-                  </Link>
-                );
-              })
-            : petwork?.catchPostLists?.map((item, index) => {
-                return (
-                  <Link
-                    key={`catch-post-${index}`}
-                    to={`/sightingdetail/${item.id}`}
-                  >
-                    <Card item={item}></Card>
-                  </Link>
-                );
-              })}
-          {petwork.category === "우리집 반려동물을 찾아주세요" ? (
-            <div ref={missingRef}></div>
-          ) : (
-            <div ref={catchRef}></div>
-          )}
-        </ListCardContainer>
-      </ListContainer>
+      <ListTitleWrapper>
+        <ListTitle>{petwork.category}</ListTitle>
+        <RefreshButton src={refresh}></RefreshButton>
+      </ListTitleWrapper>
+      <ListCardContainer>
+        {petwork.category === "우리집 반려동물을 찾아주세요"
+          ? petwork?.missingPostLists?.map((item, index) => {
+              return (
+                <Link
+                  key={`missing-post-${index}`}
+                  to={`/missingdetail/${item.id}`}
+                >
+                  <Card item={item}></Card>
+                </Link>
+              );
+            })
+          : petwork?.catchPostLists?.map((item, index) => {
+              return (
+                <Link
+                  key={`catch-post-${index}`}
+                  to={`/sightingdetail/${item.id}`}
+                >
+                  <Card item={item}></Card>
+                </Link>
+              );
+            })}
+        {petwork.category === "우리집 반려동물을 찾아주세요" ? (
+          <div ref={missingRef}></div>
+        ) : (
+          <div ref={catchRef}></div>
+        )}
+      </ListCardContainer>
     </Layout>
   );
 };
@@ -93,10 +91,6 @@ const PetworkHeader = styled.div`
 const HeaderImage = styled.img`
   width: 157px;
   height: 30px;
-`;
-
-const ListContainer = styled.div`
-  padding-bottom: 76px;
 `;
 
 const ListTitleWrapper = styled.div`
