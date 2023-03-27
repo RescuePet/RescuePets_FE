@@ -98,15 +98,19 @@ const MissingDetail = () => {
         <Location locationInfo={locationInfo}></Location>
         <InfoContainer>
           <InfoWrapper>
-            <BodyTitleSvg src={location} />
-            <BodyTitleText>위치</BodyTitleText>
+            <BodyTitleWrapper>
+              <BodyTitleSvg src={location} />
+              <BodyTitleText>위치</BodyTitleText>
+            </BodyTitleWrapper>
             <ContentTextWrapper>
               <ContentText>{missingPostDetail.happenPlace}</ContentText>
             </ContentTextWrapper>
           </InfoWrapper>
           <InfoWrapper>
-            <BodyTitleSvg src={time} />
-            <BodyTitleText>실종일시</BodyTitleText>
+            <BodyTitleWrapper>
+              <BodyTitleSvg src={time} />
+              <BodyTitleText>실종일시</BodyTitleText>
+            </BodyTitleWrapper>
             <ContentTextWrapper>
               <ContentTextBox>
                 <ContentOptionText>
@@ -117,8 +121,10 @@ const MissingDetail = () => {
             </ContentTextWrapper>
           </InfoWrapper>
           <InfoWrapper>
-            <BodyTitleSvg src={informationIcon} />
-            <BodyTitleText>특징</BodyTitleText>
+            <BodyTitleWrapper>
+              <BodyTitleSvg src={informationIcon} />
+              <BodyTitleText>특징</BodyTitleText>
+            </BodyTitleWrapper>
             <ContentTextWrapper>
               <ContentText>
                 {missingPostDetail.specialMark !== null
@@ -128,8 +134,10 @@ const MissingDetail = () => {
             </ContentTextWrapper>
           </InfoWrapper>
           <InfoWrapper>
-            <BodyTitleSvg src={memo} />
-            <BodyTitleText>메모</BodyTitleText>
+            <BodyTitleWrapper>
+              <BodyTitleSvg src={memo} />
+              <BodyTitleText>메모</BodyTitleText>
+            </BodyTitleWrapper>
             <ContentTextWrapper>
               <ContentText>
                 {missingPostDetail.content !== null
@@ -140,8 +148,10 @@ const MissingDetail = () => {
           </InfoWrapper>
           {missingPostDetail.gratuity && (
             <InfoWrapper>
-              <BodyTitleSvg src={gratuity} />
-              <BodyTitleText>사례금</BodyTitleText>
+              <BodyTitleWrapper>
+                <BodyTitleSvg src={gratuity} />
+                <BodyTitleText>사례금</BodyTitleText>
+              </BodyTitleWrapper>
               <ContentTextWrapper>
                 <ContentText>{missingPostDetail.gratuity}원</ContentText>
               </ContentTextWrapper>
@@ -195,14 +205,23 @@ const InfoWrapper = styled.div`
   ${FlexAttribute("row", "space-evenly")}
 `;
 
-const BodyTitleSvg = styled.img``;
+const BodyTitleWrapper = styled.div`
+  ${FlexAttribute("row", "center")}
+  width: 80px;
+`;
+
+const BodyTitleSvg = styled.img`
+  width: 24px;
+  height: 24px;
+`;
 
 const BodyTitleText = styled.span`
   flex-basis: 50px;
-  padding-top: 2px;
   font-weight: 400;
+  margin-left: 4px;
+  padding-top: 1px;
   font-size: 14px;
-  line-height: 16px;
+  line-height: 24px;
   color: #999999;
 `;
 
@@ -221,7 +240,7 @@ const ContentTextBox = styled.div`
 const ContentOptionText = styled.span`
   font-weight: 400;
   font-size: 14px;
-  line-height: 16px;
+  line-height: 24px;
   color: #666666;
 `;
 
@@ -229,7 +248,7 @@ const ContentText = styled.span`
   display: inline-block;
   font-weight: 400;
   font-size: 14px;
-  line-height: 16px;
+  line-height: 24px;
   color: #222222;
 `;
 

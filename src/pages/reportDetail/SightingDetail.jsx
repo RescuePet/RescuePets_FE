@@ -94,15 +94,19 @@ const SightingDetail = () => {
         <Location locationInfo={locationInfo}></Location>
         <InfoContainer>
           <InfoWrapper>
-            <BodyTitleSvg src={location} />
-            <BodyTitleText>위치</BodyTitleText>
+            <BotyTitleWrapper>
+              <BodyTitleSvg src={location} />
+              <BodyTitleText>위치</BodyTitleText>
+            </BotyTitleWrapper>
             <ContentTextWrapper>
               <ContentText>{catchPostDetail.happenPlace}</ContentText>
             </ContentTextWrapper>
           </InfoWrapper>
           <InfoWrapper>
-            <BodyTitleSvg src={time} />
-            <BodyTitleText>발견일시</BodyTitleText>
+            <BotyTitleWrapper>
+              <BodyTitleSvg src={time} />
+              <BodyTitleText>발견일시</BodyTitleText>
+            </BotyTitleWrapper>
             <ContentTextWrapper>
               <ContentTextBox>
                 <ContentOptionText>
@@ -113,8 +117,10 @@ const SightingDetail = () => {
             </ContentTextWrapper>
           </InfoWrapper>
           <InfoWrapper>
-            <BodyTitleSvg src={informationIcon} />
-            <BodyTitleText>특징</BodyTitleText>
+            <BotyTitleWrapper>
+              <BodyTitleSvg src={informationIcon} />
+              <BodyTitleText>특징</BodyTitleText>
+            </BotyTitleWrapper>
             <ContentTextWrapper>
               <ContentText>
                 {catchPostDetail.specialMark !== null
@@ -124,8 +130,10 @@ const SightingDetail = () => {
             </ContentTextWrapper>
           </InfoWrapper>
           <InfoWrapper>
-            <BodyTitleSvg src={memo} />
-            <BodyTitleText>메모</BodyTitleText>
+            <BotyTitleWrapper>
+              <BodyTitleSvg src={memo} />
+              <BodyTitleText>메모</BodyTitleText>
+            </BotyTitleWrapper>
             <ContentTextWrapper>
               <ContentText>
                 {catchPostDetail.content !== null
@@ -177,16 +185,24 @@ const InfoWrapper = styled.div`
   ${FlexAttribute("row", "space-evenly")}
 `;
 
+const BotyTitleWrapper = styled.div`
+  ${FlexAttribute("row", "center")}
+  width: 80px;
+`;
+
 const BodyTitleSvg = styled.img`
   flex-basis: 20px;
+  width: 24px;
+  height: 24px;
 `;
 
 const BodyTitleText = styled.span`
   flex-basis: 50px;
-  padding-top: 2px;
+  margin-left: 4px;
+  padding-top: 1px;
   font-weight: 400;
   font-size: 14px;
-  line-height: 16px;
+  line-height: 24px;
   color: #999999;
 `;
 
@@ -205,7 +221,7 @@ const ContentTextBox = styled.div`
 const ContentOptionText = styled.span`
   font-weight: 400;
   font-size: 14px;
-  line-height: 16px;
+  line-height: 24px;
   color: #666666;
 `;
 
@@ -213,7 +229,7 @@ const ContentText = styled.span`
   display: inline-block;
   font-weight: 400;
   font-size: 14px;
-  line-height: 16px;
+  line-height: 24px;
   color: #222222;
 `;
 
