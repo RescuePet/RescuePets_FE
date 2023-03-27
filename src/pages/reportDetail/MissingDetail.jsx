@@ -120,32 +120,28 @@ const MissingDetail = () => {
               </ContentTextBox>
             </ContentTextWrapper>
           </InfoWrapper>
-          <InfoWrapper>
-            <BodyTitleWrapper>
-              <BodyTitleSvg src={informationIcon} />
-              <BodyTitleText>특징</BodyTitleText>
-            </BodyTitleWrapper>
-            <ContentTextWrapper>
-              <ContentText>
-                {missingPostDetail.specialMark !== null
-                  ? missingPostDetail.specialMark
-                  : "없음"}
-              </ContentText>
-            </ContentTextWrapper>
-          </InfoWrapper>
-          <InfoWrapper>
-            <BodyTitleWrapper>
-              <BodyTitleSvg src={memo} />
-              <BodyTitleText>메모</BodyTitleText>
-            </BodyTitleWrapper>
-            <ContentTextWrapper>
-              <ContentText>
-                {missingPostDetail.content !== null
-                  ? missingPostDetail.content
-                  : "없음"}
-              </ContentText>
-            </ContentTextWrapper>
-          </InfoWrapper>
+          {missingPostDetail.specialMark && (
+            <InfoWrapper>
+              <BodyTitleWrapper>
+                <BodyTitleSvg src={informationIcon} />
+                <BodyTitleText>특징</BodyTitleText>
+              </BodyTitleWrapper>
+              <ContentTextWrapper>
+                <ContentText>{missingPostDetail.specialMark}</ContentText>
+              </ContentTextWrapper>
+            </InfoWrapper>
+          )}
+          {missingPostDetail.content && (
+            <InfoWrapper>
+              <BodyTitleWrapper>
+                <BodyTitleSvg src={memo} />
+                <BodyTitleText>메모</BodyTitleText>
+              </BodyTitleWrapper>
+              <ContentTextWrapper>
+                <ContentText>{missingPostDetail.content}</ContentText>
+              </ContentTextWrapper>
+            </InfoWrapper>
+          )}
           {missingPostDetail.gratuity && (
             <InfoWrapper>
               <BodyTitleWrapper>
