@@ -16,12 +16,12 @@ const UserInformation = () => {
 
   const missingPayload = {
     page: 1,
-    size: 100,
+    size: 1000,
   };
 
   const catchPayload = {
     page: 1,
-    size: 100,
+    size: 1000,
   };
 
   useEffect(() => {
@@ -74,6 +74,7 @@ const UserImage = styled.img`
   height: 80px;
   margin-bottom: 14px;
   border-radius: 50%;
+  background-color: tran;
 `;
 
 const UserName = styled.span`
