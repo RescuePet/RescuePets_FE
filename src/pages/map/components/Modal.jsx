@@ -1,19 +1,18 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import Button from './Button';
+import Button from '../../../elements/Button';
+import { NavLink } from 'react-router-dom';
 
 export default function Modal({ isOpen, onClose, children }) {
     const backdropVariants = {
         visible: { opacity: 1 },
         hidden: { opacity: 0 },
     };
-    // 위에서 아래에서 
-    // 좌에서 우로는 visible x 0 
 
     const modalVariants = {
         visible: { opacity: 1, y: 0 },
-        hidden: { opacity: 0, y: '-50%', transition: { duration: 0.1 } },
+        hidden: { opacity: 0, y: '-100%', transition: { duration: 0.1 } },
     };
 
     useEffect(() => {
@@ -59,18 +58,17 @@ const Backdrop = styled(motion.div)`
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(1px);
 `;
 
 const ModalContainer = styled(motion.div)`
   background-color: white;
-  margin: auto; /* 추가 */
-  border-radius: 1rem;
+  margin: auto;
+  border-radius: 0.5rem;
   position: absolute;
-  bottom: 70%;
-  width: 18.75rem;
-  height: 8rem;
-  /* filter: drop-shadow(rgba(0, 0, 0, 0.8) 2px 2px 20px); */
+  bottom: 0%;
+  width: 23.4375rem;
+  height: 15rem;
 `;
 
 export const CloseContainer = styled.div`
@@ -83,53 +81,44 @@ export const CloseContainer = styled.div`
   align-items: center;
   `;
 
-export const ModalMsgContainer = styled.div`
+export const ModalTitle = styled.div`
   font-size: 16px;
-  padding: 40px 30px;
-  text-align: center;
-  letter-spacing: -0.5px;
-  white-space: pre-line;
+  padding: 10px 20px;
+  border: 1px solid red;
+  ${props => props.theme.FlexRow}
+  /* letter-spacing: -0.5px;
+  white-space: pre-line; */
   line-height: 21px;
   font-weight: bold;
   color: #333333;
-`;
+  gap: 0 20px;
+  > p {
 
-const CloseButtonContainer = styled.div`
-  margin: 1rem;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
+  }
+  > span {
+    
+  }
 `;
-
-// Sign 커스텀 모달
-export function CheckModal(props) {
-    return (
-        <>
-            {/* 모달밖을 클릭하거나 확인 버튼 클릭시 사라진다  사라진다  */}
-            <Modal isOpen={props.isOpen} onClose={props.toggle}>
-                <ModalMsgContainer>{props.children}</ModalMsgContainer>
-                <CloseContainer>
-                    <Button onClick={props.onClose} fillButton type="button">
-                        확인
-                    </Button>
-                </CloseContainer>
-            </Modal>
-        </>
-    );
-}
 
 // 마커 클릭시 보여줄 모달 
 export function MarkerModal(props) {
-    console.log(props.data)
+    const data = props?.data
+    console.log(data)
     return (
         <Modal isOpen={props.isOpen} onClose={props.toggle}>
-            <ModalMsgContainer>{props.data.id}번 마커 </ModalMsgContainer>
-            <CloseContainer>
-                <Button onClick={props.onClose} fillButton type="button">
-                    확인
-                </Button>
-            </CloseContainer>
+            <ModalTitle>
+                <p>{data?.upkind}</p>
+                <span>{data?.kindCd}</span>
+                <h4>{data?.id}번</h4>
+            </ModalTitle>
+            <div>
+                위치 : {data?.happenPlace}
+                {
+                    data?.postImages?.map((item, index) => {
+                        return <img src={item?.imageURL} key={index} style={{ width: "100px", height: "100px" }} />
+                    })
+                }
+            </div>
         </Modal >
     );
 }

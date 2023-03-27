@@ -7,7 +7,6 @@ export const __GetCatchData = createAsyncThunk(
     async (arg, thunkAPI) => {
         try {
             const response = await instance.get('/api/pets/catch/all');
-            console.log("response", response);
             return thunkAPI.fulfillWithValue(response.data);
         } catch (error) {
             console.log(error.response);

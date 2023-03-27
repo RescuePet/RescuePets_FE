@@ -51,21 +51,22 @@ const Signin = () => {
     dispatch(__signinUser(siginInfo))
   }
 
-  // 에러 메시지만 받아서 처리하면 좋을거같음 
+  // 에러 메시지만 받아서 처리하면 좋을 듯
   const Message = useSelector((state) => {
     return state?.users?.message
   })
-  console.log(Message)
 
   // 로그인 성공시 
-  if (Message === 'success') {
-    console.log('로그인성공')
-    navigate('/home')
-  } else if (Message === '아이디,비밀번호를 확인해주세요') {
-    // toggleModal()
-    console.log('로그인실패')
-    // alert('로그인 실패')
-  }
+  useEffect(() => {
+    if (Message === 'success') {
+      console.log('로그인성공')
+      navigate('/home')
+    } else if (Message === '아이디,비밀번호를 확인해주세요') {
+      // toggleModal()
+      console.log('로그인실패')
+      // alert('로그인 실패')
+    }
+  }, [Message])
 
   const URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_SIGN_ID}&redirect_uri=http://localhost:3000/kakaologin`;
 
