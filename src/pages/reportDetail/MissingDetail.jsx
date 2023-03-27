@@ -26,6 +26,7 @@ import time from "../../asset/time.svg";
 import informationIcon from "../../asset/information.svg";
 import memo from "../../asset/memo.svg";
 import gratuity from "../../asset/gratuity.svg";
+import PostInformation from "./components/PostInformation";
 
 const MissingDetail = () => {
   const { id } = useParams();
@@ -158,8 +159,8 @@ const MissingDetail = () => {
             </InfoWrapper>
           )}
         </InfoContainer>
+        <PostInformation comment={missingComment.length}></PostInformation>
         <CommentContainer>
-          <CommentButtonWrapper></CommentButtonWrapper>
           <CommentListWrapper>
             {missingComment?.map((item) => {
               return (
@@ -255,8 +256,6 @@ const ContentText = styled.span`
 const CommentContainer = styled.div`
   ${FlexAttribute("column", "center", "center")}
 `;
-
-const CommentButtonWrapper = styled.div``;
 
 const CommentListWrapper = styled.div`
   ${FlexAttribute("column")}

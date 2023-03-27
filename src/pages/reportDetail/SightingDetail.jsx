@@ -25,6 +25,7 @@ import location from "../../asset/location.svg";
 import time from "../../asset/time.svg";
 import informationIcon from "../../asset/information.svg";
 import memo from "../../asset/memo.svg";
+import PostInformation from "./components/PostInformation";
 
 const SightingDetail = () => {
   const { id } = useParams();
@@ -143,8 +144,8 @@ const SightingDetail = () => {
             </ContentTextWrapper>
           </InfoWrapper>
         </InfoContainer>
+        <PostInformation comment={catchComment.length}></PostInformation>
         <CommentContainer>
-          <CommentButtonWrapper></CommentButtonWrapper>
           <CommentListWrapper>
             {catchComment?.map((item) => {
               return (
@@ -236,8 +237,6 @@ const ContentText = styled.span`
 const CommentContainer = styled.div`
   ${FlexAttribute("column", "center", "center")}
 `;
-
-const CommentButtonWrapper = styled.div``;
 
 const CommentListWrapper = styled.div`
   ${FlexAttribute("column")}
