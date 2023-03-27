@@ -20,9 +20,13 @@ const ChatRoom = () => {
   const [currentChat, setCurrentChat] = useState([]);
   console.log(process.env.REACT_APP_CHAT_TEST);
 
-  let postchatroomid = null;
+  const socket = new SockJS(`${process.env.REACT_APP_CHAT_TEST}/ws/chat`);
+  console.log("socket", socket);
+  const ws = Stomp.over(socket);
 
-  let stompClient = null;
+  console.log("ws", ws);
+
+  let postchatroomid = "";
 
   const [roomId, setRoomId] = useState("");
 
@@ -43,8 +47,6 @@ const ChatRoom = () => {
   const connectChatroom = async () => {
     console.log("post room", postname);
     console.log("post id", id);
-    const socket = new SockJS(`${process.env.REACT_APP_CHAT_TEST}/ws/chat`);
-    stompClient = Stomp.over(socket);
     instance
       .post(`/chat/${postname}/${id}`)
       .then((response) => {
@@ -52,7 +54,7 @@ const ChatRoom = () => {
         setRoomId(response.data);
         postchatroomid = response.data;
         console.log("response data", roomId);
-        wsConnect(response.data);
+        wsConnectSubscribe(response.data);
         return instance.get(`/room/${response.data}`);
       })
       .then((response) => {
@@ -62,52 +64,37 @@ const ChatRoom = () => {
   };
 
   // 연결 시 실행
-  const waitForConnection = (stompClient, callback) => {
+  const waitForConnection = (ws, callback) => {
     setTimeout(
       () => {
         // 연결되었을 때 콜백함수 실행
-        if (stompClient.stompClient.readyState === 1) {
+        if (ws.ws.readyState === 1) {
           callback();
           // 연결이 안 되었으면 재호출
         } else {
-          waitForConnection(stompClient, callback);
+          waitForConnection(ws, callback);
         }
       },
       1 // 밀리초 간격으로 실행
     );
   }; //stomp 메시지 에러 waitForConnection함수로 해결
 
-  const wsConnect = (roomId) => {
-    stompClient.connect(
-      headers,
-      () => {
-        subscribe();
-      },
-      onError
-    );
-  };
-  const onError = () => {
-    console.log("error");
-    setTimeout(wsConnect, 1000); // 재접속 시도
-  };
-
-  const subscribe = () => {
-    stompClient.subscribe("/sub/room", (response) => {
-      console.log("Received message:", response);
-      let data = JSON.parse(response.body);
-      setCurrentChat((prev) => [...prev, data]);
+  const wsConnectSubscribe = (roomId) => {
+    ws.connect(headers, {}, () => {
+      ws.subscribe(`/sub/${roomId}`, (response) => {
+        let data = JSON.parse(response.body);
+        setCurrentChat((prev) => [...prev, data]);
+      });
     });
   };
 
   const wsDisconnect = () => {
     try {
-      if (stompClient !== null) {
-        stompClient.unsubscribe("sub-0");
-        stompClient.disconnect(() => {
-          console.log("WebSocket disconnected.");
-          clearTimeout(waitForConnection);
-        });
-      }
+      ws.unsubscribe("sub-0");
+      ws.disconnect(() => {
+        console.log("WebSocket disconnected.");
+        clearTimeout(waitForConnection);
+      });
     } catch (e) {}
   };
 
@@ -121,9 +108,9 @@ const ChatRoom = () => {
       sender: sender.nickname,
       message: message,
     };
-    waitForConnection(stompClient, () => {
+    waitForConnection(ws, () => {
       console.log("send roomId", roomId);
-      stompClient.send(`/pub/${roomId}`, {}, JSON.stringify(sendSettings));
+      ws.send(`/pub/${roomId}`, {}, JSON.stringify(sendSettings));
     });
   };
 

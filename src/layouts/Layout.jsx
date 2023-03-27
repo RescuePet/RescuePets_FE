@@ -39,9 +39,8 @@ const Layout = ({ children }) => {
             location.pathname !== "/missing" &&
             location.pathname !== "/catch" &&
             location.pathname.split("/")[1] !== "sightingdetail" &&
-            location.pathname.split("/")[1] !== "missingdetail" && (
-              <Footer></Footer>
-            )}
+            location.pathname.split("/")[1] !== "missingdetail" &&
+            location.pathname.split("/")[1] !== "chatroom" && <Footer></Footer>}
         </MobileLayout>
       </WebLayout>
     </>
