@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import Button from '../../../elements/Button';
-import { NavLink } from 'react-router-dom';
+
 
 export default function Modal({ isOpen, onClose, children }) {
     const backdropVariants = {
@@ -64,11 +63,13 @@ const Backdrop = styled(motion.div)`
 const ModalContainer = styled(motion.div)`
   background-color: white;
   margin: auto;
-  border-radius: 0.5rem;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
   position: absolute;
   bottom: 0%;
   width: 23.4375rem;
   height: 15rem;
+  box-shadow: 0 4px 0 2px rgba(0,0,0,0.4);
 `;
 
 export const CloseContainer = styled.div`
@@ -84,7 +85,6 @@ export const CloseContainer = styled.div`
 export const ModalTitle = styled.div`
   font-size: 16px;
   padding: 10px 20px;
-  border: 1px solid red;
   ${props => props.theme.FlexRow}
   /* letter-spacing: -0.5px;
   white-space: pre-line; */
@@ -103,13 +103,21 @@ export const ModalTitle = styled.div`
 // 마커 클릭시 보여줄 모달 
 export function MarkerModal(props) {
     const data = props?.data
-    console.log(data)
+    // console.log(data)
+
+    const Stringkm = String(data?.km)
+    const Arraykm = Stringkm.split('')
+    const Splicekm = Arraykm.splice(Arraykm.length - 3, 0, '.')
+    const KMDATA = Arraykm.slice(0, 5)
+
+
     return (
         <Modal isOpen={props.isOpen} onClose={props.toggle}>
             <ModalTitle>
                 <p>{data?.upkind}</p>
                 <span>{data?.kindCd}</span>
                 <h4>{data?.id}번</h4>
+                <p>{KMDATA}Km</p>
             </ModalTitle>
             <div>
                 위치 : {data?.happenPlace}
