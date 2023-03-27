@@ -6,6 +6,7 @@ import cancel from "../../asset/delete.svg";
 import Location from "./components/Location";
 import imageCompression from "browser-image-compression";
 import imgdelete from "../../asset/imgDelete.svg";
+import close from "../../asset/Close.svg";
 import { CustomSelect } from "../../elements/CustomSelect";
 import {
     ReportMissingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
@@ -17,14 +18,32 @@ import {
 } from './components/reportstyle';
 import { NameValue, TimeValue, SeletegenderArr, seleteneuteredArr } from './components/data';
 import { __PostMissingData } from '../../redux/modules/missingSlice';
-import { useDispatch } from 'react-redux';
-import close from "../../asset/Close.svg";
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { toggleMenu } from "../../redux/modules/menubarSlice";
 
 const Missing = () => {
     let imageRef;
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+
+    // 리덕스에 저장되어있는 메뉴바 토글상태를 가지고 오고 
+    const menutoggle = useSelector((state) => {
+        return state.menubar.toggle;
+    })
+    // 저장하고 
+    const [mapBg, setMapBg] = useState(menutoggle);
+    // 값을 가지고올때 값을 변경하고 
+    useEffect(() => {
+        setMapBg(true)
+    }, [menutoggle])
+
+    const MoveToBackPage = () => {
+        dispatch(toggleMenu(mapBg))
+        navigate(-1)
+    }
+
 
     // 종류데이터
     const [type, setType] = useState(NameValue[0].name)
@@ -190,10 +209,8 @@ const Missing = () => {
     }
 
 
-    // 이전페이지로 이동 
-    const MoveToBackPage = () => {
-        navigate(-1)
-    }
+
+
 
 
 

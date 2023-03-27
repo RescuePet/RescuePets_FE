@@ -19,11 +19,32 @@ import { useDispatch, useSelector } from 'react-redux';
 import imgdelete from "../../asset/imgDelete.svg";
 import close from "../../asset/Close.svg";
 import { useNavigate } from 'react-router-dom';
+import { toggleMenu } from "../../redux/modules/menubarSlice";
 
 const Catch = () => {
   let imageRef;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // 리덕스에 저장되어있는 메뉴바 토글상태를 가지고 오고 
+  const menutoggle = useSelector((state) => {
+    return state.menubar.toggle;
+  })
+  // 저장하고 
+  const [mapBg, setMapBg] = useState(menutoggle);
+  // 값을 가지고올때 값을 변경하고 
+  useEffect(() => {
+    setMapBg(true)
+  }, [menutoggle])
+
+  // 뒤로가기 버튼을 눌렀을때 원래 가지고 잇던 값을 제거해준다
+  // 이전페이지로 이동 
+  const MoveToBackPage = () => {
+    dispatch(toggleMenu(mapBg))
+    navigate(-1)
+  }
+
+
   // 종류데이터
   const [type, setType] = useState(NameValue[0].name)
   const [typeID, setTypeID] = useState('DOG')
@@ -130,7 +151,7 @@ const Catch = () => {
   const addressLatDiv = document.getElementById('addressLat')
   const addressLngDiv = document.getElementById('addressLng')
 
-  // 입력값에 따라 버튼 활성화
+  // 입력값에 따라 버튼 활성화 사진도 필수값으로 넣ㄹ
   const [isActive, setIsActive] = useState(false);
   useEffect(() => {
     if (
@@ -179,10 +200,6 @@ const Catch = () => {
         formData.append(keyValue[0], keyValue[1]);
       }
 
-      // for (let value of formData.values()) {
-      //   console.log("FormData", value);
-      // }
-
       dispatch(__PostCatchData(formData))
       reset()
       alert('등록완료')
@@ -191,16 +208,6 @@ const Catch = () => {
 
 
 
-  const message = useSelector((state) => {
-    return state
-  })
-
-  // 이전페이지로 이동 
-  const MoveToBackPage = () => {
-    navigate(-1)
-  }
-
-  console.log(message)
   return (
     <Layout>
       <ReportSightingContainer onSubmit={handleSubmit(onSubmitSightingHanlder)}>
