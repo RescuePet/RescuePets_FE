@@ -2,6 +2,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import refineData from "./refineData";
 
+import male from "../asset/male.svg";
+import female from "../asset/female.svg";
+
 const instance = axios.create({
   baseURL: `${process.env.REACT_APP_SIGN_TEST}`,
 });

@@ -4,23 +4,25 @@ import styled from "styled-components";
 import { FlexAttribute, StateSpanStyle } from "../../../style/Mixin";
 import { Body_400_14 } from "../../../style/theme";
 import CardInfo from "./CardInfo";
+import petworkRefineData from "../../../utils/petworkRefine";
 
 const Card = ({ item }) => {
+  const refineData = petworkRefineData(item);
   return (
     <ListCard>
       <CardImgWrapper>
         <CardImg src={item.postImages[0]?.imageURL}></CardImg>
-        <StateSpan>{item.upkind}</StateSpan>
+        <StateSpan>{refineData.upkind}</StateSpan>
       </CardImgWrapper>
       <CardInfoContainer>
         <CardTitleWrapper>
           <CardTitle>{item.kindCd}</CardTitle>
-          <SexSvg>{item.sexCd}</SexSvg>
+          <img src={refineData.sexCd} alt="petworkSex" />
         </CardTitleWrapper>
         <CardInfoWrapper>
           <CardInfo>{item.happenPlace}</CardInfo>
           <CardInfo>{item.happenDt}</CardInfo>
-          <CardInfo>{item.neuterYn}</CardInfo>
+          <CardInfo>{refineData.information.join("/")}</CardInfo>
         </CardInfoWrapper>
       </CardInfoContainer>
     </ListCard>
@@ -42,7 +44,6 @@ const CardImgWrapper = styled.div`
 const CardImg = styled.img`
   width: 160px;
   height: 120px;
-  background-color: #999999;
 `;
 
 const StateSpan = styled.span`
@@ -62,13 +63,6 @@ const CardTitleWrapper = styled.div`
 
 const CardTitle = styled.span`
   ${Body_400_14}
-`;
-
-const SexSvg = styled.div`
-  width: 16px;
-  height: 16px;
-  margin-left: 8px;
-  background-color: red;
 `;
 
 const CardInfoWrapper = styled.div`
