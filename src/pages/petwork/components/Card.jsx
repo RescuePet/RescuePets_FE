@@ -6,6 +6,10 @@ import { Body_400_14 } from "../../../style/theme";
 import CardInfo from "./CardInfo";
 import petworkRefineData from "../../../utils/petworkRefine";
 
+import location from "../../../asset/location.svg";
+import time from "../../../asset/time.svg";
+import informationIcon from "../../../asset/information.svg";
+
 const Card = ({ item }) => {
   const refineData = petworkRefineData(item);
   return (
@@ -20,9 +24,11 @@ const Card = ({ item }) => {
           <img src={refineData.sexCd} alt="petworkSex" />
         </CardTitleWrapper>
         <CardInfoWrapper>
-          <CardInfo>{item.happenPlace}</CardInfo>
-          <CardInfo>{item.happenDt}</CardInfo>
-          <CardInfo>{refineData.information.join("/")}</CardInfo>
+          <CardInfo svg={location}>{item.happenPlace}</CardInfo>
+          <CardInfo svg={time}>{item.happenDt}</CardInfo>
+          <CardInfo svg={informationIcon}>
+            {refineData.information.join("/")}
+          </CardInfo>
         </CardInfoWrapper>
       </CardInfoContainer>
     </ListCard>
@@ -31,7 +37,7 @@ const Card = ({ item }) => {
 
 const ListCard = styled.div`
   width: 160px;
-  height: 226px;
+  height: 236px;
   border: 1px solid #eeeeee;
   border-radius: 4px;
   overflow: hidden;
@@ -63,10 +69,12 @@ const CardTitleWrapper = styled.div`
 
 const CardTitle = styled.span`
   ${Body_400_14}
+  line-height: 24px;
 `;
 
 const CardInfoWrapper = styled.div`
   ${FlexAttribute("column")}
+  padding-bottom: 16px;
 `;
 
 export default Card;
