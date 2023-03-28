@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { __getAdoptionDetail } from "../../redux/modules/adoptioonSlice";
+import { __getAdoptionDetail } from "../../redux/modules/adoptionSlice";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import Shelter from "./components/Shelter";
