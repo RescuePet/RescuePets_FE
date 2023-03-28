@@ -88,80 +88,78 @@ const SightingDetail = () => {
 
   return (
     <Layout>
-      <MissingDetailLayout>
-        <ImageCarousel images={catchPostDetail?.postImages} />
-        <TitleWrapper>
-          <Title titleInfo={titleInfo}></Title>
-        </TitleWrapper>
-        <Location locationInfo={locationInfo}></Location>
-        <InfoContainer>
-          <InfoWrapper>
-            <BotyTitleWrapper>
-              <BodyTitleSvg src={location} />
-              <BodyTitleText>위치</BodyTitleText>
-            </BotyTitleWrapper>
-            <ContentTextWrapper>
-              <ContentText>{catchPostDetail.happenPlace}</ContentText>
-            </ContentTextWrapper>
-          </InfoWrapper>
-          <InfoWrapper>
-            <BotyTitleWrapper>
-              <BodyTitleSvg src={time} />
-              <BodyTitleText>발견일시</BodyTitleText>
-            </BotyTitleWrapper>
-            <ContentTextWrapper>
-              <ContentTextBox>
-                <ContentOptionText>
-                  {catchPostDetail.happenDt} |{" "}
-                </ContentOptionText>
-                &nbsp;<ContentText>{catchPostDetail.happenHour}</ContentText>
-              </ContentTextBox>
-            </ContentTextWrapper>
-          </InfoWrapper>
-          <InfoWrapper>
-            <BotyTitleWrapper>
-              <BodyTitleSvg src={informationIcon} />
-              <BodyTitleText>특징</BodyTitleText>
-            </BotyTitleWrapper>
-            <ContentTextWrapper>
-              <ContentText>
-                {catchPostDetail.specialMark !== null
-                  ? catchPostDetail.specialMark
-                  : "없음"}
-              </ContentText>
-            </ContentTextWrapper>
-          </InfoWrapper>
-          <InfoWrapper>
-            <BotyTitleWrapper>
-              <BodyTitleSvg src={memo} />
-              <BodyTitleText>메모</BodyTitleText>
-            </BotyTitleWrapper>
-            <ContentTextWrapper>
-              <ContentText>
-                {catchPostDetail.content !== null
-                  ? catchPostDetail.content
-                  : "없음"}
-              </ContentText>
-            </ContentTextWrapper>
-          </InfoWrapper>
-        </InfoContainer>
-        <PostInformation comment={catchComment.length}></PostInformation>
-        <CommentContainer>
-          <CommentListWrapper>
-            {catchComment?.map((item) => {
-              return (
-                <Comment key={`catch-comment-${item.id}`} item={item}></Comment>
-              );
-            })}
-          </CommentListWrapper>
-        </CommentContainer>
-        <FloatingButton
-          onClick={() => {
-            console.log("hihi");
-            chatHandler();
-          }}
-        ></FloatingButton>
-      </MissingDetailLayout>
+      <ImageCarousel images={catchPostDetail?.postImages} />
+      <TitleWrapper>
+        <Title titleInfo={titleInfo}></Title>
+      </TitleWrapper>
+      <Location locationInfo={locationInfo}></Location>
+      <InfoContainer>
+        <InfoWrapper>
+          <BotyTitleWrapper>
+            <BodyTitleSvg src={location} />
+            <BodyTitleText>위치</BodyTitleText>
+          </BotyTitleWrapper>
+          <ContentTextWrapper>
+            <ContentText>{catchPostDetail.happenPlace}</ContentText>
+          </ContentTextWrapper>
+        </InfoWrapper>
+        <InfoWrapper>
+          <BotyTitleWrapper>
+            <BodyTitleSvg src={time} />
+            <BodyTitleText>발견일시</BodyTitleText>
+          </BotyTitleWrapper>
+          <ContentTextWrapper>
+            <ContentTextBox>
+              <ContentOptionText>
+                {catchPostDetail.happenDt} |{" "}
+              </ContentOptionText>
+              &nbsp;<ContentText>{catchPostDetail.happenHour}</ContentText>
+            </ContentTextBox>
+          </ContentTextWrapper>
+        </InfoWrapper>
+        <InfoWrapper>
+          <BotyTitleWrapper>
+            <BodyTitleSvg src={informationIcon} />
+            <BodyTitleText>특징</BodyTitleText>
+          </BotyTitleWrapper>
+          <ContentTextWrapper>
+            <ContentText>
+              {catchPostDetail.specialMark !== null
+                ? catchPostDetail.specialMark
+                : "없음"}
+            </ContentText>
+          </ContentTextWrapper>
+        </InfoWrapper>
+        <InfoWrapper>
+          <BotyTitleWrapper>
+            <BodyTitleSvg src={memo} />
+            <BodyTitleText>메모</BodyTitleText>
+          </BotyTitleWrapper>
+          <ContentTextWrapper>
+            <ContentText>
+              {catchPostDetail.content !== null
+                ? catchPostDetail.content
+                : "없음"}
+            </ContentText>
+          </ContentTextWrapper>
+        </InfoWrapper>
+      </InfoContainer>
+      <PostInformation comment={catchComment.length}></PostInformation>
+      <CommentContainer>
+        <CommentListWrapper>
+          {catchComment?.map((item) => {
+            return (
+              <Comment key={`catch-comment-${item.id}`} item={item}></Comment>
+            );
+          })}
+        </CommentListWrapper>
+      </CommentContainer>
+      <FloatingButton
+        onClick={() => {
+          console.log("hihi");
+          chatHandler();
+        }}
+      ></FloatingButton>
       <InputContainer
         placeholder="댓글을 입력해주세요."
         submitHandler={submitHandler}
@@ -169,12 +167,6 @@ const SightingDetail = () => {
     </Layout>
   );
 };
-
-const MissingDetailLayout = styled.div`
-  ${FlexAttribute("column", "", "")}
-  padding-bottom: 4.75rem;
-  width: 100%;
-`;
 
 const TitleWrapper = styled.div`
   ${FlexAttribute("row", "center", "center")}

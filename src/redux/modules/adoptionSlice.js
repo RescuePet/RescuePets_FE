@@ -38,12 +38,17 @@ const initialState = {
   loading: false,
   adoptionLists: [],
   adiotionDetail: {},
+  adoptionPage: 1,
 };
 
 export const adoptionSlice = createSlice({
   name: "adoption",
   initialState,
-  reducers: {},
+  reducers: {
+    addAdoptionPage: (state) => {
+      state.adoptionPage = state.adoptionPage + 1;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(__getAdoptionList.pending, (state) => {
@@ -76,4 +81,5 @@ export const adoptionSlice = createSlice({
   },
 });
 
+export const { addAdoptionPage } = adoptionSlice.actions;
 export default adoptionSlice.reducer;

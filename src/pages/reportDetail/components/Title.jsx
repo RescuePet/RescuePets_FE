@@ -21,13 +21,11 @@ const TitleWrapper = styled.div`
 
 const State = styled.span`
   padding: 2px;
-
   border-radius: 8px;
   background-color: ${(props) => props.theme.white};
   text-align: center;
   font-weight: 500;
   font-size: 10px;
-
   box-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.1);
   flex-basis: 35px;
   ${(props) =>
