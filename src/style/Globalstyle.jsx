@@ -13,9 +13,17 @@ const GlobalStyle = createGlobalStyle`
   src: url(${Roboto}) format("woff");
   font-style: normal;
 }
+html {
+  height: 100%;
+}
+#root {
+  height: 100%;
+}
 body {
   font-family: "Roboto","Noto_Sans_KR";
+  height: 100%;
 }
+
 `;
 
 export default GlobalStyle;

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { FlexAttribute } from "../style/Mixin";
+import { Border_1_color, FlexAttribute } from "../style/Mixin";
 import Footer from "./Footer";
 import isSignin from "../utils/token";
 
@@ -54,18 +54,20 @@ const WebLayout = styled.div`
 `;
 
 const MobileLayout = styled.div`
-  ${FlexAttribute("column", "center")}
-  width: 430px;
-  height: 100%;
+  ${FlexAttribute("column")}
+  width: 432px;
+  min-height: 100%;
   margin: 0 auto;
   padding-bottom: 76px;
   background-color: ${(props) => props.theme.color.white};
+  border-left: 1px solid ${(props) => props.theme.color.line_nomal};
+  border-right: 1px solid ${(props) => props.theme.color.line_nomal};
   // 430px이하일떄 넣어줌
   // 데스크탑용의 가장 큰 화면 사이즈의 레이아웃을 기본으로 하고, 점차 축소하는 형태로 CSS를 작성합니다.(스마트폰 화면에 적용)
   @media screen and (max-width: 430px) {
     margin: 0 auto;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
     padding-bottom: 76px;
     background-color: ${(props) => props.theme.color.white};
   }
