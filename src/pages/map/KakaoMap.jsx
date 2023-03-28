@@ -81,9 +81,6 @@ const KakaoMap = () => {
 
   useEffect(() => {
 
-
-
-
     // 목격글 마커 
     const missingimageSrc = `${missingmarker}`
     const missingimageSize = new kakao.maps.Size(16, 20)
@@ -149,6 +146,7 @@ const KakaoMap = () => {
         image: catchmarkerImage,
         name: item.id
       })
+
 
 
       kakao.maps.event.addListener(marker, 'click', function () {

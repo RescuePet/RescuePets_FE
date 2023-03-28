@@ -128,11 +128,11 @@ export function MarkerModal(props) {
             </ModalTitle>
             <ModlaMainInfo>
                 위치 : {data?.happenPlace}
-                {/* {
+                {
                     data?.postImages?.map((item, index) => {
                         return <img src={item?.imageURL} key={index} style={{ width: "100px", height: "100px" }} />
                     })
-                } */}
+                }
             </ModlaMainInfo>
         </Modal >
     );

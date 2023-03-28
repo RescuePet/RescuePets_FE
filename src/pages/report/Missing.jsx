@@ -93,6 +93,7 @@ const Missing = () => {
     const [image, setImage] = useState([]);
 
     const onChangeUploadHandler = async (e) => {
+
         e.preventDefault();
 
         const imageLists = e.target.files;
@@ -118,7 +119,7 @@ const Missing = () => {
         // console.log("Real", image)
         const formImg = new FormData();
         // console.log("Real", image.length)
-        for (let i = 0; i < image.length; i++) {
+        for (let i = 0; i < 3; i++) {
             formImg.append("postImages", image[i]);
         }
         // 폼데이터를 폼데이터에 담고 진행 
@@ -203,7 +204,7 @@ const Missing = () => {
             for (let value of formData.values()) {
                 console.log("FormData", value);
             }
-            dispatch(__PostMissingData(formData))
+            // dispatch(__PostMissingData(formData))
         }
         // reset()
     }
