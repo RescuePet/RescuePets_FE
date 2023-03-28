@@ -96,6 +96,7 @@ const PetworkHeader = styled.div`
 `;
 
 const HeaderImage = styled.img`
+  margin-left: 24px;
   width: 157px;
   height: 30px;
 `;
