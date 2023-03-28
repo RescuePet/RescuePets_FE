@@ -190,15 +190,14 @@ const Catch = () => {
       })
 
       // 총데이터를 불러온다 
-      for (let value of formData.values()) {
-        console.log("DATA", value);
-      }
+      // for (let value of formData.values()) {
+      //   console.log("DATA", value);
+      // }
       dispatch(__PostCatchData(formData))
-      // reset()
+      reset()
       alert('등록완료')
     }
   }
-
 
 
   return (

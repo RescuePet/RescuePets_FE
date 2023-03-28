@@ -84,58 +84,42 @@ const Missing = () => {
     };
 
 
+    // 사진 로직
     // 올린 이미지 담을 관리하는 State
     const [showImages, setShowImages] = useState([]);
     // 폼데이터로 이미지 관리하는 State
     const [imageFormData, setImageFormData] = useState([]);
-    // 폼데이터로 보관중인 스테이트
-    const [formImagin, setFormformImagin] = useState(new FormData());
-    const [image, setImage] = useState([]);
 
     const onChangeUploadHandler = async (e) => {
-
         e.preventDefault();
 
+        // 인풋에서 선택된 이미지들
         const imageLists = e.target.files;
-        setImage([...imageLists])
-        // console.log("폼데이터 보내야 할것들:", imageLists)
-        setImageFormData(imageLists)
-
-        setFormformImagin([...formImagin], ...e.target.files)
-
+        console.log(imageLists)
+        // 미리보기 담을것 
         let imageUrlLists = [...showImages];
+        // 폼데이터 담을것 
+        let imageFormLists = [...imageFormData];
+
+        // 미리보기 로직 
         for (let i = 0; i < imageLists.length; i++) {
             const currentImageUrl = URL.createObjectURL(imageLists[i]);
             imageUrlLists.push(currentImageUrl);
-            image.push(imageLists[i])
+            imageFormLists.push(imageLists[i])
         }
         if (imageUrlLists.length > 3) {
-            alert('이미지는 3장 이하만 가능합니다!')
-            setImageFormData(imageFormData.slice(0, 3));
-            imageUrlLists = imageUrlLists.slice(0, 3);
-            image = image.slice(0, 3)
+            imageUrlLists = imageUrlLists.slice(0, 3)
+            imageFormLists = imageFormLists.slice(0, 3)
         }
-        setShowImages(imageUrlLists);
-        // console.log("Real", image)
-        const formImg = new FormData();
-        // console.log("Real", image.length)
-        for (let i = 0; i < 3; i++) {
-            formImg.append("postImages", image[i]);
-        }
-        // 폼데이터를 폼데이터에 담고 진행 
-        setFormformImagin(formImg);
 
-        for (let value of formImagin.values()) {
-            console.log("이미지폼데이터", value);
-        }
+        setShowImages(imageUrlLists)
+        setImageFormData(imageFormLists)
     };
-
+    console.log("마지막이미지", showImages)
+    console.log("마지막폼데이터", imageFormData)
     const onClickDeleteHandler = () => {
-        setShowImages('');
-        setFormformImagin('')
+        setShowImages('')
         setImageFormData('')
-        // setImage(null)
-        window.location.reload()
     };
     // console.log('폼데이터 최신 :', imageFormData.length)
     const {
@@ -162,10 +146,10 @@ const Missing = () => {
             addressDiv?.innerHTML !== "" &&
             watch("days") !== ""
         ) {
-            console.log('성공')
+            // console.log('성공')
             setIsActive(false);
         } else {
-            console.log('실패')
+            // console.log('실패')
             setIsActive(true);
         }
     }, [watch()]);
@@ -197,24 +181,19 @@ const Missing = () => {
             formData.append("content", data.memo)
             formData.append("gratuity", data.money)
             formData.append("contact", data.number)
-            for (const keyValue of formImagin) {
-                formData.append(keyValue[0], keyValue[1]);
-            }
 
-            for (let value of formData.values()) {
-                console.log("FormData", value);
-            }
-            // dispatch(__PostMissingData(formData))
+            imageFormData.map((img) => {
+                formData.append("postImages", img)
+            })
+            // for (let value of formData.values()) {
+            //     console.log("FormData", value);
+            // }
+            dispatch(__PostMissingData(formData))
+            reset()
+            alert('등록완료')
         }
-        // reset()
+      
     }
-
-
-
-
-
-
-
 
     return (
         <Layout>
