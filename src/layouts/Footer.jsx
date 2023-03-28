@@ -29,7 +29,7 @@ const Footer = () => {
     dispatch(toggleMenu(menuBarToggle));
     const ToggleBtn = document.querySelector(".toggleBtn");
     if (menuBar === true) {
-      ToggleBtn.classListNaNpxove("active");
+      ToggleBtn.classList.remove("active");
     } else {
       ToggleBtn.classList.add("active");
     }
