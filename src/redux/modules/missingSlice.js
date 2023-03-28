@@ -23,6 +23,7 @@ export const __PostMissingData = createAsyncThunk(
         console.log(payload)
         try {
             const response = await instance.post('/api/pets/missing/', payload);
+            return thunkAPI.fulfillWithValue(response.data);
         } catch (error) {
             console.log(error.response);
         }
@@ -47,7 +48,7 @@ export const MissingData = createSlice({
         });
         builder.addCase(__PostMissingData.fulfilled, (state, action) => {
             state.loading = false;
-            // state.data = action.payload;
+            state.data = action.payload;
             state.error = null;
         });
         builder.addCase(__PostMissingData.rejected, (state, action) => {

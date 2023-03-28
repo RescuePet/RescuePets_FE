@@ -21,13 +21,25 @@ import { __PostMissingData } from '../../redux/modules/missingSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toggleMenu } from "../../redux/modules/menubarSlice";
+import { PostModal } from "./components/Modal";
+import { useModalState } from "../../hooks/useModalState";
 
 const Missing = () => {
     let imageRef;
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [loginModal, toggleModal] = useModalState(false);
+    const [postNumber, setPostNumber] = useState('');
 
 
+    const MissingNumber = useSelector((state) => {
+        return state.MissingData?.data
+    })
+
+    useEffect(() => {
+        setPostNumber(MissingNumber?.data)
+    }, [MissingNumber])
+    
     // 리덕스에 저장되어있는 메뉴바 토글상태를 가지고 오고 
     const menutoggle = useSelector((state) => {
         return state.menubar.toggle;
@@ -115,8 +127,9 @@ const Missing = () => {
         setShowImages(imageUrlLists)
         setImageFormData(imageFormLists)
     };
-    console.log("마지막이미지", showImages)
-    console.log("마지막폼데이터", imageFormData)
+    // console.log("마지막이미지", showImages)
+    // console.log("마지막폼데이터", imageFormData)
+
     const onClickDeleteHandler = () => {
         setShowImages('')
         setImageFormData('')
@@ -181,19 +194,20 @@ const Missing = () => {
             formData.append("content", data.memo)
             formData.append("gratuity", data.money)
             formData.append("contact", data.number)
-
             imageFormData.map((img) => {
                 formData.append("postImages", img)
             })
-            // for (let value of formData.values()) {
-            //     console.log("FormData", value);
-            // }
+
             dispatch(__PostMissingData(formData))
-            reset()
-            alert('등록완료')
+            toggleModal()
+            // reset()
+            // alert('등록완료')
         }
-      
+
     }
+
+
+
 
     return (
         <Layout>
@@ -464,7 +478,16 @@ const Missing = () => {
                     isActive === true ? <Button type="submit" disable assistiveFillButton>작성 완료</Button>
                         : (<Button type="submit" fillButton>작성 완료</Button>)
                 }
-
+                {
+                    <PostModal
+                        isOpen={loginModal}
+                        toggle={toggleModal}
+                        onClose={toggleModal}
+                        number={postNumber}
+                    >
+                        ddd
+                    </PostModal>
+                }
             </ReportMissingContainer >
         </Layout >
     )

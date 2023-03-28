@@ -184,15 +184,10 @@ const Catch = () => {
       formData.append("content", data.memo)
       formData.append("gratuity", data.money)
       formData.append("contact", data.number)
-
       imageFormData.map((img) => {
         formData.append("postImages", img)
       })
-
-      // 총데이터를 불러온다 
-      // for (let value of formData.values()) {
-      //   console.log("DATA", value);
-      // }
+    
       dispatch(__PostCatchData(formData))
       reset()
       alert('등록완료')
