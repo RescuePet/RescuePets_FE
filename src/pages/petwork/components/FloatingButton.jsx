@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import FooterIconChat from "../../../asset/footericon/FooterIconChat";
+import MapSvg from "../../../asset/map";
 import { FlexAttribute } from "../../../style/Mixin";
 
 const FloatingButton = ({ onClick }) => {
   return (
     <FloatingChatButton onClick={onClick}>
-      <FloatingChatButtonSvg viewBox="-4 -4 30 30"></FloatingChatButtonSvg>
+      <FloatingMapButtonSvg />
     </FloatingChatButton>
   );
 };
@@ -25,18 +25,9 @@ const FloatingChatButton = styled.div`
   cursor: pointer;
 `;
 
-const FloatingChatButtonSvg = styled(FooterIconChat)`
+const FloatingMapButtonSvg = styled(MapSvg)`
   width: 30px;
   height: 30px;
-  .default {
-    fill: ${(props) => props.theme.color.primary_nomal};
-  }
-  .balloon {
-    fill: ${(props) => props.theme.color.white};
-  }
-  circle {
-    fill: ${(props) => props.theme.color.white};
-  }
 `;
 
 export default FloatingButton;
