@@ -72,7 +72,7 @@ const ScrapState = styled(ClippingEmpty)`
   position: absolute;
   top: 11px;
   right: 16px;
-  z-index: 99;
+  z-index: 10;
 `;
 
 const CardInfoContainer = styled.div`

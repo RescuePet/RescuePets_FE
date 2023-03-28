@@ -100,6 +100,7 @@ const FooterContiner = styled.div`
   position: fixed;
   bottom: 0;
   background-color: ${(props) => props.theme.color.white};
+  z-index: 10;
   @media screen and (max-width: 431px) {
     width: 100%;
     position: fixed;
