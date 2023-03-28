@@ -20,16 +20,32 @@ import imgdelete from "../../asset/imgDelete.svg";
 import close from "../../asset/Close.svg";
 import { useNavigate } from 'react-router-dom';
 import { toggleMenu } from "../../redux/modules/menubarSlice";
+import { PostModal } from "./components/Modal";
+import { useModalState } from "../../hooks/useModalState";
 
 const Catch = () => {
   let imageRef;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loginModal, toggleModal] = useModalState(false);
+  const [postNumber, setPostNumber] = useState('');
 
+  const catchNumber = useSelector((state) => {
+    return state.catchData?.data
+  })
+  const data = {
+    number: catchNumber?.data,
+    name: "sightingdetail"
+  }
+  useEffect(() => {
+    setPostNumber(data)
+  }, [catchNumber])
+  console.log(postNumber)
   // 리덕스에 저장되어있는 메뉴바 토글상태를 가지고 오고 
   const menutoggle = useSelector((state) => {
     return state.menubar.toggle;
   })
+
   const [mapBg, setMapBg] = useState(menutoggle);
   useEffect(() => {
     setMapBg(true)
@@ -60,8 +76,7 @@ const Catch = () => {
     setTime(newData);
   }
   // 콘솔없애기 위한 로직 
-  const onChangeTimeValeu = () => {
-  }
+  const onChangeTimeValeu = () => { }
 
 
   // Tab 로직 
@@ -116,8 +131,8 @@ const Catch = () => {
     setImageFormData(imageFormLists)
   };
 
-  console.log("마지막이미지", showImages)
-  console.log("마지막폼데이터", imageFormData)
+  // console.log("마지막이미지", showImages)
+  // console.log("마지막폼데이터", imageFormData)
 
   const onClickDeleteHandler = () => {
     setShowImages('')
@@ -187,10 +202,11 @@ const Catch = () => {
       imageFormData.map((img) => {
         formData.append("postImages", img)
       })
-    
+
       dispatch(__PostCatchData(formData))
-      reset()
-      alert('등록완료')
+      toggleModal()
+      // reset()
+      // alert('등록완료')
     }
   }
 
@@ -404,6 +420,17 @@ const Catch = () => {
           isActive === true ? <Button type="submit" disable assistiveFillButton>작성 완료</Button>
             : (<Button type="submit" fillButton>작성 완료</Button>)
         }
+
+        {
+          <PostModal
+            isOpen={loginModal}
+            toggle={toggleModal}
+            onClose={toggleModal}
+            data={postNumber}
+          >
+          </PostModal>
+        }
+
       </ReportSightingContainer>
     </Layout >
   )

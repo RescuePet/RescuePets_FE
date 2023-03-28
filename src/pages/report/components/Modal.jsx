@@ -115,7 +115,6 @@ const ModlaMainInfo = styled.div`
 // 마커 클릭시 보여줄 모달 
 export function PostModal(props) {
     const navigate = useNavigate()
-    console.log(props?.number)
 
     return (
         <Modal isOpen={props.isOpen} onClose={props.toggle}>
@@ -123,7 +122,7 @@ export function PostModal(props) {
                 등록완료
             </ModalTitle>
             <ModlaMainInfo>
-                <Button GOToDetailButton onClick={(() => { navigate(`/missingdetail/${props?.number}`) })}>상세보기</Button>
+                <Button GOToDetailButton onClick={(() => { navigate(`/${props?.data?.name}/${props?.data?.number}`) })}>상세보기</Button>
 
                 <Button GOToDetailButton>포스터만들기</Button>
             </ModlaMainInfo>

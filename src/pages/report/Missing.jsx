@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import imageCompression from "browser-image-compression";
 import Layout from "../../layouts/Layout";
 import Button from "../../elements/Button";
 import cancel from "../../asset/delete.svg";
 import Location from "./components/Location";
-import imageCompression from "browser-image-compression";
 import imgdelete from "../../asset/imgDelete.svg";
 import close from "../../asset/Close.svg";
 import { CustomSelect } from "../../elements/CustomSelect";
@@ -18,8 +20,6 @@ import {
 } from './components/reportstyle';
 import { NameValue, TimeValue, SeletegenderArr, seleteneuteredArr } from './components/data';
 import { __PostMissingData } from '../../redux/modules/missingSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { toggleMenu } from "../../redux/modules/menubarSlice";
 import { PostModal } from "./components/Modal";
 import { useModalState } from "../../hooks/useModalState";
@@ -35,18 +35,21 @@ const Missing = () => {
     const MissingNumber = useSelector((state) => {
         return state.MissingData?.data
     })
-
+    const data = {
+        number: MissingNumber?.data,
+        name: "missingdetail"
+    }
     useEffect(() => {
-        setPostNumber(MissingNumber?.data)
+        setPostNumber(data)
     }, [MissingNumber])
-    
+
     // 리덕스에 저장되어있는 메뉴바 토글상태를 가지고 오고 
     const menutoggle = useSelector((state) => {
         return state.menubar.toggle;
     })
-    // 저장하고 
-    const [mapBg, setMapBg] = useState(menutoggle);
-    // 값을 가지고올때 값을 변경하고 
+
+    const [mapBg, setMapBg] = useState(menutoggle)
+
     useEffect(() => {
         setMapBg(true)
     }, [menutoggle])
@@ -127,14 +130,14 @@ const Missing = () => {
         setShowImages(imageUrlLists)
         setImageFormData(imageFormLists)
     };
-    // console.log("마지막이미지", showImages)
-    // console.log("마지막폼데이터", imageFormData)
+
 
     const onClickDeleteHandler = () => {
         setShowImages('')
         setImageFormData('')
     };
-    // console.log('폼데이터 최신 :', imageFormData.length)
+
+
     const {
         register, handleSubmit, formState: { errors }, reset,
         resetField, watch } = useForm({ mode: 'onChange' });
@@ -194,6 +197,7 @@ const Missing = () => {
             formData.append("content", data.memo)
             formData.append("gratuity", data.money)
             formData.append("contact", data.number)
+
             imageFormData.map((img) => {
                 formData.append("postImages", img)
             })
@@ -205,8 +209,6 @@ const Missing = () => {
         }
 
     }
-
-
 
 
     return (
@@ -233,8 +235,6 @@ const Missing = () => {
                                 <p>품종</p>
                                 {/* Input */}
                                 <ReportInput type="text" placeholder="입력하기"
-                                    onChange
-                                    // onChange={((e) => { onChangeTypes(e) })}
                                     {...register("animaltypes", {
                                         required: true,
                                         pattern: { value: /^[ㄱ-ㅎ|가-힣]+$/, message: "한글만 2 ~ 8글자 사이로 입력", },
@@ -246,7 +246,6 @@ const Missing = () => {
                         </ReportanimaltypesSelect>
                     </ReportanimaltypesBox>
 
-                    {/* 성별 중성화 여부 체크 */}
                     <ReportAnimalInfoBox>
                         <ReportAnimalInfoCheckBox>
                             <ReportAnimalInfoCheckBoxTitle><p>성별</p></ReportAnimalInfoCheckBoxTitle>
@@ -256,9 +255,8 @@ const Missing = () => {
                                         key={index}
                                         value={el.value}
                                         className={index === currentGenderTab ? "submenu focused" : "submenu"}
-                                        onClick={() => selectMGenderHandler(index)}
-                                    >{el.gender}
-                                    </li>
+                                        onClick={() => selectMGenderHandler(index)}>
+                                        {el.gender}</li>
                                 ))}
                             </ReportAnimalInfoCheckBoxSelete>
                         </ReportAnimalInfoCheckBox>
@@ -284,7 +282,6 @@ const Missing = () => {
                             <ReportAnimalInfoBoxColumnRow>
                                 <p>이름</p>
                                 <ReportInput type="text" placeholder='입력하기'
-                                    // onChange={onChangeName}
                                     {...register("animalName", {
                                         required: true,
                                         pattern: { value: /^[가-힣\s]+$/, message: "한글만 2 ~ 8글자 사이로 입력 ", },
@@ -297,7 +294,6 @@ const Missing = () => {
                             <ReportAnimalInfoBoxColumnRow>
                                 <p>나이(살)</p>
                                 <ReportInput type="text" placeholder='입력하기'
-                                    // onChange={onChangeAge}
                                     {...register("animalAge", {
                                         required: true,
                                         pattern: { value: /^[0-9]+$/, message: "숫자만입력가능", },
@@ -312,7 +308,6 @@ const Missing = () => {
                             <ReportAnimalInfoBoxColumnRow>
                                 <p>체중(Kg)</p>
                                 <ReportInput type="text" placeholder='입력하기'
-                                    // onChange={onChangeKg}
                                     {...register("animalkg", {
                                         required: true,
                                         pattern: { value: /^[0-9]+$/, message: "숫자만입력가능", },
@@ -472,8 +467,6 @@ const Missing = () => {
                     </div>
 
                 </ReportAnimalUserInfo>
-
-
                 {
                     isActive === true ? <Button type="submit" disable assistiveFillButton>작성 완료</Button>
                         : (<Button type="submit" fillButton>작성 완료</Button>)
@@ -483,11 +476,11 @@ const Missing = () => {
                         isOpen={loginModal}
                         toggle={toggleModal}
                         onClose={toggleModal}
-                        number={postNumber}
+                        data={postNumber}
                     >
-                        ddd
                     </PostModal>
                 }
+
             </ReportMissingContainer >
         </Layout >
     )

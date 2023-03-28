@@ -21,10 +21,10 @@ const FloatingPetNetworkContainer = styled.div`
     ${(props) => props.theme.FlexCenter}
     z-index: 19;
     background: ${props => props.theme.color.white};
-    top: 90%;
+    bottom: 1.625rem;
     width: 3.5rem;
     height: 3.5rem;
-    right: 3.5%;
+    right: 1.5625rem;
     border-radius: 50%;
     cursor: pointer;
     box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.25);
