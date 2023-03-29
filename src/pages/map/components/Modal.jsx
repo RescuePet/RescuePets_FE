@@ -261,7 +261,10 @@ export function MarkerModal(props) {
                         <p><img src={location} />위치:&nbsp;{data?.happenPlace}</p>
                         <p><img src={time} />일시:&nbsp;{data?.happenDt} / {data?.happenHour} </p>
 
-                        <span><img src={information} />이름:&nbsp;{data?.nickname} / 색깔: {data?.colorCd}</span>
+                        {data?.name === 'missingdetail' ? <span><img src={information} />색깔: {data?.colorCd}</span>
+                            : <span><img src={information} />이름:&nbsp;{data?.nickname} / 색깔: {data?.colorCd}</span>
+                        }
+                        {/* <span><img src={information} />이름:&nbsp;{data?.nickname} / 색깔: {data?.colorCd}</span> */}
                         <h4><Button moveToDetailButton onClick={MoveToDetailPageHandler}>상세보기</Button></h4>
                     </ModlaMiddleInfoBox>
                     <ModlaImgInfoBox>
