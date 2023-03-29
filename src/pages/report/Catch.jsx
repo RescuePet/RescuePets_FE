@@ -5,7 +5,6 @@ import Button from "../../elements/Button"
 import cancel from "../../asset/delete.svg";
 import Location from "./components/Location";
 import imageCompression from 'browser-image-compression';
-import imgdelete from "../../asset/imgDelete.svg";
 import { CustomSelect } from "../../elements/CustomSelect"
 import {
   ReportSightingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
@@ -16,11 +15,49 @@ import {
 } from './components/reportstyle';
 import { NameValue, TimeValue, SeletegenderArr, seleteneuteredArr } from './components/data';
 import { __PostCatchData } from '../../redux/modules/catchSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import imgdelete from "../../asset/imgDelete.svg";
+import close from "../../asset/Close.svg";
+import { useNavigate } from 'react-router-dom';
+import { toggleMenu } from "../../redux/modules/menubarSlice";
+import { PostModal } from "./components/Modal";
+import { useModalState } from "../../hooks/useModalState";
 
 const Catch = () => {
   let imageRef;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [loginModal, toggleModal] = useModalState(false);
+  const [postNumber, setPostNumber] = useState('');
+
+  const catchNumber = useSelector((state) => {
+    return state.catchData?.data
+  })
+  const data = {
+    number: catchNumber?.data,
+    name: "sightingdetail"
+  }
+  useEffect(() => {
+    setPostNumber(data)
+  }, [catchNumber])
+  console.log(postNumber)
+  // 리덕스에 저장되어있는 메뉴바 토글상태를 가지고 오고 
+  const menutoggle = useSelector((state) => {
+    return state.menubar.toggle;
+  })
+
+  const [mapBg, setMapBg] = useState(menutoggle);
+  useEffect(() => {
+    setMapBg(true)
+  }, [menutoggle])
+
+
+  // 뒤로가기 버튼을 눌렀을때 원래 가지고 잇던 값을 제거해준다
+  // 이전페이지로 이동 
+  const MoveToBackPage = () => {
+    dispatch(toggleMenu(mapBg))
+    navigate(-1)
+  }
 
   // 종류데이터
   const [type, setType] = useState(NameValue[0].name)
@@ -39,8 +76,7 @@ const Catch = () => {
     setTime(newData);
   }
   // 콘솔없애기 위한 로직 
-  const onChangeTimeValeu = () => {
-  }
+  const onChangeTimeValeu = () => { }
 
 
   // Tab 로직 
@@ -63,61 +99,51 @@ const Catch = () => {
     setCurrentNeuteredEnValue(seleteneuteredArr[index].value)
   };
 
+  // 사진 로직
   // 올린 이미지 담을 관리하는 State
   const [showImages, setShowImages] = useState([]);
   // 폼데이터로 이미지 관리하는 State
   const [imageFormData, setImageFormData] = useState([]);
-  // 폼데이터로 보관중인 스테이트
-  const [formImagin, setFormformImagin] = useState(new FormData());
-  const [image, setImage] = useState([]);
 
   const onChangeUploadHandler = async (e) => {
     e.preventDefault();
 
+    // 인풋에서 선택된 이미지들
     const imageLists = e.target.files;
-    setImage([...imageLists])
-    // console.log("폼데이터 보내야 할것들:", imageLists)
-    setImageFormData(imageLists)
-
-    setFormformImagin([...formImagin], ...e.target.files)
-
+    console.log(imageLists)
+    // 미리보기 담을것 
     let imageUrlLists = [...showImages];
-    // 미리보기를 띄워주는 로직
+    // 폼데이터 담을것 
+    let imageFormLists = [...imageFormData];
+
+    // 미리보기 로직 
     for (let i = 0; i < imageLists.length; i++) {
       const currentImageUrl = URL.createObjectURL(imageLists[i]);
       imageUrlLists.push(currentImageUrl);
-      image.push(imageLists[i])
+      imageFormLists.push(imageLists[i])
     }
-    // 갯수제한을 걸어주는 로직 
     if (imageUrlLists.length > 3) {
-      setImageFormData(imageFormData.slice(0, 3));
-      imageUrlLists = imageUrlLists.slice(0, 3);
+      imageUrlLists = imageUrlLists.slice(0, 3)
+      imageFormLists = imageFormLists.slice(0, 3)
     }
-    setShowImages(imageUrlLists);
 
-    const formImg = new FormData();
-    // console.log("Real", image.length)
-    for (let i = 0; i < image.length; i++) {
-      formImg.append("postImages", image[i]);
-    }
-    // 폼데이터를 폼데이터에 담고 진행 
-    setFormformImagin(formImg);
-
-    for (let value of formImagin.values()) {
-      console.log("이미지폼데이터", value);
-    }
+    setShowImages(imageUrlLists)
+    setImageFormData(imageFormLists)
   };
 
-  const onClickDeleteHandler = (id) => {
-    setShowImages('');
+  // console.log("마지막이미지", showImages)
+  // console.log("마지막폼데이터", imageFormData)
+
+  const onClickDeleteHandler = () => {
+    setShowImages('')
     setImageFormData('')
-    window.location.reload()
   };
 
   // React-hook-form
   const {
     register, handleSubmit, formState: { errors },
     reset, resetField, watch } = useForm({ mode: 'onChange' });
+
   // 버튼을 누르면 선택된 usehookForm 제거 
   const onClickDeleteValue = (data) => {
     resetField(data)
@@ -128,7 +154,7 @@ const Catch = () => {
   const addressLatDiv = document.getElementById('addressLat')
   const addressLngDiv = document.getElementById('addressLng')
 
-  // 입력값에 따라 버튼 활성화
+  // 입력값에 따라 버튼 활성화 사진도 필수값으로 넣
   const [isActive, setIsActive] = useState(false);
   useEffect(() => {
     if (
@@ -139,8 +165,7 @@ const Catch = () => {
       watch("address") !== "" &&
       watch("animalcolor") !== "" &&
       addressDiv?.innerHTML !== "" &&
-      watch("days") !== ""
-    ) {
+      watch("days") !== "") {
       // console.log('성공')
       setIsActive(false);
     } else {
@@ -153,6 +178,7 @@ const Catch = () => {
 
   // form submit 로직
   const onSubmitSightingHanlder = (data) => {
+
     if (addressDiv?.innerHTML === '') {
       alert('지도에 위치를 표기해주세요')
     } else {
@@ -173,17 +199,14 @@ const Catch = () => {
       formData.append("content", data.memo)
       formData.append("gratuity", data.money)
       formData.append("contact", data.number)
-
-      for (const keyValue of formImagin) {
-        formData.append(keyValue[0], keyValue[1]);
-      }
-
-      for (let value of formData.values()) {
-        console.log("FormData", value);
-      }
+      imageFormData.map((img) => {
+        formData.append("postImages", img)
+      })
 
       dispatch(__PostCatchData(formData))
+      toggleModal()
       // reset()
+      // alert('등록완료')
     }
   }
 
@@ -195,7 +218,7 @@ const Catch = () => {
         <ReportHeader>
           <div></div>
           <div>목격 글 작성하기</div>
-          <div>x</div>
+          <div><img src={close} onClick={MoveToBackPage} /></div>
         </ReportHeader>
 
         <ReportAnimalInfoArea>
@@ -261,7 +284,7 @@ const Catch = () => {
             <ReportAnimalInfoBox>
               <ReportAnimalInfoBoxColumn>
                 <ReportAnimalInfoBoxColumnRow>
-                  <p>추정나이</p>
+                  <p>추정나이(살)</p>
                   <ReportInput type="text" placeholder='입력하기'
                     {...register("animalAge", {
                       required: true,
@@ -312,12 +335,12 @@ const Catch = () => {
           <div>
             <div>
               <p>날짜</p>
-              <ReportInput type="text" placeholder='2022-07-14'
+              <ReportInput type="text" placeholder='20xx.xx.xx'
                 {...register("days", {
                   required: true,
                   pattern: {
-                    value: /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/,
-                    message: "20xx-xx-xx 형식으로 입력",
+                    value: /^\d{4}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[01])$/,
+                    message: "20xx.xx.xx 형식으로 입력",
                   },
                 })} />
               <img src={cancel} onClick={(() => { onClickDeleteValue('days') })} />
@@ -381,7 +404,9 @@ const Catch = () => {
                   {showImages.map((image, index) => (
                     <ReportAnimalPicturePreview key={index}>
                       <PreviewImage src={image} alt={`${image}-${index}`} />
-                      <div onClick={(() => { onClickDeleteHandler(index) })}>
+                      <div
+                        onClick={(() => { onClickDeleteHandler() })}
+                      >
                         <img src={imgdelete} /></div>
                     </ReportAnimalPicturePreview>
                   ))}
@@ -395,6 +420,17 @@ const Catch = () => {
           isActive === true ? <Button type="submit" disable assistiveFillButton>작성 완료</Button>
             : (<Button type="submit" fillButton>작성 완료</Button>)
         }
+
+        {
+          <PostModal
+            isOpen={loginModal}
+            toggle={toggleModal}
+            onClose={toggleModal}
+            data={postNumber}
+          >
+          </PostModal>
+        }
+
       </ReportSightingContainer>
     </Layout >
   )

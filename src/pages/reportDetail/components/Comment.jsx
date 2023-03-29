@@ -3,12 +3,16 @@ import styled from "styled-components";
 import { Border_1_color, FlexAttribute } from "../../../style/Mixin";
 import { Body_400_10, Body_400_12, Body_500_14 } from "../../../style/theme";
 
+import profileIcon from "../../../asset/profile.svg";
+
 const Comment = ({ item }) => {
-  console.log("comment Item", item);
+  const { profileImage } = JSON.parse(localStorage.getItem("userInfo"));
+  console.log(profileImage);
+  console.log(item);
   return (
     <CommentBox>
       <UserInfo>
-        <UserImg></UserImg>
+        <UserImg src={profileImage !== null ? profileImage : profileIcon} />
         <UserBox>
           <UserName>{item.userNickName}</UserName>
           {/* <CommentTime>43분전</CommentTime> */}
@@ -29,11 +33,10 @@ const CommentBox = styled.div`
   }
 `;
 
-const UserImg = styled.div`
+const UserImg = styled.img`
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background-color: #999999;
 `;
 
 const UserInfo = styled.div`

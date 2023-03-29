@@ -6,6 +6,8 @@ import location from "../../../asset/location.svg";
 import time from "../../../asset/time.svg";
 import information from "../../../asset/information.svg";
 
+import ClippingEmpty from "../../../asset/Clippingwhite.jsx";
+
 const Post = ({ item }) => {
   return (
     <PostContainer>
@@ -17,6 +19,7 @@ const Post = ({ item }) => {
         <TitleBox>
           <h2>{item.data.refinedata.kindCd}</h2>
           <img src={item.data.refinedata.sexCd} alt="sexCd" />
+          <ScrapState />
         </TitleBox>
         <TextBox>
           <img src={location} alt="location" />
@@ -77,10 +80,21 @@ const InformationWrapper = styled.div`
 `;
 
 const TitleBox = styled.div`
+  position: relative;
   ${FlexAttribute("row", "", "center")}
   h2 {
     ${(props) => props.theme.Body_400_14};
     padding-top: 2px;
+  }
+`;
+
+const ScrapState = styled(ClippingEmpty)`
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  path {
+    fill: ${(props) => props.theme.color.text_alternative};
   }
 `;
 

@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import Cookies from "js-cookie";
+import React, { useEffect, useState, useCallback } from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
@@ -15,103 +14,58 @@ import { instance } from "../../utils/api";
 import { useParams } from "react-router-dom";
 
 const ChatRoom = () => {
-  const { id, postname } = useParams();
+  const { id } = useParams();
+  const [chatlog, setChatLog] = useState([]);
   const sender = JSON.parse(localStorage.getItem("userInfo"));
-  const [currentChat, setCurrentChat] = useState([]);
-  console.log(process.env.REACT_APP_CHAT_TEST);
 
-  let postchatroomid = null;
-
-  let stompClient = null;
-
-  const [roomId, setRoomId] = useState("");
-
-  const TOKEN = Cookies.get("Token");
-
-  let headers = {
-    Access_Token: TOKEN,
+  let client;
+  console.log("roomId", id);
+  const getChatLog = async (roomId) => {
+    try {
+      const response = await instance.get(`/room/${roomId}`);
+      setChatLog(response.data.data.messages);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  useEffect(() => {
-    connectChatroom();
-    return () => {
-      wsDisconnect();
-    };
-  }, []);
-
-  // 연결 async
-  const connectChatroom = async () => {
-    console.log("post room", postname);
-    console.log("post id", id);
-    const socket = new SockJS(`${process.env.REACT_APP_CHAT_TEST}/ws/chat`);
-    stompClient = Stomp.over(socket);
-    instance
-      .post(`/chat/${postname}/${id}`)
-      .then((response) => {
-        console.log(response.data);
-        setRoomId(response.data);
-        postchatroomid = response.data;
-        console.log("response data", roomId);
-        wsConnect(response.data);
-        return instance.get(`/room/${response.data}`);
-      })
-      .then((response) => {
-        setCurrentChat([...response.data.data.dto]);
-        return;
-      });
-  };
-
-  // 연결 시 실행
-  const waitForConnection = (stompClient, callback) => {
-    setTimeout(
-      () => {
-        // 연결되었을 때 콜백함수 실행
-        if (stompClient.stompClient.readyState === 1) {
-          callback();
-          // 연결이 안 되었으면 재호출
-        } else {
-          waitForConnection(stompClient, callback);
-        }
-      },
-      1 // 밀리초 간격으로 실행
-    );
-  }; //stomp 메시지 에러 waitForConnection함수로 해결
-
-  const wsConnect = (roomId) => {
-    stompClient.connect(
-      headers,
-      () => {
-        subscribe();
-      },
-      onError
-    );
-  };
-  const onError = () => {
-    console.log("error");
-    setTimeout(wsConnect, 1000); // 재접속 시도
-  };
-
-  const subscribe = () => {
-    stompClient.subscribe("/sub/room", (response) => {
-      console.log("Received message:", response);
-      let data = JSON.parse(response.body);
-      setCurrentChat((prev) => [...prev, data]);
+  const stompConnect = () => {
+    const socket = new SockJS(`${process.env.REACT_APP_HOME_URL}/ws/chat`);
+    client = Stomp.over(socket);
+    client.connect({}, () => {
+      client.subscribe(
+        `/sub/${id}`,
+        (response) => {
+          let data = JSON.parse(response.body);
+          setChatLog((prev) => [...prev, data]);
+        },
+        { id: id }
+      );
     });
   };
 
-  const wsDisconnect = () => {
+  const stompDisconnect = async () => {
     try {
-      if (stompClient !== null) {
-        stompClient.unsubscribe("sub-0");
-        stompClient.disconnect(() => {
-          console.log("WebSocket disconnected.");
-          clearTimeout(waitForConnection);
-        });
-      }
-    } catch (e) {}
+      await client.disconnect();
+      await client.unsubscribe(id);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const submitHandler = (register) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      await getChatLog(id);
+      stompConnect();
+    };
+    fetchData();
+    return () => {
+      stompDisconnect();
+    };
+  }, []);
+
+  // client undefined 였는데, useCallback을 사용하니 정상 작동
+  const submitHandler = useCallback((register) => {
     let message = register.message;
     if (message === "") {
       return;
@@ -121,11 +75,8 @@ const ChatRoom = () => {
       sender: sender.nickname,
       message: message,
     };
-    waitForConnection(stompClient, () => {
-      console.log("send roomId", roomId);
-      stompClient.send(`/pub/${roomId}`, {}, JSON.stringify(sendSettings));
-    });
-  };
+    client.send(`/pub/${id}`, {}, JSON.stringify(sendSettings));
+  }, []);
 
   return (
     <Layout>
@@ -133,8 +84,8 @@ const ChatRoom = () => {
         <HeaderTitle>밤빵이아빠</HeaderTitle>
       </ChatRoomHeader>
       <ChatRoomBody>
-        {currentChat.length !== 0 &&
-          currentChat.map((item, index) => {
+        {chatlog.length !== 0 &&
+          chatlog.map((item, index) => {
             if (item.sender === sender.nickname) {
               return (
                 <Send key={`send-item-${index}`} message={item.message}></Send>

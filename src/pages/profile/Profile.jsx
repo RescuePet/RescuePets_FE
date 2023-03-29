@@ -8,6 +8,7 @@ import UserInformation from "./components/UserInformation";
 import profileHeader from "./../../asset/header/profileheader.png";
 
 const Profile = () => {
+  // 로그
   return (
     <Layout>
       <ProfileHeader>

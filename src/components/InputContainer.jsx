@@ -1,16 +1,18 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { FlexAttribute, FooterStyle, InputBorder_1 } from "../style/Mixin";
+import { FlexAttribute, InputBorder_1 } from "../style/Mixin";
 import { Body_400_12 } from "../style/theme";
+import picture from "../asset/picture.svg";
 
 const InputContainer = ({ placeholder, submitHandler }) => {
   const { register, reset, handleSubmit } = useForm();
+
   return (
     <ChatFooter>
       <ChatContainer>
         <div>
-          <span>🏞️</span>
+          <img src={picture} alt="pictureIcon" />
         </div>
         <InputWrapper
           onSubmit={handleSubmit((register) => {
@@ -27,9 +29,20 @@ const InputContainer = ({ placeholder, submitHandler }) => {
 };
 
 const ChatFooter = styled.div`
-  ${FooterStyle}
+  ${FlexAttribute("row", "space-around", "center")}
+  width: 430px;
+  height: 74px;
+  position: fixed;
+  bottom: 0;
   padding-top: 16px;
   padding-bottom: 24px;
+  border-top: 1px solid ${(props) => props.theme.color.text_disable};
+  background-color: ${(props) => props.theme.color.white};
+  @media screen and (max-width: 431px) {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+  }
 `;
 
 const ChatContainer = styled.div`

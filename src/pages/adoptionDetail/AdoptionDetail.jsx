@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { __getAdoptionDetail } from "../../redux/modules/adoptioonSlice";
+import { __getAdoptionDetail } from "../../redux/modules/adoptionSlice";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import Shelter from "./components/Shelter";
@@ -14,7 +14,10 @@ import location from "../../asset/location.svg";
 import calendar from "../../asset/calendar.svg";
 import specialmark from "../../asset/specialmark.svg";
 import user from "../../asset/user.svg";
-import { PostBorderStyle } from "../../style/Mixin";
+import Clippingwhite from "../../asset/Clippingwhite";
+import { FlexAttribute, PostBorderStyle } from "../../style/Mixin";
+import AdoptionInformation from "./components/AdoptionInformation";
+import Button from "../../elements/Button";
 
 const AdoptionDetail = () => {
   const { id } = useParams();
@@ -80,6 +83,7 @@ const AdoptionDetail = () => {
         <BackButton onClick={() => navigate(-1)}>
           <img src={backwhite} alt="back" />
         </BackButton>
+        <ScrapState />
       </ImageContainer>
       <div>
         <Title titleData={titleData}></Title>
@@ -92,6 +96,10 @@ const AdoptionDetail = () => {
           })}
         </ShelterContainer>
       </div>
+      <AdoptionInformation></AdoptionInformation>
+      <ButtonWrapper>
+        <Button fillButton>문의하기</Button>
+      </ButtonWrapper>
     </Layout>
   );
 };
@@ -116,15 +124,26 @@ const BackButton = styled.div`
   position: absolute;
   top: 26px;
   left: 20px;
-  /* transform: translate(20%, 100%); */
   z-index: 10;
-  background-color: transparent;
+  cursor: pointer;
+`;
+
+const ScrapState = styled(Clippingwhite)`
+  position: absolute;
+  top: 26px;
+  right: 20px;
+  z-index: 10;
   cursor: pointer;
 `;
 
 const ShelterContainer = styled.div`
   ${PostBorderStyle}
   padding-top: 16px;
+`;
+
+const ButtonWrapper = styled.div`
+  ${FlexAttribute("row", "center", "center")}
+  margin-top: 24px;
 `;
 
 export default AdoptionDetail;

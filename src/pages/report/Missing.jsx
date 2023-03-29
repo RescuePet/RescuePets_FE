@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import imageCompression from "browser-image-compression";
 import Layout from "../../layouts/Layout";
 import Button from "../../elements/Button";
 import cancel from "../../asset/delete.svg";
 import Location from "./components/Location";
-import imageCompression from "browser-image-compression";
 import imgdelete from "../../asset/imgDelete.svg";
+import close from "../../asset/Close.svg";
 import { CustomSelect } from "../../elements/CustomSelect";
-
 import {
     ReportMissingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox, ReportAnimalInfoCheckBox
     , ReportAnimalInfoCheckBoxTitle, ReportAnimalInfoCheckBoxSelete, ReportAnimalInfoBoxColumn, ReportAnimalInfoBoxColumnRow,
@@ -18,11 +20,45 @@ import {
 } from './components/reportstyle';
 import { NameValue, TimeValue, SeletegenderArr, seleteneuteredArr } from './components/data';
 import { __PostMissingData } from '../../redux/modules/missingSlice';
-import { useDispatch } from 'react-redux';
+import { toggleMenu } from "../../redux/modules/menubarSlice";
+import { PostModal } from "./components/Modal";
+import { useModalState } from "../../hooks/useModalState";
 
 const Missing = () => {
     let imageRef;
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [loginModal, toggleModal] = useModalState(false);
+    const [postNumber, setPostNumber] = useState('');
+
+
+    const MissingNumber = useSelector((state) => {
+        return state.MissingData?.data
+    })
+    const data = {
+        number: MissingNumber?.data,
+        name: "missingdetail"
+    }
+    useEffect(() => {
+        setPostNumber(data)
+    }, [MissingNumber])
+
+    // 리덕스에 저장되어있는 메뉴바 토글상태를 가지고 오고 
+    const menutoggle = useSelector((state) => {
+        return state.menubar.toggle;
+    })
+
+    const [mapBg, setMapBg] = useState(menutoggle)
+
+    useEffect(() => {
+        setMapBg(true)
+    }, [menutoggle])
+
+    const MoveToBackPage = () => {
+        dispatch(toggleMenu(mapBg))
+        navigate(-1)
+    }
+
 
     // 종류데이터
     const [type, setType] = useState(NameValue[0].name)
@@ -63,59 +99,45 @@ const Missing = () => {
     };
 
 
+    // 사진 로직
     // 올린 이미지 담을 관리하는 State
     const [showImages, setShowImages] = useState([]);
     // 폼데이터로 이미지 관리하는 State
     const [imageFormData, setImageFormData] = useState([]);
-    // 폼데이터로 보관중인 스테이트
-    const [formImagin, setFormformImagin] = useState(new FormData());
-    const [image, setImage] = useState([]);
 
     const onChangeUploadHandler = async (e) => {
         e.preventDefault();
 
+        // 인풋에서 선택된 이미지들
         const imageLists = e.target.files;
-        setImage([...imageLists])
-        // console.log("폼데이터 보내야 할것들:", imageLists)
-        setImageFormData(imageLists)
-
-        setFormformImagin([...formImagin], ...e.target.files)
-
+        console.log(imageLists)
+        // 미리보기 담을것 
         let imageUrlLists = [...showImages];
+        // 폼데이터 담을것 
+        let imageFormLists = [...imageFormData];
+
+        // 미리보기 로직 
         for (let i = 0; i < imageLists.length; i++) {
             const currentImageUrl = URL.createObjectURL(imageLists[i]);
             imageUrlLists.push(currentImageUrl);
-            image.push(imageLists[i])
+            imageFormLists.push(imageLists[i])
         }
         if (imageUrlLists.length > 3) {
-            alert('이미지는 3장 이하만 가능합니다!')
-            setImageFormData(imageFormData.slice(0, 3));
-            imageUrlLists = imageUrlLists.slice(0, 3);
-            image = image.slice(0, 3)
+            imageUrlLists = imageUrlLists.slice(0, 3)
+            imageFormLists = imageFormLists.slice(0, 3)
         }
-        setShowImages(imageUrlLists);
-        // console.log("Real", image)
-        const formImg = new FormData();
-        // console.log("Real", image.length)
-        for (let i = 0; i < image.length; i++) {
-            formImg.append("postImages", image[i]);
-        }
-        // 폼데이터를 폼데이터에 담고 진행 
-        setFormformImagin(formImg);
 
-        for (let value of formImagin.values()) {
-            console.log("이미지폼데이터", value);
-        }
+        setShowImages(imageUrlLists)
+        setImageFormData(imageFormLists)
     };
+
 
     const onClickDeleteHandler = () => {
-        setShowImages('');
-        setFormformImagin('')
+        setShowImages('')
         setImageFormData('')
-        // setImage(null)
-        window.location.reload()
     };
-    // console.log('폼데이터 최신 :', imageFormData.length)
+
+
     const {
         register, handleSubmit, formState: { errors }, reset,
         resetField, watch } = useForm({ mode: 'onChange' });
@@ -140,10 +162,10 @@ const Missing = () => {
             addressDiv?.innerHTML !== "" &&
             watch("days") !== ""
         ) {
-            console.log('성공')
+            // console.log('성공')
             setIsActive(false);
         } else {
-            console.log('실패')
+            // console.log('실패')
             setIsActive(true);
         }
     }, [watch()]);
@@ -175,19 +197,18 @@ const Missing = () => {
             formData.append("content", data.memo)
             formData.append("gratuity", data.money)
             formData.append("contact", data.number)
-            for (const keyValue of formImagin) {
-                formData.append(keyValue[0], keyValue[1]);
-            }
 
-            for (let value of formData.values()) {
-                console.log("FormData", value);
-            }
+            imageFormData.map((img) => {
+                formData.append("postImages", img)
+            })
+
             dispatch(__PostMissingData(formData))
+            toggleModal()
+            // reset()
+            // alert('등록완료')
         }
-        // reset()
+
     }
-
-
 
 
     return (
@@ -197,7 +218,7 @@ const Missing = () => {
                 <ReportHeader>
                     <div></div>
                     <div>실종 글 작성하기</div>
-                    <div>x</div>
+                    <div><img src={close} onClick={MoveToBackPage} /></div>
                 </ReportHeader>
 
                 <ReportAnimalInfoArea>
@@ -214,8 +235,6 @@ const Missing = () => {
                                 <p>품종</p>
                                 {/* Input */}
                                 <ReportInput type="text" placeholder="입력하기"
-                                    onChange
-                                    // onChange={((e) => { onChangeTypes(e) })}
                                     {...register("animaltypes", {
                                         required: true,
                                         pattern: { value: /^[ㄱ-ㅎ|가-힣]+$/, message: "한글만 2 ~ 8글자 사이로 입력", },
@@ -227,7 +246,6 @@ const Missing = () => {
                         </ReportanimaltypesSelect>
                     </ReportanimaltypesBox>
 
-                    {/* 성별 중성화 여부 체크 */}
                     <ReportAnimalInfoBox>
                         <ReportAnimalInfoCheckBox>
                             <ReportAnimalInfoCheckBoxTitle><p>성별</p></ReportAnimalInfoCheckBoxTitle>
@@ -237,9 +255,8 @@ const Missing = () => {
                                         key={index}
                                         value={el.value}
                                         className={index === currentGenderTab ? "submenu focused" : "submenu"}
-                                        onClick={() => selectMGenderHandler(index)}
-                                    >{el.gender}
-                                    </li>
+                                        onClick={() => selectMGenderHandler(index)}>
+                                        {el.gender}</li>
                                 ))}
                             </ReportAnimalInfoCheckBoxSelete>
                         </ReportAnimalInfoCheckBox>
@@ -265,7 +282,6 @@ const Missing = () => {
                             <ReportAnimalInfoBoxColumnRow>
                                 <p>이름</p>
                                 <ReportInput type="text" placeholder='입력하기'
-                                    // onChange={onChangeName}
                                     {...register("animalName", {
                                         required: true,
                                         pattern: { value: /^[가-힣\s]+$/, message: "한글만 2 ~ 8글자 사이로 입력 ", },
@@ -276,9 +292,8 @@ const Missing = () => {
                             </ReportAnimalInfoBoxColumnRow>
 
                             <ReportAnimalInfoBoxColumnRow>
-                                <p>나이</p>
+                                <p>나이(살)</p>
                                 <ReportInput type="text" placeholder='입력하기'
-                                    // onChange={onChangeAge}
                                     {...register("animalAge", {
                                         required: true,
                                         pattern: { value: /^[0-9]+$/, message: "숫자만입력가능", },
@@ -293,7 +308,6 @@ const Missing = () => {
                             <ReportAnimalInfoBoxColumnRow>
                                 <p>체중(Kg)</p>
                                 <ReportInput type="text" placeholder='입력하기'
-                                    // onChange={onChangeKg}
                                     {...register("animalkg", {
                                         required: true,
                                         pattern: { value: /^[0-9]+$/, message: "숫자만입력가능", },
@@ -327,13 +341,13 @@ const Missing = () => {
                     <div>
                         <div>
                             <p>날짜</p>
-                            <ReportInput type="text" placeholder='2022-07-14'
+                            <ReportInput type="text" placeholder='20xx.xx.xx'
                                 // onChange={onChangeDays}
                                 {...register("days", {
                                     required: true,
                                     pattern: {
-                                        value: /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/,
-                                        message: "20xx-xx-xx 형식으로 입력",
+                                        value: /^\d{4}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[01])$/,
+                                        message: "20xx.xx.xx 형식으로 입력",
                                     },
                                 })} />
                             <img src={cancel} onClick={(() => { onClickDeleteValue('days') })} />
@@ -420,7 +434,7 @@ const Missing = () => {
                 </ReportAnimalPictureArea>
                 <ReportAnimalUserInfo>
                     <div>
-                        <p>사례금</p>
+                        <p>사례금(원)</p>
                         <ReportInput type="text" placeholder='입력하기'
                             {...register("money", {
                                 required: false, // 필수 X 
@@ -453,11 +467,18 @@ const Missing = () => {
                     </div>
 
                 </ReportAnimalUserInfo>
-
-
                 {
                     isActive === true ? <Button type="submit" disable assistiveFillButton>작성 완료</Button>
                         : (<Button type="submit" fillButton>작성 완료</Button>)
+                }
+                {
+                    <PostModal
+                        isOpen={loginModal}
+                        toggle={toggleModal}
+                        onClose={toggleModal}
+                        data={postNumber}
+                    >
+                    </PostModal>
                 }
 
             </ReportMissingContainer >

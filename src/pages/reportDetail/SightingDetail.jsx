@@ -19,6 +19,14 @@ import {
   __postCatchComment,
 } from "../../redux/modules/commentSlice";
 import Comment from "./components/Comment";
+import petworkRefineData from "../../utils/petworkRefine";
+
+import location from "../../asset/location.svg";
+import time from "../../asset/time.svg";
+import informationIcon from "../../asset/information.svg";
+import memo from "../../asset/memo.svg";
+import PostInformation from "./components/PostInformation";
+import FloatingButton from "./components/FloatingButton";
 import { instance } from "../../utils/api";
 
 const SightingDetail = () => {
@@ -28,6 +36,7 @@ const SightingDetail = () => {
 
   const { catchPostDetail } = useSelector((state) => state.petwork);
   const { catchComment, editDone } = useSelector((state) => state?.comment);
+  const userName = JSON.parse(localStorage.getItem("userInfo"));
 
   useEffect(() => {
     dispatch(__getCatchPostDetail(id));
@@ -47,16 +56,14 @@ const SightingDetail = () => {
     return <div>로딩 중</div>;
   }
 
+  const refineData = petworkRefineData(catchPostDetail);
+
   const titleInfo = {
     state: "목격",
     kindCd: catchPostDetail.kindCd,
-    upkind: catchPostDetail.upkind,
-    sexCd: catchPostDetail.sexCd,
-    info: [
-      catchPostDetail.neuterYn,
-      catchPostDetail.age,
-      catchPostDetail.colorCd,
-    ],
+    upkind: refineData.upkind,
+    sexCd: refineData.sexCd,
+    info: refineData.information.join("/"),
   };
 
   const locationInfo = {
@@ -76,79 +83,97 @@ const SightingDetail = () => {
   };
 
   const chatHandler = async () => {
-    console.log("hi");
-    const postname = "catch-room";
-    navigate(`/chatroom/${postname}/${id}`);
+    const response = await instance.post(
+      `/chat/catch-room/${catchPostDetail.id}`
+    );
+    console.log("post response", response.data);
+    navigate(`/chatroom/${response.data}`);
   };
+
+  console.log("post detail", catchPostDetail);
 
   return (
     <Layout>
-      <MissingDetailLayout>
-        <ImageCarousel images={catchPostDetail?.postImages} />
-        <TitleWrapper>
-          <Title titleInfo={titleInfo}></Title>
-        </TitleWrapper>
-        <Location locationInfo={locationInfo}></Location>
-        <InfoContainer>
-          <InfoWrapper>
-            <BodyTitleSvg>📍</BodyTitleSvg>
+      <ImageCarousel images={catchPostDetail?.postImages} />
+      <TitleWrapper>
+        <Title titleInfo={titleInfo}></Title>
+      </TitleWrapper>
+      <Location locationInfo={locationInfo}></Location>
+      <InfoContainer>
+        <InfoWrapper>
+          <BotyTitleWrapper>
+            <BodyTitleSvg src={location} />
             <BodyTitleText>위치</BodyTitleText>
-            <ContentTextWrapper>
-              <ContentText>{catchPostDetail.happenPlace}</ContentText>
-            </ContentTextWrapper>
-          </InfoWrapper>
-          <InfoWrapper>
-            <BodyTitleSvg>📍</BodyTitleSvg>
+          </BotyTitleWrapper>
+          <ContentTextWrapper>
+            <ContentText>{catchPostDetail.happenPlace}</ContentText>
+          </ContentTextWrapper>
+        </InfoWrapper>
+        <InfoWrapper>
+          <BotyTitleWrapper>
+            <BodyTitleSvg src={time} />
             <BodyTitleText>발견일시</BodyTitleText>
-            <ContentTextWrapper>
-              <ContentTextBox>
-                <ContentOptionText>
-                  {catchPostDetail.happenDt} |{" "}
-                </ContentOptionText>
-                &nbsp;<ContentText>{catchPostDetail.happenHour}</ContentText>
-              </ContentTextBox>
-            </ContentTextWrapper>
-          </InfoWrapper>
-          <InfoWrapper>
-            <BodyTitleSvg>📍</BodyTitleSvg>
+          </BotyTitleWrapper>
+          <ContentTextWrapper>
+            <ContentTextBox>
+              <ContentOptionText>
+                {catchPostDetail.happenDt} |{" "}
+              </ContentOptionText>
+              &nbsp;<ContentText>{catchPostDetail.happenHour}</ContentText>
+            </ContentTextBox>
+          </ContentTextWrapper>
+        </InfoWrapper>
+        <InfoWrapper>
+          <BotyTitleWrapper>
+            <BodyTitleSvg src={informationIcon} />
             <BodyTitleText>특징</BodyTitleText>
-            <ContentTextWrapper>
-              <ContentText>{catchPostDetail.specialMark}</ContentText>
-            </ContentTextWrapper>
-          </InfoWrapper>
-          <InfoWrapper>
-            <BodyTitleSvg>📍</BodyTitleSvg>
+          </BotyTitleWrapper>
+          <ContentTextWrapper>
+            <ContentText>
+              {catchPostDetail.specialMark !== null
+                ? catchPostDetail.specialMark
+                : "없음"}
+            </ContentText>
+          </ContentTextWrapper>
+        </InfoWrapper>
+        <InfoWrapper>
+          <BotyTitleWrapper>
+            <BodyTitleSvg src={memo} />
             <BodyTitleText>메모</BodyTitleText>
-            <ContentTextWrapper>
-              <ContentText>{catchPostDetail.content}</ContentText>
-            </ContentTextWrapper>
-          </InfoWrapper>
-        </InfoContainer>
-        <CommentContainer>
-          <CommentButtonWrapper></CommentButtonWrapper>
-          <CommentListWrapper>
-            {catchComment?.map((item) => {
-              return (
-                <Comment key={`catch-comment-${item.id}`} item={item}></Comment>
-              );
-            })}
-          </CommentListWrapper>
-        </CommentContainer>
-        <FloatingChatButton onClick={() => chatHandler()}></FloatingChatButton>
-      </MissingDetailLayout>
+          </BotyTitleWrapper>
+          <ContentTextWrapper>
+            <ContentText>
+              {catchPostDetail.content !== null
+                ? catchPostDetail.content
+                : "없음"}
+            </ContentText>
+          </ContentTextWrapper>
+        </InfoWrapper>
+      </InfoContainer>
+      <PostInformation comment={catchComment.length}></PostInformation>
+      <CommentContainer>
+        <CommentListWrapper>
+          {catchComment?.map((item) => {
+            return (
+              <Comment key={`catch-comment-${item.id}`} item={item}></Comment>
+            );
+          })}
+        </CommentListWrapper>
+      </CommentContainer>
       <InputContainer
         placeholder="댓글을 입력해주세요."
         submitHandler={submitHandler}
       ></InputContainer>
+      {userName.nickname !== catchPostDetail.nickname && (
+        <FloatingButton
+          onClick={() => {
+            chatHandler();
+          }}
+        ></FloatingButton>
+      )}
     </Layout>
   );
 };
-
-const MissingDetailLayout = styled.div`
-  ${FlexAttribute("column", "", "")}
-  padding-bottom: 4.75rem;
-  width: 100%;
-`;
 
 const TitleWrapper = styled.div`
   ${FlexAttribute("row", "center", "center")}
@@ -166,16 +191,24 @@ const InfoWrapper = styled.div`
   ${FlexAttribute("row", "space-evenly")}
 `;
 
-const BodyTitleSvg = styled.div`
+const BotyTitleWrapper = styled.div`
+  ${FlexAttribute("row", "center")}
+  width: 80px;
+`;
+
+const BodyTitleSvg = styled.img`
   flex-basis: 20px;
+  width: 24px;
+  height: 24px;
 `;
 
 const BodyTitleText = styled.span`
   flex-basis: 50px;
-  padding-top: 2px;
+  margin-left: 4px;
+  padding-top: 1px;
   font-weight: 400;
   font-size: 14px;
-  line-height: 16px;
+  line-height: 24px;
   color: #999999;
 `;
 
@@ -194,7 +227,7 @@ const ContentTextBox = styled.div`
 const ContentOptionText = styled.span`
   font-weight: 400;
   font-size: 14px;
-  line-height: 16px;
+  line-height: 24px;
   color: #666666;
 `;
 
@@ -202,7 +235,7 @@ const ContentText = styled.span`
   display: inline-block;
   font-weight: 400;
   font-size: 14px;
-  line-height: 16px;
+  line-height: 24px;
   color: #222222;
 `;
 
@@ -210,23 +243,8 @@ const CommentContainer = styled.div`
   ${FlexAttribute("column", "center", "center")}
 `;
 
-const CommentButtonWrapper = styled.div``;
-
 const CommentListWrapper = styled.div`
   ${FlexAttribute("column")}
-`;
-
-const FloatingChatButton = styled.div`
-  position: fixed;
-  bottom: 96px;
-  right: 20px;
-  width: 56px;
-  height: 56px;
-  z-index: 10;
-  background-color: #666666;
-  border-radius: 50%;
-  box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
 `;
 
 export default SightingDetail;

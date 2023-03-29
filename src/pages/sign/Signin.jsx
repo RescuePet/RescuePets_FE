@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-
 import cancel from "../../asset/cancel.svg";
 import check from "../../asset/check.svg";
-
 import Layout from "../../layouts/Layout";
 import { __signinUser } from "../../redux/modules/signSlice";
 import { FlexAttribute, HeaderStyle, SignSvgStyle } from "../../style/Mixin";
 import Button from "../../elements/Button";
 import { useNavigate } from "react-router-dom";
+import { useModalState } from "../../hooks/useModalState";
+import { CheckModal } from "../../elements/Modal";
+
 
 const Signin = () => {
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loginModal, toggleModal] = useModalState(false);
+
   const {
     register, handleSubmit, formState: { errors }, reset,
     resetField, watch } = useForm({ mode: 'onChange' });
@@ -39,11 +43,34 @@ const Signin = () => {
 
 
   const onSubmitSigninHanler = (data) => {
-    console.log(data)
-    dispatch(__signinUser({ email: data.email, password: data.password }));
+    const siginInfo = {
+      email: data.email,
+      password: data.password
+    }
+    // 토
+    toggleModal()
+    dispatch(__signinUser(siginInfo))
   }
 
-
+  // 에러 메시지만 받아서 처리하면 좋을 듯
+  const SignInMessage = useSelector((state) => {
+    return state?.users?.Signinmessage
+  })
+  // console.log(SignInMessage)
+  // 로그인 성공시 
+  useEffect(() => {
+    if (SignInMessage === 'success') {
+      console.log('로그인성공')
+      setTimeout(function () {
+        navigate('/home')
+      }, 1000);
+      // navigate('/home')
+    } else if (SignInMessage === '아이디,비밀번호를 확인해주세요') {
+      // toggleModal()
+      console.log('로그인실패')
+      // alert('로그인 실패')
+    }
+  }, [SignInMessage])
 
   const URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_SIGN_ID}&redirect_uri=http://localhost:3000/kakaologin`;
 
@@ -63,12 +90,12 @@ const Signin = () => {
             <SignInput name="email" placeholder="이메일 주소"
               {...register("email", {
                 pattern: {
-                  value: /^[a-zA-Z0-9]+$/,
-                  message: "영문 숫자 2 ~ 8글자 사이로 입력",
+                  value: /^[a-z0-9\.\-_]+@([a-z0-9\-]+\.)+[a-z]{2,6}$/,
+                  message: "이메일 형식으로 작성",
                 },
                 maxLength: {
-                  value: 12,
-                  message: "12글자이내 작성"
+                  value: 30,
+                  message: "30글자이내 작성"
                 },
               })}
             />
@@ -94,6 +121,16 @@ const Signin = () => {
             <span>{errors?.password?.message}</span>
           </InputWrapper>
         </SignForm>
+        {SignInMessage === null ? null : (
+          <CheckModal
+            isOpen={loginModal}
+            toggle={toggleModal}
+            onClose={toggleModal}>
+            {SignInMessage}
+          </CheckModal>
+
+        )
+        }
         <AutoSignInWrapper>
           <img src={check} alt="check" />
           <span>자동로그인</span>

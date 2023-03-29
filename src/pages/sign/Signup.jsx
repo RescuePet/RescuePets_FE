@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import back from "../../asset/Back.svg";
@@ -15,8 +15,16 @@ import {
 import Button from "../../elements/Button";
 import { CustomSelect } from "../../elements/CustomSelect";
 import { useNavigate } from "react-router-dom";
+import { useModalState } from "../../hooks/useModalState";
+import { CheckModal } from "../../elements/Modal";
+import Vector from "../../asset/Vector.png";
+import { Error } from "./components/Error";
 
 const Signup = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [loginModal, toggleModal] = useModalState(false);
+
   const data = [
     { id: 0, name: "naver.com" },
     { id: 1, name: "gmail.com" },
@@ -33,13 +41,22 @@ const Signup = () => {
     handleSubmit,
     formState: { errors },
     reset,
-    watch
+    watch,
   } = useForm({ mode: "onChange" });
+
+  const [emailCheck, setEmailCheck] = useState(false);
+  const emailWatch = watch("id");
+  useEffect(() => {
+    if (errors?.id?.message !== undefined) {
+      setEmailCheck(true);
+    } else {
+      setEmailCheck(false);
+    }
+  }, [emailWatch]);
+  console.log(emailCheck);
 
   // 비밀번호 체크 로직
   const [showPassword, setShowPassword] = useState(false);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   //비밀번호 이모티콘
   const toggleShowPassword = () => {
@@ -49,11 +66,12 @@ const Signup = () => {
   const [isActive, setIsActive] = useState(false);
 
   const watchAll = Object.values(watch());
+  // console.log(watchAll)
 
   useEffect(() => {
-    // react-hook-form 만든 값들이 전부 입력이 되면 
+    // react-hook-form 만든 값들이 전부 입력이 되면
     if (watchAll.every((el) => el)) {
-      // 비밀번호 같다면 
+      // 비밀번호 같다면
       if (watchAll[1] === watchAll[2]) {
         setIsActive(true);
       }
@@ -80,13 +98,34 @@ const Signup = () => {
         password: data.password,
         nickname: data.nickname,
       };
+      toggleModal();
       dispatch(__signupUser(userInfo));
       reset();
-      navigate("/signin");
+      // navigate("/signin");
     } else {
       alert("비밀번호 오류");
     }
   };
+
+  const SignUpmessage = useSelector((state) => {
+    return state?.users?.Signupmessage;
+  });
+  useEffect(() => {
+    if (SignUpmessage === "중복된 이메일이 존재합니다.") {
+      console.log("에러");
+      // 모달 띄우기
+    } else if (SignUpmessage === "중복된 닉네임이 존재합니다.") {
+      console.log("오류띄우기");
+    } else if (SignUpmessage === "success") {
+      // 로그인 성공
+      console.log("회원가입 성공");
+      setTimeout(function () {
+        navigate("/signin");
+      }, 1000);
+    }
+  }, [SignUpmessage]);
+
+  // console.log(Message)
 
   return (
     <Layout>
@@ -111,14 +150,24 @@ const Signup = () => {
                 {...register("id", {
                   pattern: {
                     value: /^[a-zA-Z0-9]+$/,
+                    // Error 영문 숫자 2 ~ 8글자 사이로 입력
                     message: "영문 숫자 2 ~ 8글자 사이로 입력",
                   },
                   maxLength: { value: 12, message: "12글자이내 작성" },
                 })}
               />
               <span>{errors?.id?.message}</span>
+              {/* {
+                emailCheck === true ? (
+                  <span>
+                    {
+                      errors?.id?.message === '' ? null : <img src={Vector} />
+                    }
+                    {errors?.id?.message}</span>
+                ) : null
+              } */}
             </div>
-            <p>@</p>
+            <p style={{ position: "aabsoluteb", top: "-5px" }}>@</p>
             <div>
               <CustomSelect data={data} onChangeData={onChangeData} />
             </div>
@@ -148,6 +197,7 @@ const Signup = () => {
                 placeholder="영문, 숫자, 특수문자 조합 8자리 이상"
               />
               <img onClick={toggleShowPassword} src={eye} alt="showPassword" />
+
               <span>{errors?.password?.message}</span>
             </div>
             <div>
@@ -195,14 +245,27 @@ const Signup = () => {
           </div>
         </SignIdNincknameBox>
         <SignBtnBox>
-
-          {
-            isActive === false ? <Button type="submit" disable assistiveFillButton>로그인</Button>
-              : (<Button type="submit" fillButton>로그인</Button>)
-          }
-
+          {isActive === false ? (
+            <Button type="submit" disable assistiveFillButton>
+              로그인
+            </Button>
+          ) : (
+            <Button type="submit" fillButton>
+              로그인
+            </Button>
+          )}
         </SignBtnBox>
       </SignContainer>
+
+      {SignUpmessage === null ? null : (
+        <CheckModal
+          isOpen={loginModal}
+          toggle={toggleModal}
+          onClose={toggleModal}
+        >
+          {SignUpmessage}
+        </CheckModal>
+      )}
     </Layout>
   );
 };
@@ -221,7 +284,7 @@ const SignHeader = styled.div`
   font-size: 1.125rem;
   font-weight: 700;
   ${FlexAttribute("row", "", "center")};
-  color: ${(props) => props.theme.color.text_nomal};
+  color: ${(props) => props.theme.color.text_normal};
   div {
     height: 100%;
     width: 33.3%;
@@ -254,8 +317,20 @@ const SignIdNincknameBox = styled.div`
       height: 90%;
       > span {
         ${(props) => props.theme.Span_alert}
+        /* border: 1px solid red; */
+        color: #D6459C;
+        font-size: 10px;
+        > img {
+          position: absolute;
+          left: 5px;
+          bottom: 4px;
+          width: 0.625rem;
+          height: 0.5625rem;
+          ${(props) => props.theme.FlexCenter}/* border: 1px solid red; */
+        }
       }
     }
+
     > span {
       position: absolute;
       top: 40px;
@@ -290,6 +365,8 @@ const SignPwBox = styled.div`
         position: absolute;
         display: flex;
         ${(props) => props.theme.Span_alert}
+        color: #D6459C;
+        font-size: 10px;
       }
     }
   }
