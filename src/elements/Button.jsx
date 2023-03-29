@@ -50,6 +50,27 @@ const BtnStyle = styled.button`
       color: ${(props) => props.theme.color.white};
       background: ${(props) => props.theme.color.primary_nomal};
     `}
+    ${(props) =>
+    props.moveToDetailButton &&
+    css`
+      width: 4rem;
+      height: 1rem;
+      ${(props) => props.theme.Body_400_12}
+      ${props => props.theme.FlexCenter}
+      color: ${(props) => props.theme.color.black};
+      background: ${(props) => props.theme.color.primary_nomal};
+      &:hover {
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+    `}
+    /* &:hover {
+    cursor: pointer;
+    transition: 0.2s ease;
+  } */
+  &:active {
+    filter: brightness(10%);
+  }
 `;
 
 export default Button;

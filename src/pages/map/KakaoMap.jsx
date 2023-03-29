@@ -52,7 +52,7 @@ const KakaoMap = () => {
   const missingData = useSelector((state) => state.MissingData?.data);
 
   useEffect(() => {
-    console.log("실종데이터 ", missingData?.data)
+    // console.log("실종데이터 ", missingData?.data)
     if (JSON.stringify(missingData) === undefined) {
       return <div>Loading...</div>;
     }
@@ -61,7 +61,7 @@ const KakaoMap = () => {
   // console.log("실종데이터 ", missingData?.data)
   const catchData = useSelector((state) => state.catchData?.data);
   useEffect(() => {
-    console.log("목격데이터", catchData?.data)
+    // console.log("목격데이터", catchData?.data)
     if (JSON.stringify(catchData) === undefined) {
       return <div>Loading...</div>;
     }
@@ -107,7 +107,7 @@ const KakaoMap = () => {
 
     // 실종글 작성 마커 인포 생성 로직 
     missingData?.data?.map((item) => {
-      console.log(item)
+      // console.log(item)
       let marker = new kakao.maps.Marker({
         map: mapRef.current,
         position: new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
@@ -132,10 +132,11 @@ const KakaoMap = () => {
 
         // // 선의 총 거리를 계산합니다 이값을 item이라는 객체안에 넣어애만한다
         const distance = Math.round(polyline.getLength())
-        const Km = { km: distance }
+        const data = { km: distance, name: "missingdetail" }
+
 
         const newItem = {
-          ...Km, ...item
+          ...data, ...item
         }
         setNewCatchData(newItem)
         polyline.setMap(mapRef.current);
@@ -182,7 +183,7 @@ const KakaoMap = () => {
           strokeOpacity: 0, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
         });
         const distance = Math.round(polyline.getLength())
-        const data = { km: distance, type: "catch" }
+        const data = { km: distance, name: "sightingdetail" }
 
         const newItem = {
           ...data, ...item

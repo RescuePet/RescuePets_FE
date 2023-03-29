@@ -2,6 +2,11 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SignSvgStyle, FlexAttribute } from '../../../style/Mixin';
+import location from "../../../asset/location.svg"
+import time from "../../../asset/time.svg"
+import information from "../../../asset/information.svg"
+import Button from "../../../elements/Button"
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Modal({ isOpen, onClose, children }) {
@@ -71,7 +76,7 @@ const ModalContainer = styled(motion.div)`
   width: 23.4375rem;
   height: 13rem;
   /* box-shadow: 0 4px 0 2px rgba(0,0,0,0.4); */
-  padding: 10px;
+  padding: .625rem;
 `;
 
 export const CloseContainer = styled.div`
@@ -85,9 +90,9 @@ export const CloseContainer = styled.div`
   `;
 
 export const ModalInBox = styled.div`
-    width: 90%;
+    width: 95%;
     height: 100%;
-    margin: 0 a8;
+    margin: 0 auto;
 `;
 export const ModalTitle = styled.div`
     width: 100%;
@@ -151,7 +156,37 @@ export const ModlaMiddlContianer = styled.div`
 export const ModlaMiddleInfoBox = styled.div`
     width: 65%;
     height: 5.8125rem;
-    border: 1px solid red;
+    /* border: 1px solid red; */
+    padding: .3125rem 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: .3125rem 0;
+    > p{ 
+    width: 100%;
+    color: ${props => props.theme.color.text_alternative};
+    ${props => props.theme.Body_400_12};
+    display: flex;
+    align-items: center;
+    > img {
+        ${SignSvgStyle}
+    }
+    }
+    > span{ 
+    width: 100%;
+    color: ${props => props.theme.color.text_alternative};
+    ${props => props.theme.Body_400_12};
+    display: flex;
+    align-items: center;
+    > img {
+        ${SignSvgStyle}
+    }
+
+    }
+    > h4{
+        ${props => props.theme.FlexCenter}
+    }
+   
 `;
 export const ModlaImgInfoBox = styled.div`
     width: 6.0625rem;
@@ -183,6 +218,9 @@ export const ModlaImgInfoBox = styled.div`
 
 // 마커 클릭시 보여줄 모달 
 export function MarkerModal(props) {
+    const navigate = useNavigate()
+
+
     const data = props?.data
     console.log(data)
     const Stringkm = String(data?.km)
@@ -197,27 +235,34 @@ export function MarkerModal(props) {
 
     console.log(data)
     // postImages.[0].imageURL
+
+    const MoveToDetailPageHandler = () => {
+        navigate(`/${data.name}/${data.id}`)
+    }
     return (
         <Modal isOpen={props.isOpen} onClose={props.toggle}>
             <ModalInBox >
                 <ModalTitle>
                     <ModalTitleinfo>
-                        {data?.type === 'catch' ? <h1>목격</h1>
-                            : <h1 style={{ border: "1px solid #714FD1", color: "#714FD1" }}>실종</h1>
+                        {data?.name === 'missingdetail' ? <h1 style={{ border: "1px solid #714FD1", color: "#714FD1" }}>목격</h1>
+                            : <h1 >실종</h1>
                         }
-                        <h2>{data?.upkind}강아지</h2>
-                        <h3>{data?.kindCd}믹스견</h3>
-                        <p>{data?.age}12살/{data?.weight}21kg</p>
+                        <h2>{data?.upkind}</h2>
+                        <h3>{data?.kindCd}</h3>
+                        <p>{data?.age}살/{data?.weight}kg</p>
                     </ModalTitleinfo>
                     <ModalTitleKm>
-
-                        <h3>{KMDATA}Km</h3>
+                        <h3>거리: {KMDATA}Km</h3>
                     </ModalTitleKm>
                 </ModalTitle>
 
                 <ModlaMiddlContianer>
                     <ModlaMiddleInfoBox>
-                        {data?.happenPlace}
+                        <p><img src={location} />위치:&nbsp;{data?.happenPlace}</p>
+                        <p><img src={time} />일시:&nbsp;{data?.happenDt} / {data?.happenHour} </p>
+
+                        <span><img src={information} />이름:&nbsp;{data?.nickname} / 색깔: {data?.colorCd}</span>
+                        <h4><Button moveToDetailButton onClick={MoveToDetailPageHandler}>상세보기</Button></h4>
                     </ModlaMiddleInfoBox>
                     <ModlaImgInfoBox>
                         <div>
