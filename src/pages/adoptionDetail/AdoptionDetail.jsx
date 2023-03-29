@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import {
   __getAdoptionDetail,
+  __postAdoptionInquiry,
   __postAdoptionListScrap,
 } from "../../redux/modules/adoptionSlice";
 import styled from "styled-components";
@@ -36,6 +37,8 @@ const AdoptionDetail = () => {
   if (JSON.stringify(adoptionDetail) === "{}") {
     return <div>Loading...</div>;
   }
+
+  console.log(adoptionDetail);
 
   let titleData = {
     process: adoptionDetail.processState,
@@ -93,6 +96,13 @@ const AdoptionDetail = () => {
     dispatch(__postAdoptionListScrap(payload));
   };
 
+  const inquiryHandler = () => {
+    if (!adoptionDetail.isInquiry) {
+      console.log("inquiry success");
+      dispatch(__postAdoptionInquiry(adoptionDetail.desertionNo));
+    }
+  };
+
   return (
     <Layout>
       <ImageContainer image={adoptionDetail.popfile}>
@@ -124,7 +134,9 @@ const AdoptionDetail = () => {
         adoptionInfoData={adoptionInfoData}
       ></AdoptionInformation>
       <ButtonWrapper>
-        <Button fillButton>문의하기</Button>
+        <Button fillButton onClick={inquiryHandler}>
+          문의하기
+        </Button>
       </ButtonWrapper>
     </Layout>
   );
