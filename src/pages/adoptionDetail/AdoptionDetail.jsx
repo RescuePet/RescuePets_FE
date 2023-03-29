@@ -135,9 +135,13 @@ const AdoptionDetail = () => {
         adoptionInfoData={adoptionInfoData}
       ></AdoptionInformation>
       <ButtonWrapper>
-        <Button fillButton onClick={inquiryHandler}>
-          문의하기
-        </Button>
+        {adoptionDetail.state !== "종료" ? (
+          <Button fillButton onClick={inquiryHandler}>
+            문의하기
+          </Button>
+        ) : (
+          <Button assistiveFillButton>문의하기</Button>
+        )}
       </ButtonWrapper>
     </Layout>
   );
