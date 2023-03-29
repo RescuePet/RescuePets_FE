@@ -19,7 +19,7 @@ const FloatingChatButton = styled.div`
   width: 56px;
   height: 56px;
   z-index: 8;
-  background-color: ${(props) => props.theme.color.primary_nomal};
+  background-color: ${(props) => props.theme.color.primary_normal};
   border-radius: 50%;
   box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.25);
   cursor: pointer;

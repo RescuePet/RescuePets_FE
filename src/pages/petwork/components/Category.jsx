@@ -53,7 +53,8 @@ const ActiveButton = styled.button`
   ${(props) =>
     props.active
       ? css`
-          border-bottom: 2px solid ${(props) => props.theme.color.primary_nomal}; ;
+          border-bottom: 2px solid
+            ${(props) => props.theme.color.primary_normal}; ;
         `
       : css`
           border-bottom: 2px solid transparent;

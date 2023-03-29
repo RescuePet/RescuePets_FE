@@ -28,11 +28,13 @@ import memo from "../../asset/memo.svg";
 import gratuity from "../../asset/gratuity.svg";
 import PostInformation from "./components/PostInformation";
 import FloatingButton from "./components/FloatingButton";
+import { instance } from "../../utils/api";
 
 const MissingDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userName = JSON.parse(localStorage.getItem("userInfo"));
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
   const { missingComment, editDone } = useSelector((state) => state?.comment);
@@ -84,8 +86,11 @@ const MissingDetail = () => {
   };
 
   const chatHandler = async () => {
-    const postname = "missing-room";
-    navigate(`/chatroom/${postname}/${id}`);
+    const response = await instance.post(
+      `/chat/missing-room/${missingPostDetail.id}`
+    );
+    console.log("post response", response.data);
+    navigate(`/chatroom/${response.data}`);
   };
 
   return (
@@ -163,7 +168,13 @@ const MissingDetail = () => {
           })}
         </CommentListWrapper>
       </CommentContainer>
-      <FloatingButton onClick={chatHandler}></FloatingButton>
+      {userName.nickname !== missingPostDetail.nickname && (
+        <FloatingButton
+          onClick={() => {
+            chatHandler();
+          }}
+        ></FloatingButton>
+      )}
       <InputContainer
         placeholder="댓글을 입력해주세요."
         submitHandler={submitHandler}
