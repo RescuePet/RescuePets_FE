@@ -70,6 +70,7 @@ const ModalContainer = styled(motion.div)`
   width: 23.4375rem;
   height: 15rem;
   box-shadow: 0 4px 0 2px rgba(0,0,0,0.4);
+  padding: 10px;
 `;
 
 export const CloseContainer = styled.div`
@@ -82,24 +83,42 @@ export const CloseContainer = styled.div`
   align-items: center;
   `;
 
+export const ModalInBox = styled.div`
+    width: 100%;
+    height: 100%;
+`
 export const ModalTitle = styled.div`
-  font-size: 16px;
-  padding: 10px 20px;
-  ${props => props.theme.FlexRow}
-  /* letter-spacing: -0.5px;
-  white-space: pre-line; */
-  line-height: 21px;
-  font-weight: bold;
-  color: #333333;
-  gap: 0 20px;
-  border: 1px solid red;
-  > p {
-
-  }
-  > span {
-    
-  }
+    width: 100%;
+    height: 15%;
+    ${props => props.theme.FlexRow}
 `;
+export const ModalTitleinfo = styled.div`
+       display: flex;
+       align-items: center;
+       width: 50%;
+       height: 100%;
+       /* border: 1px solid blue; */
+       gap: 0 .625rem;
+       h1 {
+        border: 1px solid #D6459C;
+        color: #D6459C;
+        width: 40px;
+        height: 20px;
+        ${props => props.theme.FlexCenter}
+        border-radius:8px;
+        padding: 4px, 4px, 2px, 4px;
+       }
+`;
+export const ModalTitleKm = styled.div`
+       display: flex;
+       align-items: center;
+       justify-content: right;
+       width: 50%;
+       height: 100%;
+       border: 1px solid blue;
+`;
+
+
 
 const ModlaMainInfo = styled.div`
     width: 100%;
@@ -110,7 +129,6 @@ const ModlaMainInfo = styled.div`
 // 마커 클릭시 보여줄 모달 
 export function MarkerModal(props) {
     const data = props?.data
-    // console.log(data)
     const Stringkm = String(data?.km)
     const Arraykm = Stringkm.split('')
     Arraykm.splice(Arraykm.length - 3, 0, '.')
@@ -119,11 +137,28 @@ export function MarkerModal(props) {
 
     return (
         <Modal isOpen={props.isOpen} onClose={props.toggle}>
-            <ModalTitle>
-                <p>{data?.upkind}</p>
-                <span>{data?.kindCd}</span>
-                <h4>{data?.id}번</h4>
-                <p>{KMDATA}Km</p>
+            <ModalInBox >
+                <ModalTitle>
+                    <ModalTitleinfo>
+                        {
+                            data?.type === 'catch' ? <h1>목격</h1> : <h1 style={{ border: "1px solid #714FD1", color: "#714FD1" }}>실종</h1>
+                        }
+
+                        <h2>{data?.upkind}</h2>
+                        <h3>{data?.kindCd}</h3>
+                    </ModalTitleinfo>
+                    <ModalTitleKm>
+                        <h3>{KMDATA}Km</h3>
+                    </ModalTitleKm>
+                    {/* <div>{data?.upkind}</div>
+                    <div>{data?.kindCd}</div> */}
+                </ModalTitle>
+            </ModalInBox>
+            {/* <ModalTitle>
+                <h1>{data?.upkind}</h1>
+                <h2>{data?.kindCd}</h2>
+                <h3>{data?.id}번</h3>
+                <h4>{KMDATA}Km</h4>
             </ModalTitle>
             <ModlaMainInfo>
                 위치 : {data?.happenPlace}
@@ -132,7 +167,7 @@ export function MarkerModal(props) {
                         return <img src={item?.imageURL} key={index} style={{ width: "100px", height: "100px" }} />
                     })
                 }
-            </ModlaMainInfo>
+            </ModlaMainInfo> */}
         </Modal >
     );
 }

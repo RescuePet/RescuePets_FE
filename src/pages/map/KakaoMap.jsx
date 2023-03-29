@@ -149,7 +149,6 @@ const KakaoMap = () => {
 
 
       kakao.maps.event.addListener(marker, 'click', function () {
-        console.log(item)
         toggleModal()
         // 현재 내위치랑 클릭한 마커에 위치를 가져오는 로직 거리도 구해야만한다 
         const linePath = [
@@ -164,10 +163,10 @@ const KakaoMap = () => {
           strokeOpacity: 0, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
         });
         const distance = Math.round(polyline.getLength())
-        const Km = { km: distance }
+        const data = { km: distance, type: "catch" }
 
         const newItem = {
-          ...Km, ...item
+          ...data, ...item
         }
         setNewCatchData(newItem)
         polyline.setMap(mapRef.current);
