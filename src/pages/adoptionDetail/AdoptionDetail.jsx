@@ -101,6 +101,7 @@ const AdoptionDetail = () => {
       console.log("inquiry success");
       dispatch(__postAdoptionInquiry(adoptionDetail.desertionNo));
     }
+    window.location.href = `tel:${adoptionDetail.careTel}`;
   };
 
   return (
