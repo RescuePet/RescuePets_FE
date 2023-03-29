@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { FlexAttribute, PostBorderStyle } from "../../../style/Mixin";
-import scrap from "../../../asset/profile/clipping.svg";
+import ClippingFill from "../../../asset/profile/ClippingFill";
 import inquiry from "../../../asset/inquiry.svg";
 
 const AdoptionInformation = () => {
@@ -13,7 +13,7 @@ const AdoptionInformation = () => {
         <span>0</span>
       </InfoBox>
       <InfoBox>
-        <img src={scrap} alt="postScrap" />
+        <ClippingFill />
         <span>북마크</span>
         <span>0</span>
       </InfoBox>

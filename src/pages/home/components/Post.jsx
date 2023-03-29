@@ -5,12 +5,34 @@ import { FlexAttribute, StateSpanStyle } from "../../../style/Mixin";
 import location from "../../../asset/location.svg";
 import time from "../../../asset/time.svg";
 import information from "../../../asset/information.svg";
-
 import ClippingEmpty from "../../../asset/Clippingwhite.jsx";
+import { useNavigate } from "react-router-dom";
+import { instance } from "../../../utils/api";
+import ClippingFill from "../../../asset/profile/ClippingFill";
+import { useDispatch } from "react-redux";
+import { adoptionScrap } from "../../../redux/modules/adoptionSlice";
 
 const Post = ({ item }) => {
+  console.log(item);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const scrapHandler = (e) => {
+    e.stopPropagation();
+    if (!item.isScrap) {
+      // instance.post(`/api/pets/scrap/${item.desertionNo}`);
+      dispatch(adoptionScrap());
+      console.log("scrap");
+    } else if (item.isScrap) {
+      // instance.delete(`api/pets/scrap/${item.desertionNo}`);
+      dispatch(adoptionScrap());
+      console.log("scrap delete");
+    }
+  };
+
   return (
-    <PostContainer>
+    <PostContainer
+      onClick={() => navigate(`/adoptiondetail/${item.desertionNo}`)}
+    >
       <ThunbnailWrapper image={item.filename}>
         <Tuumbnail src={item.filename}></Tuumbnail>
         <KindSpan>{item.data.refinedata.kind}</KindSpan>
@@ -19,7 +41,15 @@ const Post = ({ item }) => {
         <TitleBox>
           <h2>{item.data.refinedata.kindCd}</h2>
           <img src={item.data.refinedata.sexCd} alt="sexCd" />
-          <ScrapState />
+          {item.isScrap ? (
+            <ScrapButtonBox onClick={(e) => scrapHandler(e)}>
+              <ClippingFill />
+            </ScrapButtonBox>
+          ) : (
+            <ScrapButtonBox onClick={(e) => scrapHandler(e)}>
+              <ScrapState />
+            </ScrapButtonBox>
+          )}
         </TitleBox>
         <TextBox>
           <img src={location} alt="location" />
@@ -39,6 +69,8 @@ const Post = ({ item }) => {
 };
 
 const PostContainer = styled.div`
+  position: relative;
+  z-index: 1;
   ${FlexAttribute("row", "space-between", "center")}
   margin-top: 16px;
   width: 335px;
@@ -88,16 +120,6 @@ const TitleBox = styled.div`
   }
 `;
 
-const ScrapState = styled(ClippingEmpty)`
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 10;
-  path {
-    fill: ${(props) => props.theme.color.text_alternative};
-  }
-`;
-
 const TextBox = styled.div`
   ${FlexAttribute("row", "", "flex-start")}
   margin-top: 2px;
@@ -105,6 +127,21 @@ const TextBox = styled.div`
     ${(props) => props.theme.Body_400_12}
     color: #999999;
     line-height: 18px;
+  }
+`;
+
+const ScrapButtonBox = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  z-index: 10;
+`;
+
+const ScrapState = styled(ClippingEmpty)`
+  path {
+    fill: ${(props) => props.theme.color.text_alternative};
   }
 `;
 

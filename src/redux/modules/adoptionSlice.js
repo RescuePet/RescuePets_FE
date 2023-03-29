@@ -39,6 +39,7 @@ const initialState = {
   adoptionLists: [],
   adoptionDetail: {},
   adoptionPage: 1,
+  state: null,
 };
 
 export const adoptionSlice = createSlice({
@@ -47,6 +48,9 @@ export const adoptionSlice = createSlice({
   reducers: {
     addAdoptionPage: (state) => {
       state.adoptionPage = state.adoptionPage + 1;
+    },
+    adoptionScrap: (state) => {
+      console.log("state", state.state);
     },
   },
   extraReducers: (builder) => {
@@ -81,5 +85,5 @@ export const adoptionSlice = createSlice({
   },
 });
 
-export const { addAdoptionPage } = adoptionSlice.actions;
+export const { addAdoptionPage, adoptionScrap } = adoptionSlice.actions;
 export default adoptionSlice.reducer;
