@@ -17,11 +17,16 @@ import { CustomSelect } from "../../elements/CustomSelect";
 import { useNavigate } from "react-router-dom";
 import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
+import Vector from "../../asset/Vector.png"
+import { Error } from "./components/Error";
+
+
 
 const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginModal, toggleModal] = useModalState(false);
+
 
   const data = [
     { id: 0, name: "naver.com" },
@@ -38,6 +43,19 @@ const Signup = () => {
     register, handleSubmit, formState: { errors }, reset, watch
   } = useForm({ mode: "onChange" });
 
+  const [emailCheck, setEmailCheck] = useState(false)
+  const emailWatch = watch('id')
+  useEffect(() => {
+    if (errors?.id?.message !== undefined) {
+      setEmailCheck(true)
+    } else {
+      setEmailCheck(false)
+    }
+  }, [emailWatch])
+  console.log(emailCheck)
+
+
+
   // 비밀번호 체크 로직
   const [showPassword, setShowPassword] = useState(false);
 
@@ -50,6 +68,7 @@ const Signup = () => {
   const [isActive, setIsActive] = useState(false);
 
   const watchAll = Object.values(watch());
+  // console.log(watchAll)
 
   useEffect(() => {
     // react-hook-form 만든 값들이 전부 입력이 되면 
@@ -134,14 +153,26 @@ const Signup = () => {
                 {...register("id", {
                   pattern: {
                     value: /^[a-zA-Z0-9]+$/,
+                    // Error 영문 숫자 2 ~ 8글자 사이로 입력
                     message: "영문 숫자 2 ~ 8글자 사이로 입력",
                   },
                   maxLength: { value: 12, message: "12글자이내 작성" },
                 })}
               />
-              <span>{errors?.id?.message}</span>
+              <span>
+
+                {errors?.id?.message}</span>
+              {/* {
+                emailCheck === true ? (
+                  <span>
+                    {
+                      errors?.id?.message === '' ? null : <img src={Vector} />
+                    }
+                    {errors?.id?.message}</span>
+                ) : null
+              } */}
             </div>
-            <p>@</p>
+            <p style={{ position: "aabsoluteb", top: "-5px" }}>@</p>
             <div>
               <CustomSelect data={data} onChangeData={onChangeData} />
             </div>
@@ -171,6 +202,7 @@ const Signup = () => {
                 placeholder="영문, 숫자, 특수문자 조합 8자리 이상"
               />
               <img onClick={toggleShowPassword} src={eye} alt="showPassword" />
+
               <span>{errors?.password?.message}</span>
             </div>
             <div>
@@ -290,12 +322,28 @@ const SignIdNincknameBox = styled.div`
       height: 90%;
       > span {
         ${(props) => props.theme.Span_alert}
+        /* border: 1px solid red; */
+        color: #D6459C;
+        font-size: 10px;
+        > img {
+        position: absolute;
+        left: 5px;
+        bottom: 4px;
+        width: .625rem;
+        height: .5625rem;
+        ${props => props.theme.FlexCenter}
+        /* border: 1px solid red; */
       }
+      }
+      
     }
+   
     > span {
       position: absolute;
       top: 40px;
       ${(props) => props.theme.Span_alert}
+      
+     
     }
   }
 `;
@@ -326,6 +374,8 @@ const SignPwBox = styled.div`
         position: absolute;
         display: flex;
         ${(props) => props.theme.Span_alert}
+        color: #D6459C;
+        font-size: 10px;
       }
     }
   }

@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
+import Button from '../../../elements/Button';
+import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 
 export default function Modal({ isOpen, onClose, children }) {
@@ -68,7 +71,7 @@ const ModalContainer = styled(motion.div)`
   position: absolute;
   bottom: 0%;
   width: 23.4375rem;
-  height: 15rem;
+  height: 12rem;
   box-shadow: 0 4px 0 2px rgba(0,0,0,0.4);
 `;
 
@@ -92,7 +95,7 @@ export const ModalTitle = styled.div`
   font-weight: bold;
   color: #333333;
   gap: 0 20px;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   > p {
 
   }
@@ -104,34 +107,24 @@ export const ModalTitle = styled.div`
 const ModlaMainInfo = styled.div`
     width: 100%;
     height: 50%;
-    border: 1px solid red;
+    ${props => props.theme.FlexCenter}
+    gap: 0 20px;
+    /* border: 1px solid red; */
 `
 
 // 마커 클릭시 보여줄 모달 
-export function MarkerModal(props) {
-    const data = props?.data
-    // console.log(data)
-    const Stringkm = String(data?.km)
-    const Arraykm = Stringkm.split('')
-    Arraykm.splice(Arraykm.length - 3, 0, '.')
-    const KMDATA = Arraykm.slice(0, 5)
-
+export function PostModal(props) {
+    const navigate = useNavigate()
 
     return (
         <Modal isOpen={props.isOpen} onClose={props.toggle}>
             <ModalTitle>
-                <p>{data?.upkind}</p>
-                <span>{data?.kindCd}</span>
-                <h4>{data?.id}번</h4>
-                <p>{KMDATA}Km</p>
+                등록완료
             </ModalTitle>
             <ModlaMainInfo>
-                위치 : {data?.happenPlace}
-                {
-                    data?.postImages?.map((item, index) => {
-                        return <img src={item?.imageURL} key={index} style={{ width: "100px", height: "100px" }} />
-                    })
-                }
+                <Button GOToDetailButton onClick={(() => { navigate(`/${props?.data?.name}/${props?.data?.number}`) })}>상세보기</Button>
+
+                <Button GOToDetailButton>포스터만들기</Button>
             </ModlaMainInfo>
         </Modal >
     );

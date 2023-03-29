@@ -76,8 +76,10 @@ const KakaoMap = () => {
 
     marker.setMap(mapRef.current);
 
+  }, [long])
 
 
+  useEffect(() => {
 
     // 목격글 마커 
     const missingimageSrc = `${missingmarker}`
@@ -93,148 +95,95 @@ const KakaoMap = () => {
         position: new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
         image: missingmarkerImage
       })
-      let position = new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude);
-      // 인포 인포박스 생성 로직 
-      const content = document.createElement('div');
-      content.classList.add('contentDiv');
-
-      const contentImgArea = document.createElement('img');
-      contentImgArea.classList.add("contentImgArea");
-      contentImgArea.src = `${item.postImages[0].imageURL}`;
-      content.appendChild(contentImgArea);
-
-      const contentTextArea = document.createElement('div');
-      contentTextArea.classList.add("contentTextArea");
-      content.appendChild(contentTextArea);
-
-      const contentTextTitle = document.createElement('h2');
-      contentTextTitle.classList.add('contentTextTitle');
-      contentTextTitle.innerText = `${item.specialMark}`;
-      contentTextArea.appendChild(contentTextTitle)
-
-      const contentTextdesc = document.createElement('div');
-      contentTextdesc.classList.add('contentTextDesc');
-      contentTextdesc.innerText = `${item.kindCd}`;
-      contentTextArea.appendChild(contentTextdesc)
-
-      const contentTextBtnBox = document.createElement('div');
-      contentTextBtnBox.classList.add('contentTextBtnBox')
-      contentTextArea.appendChild(contentTextBtnBox)
-
-      const contentTextDetailBtn = document.createElement('button');
-      contentTextDetailBtn.classList.add('contentTextDetailBtn');
-      contentTextDetailBtn.appendChild(document.createTextNode('상세'));
-      contentTextBtnBox.appendChild(contentTextDetailBtn)
-
-      const closeBtn = document.createElement('button');
-      closeBtn.classList.add("contentTextDeleteBtn")
-      closeBtn.appendChild(document.createTextNode('X'));
-      contentTextBtnBox.appendChild(closeBtn)
-
-      let customOverlay = new kakao.maps.CustomOverlay({
-        position: position,
-        content: content,
-        position: marker.getPosition()
-      });
-      // 닫기 이벤트 추가
-      closeBtn.onclick = function () {
-        customOverlay.setMap(null);
-      };
-
-
-
-
-      // 목격글 마커 
-      const catchimageSrc = `${catchmarker}`
-      const catchimageSize = new kakao.maps.Size(16, 20)
-      const catchimageOption = { offset: new kakao.maps.Point(10, 20) };
-
-      let catchmarkerImage = new kakao.maps.MarkerImage(catchimageSrc, catchimageSize, catchimageOption)
-
-      // 목격글 작성 마커 인포 생성 로직 
-      catchData?.data?.map((item) => {
+      kakao.maps.event.addListener(marker, 'click', function () {
         // console.log(item)
-        let marker = new kakao.maps.Marker({
-          map: mapRef.current,
-          position: new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
-          image: catchmarkerImage,
-          name: item.id
-        })
+        toggleModal()
+        // 현재 내위치랑 클릭한 마커에 위치를 가져오는 로직 거리도 구해야만한다 
+        const linePath = [
+          new kakao.maps.LatLng(lati, long),
+          new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude)
+        ]
 
-
-        // let linePath2;
-        // let lineLine = new kakao.maps.Polyline();
-        // let distance;
-
-
-        // const linePath = [
-        //   new kakao.maps.LatLng(lati, long),
-        //   new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude)
-        // ]
-
-
-
-        // const polyline = new kakao.maps.Polyline({
-        //   path: linePath, // 선을 구성하는 좌표배열 입니다
-        //   strokeWeight: 3, // 선의 두께 입니다
-        //   strokeColor: 'Red', // 선의 색깔입니다
-        //   strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-        //   strokeStyle: 'solid' // 선의 스타일입니다
-        // });
-
-
-        // polyline.setMap(mapRef.current);
-
-
-
-        kakao.maps.event.addListener(marker, 'click', function () {
-          // console.log(mapRef.current)
-          console.log(item)
-          toggleModal()
-          setNewCatchData(item)
-
-          // 현재 내위치랑 클릭한 마커에 위치를 가져오는 로직 거리도 구해야만한다 
-          const linePath = [
-            new kakao.maps.LatLng(lati, long),
-            new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude)
-          ]
-
-          const polyline = new kakao.maps.Polyline({
-            path: linePath, // 선을 구성하는 좌표배열 입니다
-            strokeWeight: 10, // 선의 두께 입니다
-            strokeColor: '#FFAE00', // 선의 색깔입니다
-            strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-            strokeStyle: 'solid' // 선의 스타일입니다
-          });
-
-
-          // const distance = Math.round(polyline.getLength())
-          // distanceOverlay(linePath[0], distance)
-          // console.log(dispatch)
-
-          // 지도에 선을 표시합니다
-          polyline.setMap(mapRef.current);
-
-
+        const polyline = new kakao.maps.Polyline({
+          path: linePath, // 선을 구성하는 좌표배열 입니다
+          strokeWeight: 0, // 선의 두께 입니다
+          strokeColor: '#FFAE00', // 선의 색깔입니다
+          strokeOpacity: 0, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
         });
 
 
+        // // 선의 총 거리를 계산합니다 이값을 item이라는 객체안에 넣어애만한다
+        const distance = Math.round(polyline.getLength())
+        const Km = { km: distance }
 
-
-
+        const newItem = {
+          ...Km, ...item
+        }
+        setNewCatchData(newItem)
+        polyline.setMap(mapRef.current);
       });
+
+
+    })
+
+
+
+
+
+    // 목격글 마커 
+    const catchimageSrc = `${catchmarker}`
+    const catchimageSize = new kakao.maps.Size(16, 20)
+    const catchimageOption = { offset: new kakao.maps.Point(10, 20) };
+
+    let catchmarkerImage = new kakao.maps.MarkerImage(catchimageSrc, catchimageSize, catchimageOption)
+
+    // 목격글 작성 마커 인포 생성 로직 
+    catchData?.data?.map((item) => {
+      // console.log(item)
+      let marker = new kakao.maps.Marker({
+        map: mapRef.current,
+        position: new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
+        image: catchmarkerImage,
+        name: item.id
+      })
+
+
 
       kakao.maps.event.addListener(marker, 'click', function () {
-        customOverlay.setMap(mapRef.current);
+        console.log(item)
+        toggleModal()
+        // 현재 내위치랑 클릭한 마커에 위치를 가져오는 로직 거리도 구해야만한다 
+        const linePath = [
+          new kakao.maps.LatLng(lati, long),
+          new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude)
+        ]
+
+        const polyline = new kakao.maps.Polyline({
+          path: linePath, // 선을 구성하는 좌표배열 입니다
+          strokeWeight: 0, // 선의 두께 입니다
+          strokeColor: '#FFAE00', // 선의 색깔입니다
+          strokeOpacity: 0, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+        });
+        const distance = Math.round(polyline.getLength())
+        const Km = { km: distance }
+
+        const newItem = {
+          ...Km, ...item
+        }
+        setNewCatchData(newItem)
+        polyline.setMap(mapRef.current);
+
       });
+
+
 
     });
 
-    // 의존성배열에 현재주소를 가지고오면 
+
   }, [onSucces]);
 
 
-  // console.log('현재값', newCatchData)
+
   return (
     <>
       {

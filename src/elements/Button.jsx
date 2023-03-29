@@ -42,6 +42,14 @@ const BtnStyle = styled.button`
       color: ${(props) => props.theme.color.white};
       background: ${(props) => props.theme.color.text_assistive};
     `}
+    ${(props) =>
+    props.GOToDetailButton &&
+    css`
+      width: 9.75rem;
+      ${(props) => props.theme.Body_700_14}
+      color: ${(props) => props.theme.color.white};
+      background: ${(props) => props.theme.color.primary_nomal};
+    `}
 `;
 
 export default Button;
