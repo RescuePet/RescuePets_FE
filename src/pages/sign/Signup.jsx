@@ -252,8 +252,8 @@ const Signup = () => {
         <SignBtnBox>
 
           {
-            isActive === false ? <Button type="submit" disable assistiveFillButton>로그인</Button>
-              : (<Button type="submit" fillButton>로그인</Button>)
+            isActive === false ? <Button type="submit" disable assistiveFillButton>회원가입</Button>
+              : (<Button type="submit" fillButton>회원가입</Button>)
           }
 
         </SignBtnBox>

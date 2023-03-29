@@ -19,7 +19,7 @@ export const FloatingPetwork = () => {
 const FloatingPetNetworkContainer = styled.div`
   position: absolute;
   ${(props) => props.theme.FlexCenter}
-  z-index: 19;
+  z-index: 8;
   background: ${(props) => props.theme.color.white};
   bottom: 1.625rem;
   width: 3.5rem;
