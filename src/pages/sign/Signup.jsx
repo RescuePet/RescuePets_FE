@@ -17,16 +17,13 @@ import { CustomSelect } from "../../elements/CustomSelect";
 import { useNavigate } from "react-router-dom";
 import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
-import Vector from "../../asset/Vector.png"
+import Vector from "../../asset/Vector.png";
 import { Error } from "./components/Error";
-
-
 
 const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginModal, toggleModal] = useModalState(false);
-
 
   const data = [
     { id: 0, name: "naver.com" },
@@ -40,25 +37,26 @@ const Signup = () => {
   };
 
   const {
-    register, handleSubmit, formState: { errors }, reset, watch
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    watch,
   } = useForm({ mode: "onChange" });
 
-  const [emailCheck, setEmailCheck] = useState(false)
-  const emailWatch = watch('id')
+  const [emailCheck, setEmailCheck] = useState(false);
+  const emailWatch = watch("id");
   useEffect(() => {
     if (errors?.id?.message !== undefined) {
-      setEmailCheck(true)
+      setEmailCheck(true);
     } else {
-      setEmailCheck(false)
+      setEmailCheck(false);
     }
-  }, [emailWatch])
-  console.log(emailCheck)
-
-
+  }, [emailWatch]);
+  console.log(emailCheck);
 
   // 비밀번호 체크 로직
   const [showPassword, setShowPassword] = useState(false);
-
 
   //비밀번호 이모티콘
   const toggleShowPassword = () => {
@@ -71,9 +69,9 @@ const Signup = () => {
   // console.log(watchAll)
 
   useEffect(() => {
-    // react-hook-form 만든 값들이 전부 입력이 되면 
+    // react-hook-form 만든 값들이 전부 입력이 되면
     if (watchAll.every((el) => el)) {
-      // 비밀번호 같다면 
+      // 비밀번호 같다면
       if (watchAll[1] === watchAll[2]) {
         setIsActive(true);
       }
@@ -100,7 +98,7 @@ const Signup = () => {
         password: data.password,
         nickname: data.nickname,
       };
-      toggleModal()
+      toggleModal();
       dispatch(__signupUser(userInfo));
       reset();
       // navigate("/signin");
@@ -110,25 +108,24 @@ const Signup = () => {
   };
 
   const SignUpmessage = useSelector((state) => {
-    return state?.users?.Signupmessage
-  })
+    return state?.users?.Signupmessage;
+  });
   useEffect(() => {
     if (SignUpmessage === "중복된 이메일이 존재합니다.") {
-      console.log('에러')
+      console.log("에러");
       // 모달 띄우기
     } else if (SignUpmessage === "중복된 닉네임이 존재합니다.") {
-      console.log("오류띄우기")
+      console.log("오류띄우기");
     } else if (SignUpmessage === "success") {
-      // 로그인 성공 
-      console.log("회원가입 성공")
+      // 로그인 성공
+      console.log("회원가입 성공");
       setTimeout(function () {
-        navigate('/signin')
+        navigate("/signin");
       }, 1000);
     }
-  }, [SignUpmessage])
+  }, [SignUpmessage]);
 
   // console.log(Message)
-
 
   return (
     <Layout>
@@ -159,9 +156,7 @@ const Signup = () => {
                   maxLength: { value: 12, message: "12글자이내 작성" },
                 })}
               />
-              <span>
-
-                {errors?.id?.message}</span>
+              <span>{errors?.id?.message}</span>
               {/* {
                 emailCheck === true ? (
                   <span>
@@ -250,27 +245,27 @@ const Signup = () => {
           </div>
         </SignIdNincknameBox>
         <SignBtnBox>
-
-          {
-            isActive === false ? <Button type="submit" disable assistiveFillButton>로그인</Button>
-              : (<Button type="submit" fillButton>로그인</Button>)
-          }
-
+          {isActive === false ? (
+            <Button type="submit" disable assistiveFillButton>
+              로그인
+            </Button>
+          ) : (
+            <Button type="submit" fillButton>
+              로그인
+            </Button>
+          )}
         </SignBtnBox>
       </SignContainer>
 
-      {
-        SignUpmessage === null ? null : (
-          <CheckModal
-            isOpen={loginModal}
-            toggle={toggleModal}
-            onClose={toggleModal}>
-            {SignUpmessage}
-          </CheckModal>
-
-        )
-      }
-
+      {SignUpmessage === null ? null : (
+        <CheckModal
+          isOpen={loginModal}
+          toggle={toggleModal}
+          onClose={toggleModal}
+        >
+          {SignUpmessage}
+        </CheckModal>
+      )}
     </Layout>
   );
 };
@@ -289,7 +284,7 @@ const SignHeader = styled.div`
   font-size: 1.125rem;
   font-weight: 700;
   ${FlexAttribute("row", "", "center")};
-  color: ${(props) => props.theme.color.text_nomal};
+  color: ${(props) => props.theme.color.text_normal};
   div {
     height: 100%;
     width: 33.3%;
@@ -326,24 +321,20 @@ const SignIdNincknameBox = styled.div`
         color: #D6459C;
         font-size: 10px;
         > img {
-        position: absolute;
-        left: 5px;
-        bottom: 4px;
-        width: .625rem;
-        height: .5625rem;
-        ${props => props.theme.FlexCenter}
-        /* border: 1px solid red; */
+          position: absolute;
+          left: 5px;
+          bottom: 4px;
+          width: 0.625rem;
+          height: 0.5625rem;
+          ${(props) => props.theme.FlexCenter}/* border: 1px solid red; */
+        }
       }
-      }
-      
     }
-   
+
     > span {
       position: absolute;
       top: 40px;
       ${(props) => props.theme.Span_alert}
-      
-     
     }
   }
 `;

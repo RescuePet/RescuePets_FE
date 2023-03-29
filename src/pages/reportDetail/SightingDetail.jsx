@@ -164,7 +164,7 @@ const SightingDetail = () => {
         placeholder="댓글을 입력해주세요."
         submitHandler={submitHandler}
       ></InputContainer>
-      {userName.nickname === catchPostDetail.nickname && (
+      {userName.nickname !== catchPostDetail.nickname && (
         <FloatingButton
           onClick={() => {
             chatHandler();

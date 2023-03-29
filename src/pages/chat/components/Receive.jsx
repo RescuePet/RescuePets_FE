@@ -31,7 +31,7 @@ const ReceiveMessage = styled.div`
   margin-bottom: 8px;
   padding: 6px 16px;
   border-radius: 4px;
-  background: #999999;
+  background: ${(props) => props.theme.color.text_normal};
   word-break: break-all;
   ::after {
     content: "";
@@ -41,7 +41,7 @@ const ReceiveMessage = styled.div`
     width: 0;
     height: 0;
     border: 11px solid transparent;
-    border-right-color: #999999;
+    border-right-color: ${(props) => props.theme.color.text_normal};
     border-left: 0;
     border-top: 0;
     margin-top: -2.5px;
@@ -51,6 +51,7 @@ const ReceiveMessage = styled.div`
 
 const ReceiveSpan = styled.span`
   ${Body_400_14}
+  color: ${(props) => props.theme.color.white};
 `;
 
 const ReceiveTimeSpan = styled.span`

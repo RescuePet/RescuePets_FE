@@ -34,6 +34,7 @@ const MissingDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userName = JSON.parse(localStorage.getItem("userInfo"));
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
   const { missingComment, editDone } = useSelector((state) => state?.comment);
@@ -167,7 +168,13 @@ const MissingDetail = () => {
           })}
         </CommentListWrapper>
       </CommentContainer>
-      <FloatingButton onClick={chatHandler}></FloatingButton>
+      {userName.nickname !== missingPostDetail.nickname && (
+        <FloatingButton
+          onClick={() => {
+            chatHandler();
+          }}
+        ></FloatingButton>
+      )}
       <InputContainer
         placeholder="댓글을 입력해주세요."
         submitHandler={submitHandler}
