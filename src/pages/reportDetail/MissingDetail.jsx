@@ -28,6 +28,7 @@ import memo from "../../asset/memo.svg";
 import gratuity from "../../asset/gratuity.svg";
 import PostInformation from "./components/PostInformation";
 import FloatingButton from "./components/FloatingButton";
+import { instance } from "../../utils/api";
 
 const MissingDetail = () => {
   const { id } = useParams();
@@ -84,8 +85,11 @@ const MissingDetail = () => {
   };
 
   const chatHandler = async () => {
-    const postname = "missing-room";
-    navigate(`/chatroom/${postname}/${id}`);
+    const response = await instance.post(
+      `/chat/missing-room/${missingPostDetail.id}`
+    );
+    console.log("post response", response.data);
+    navigate(`/chatroom/${response.data}`);
   };
 
   return (
