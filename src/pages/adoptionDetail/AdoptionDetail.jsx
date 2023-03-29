@@ -32,18 +32,23 @@ const AdoptionDetail = () => {
     dispatch(__getAdoptionDetail(id));
   }, []);
   const { adoptionDetail } = useSelector((state) => state?.adoption);
-  console.log(adoptionDetail);
   // 비동기처리 시 detailInfo가 없을 경우를 고려
   if (JSON.stringify(adoptionDetail) === "{}") {
     return <div>Loading...</div>;
   }
 
-  const titleData = {
-    state: adoptionDetail.processState,
+  let titleData = {
+    process: adoptionDetail.processState,
+    processState: adoptionDetail.state,
     kindCd: adoptionDetail.refinedata.kindCd,
     sexCd: adoptionDetail.refinedata.sexCd,
     information: adoptionDetail.ageWeightNeuterYnColorCd,
   };
+
+  if (adoptionDetail.refinedata.process) {
+    titleData.processState = adoptionDetail.refinedata.processState;
+    titleData.process = adoptionDetail.refinedata.process;
+  }
 
   const locationData = {
     address: adoptionDetail.careAddr,
@@ -100,6 +105,9 @@ const AdoptionDetail = () => {
         ) : (
           <ScrapStateFalse onClick={scrapHandler} />
         )}
+        <ProcessBox>
+          <span>{titleData.processState}</span>
+        </ProcessBox>
       </ImageContainer>
       <div>
         <Title titleData={titleData}></Title>
@@ -162,6 +170,19 @@ const ScrapStateTrue = styled(ClippingFill)`
   cursor: pointer;
   path {
     fill: ${(props) => props.theme.color.white};
+  }
+`;
+
+const ProcessBox = styled.div`
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  padding: 6px 0;
+  background-color: RGB(23, 23, 23, 0.5);
+  text-align: center;
+  ${(props) => props.theme.Body_500_16};
+  span {
+    color: ${(props) => props.theme.color.white};
   }
 `;
 

@@ -12,7 +12,6 @@ import {
   addAdoptionPage,
   __getAdoptionList,
 } from "../../redux/modules/adoptionSlice";
-import { Link } from "react-router-dom";
 import refresh from "../../asset/refresh.svg";
 import profile from "../../asset/profile.svg";
 import search from "../../asset/search.svg";

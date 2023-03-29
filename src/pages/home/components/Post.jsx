@@ -1,7 +1,7 @@
 import React from "react";
 
 import styled from "styled-components";
-import { FlexAttribute, StateSpanStyle } from "../../../style/Mixin";
+import { FlexAttribute } from "../../../style/Mixin";
 import location from "../../../asset/location.svg";
 import time from "../../../asset/time.svg";
 import information from "../../../asset/information.svg";
@@ -10,9 +10,9 @@ import { useNavigate } from "react-router-dom";
 import ClippingFill from "../../../asset/profile/ClippingFill";
 import { useDispatch } from "react-redux";
 import { __postAdoptionListScrap } from "../../../redux/modules/adoptionSlice";
+import State from "../../../elements/State";
 
 const Post = ({ item }) => {
-  console.log(item);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const scrapHandler = (e) => {
@@ -31,10 +31,11 @@ const Post = ({ item }) => {
     >
       <ThunbnailWrapper image={item.filename}>
         <Tuumbnail src={item.filename}></Tuumbnail>
-        <KindSpan>{item.data.refinedata.kind}</KindSpan>
+        <State category={"adoptionKind"}>{item.data.refinedata.kind}</State>
       </ThunbnailWrapper>
       <InformationWrapper>
         <TitleBox>
+          <State category={"adoptionstate"}>{item.state}</State>
           <h2>{item.data.refinedata.kindCd}</h2>
           <img src={item.data.refinedata.sexCd} alt="sexCd" />
           {item.isScrap ? (
@@ -93,13 +94,6 @@ const Tuumbnail = styled.img`
   object-fit: contain;
   position: absolute;
   backdrop-filter: blur(3px);
-`;
-
-const KindSpan = styled.span`
-  ${StateSpanStyle}
-  position: absolute;
-  top: 10px;
-  left: 10px;
 `;
 
 const InformationWrapper = styled.div`
