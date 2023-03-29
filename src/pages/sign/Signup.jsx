@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
 import Vector from "../../asset/Vector.png"
+import { Error } from "./components/Error";
 
 
 
@@ -152,19 +153,24 @@ const Signup = () => {
                 {...register("id", {
                   pattern: {
                     value: /^[a-zA-Z0-9]+$/,
+                    // Error 영문 숫자 2 ~ 8글자 사이로 입력
                     message: "영문 숫자 2 ~ 8글자 사이로 입력",
                   },
                   maxLength: { value: 12, message: "12글자이내 작성" },
                 })}
               />
-              {
+              <span>
+
+                {errors?.id?.message}</span>
+              {/* {
                 emailCheck === true ? (
                   <span>
-                    {<img src={Vector} />}
-                    {/* <img src={Vector} /> */}
+                    {
+                      errors?.id?.message === '' ? null : <img src={Vector} />
+                    }
                     {errors?.id?.message}</span>
                 ) : null
-              }
+              } */}
             </div>
             <p style={{ position: "aabsoluteb", top: "-5px" }}>@</p>
             <div>
