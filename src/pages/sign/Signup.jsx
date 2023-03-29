@@ -17,8 +17,7 @@ import { CustomSelect } from "../../elements/CustomSelect";
 import { useNavigate } from "react-router-dom";
 import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
-import Vector from "../../asset/Vector.png"
-import { Error } from "./components/Error";
+
 
 
 
@@ -26,6 +25,7 @@ const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginModal, toggleModal] = useModalState(false);
+  const [SignUpMsg, setSignUpMsg] = useState('');
 
 
   const data = [
@@ -52,7 +52,7 @@ const Signup = () => {
       setEmailCheck(false)
     }
   }, [emailWatch])
-  console.log(emailCheck)
+  // console.log(emailCheck)
 
 
 
@@ -92,9 +92,9 @@ const Signup = () => {
     if (data.password === data.checkpassword) {
       // console.log(data)
       const id = data.id + "@" + email;
-      console.log(id);
-      console.log(data.password);
-      console.log(data.nickname);
+      // console.log(id);
+      // console.log(data.password);
+      // console.log(data.nickname);
       const userInfo = {
         email: id,
         password: data.password,
@@ -103,28 +103,31 @@ const Signup = () => {
       toggleModal()
       dispatch(__signupUser(userInfo));
       reset();
-      // navigate("/signin");
     } else {
-      alert("비밀번호 오류");
+      console.log('d')
     }
   };
 
   const SignUpmessage = useSelector((state) => {
-    return state?.users?.Signupmessage
+    return state.users?.Signupmessage
   })
+
+
+
   useEffect(() => {
+    // console.log(SignUpmessage)
     if (SignUpmessage === "중복된 이메일이 존재합니다.") {
-      console.log('에러')
+      setSignUpMsg("⛔ 중복된 이메일이 존재합니다.")
       // 모달 띄우기
     } else if (SignUpmessage === "중복된 닉네임이 존재합니다.") {
-      console.log("오류띄우기")
-    } else if (SignUpmessage === "success") {
-      // 로그인 성공 
-      console.log("회원가입 성공")
+      setSignUpMsg("⛔ 중복된 닉네임이 존재합니다.")
+    } else if (SignUpmessage === "회원가입이 완료 되었습니다.") {
+      setSignUpMsg("✅ 회원가입이 완료 되었습니다.")
       setTimeout(function () {
         navigate('/signin')
       }, 1000);
     }
+
   }, [SignUpmessage])
 
   // console.log(Message)
@@ -260,12 +263,12 @@ const Signup = () => {
       </SignContainer>
 
       {
-        SignUpmessage === null ? null : (
+        SignUpMsg == '' ? null : (
           <CheckModal
             isOpen={loginModal}
             toggle={toggleModal}
             onClose={toggleModal}>
-            {SignUpmessage}
+            {SignUpMsg}
           </CheckModal>
 
         )

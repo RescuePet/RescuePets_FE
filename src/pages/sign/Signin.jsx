@@ -49,7 +49,7 @@ const Signin = () => {
     }
     // 토
     toggleModal()
-    dispatch(__signinUser(siginInfo))
+    // dispatch(__signinUser(siginInfo))
   }
 
   const SignInMessage = useSelector((state) => {
