@@ -154,16 +154,15 @@ const SightingDetail = () => {
           })}
         </CommentListWrapper>
       </CommentContainer>
-      <FloatingButton
-        onClick={() => {
-          console.log("hihi");
-          chatHandler();
-        }}
-      ></FloatingButton>
       <InputContainer
         placeholder="댓글을 입력해주세요."
         submitHandler={submitHandler}
       ></InputContainer>
+      <FloatingButton
+        onClick={() => {
+          chatHandler();
+        }}
+      ></FloatingButton>
     </Layout>
   );
 };

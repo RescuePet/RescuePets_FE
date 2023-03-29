@@ -1,6 +1,7 @@
 import React from "react";
 import Router from "./router/router";
 import Reset from "./style/Reset";
+import GlobalStyle from "./style/Globalstyle";
 import { ThemeProvider } from "styled-components";
 import {
   FlexCenter,
@@ -41,6 +42,7 @@ const App = () => {
   return (
     <>
       <Reset />
+      <GlobalStyle />
       <ThemeProvider theme={theme}>
         <Router />
       </ThemeProvider>

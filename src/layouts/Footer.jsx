@@ -100,6 +100,7 @@ const FooterContiner = styled.div`
   position: fixed;
   bottom: 0;
   background-color: ${(props) => props.theme.color.white};
+  z-index: 10;
   @media screen and (max-width: 431px) {
     width: 100%;
     position: fixed;
@@ -138,7 +139,7 @@ const FooterMenuList = styled.div`
 const FooterIconToggleBtn = styled.div`
   position: relative;
   z-index: 1000;
-  ${FlexAttribute("row", "center")}
+  ${FlexAttribute("row", "center", "center")}
   width: 40px;
   height: 40px;
   background: ${(props) => props.theme.color.text_nomal};
@@ -147,12 +148,10 @@ const FooterIconToggleBtn = styled.div`
   cursor: pointer;
   font-weight: 300;
   &::before {
-    height: 40px;
-    width: 40px;
     content: "+";
+    line-height: 40px;
     text-align: center;
-    font-size: 3em;
-    font-weight: 300;
+    font-size: 40px;
     color: ${(props) => props.theme.color.white};
     transition: 1s;
   }

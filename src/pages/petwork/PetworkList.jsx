@@ -13,14 +13,16 @@ import {
   __getMissingPost,
 } from "../../redux/modules/petworkSlice";
 import { useInView } from "react-intersection-observer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import petworkHeader from "../../asset/header/petworkheader.png";
 import refresh from "../../asset/refresh.svg";
+import FloatingButton from "./components/FloatingButton";
 
 const PetworkList = () => {
   const [missingRef, missingInView] = useInView();
   const [catchRef, catchInView] = useInView();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const petwork = useSelector((state) => state.petwork);
   const missingPayloadSettings = {
     page: petwork.missingPage,
@@ -40,6 +42,10 @@ const PetworkList = () => {
       dispatch(__getCatchPost(catchPayloadSettings));
     }
   }, [missingInView, catchInView]);
+
+  const petworkHandler = () => {
+    navigate("/map");
+  };
 
   return (
     <Layout>
@@ -79,6 +85,7 @@ const PetworkList = () => {
           <div ref={catchRef}></div>
         )}
       </ListCardContainer>
+      <FloatingButton onClick={petworkHandler}></FloatingButton>
     </Layout>
   );
 };
@@ -89,6 +96,7 @@ const PetworkHeader = styled.div`
 `;
 
 const HeaderImage = styled.img`
+  margin-left: 24px;
   width: 157px;
   height: 30px;
 `;
