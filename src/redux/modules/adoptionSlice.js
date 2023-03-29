@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { home } from "../../utils/api";
+import { home, instance } from "../../utils/api";
+import _ from "lodash";
 
 // Get adoption list
 export const __getAdoptionList = createAsyncThunk(
@@ -33,6 +34,31 @@ export const __getAdoptionDetail = createAsyncThunk(
   }
 );
 
+// Post Scrap
+export const __postAdoptionListScrap = createAsyncThunk(
+  "postAdoptionScrap",
+  async (payload, thunkAPI) => {
+    try {
+      let data = {
+        boolean: null,
+        desertionNo: payload.desertionNo,
+      };
+      if (!payload.state) {
+        await instance.post(`/api/pets/scrap/${payload.desertionNo}`);
+        data.boolean = true;
+        return thunkAPI.fulfillWithValue(data);
+      } else if (payload.state) {
+        await instance.delete(`/api/pets/scrap/${payload.desertionNo}`);
+        data.boolean = false;
+        return thunkAPI.fulfillWithValue(data);
+      }
+    } catch (error) {
+      console.log(error.response.data.message);
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
 const initialState = {
   error: false,
   loading: false,
@@ -48,9 +74,6 @@ export const adoptionSlice = createSlice({
   reducers: {
     addAdoptionPage: (state) => {
       state.adoptionPage = state.adoptionPage + 1;
-    },
-    adoptionScrap: (state) => {
-      console.log("state", state.state);
     },
   },
   extraReducers: (builder) => {
@@ -82,8 +105,19 @@ export const adoptionSlice = createSlice({
         state.loading = false;
         state.error = true;
       });
+
+    builder.addCase(__postAdoptionListScrap.fulfilled, (state, action) => {
+      const index = state.adoptionLists.findIndex(
+        (item) => item.desertionNo === action.payload.desertionNo
+      );
+      const updateItem = {
+        ...state.adoptionLists[index],
+        isScrap: action.payload.boolean,
+      };
+      state.adoptionLists[index] = updateItem;
+    });
   },
 });
 
-export const { addAdoptionPage, adoptionScrap } = adoptionSlice.actions;
+export const { addAdoptionPage } = adoptionSlice.actions;
 export default adoptionSlice.reducer;

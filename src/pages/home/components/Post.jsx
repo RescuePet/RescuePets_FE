@@ -7,10 +7,9 @@ import time from "../../../asset/time.svg";
 import information from "../../../asset/information.svg";
 import ClippingEmpty from "../../../asset/Clippingwhite.jsx";
 import { useNavigate } from "react-router-dom";
-import { instance } from "../../../utils/api";
 import ClippingFill from "../../../asset/profile/ClippingFill";
 import { useDispatch } from "react-redux";
-import { adoptionScrap } from "../../../redux/modules/adoptionSlice";
+import { __postAdoptionListScrap } from "../../../redux/modules/adoptionSlice";
 
 const Post = ({ item }) => {
   console.log(item);
@@ -18,15 +17,11 @@ const Post = ({ item }) => {
   const dispatch = useDispatch();
   const scrapHandler = (e) => {
     e.stopPropagation();
-    if (!item.isScrap) {
-      // instance.post(`/api/pets/scrap/${item.desertionNo}`);
-      dispatch(adoptionScrap());
-      console.log("scrap");
-    } else if (item.isScrap) {
-      // instance.delete(`api/pets/scrap/${item.desertionNo}`);
-      dispatch(adoptionScrap());
-      console.log("scrap delete");
-    }
+    let payload = {
+      state: item.isScrap,
+      desertionNo: item.desertionNo,
+    };
+    dispatch(__postAdoptionListScrap(payload));
   };
 
   return (
