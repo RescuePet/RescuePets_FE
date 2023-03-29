@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import { HeaderStyle } from "../../style/Mixin";
@@ -7,12 +7,8 @@ import ProfileSetList from "./components/ProfileSetList";
 import UserInformation from "./components/UserInformation";
 import profileHeader from "./../../asset/header/profileheader.png";
 
-
-
 const Profile = () => {
   // 로그
-
-
   return (
     <Layout>
       <ProfileHeader>

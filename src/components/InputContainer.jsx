@@ -7,6 +7,7 @@ import picture from "../asset/picture.svg";
 
 const InputContainer = ({ placeholder, submitHandler }) => {
   const { register, reset, handleSubmit } = useForm();
+
   return (
     <ChatFooter>
       <ChatContainer>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { FlexAttribute } from "../../style/Mixin";
 import Layout from "../../layouts/Layout";
@@ -8,7 +8,10 @@ import Carousel from "./components/Carousel";
 import carouselImage1 from "../../asset/carousel/1.png";
 import carouselImage2 from "../../asset/carousel/2.png";
 import { useDispatch, useSelector } from "react-redux";
-import { __getAdoptionList } from "../../redux/modules/adoptioonSlice";
+import {
+  addAdoptionPage,
+  __getAdoptionList,
+} from "../../redux/modules/adoptionSlice";
 import { Link } from "react-router-dom";
 import refresh from "../../asset/refresh.svg";
 import profile from "../../asset/profile.svg";
@@ -20,17 +23,15 @@ const Home = () => {
   const [ref, inView] = useInView();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
-  const [page, setPage] = useState(1);
-
-  let adoptionLists = useSelector((state) => state.adoption.adoptionLists);
+  let { adoptionPage, adoptionLists } = useSelector((state) => state.adoption);
   const payloadSettings = {
-    page: page,
-    size: 5,
+    page: adoptionPage,
+    size: 10,
   };
 
   useEffect(() => {
     if (inView) {
-      setPage((prevState) => prevState + 1);
+      dispatch(addAdoptionPage());
       dispatch(__getAdoptionList(payloadSettings));
     }
   }, [inView]);

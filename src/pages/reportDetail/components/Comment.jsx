@@ -8,6 +8,7 @@ import profileIcon from "../../../asset/profile.svg";
 const Comment = ({ item }) => {
   const { profileImage } = JSON.parse(localStorage.getItem("userInfo"));
   console.log(profileImage);
+  console.log(item);
   return (
     <CommentBox>
       <UserInfo>

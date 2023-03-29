@@ -6,6 +6,7 @@ const petworkRefineData = (item) => {
   let refineData = {
     sexCd: null,
     upkind: null,
+    weight: null,
     information: [],
   };
   let refineNeuterYN = null;
@@ -32,7 +33,7 @@ const petworkRefineData = (item) => {
   }
   refineData.information.push(refineNeuterYN);
   refineData.information.push(item.age + "살");
-  refineData.information.push(item.colorCd);
+  refineData.information.push(item.weight + "Kg");
   return refineData;
 };
 
