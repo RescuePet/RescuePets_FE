@@ -27,11 +27,11 @@ const Post = ({ item }) => {
         </TextBox>
         <TextBox>
           <img src={time} alt="time" />
-          <span>{item.happenDt}</span>
+          <span>{item.noticeDate}</span>
         </TextBox>
         <TextBox>
           <img src={information} alt="information" />
-          <span>{item.data.refinedata.information.join("/")}</span>
+          <span>{item.ageWeightNeuterYn}</span>
         </TextBox>
       </InformationWrapper>
     </PostContainer>

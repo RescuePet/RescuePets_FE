@@ -7,7 +7,6 @@ const refineData = (item) => {
     kind: "",
     kindCd: "",
     sexCd: "",
-    information: [],
   };
   if (item) {
     refinedata.kind = item.kindCd.split(/\[|\]/g)[1];
@@ -29,9 +28,6 @@ const refineData = (item) => {
     } else if (item.neuterYn === "N") {
       refinedata.information.push("중성화 X");
     }
-    refinedata.information.push(item.age);
-    refinedata.information.push(item.weight);
-    refinedata.information.push(item.colorCd);
 
     return refinedata;
   }

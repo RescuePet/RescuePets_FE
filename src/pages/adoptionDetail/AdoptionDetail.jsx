@@ -27,59 +27,53 @@ const AdoptionDetail = () => {
   useEffect(() => {
     dispatch(__getAdoptionDetail(id));
   }, []);
-  const detailInfo = useSelector((state) => state.adoption);
-  console.log(detailInfo);
+  const { adoptionDetail } = useSelector((state) => state?.adoption);
+  console.log(adoptionDetail);
   // 비동기처리 시 detailInfo가 없을 경우를 고려
-  if (JSON.stringify(detailInfo.adiotionDetail) === "{}") {
+  if (JSON.stringify(adoptionDetail) === "{}") {
     return <div>Loading...</div>;
   }
 
   const titleData = {
-    state: detailInfo.adiotionDetail.processState,
-    kindCd: detailInfo.adiotionDetail.refinedata.kindCd,
-    sexCd: detailInfo.adiotionDetail.refinedata.sexCd,
-    information: detailInfo.adiotionDetail.refinedata.information.join("/"),
+    state: adoptionDetail.processState,
+    kindCd: adoptionDetail.refinedata.kindCd,
+    sexCd: adoptionDetail.refinedata.sexCd,
+    information: adoptionDetail.ageWeightNeuterYnColorCd,
   };
 
   const locationData = {
-    address: detailInfo.adiotionDetail.careAddr,
-    careNm: detailInfo.adiotionDetail.careNm,
-    careTel: detailInfo.adiotionDetail.careTel,
+    address: adoptionDetail.careAddr,
+    careNm: adoptionDetail.careNm,
+    careTel: adoptionDetail.careTel,
   };
 
   const shelterData = [
     {
       icon: location,
       option: "주소",
-      data: detailInfo.adiotionDetail.careAddr,
+      data: adoptionDetail.careAddr,
     },
     {
       icon: calendar,
       option: "공고기간",
-      data: [
-        detailInfo.adiotionDetail.noticeSdt,
-        detailInfo.adiotionDetail.noticeEdt,
-      ].join("~"),
+      data: adoptionDetail.noticeDate,
     },
     {
       icon: specialmark,
       option: "특이사항",
-      data: detailInfo.adiotionDetail.specialMark,
+      data: adoptionDetail.specialMark,
     },
     {
       icon: user,
       option: "담당부서",
-      data: [
-        detailInfo.adiotionDetail.orgNm,
-        detailInfo.adiotionDetail.officetel,
-      ],
+      data: [adoptionDetail.orgNm, adoptionDetail.officetel],
     },
   ];
 
   return (
     <Layout>
-      <ImageContainer image={detailInfo.adiotionDetail.popfile}>
-        <Image src={detailInfo.adiotionDetail.popfile} />
+      <ImageContainer image={adoptionDetail.popfile}>
+        <Image src={adoptionDetail.popfile} />
         <BackButton onClick={() => navigate(-1)}>
           <img src={backwhite} alt="back" />
         </BackButton>

@@ -37,7 +37,7 @@ const initialState = {
   error: false,
   loading: false,
   adoptionLists: [],
-  adiotionDetail: {},
+  adoptionDetail: {},
   adoptionPage: 1,
 };
 
@@ -72,7 +72,7 @@ export const adoptionSlice = createSlice({
       })
       .addCase(__getAdoptionDetail.fulfilled, (state, action) => {
         state.loading = false;
-        state.adiotionDetail = action.payload;
+        state.adoptionDetail = action.payload;
       })
       .addCase(__getAdoptionDetail.rejected, (state) => {
         state.loading = false;
