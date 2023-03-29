@@ -116,10 +116,20 @@ export const adoptionSlice = createSlice({
         };
         state.adoptionLists[index] = updateListsItem;
       } else if (action.payload.page === "adoptiondetail") {
-        const updateDetailItem = {
-          ...state.adoptionDetail,
-          isScrap: action.payload.boolean,
-        };
+        let updateDetailItem;
+        if (action.payload.boolean) {
+          updateDetailItem = {
+            ...state.adoptionDetail,
+            isScrap: action.payload.boolean,
+            scrapCount: state.adoptionDetail.scrapCount + 1,
+          };
+        } else {
+          updateDetailItem = {
+            ...state.adoptionDetail,
+            isScrap: action.payload.boolean,
+            scrapCount: state.adoptionDetail.scrapCount - 1,
+          };
+        }
         const updateListsItem = {
           ...state.adoptionLists[index],
           isScrap: action.payload.boolean,

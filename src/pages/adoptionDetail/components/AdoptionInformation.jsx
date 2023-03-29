@@ -4,18 +4,18 @@ import { FlexAttribute, PostBorderStyle } from "../../../style/Mixin";
 import ClippingFill from "../../../asset/profile/ClippingFill";
 import inquiry from "../../../asset/inquiry.svg";
 
-const AdoptionInformation = () => {
+const AdoptionInformation = ({ adoptionInfoData }) => {
   return (
     <PostInfoWrapper>
       <InfoBox>
         <img src={inquiry} alt="postComment" />
         <span>문의</span>
-        <span>0</span>
+        <span>{adoptionInfoData.inquiryCount}</span>
       </InfoBox>
       <InfoBox>
         <ClippingFill />
         <span>북마크</span>
-        <span>0</span>
+        <span>{adoptionInfoData.scrapCount}</span>
       </InfoBox>
     </PostInfoWrapper>
   );

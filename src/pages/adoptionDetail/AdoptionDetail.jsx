@@ -74,8 +74,12 @@ const AdoptionDetail = () => {
     },
   ];
 
+  const adoptionInfoData = {
+    inquiryCount: adoptionDetail.inquiryCount,
+    scrapCount: adoptionDetail.scrapCount,
+  };
+
   const scrapHandler = () => {
-    console.log("scrap handler");
     let payload = {
       page: "adoptiondetail",
       state: adoptionDetail.isScrap,
@@ -108,7 +112,9 @@ const AdoptionDetail = () => {
           })}
         </ShelterContainer>
       </div>
-      <AdoptionInformation></AdoptionInformation>
+      <AdoptionInformation
+        adoptionInfoData={adoptionInfoData}
+      ></AdoptionInformation>
       <ButtonWrapper>
         <Button fillButton>문의하기</Button>
       </ButtonWrapper>
