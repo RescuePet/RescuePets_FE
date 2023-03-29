@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { home, instance } from "../../utils/api";
-import _ from "lodash";
 
 // Get adoption list
 export const __getAdoptionList = createAsyncThunk(
@@ -40,6 +39,7 @@ export const __postAdoptionListScrap = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       let data = {
+        page: payload.page,
         boolean: null,
         desertionNo: payload.desertionNo,
       };
@@ -65,7 +65,6 @@ const initialState = {
   adoptionLists: [],
   adoptionDetail: {},
   adoptionPage: 1,
-  state: null,
 };
 
 export const adoptionSlice = createSlice({
@@ -110,11 +109,25 @@ export const adoptionSlice = createSlice({
       const index = state.adoptionLists.findIndex(
         (item) => item.desertionNo === action.payload.desertionNo
       );
-      const updateItem = {
-        ...state.adoptionLists[index],
-        isScrap: action.payload.boolean,
-      };
-      state.adoptionLists[index] = updateItem;
+      if (action.payload.page === "home") {
+        const updateListsItem = {
+          ...state.adoptionLists[index],
+          isScrap: action.payload.boolean,
+        };
+        state.adoptionLists[index] = updateListsItem;
+      } else if (action.payload.page === "adoptiondetail") {
+        const updateDetailItem = {
+          ...state.adoptionDetail,
+          isScrap: action.payload.boolean,
+        };
+        const updateListsItem = {
+          ...state.adoptionLists[index],
+          isScrap: action.payload.boolean,
+        };
+
+        state.adoptionDetail = updateDetailItem;
+        state.adoptionLists[index] = updateListsItem;
+      }
     });
   },
 });

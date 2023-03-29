@@ -18,6 +18,7 @@ const Post = ({ item }) => {
   const scrapHandler = (e) => {
     e.stopPropagation();
     let payload = {
+      page: "home",
       state: item.isScrap,
       desertionNo: item.desertionNo,
     };

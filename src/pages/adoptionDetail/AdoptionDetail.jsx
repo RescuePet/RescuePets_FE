@@ -2,7 +2,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { __getAdoptionDetail } from "../../redux/modules/adoptionSlice";
+import {
+  __getAdoptionDetail,
+  __postAdoptionListScrap,
+} from "../../redux/modules/adoptionSlice";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import Shelter from "./components/Shelter";
@@ -18,6 +21,7 @@ import Clippingwhite from "../../asset/Clippingwhite";
 import { FlexAttribute, PostBorderStyle } from "../../style/Mixin";
 import AdoptionInformation from "./components/AdoptionInformation";
 import Button from "../../elements/Button";
+import ClippingFill from "../../asset/profile/ClippingFill";
 
 const AdoptionDetail = () => {
   const { id } = useParams();
@@ -70,6 +74,16 @@ const AdoptionDetail = () => {
     },
   ];
 
+  const scrapHandler = () => {
+    console.log("scrap handler");
+    let payload = {
+      page: "adoptiondetail",
+      state: adoptionDetail.isScrap,
+      desertionNo: adoptionDetail.desertionNo,
+    };
+    dispatch(__postAdoptionListScrap(payload));
+  };
+
   return (
     <Layout>
       <ImageContainer image={adoptionDetail.popfile}>
@@ -77,7 +91,11 @@ const AdoptionDetail = () => {
         <BackButton onClick={() => navigate(-1)}>
           <img src={backwhite} alt="back" />
         </BackButton>
-        <ScrapState />
+        {adoptionDetail.isScrap ? (
+          <ScrapStateTrue onClick={scrapHandler} />
+        ) : (
+          <ScrapStateFalse onClick={scrapHandler} />
+        )}
       </ImageContainer>
       <div>
         <Title titleData={titleData}></Title>
@@ -122,12 +140,23 @@ const BackButton = styled.div`
   cursor: pointer;
 `;
 
-const ScrapState = styled(Clippingwhite)`
+const ScrapStateFalse = styled(Clippingwhite)`
   position: absolute;
   top: 26px;
   right: 20px;
   z-index: 10;
   cursor: pointer;
+`;
+
+const ScrapStateTrue = styled(ClippingFill)`
+  position: absolute;
+  top: 26px;
+  right: 20px;
+  z-index: 10;
+  cursor: pointer;
+  path {
+    fill: ${(props) => props.theme.color.white};
+  }
 `;
 
 const ShelterContainer = styled.div`
