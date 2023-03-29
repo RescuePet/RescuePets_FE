@@ -31,8 +31,8 @@ const UserInformation = () => {
 
   const { myMissing, myCatch } = useSelector((state) => state.profile);
 
-  console.log("myMissing", myMissing);
-  console.log("myCatch", myCatch);
+  // console.log("myMissing", myMissing);
+  // console.log("myCatch", myCatch);
 
   return (
     <UserInfoContainer>

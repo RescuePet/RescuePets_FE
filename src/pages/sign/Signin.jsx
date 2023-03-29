@@ -61,6 +61,7 @@ const Signin = () => {
   useEffect(() => {
     if (SignInMessage === 'success') {
       console.log('로그인성공')
+    
       setTimeout(function () {
         navigate('/home')
       }, 1000);

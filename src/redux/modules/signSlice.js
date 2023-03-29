@@ -19,7 +19,6 @@ export const __signinUser = createAsyncThunk(
 export const __signupUser = createAsyncThunk(
   "signupUser",
   async (payload, thunkAPI) => {
-    console.log(payload);
     try {
       await instance.post("/api/member/signup", payload);
       return thunkAPI.fulfillWithValue("success");
@@ -29,9 +28,24 @@ export const __signupUser = createAsyncThunk(
   }
 );
 
+export const __SignoutUser = createAsyncThunk(
+  "__logoutUser",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await instance.delete("/api/member/logout");
+      // console.log(response.data.data)
+      return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
 const initialState = {
   Signinmessage: "",
   Signupmessage: "",
+  Signoutmessage: "",
+
 };
 
 export const signsSlice = createSlice({
@@ -53,7 +67,16 @@ export const signsSlice = createSlice({
       })
       .addCase(__signupUser.rejected, (state, action) => {
         state.Signupmessage = action.error.message;
+      })
+      .addCase(__SignoutUser.fulfilled, (state, action) => {
+        state.Signoutmessage = action.payload;
+        console.log("sign up ", state.message);
+      })
+      .addCase(__SignoutUser.rejected, (state, action) => {
+        state.Signoutmessage = action.error.message;
       });
+
+
   },
 });
 
