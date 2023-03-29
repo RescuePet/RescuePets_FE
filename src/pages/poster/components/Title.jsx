@@ -5,11 +5,11 @@ import {
   ContentInformationStyle,
   FlexAttribute,
   PostTitleBorderStyle,
-  StateSpanStyle,
 } from "../../../style/Mixin";
 import { __getMissingPostDetail } from "../../../redux/modules/petworkSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import State from "../../../elements/State";
 
 const Title = ({ titleData }) => {
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const Title = ({ titleData }) => {
 
   return (
     <TitleWrapper>
-      <State>실종</State>
+      <State category="실종">실종</State>
       <SemiText>여성</SemiText>
       <SexCd />
       <RegularText>
@@ -41,11 +41,6 @@ const TitleWrapper = styled.div`
   width: 100%;
   margin: 16px auto;
   ${PostTitleBorderStyle}
-`;
-
-const State = styled.span`
-  ${StateSpanStyle}
-  flex-basis: 35px;
 `;
 
 const SemiText = styled.span`
