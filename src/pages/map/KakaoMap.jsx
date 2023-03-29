@@ -9,7 +9,6 @@ import { __GetMissingData } from "../../redux/modules/missingSlice";
 import { __GetCatchData } from "../../redux/modules/catchSlice";
 import { useModalState } from "../../hooks/useModalState";
 import { MarkerModal } from "./components/Modal"
-import './Overlay.css';
 const { kakao } = window;
 
 const KakaoMap = () => {
