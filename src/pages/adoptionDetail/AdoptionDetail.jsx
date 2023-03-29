@@ -2,7 +2,11 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { __getAdoptionDetail } from "../../redux/modules/adoptionSlice";
+import {
+  __getAdoptionDetail,
+  __postAdoptionInquiry,
+  __postAdoptionListScrap,
+} from "../../redux/modules/adoptionSlice";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import Shelter from "./components/Shelter";
@@ -18,6 +22,7 @@ import Clippingwhite from "../../asset/Clippingwhite";
 import { FlexAttribute, PostBorderStyle } from "../../style/Mixin";
 import AdoptionInformation from "./components/AdoptionInformation";
 import Button from "../../elements/Button";
+import ClippingFill from "../../asset/profile/ClippingFill";
 
 const AdoptionDetail = () => {
   const { id } = useParams();
@@ -27,63 +32,93 @@ const AdoptionDetail = () => {
   useEffect(() => {
     dispatch(__getAdoptionDetail(id));
   }, []);
-  const detailInfo = useSelector((state) => state.adoption);
-  console.log(detailInfo);
+  const { adoptionDetail } = useSelector((state) => state?.adoption);
   // 비동기처리 시 detailInfo가 없을 경우를 고려
-  if (JSON.stringify(detailInfo.adiotionDetail) === "{}") {
+  if (JSON.stringify(adoptionDetail) === "{}") {
     return <div>Loading...</div>;
   }
 
-  const titleData = {
-    state: detailInfo.adiotionDetail.processState,
-    kindCd: detailInfo.adiotionDetail.refinedata.kindCd,
-    sexCd: detailInfo.adiotionDetail.refinedata.sexCd,
-    information: detailInfo.adiotionDetail.refinedata.information.join("/"),
+  console.log(adoptionDetail);
+
+  let titleData = {
+    process: adoptionDetail.processState,
+    processState: adoptionDetail.state,
+    kindCd: adoptionDetail.refinedata.kindCd,
+    sexCd: adoptionDetail.refinedata.sexCd,
+    information: adoptionDetail.ageWeightNeuterYnColorCd,
   };
 
+  if (adoptionDetail.refinedata.process) {
+    titleData.processState = adoptionDetail.refinedata.processState;
+    titleData.process = adoptionDetail.refinedata.process;
+  }
+
   const locationData = {
-    address: detailInfo.adiotionDetail.careAddr,
-    careNm: detailInfo.adiotionDetail.careNm,
-    careTel: detailInfo.adiotionDetail.careTel,
+    address: adoptionDetail.careAddr,
+    careNm: adoptionDetail.careNm,
+    careTel: adoptionDetail.careTel,
   };
 
   const shelterData = [
     {
       icon: location,
       option: "주소",
-      data: detailInfo.adiotionDetail.careAddr,
+      data: adoptionDetail.careAddr,
     },
     {
       icon: calendar,
       option: "공고기간",
-      data: [
-        detailInfo.adiotionDetail.noticeSdt,
-        detailInfo.adiotionDetail.noticeEdt,
-      ].join("~"),
+      data: adoptionDetail.noticeDate,
     },
     {
       icon: specialmark,
       option: "특이사항",
-      data: detailInfo.adiotionDetail.specialMark,
+      data: adoptionDetail.specialMark,
     },
     {
       icon: user,
       option: "담당부서",
-      data: [
-        detailInfo.adiotionDetail.orgNm,
-        detailInfo.adiotionDetail.officetel,
-      ],
+      data: [adoptionDetail.orgNm, adoptionDetail.officetel],
     },
   ];
 
+  const adoptionInfoData = {
+    inquiryCount: adoptionDetail.inquiryCount,
+    scrapCount: adoptionDetail.scrapCount,
+  };
+
+  const scrapHandler = () => {
+    let payload = {
+      page: "adoptiondetail",
+      state: adoptionDetail.isScrap,
+      desertionNo: adoptionDetail.desertionNo,
+    };
+    dispatch(__postAdoptionListScrap(payload));
+  };
+
+  const inquiryHandler = () => {
+    if (!adoptionDetail.isInquiry) {
+      console.log("inquiry success");
+      dispatch(__postAdoptionInquiry(adoptionDetail.desertionNo));
+    }
+    window.location.href = `tel:${adoptionDetail.careTel}`;
+  };
+
   return (
     <Layout>
-      <ImageContainer image={detailInfo.adiotionDetail.popfile}>
-        <Image src={detailInfo.adiotionDetail.popfile} />
+      <ImageContainer image={adoptionDetail.popfile}>
+        <Image src={adoptionDetail.popfile} />
         <BackButton onClick={() => navigate(-1)}>
           <img src={backwhite} alt="back" />
         </BackButton>
-        <ScrapState />
+        {adoptionDetail.isScrap ? (
+          <ScrapStateTrue onClick={scrapHandler} />
+        ) : (
+          <ScrapStateFalse onClick={scrapHandler} />
+        )}
+        <ProcessBox>
+          <span>{titleData.processState}</span>
+        </ProcessBox>
       </ImageContainer>
       <div>
         <Title titleData={titleData}></Title>
@@ -96,9 +131,13 @@ const AdoptionDetail = () => {
           })}
         </ShelterContainer>
       </div>
-      <AdoptionInformation></AdoptionInformation>
+      <AdoptionInformation
+        adoptionInfoData={adoptionInfoData}
+      ></AdoptionInformation>
       <ButtonWrapper>
-        <Button fillButton>문의하기</Button>
+        <Button fillButton onClick={inquiryHandler}>
+          문의하기
+        </Button>
       </ButtonWrapper>
     </Layout>
   );
@@ -128,12 +167,36 @@ const BackButton = styled.div`
   cursor: pointer;
 `;
 
-const ScrapState = styled(Clippingwhite)`
+const ScrapStateFalse = styled(Clippingwhite)`
   position: absolute;
   top: 26px;
   right: 20px;
   z-index: 10;
   cursor: pointer;
+`;
+
+const ScrapStateTrue = styled(ClippingFill)`
+  position: absolute;
+  top: 26px;
+  right: 20px;
+  z-index: 10;
+  cursor: pointer;
+  path {
+    fill: ${(props) => props.theme.color.white};
+  }
+`;
+
+const ProcessBox = styled.div`
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  padding: 6px 0;
+  background-color: RGB(23, 23, 23, 0.5);
+  text-align: center;
+  ${(props) => props.theme.Body_500_16};
+  span {
+    color: ${(props) => props.theme.color.white};
+  }
 `;
 
 const ShelterContainer = styled.div`

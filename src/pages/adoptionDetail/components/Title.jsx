@@ -5,30 +5,32 @@ import {
   ContentInformationStyle,
   FlexAttribute,
   PostTitleBorderStyle,
-  StateSpanStyle,
 } from "../../../style/Mixin";
+import State from "../../../elements/State";
 
 const Title = ({ titleData }) => {
   return (
-    <TitleWrapper>
-      <State>{titleData.state}</State>
-      <SemiText>{titleData.kindCd}</SemiText>
-      <SexCd src={titleData.sexCd} />
-      <RegularText>{titleData.information}</RegularText>
-    </TitleWrapper>
+    <TitleContainer>
+      <TitleWrapper>
+        <State category={"adoptionDetail"}>{titleData.process}</State>
+        <SemiText>{titleData.kindCd}</SemiText>
+        <SexCd src={titleData.sexCd} />
+        <RegularText>{titleData.information}</RegularText>
+      </TitleWrapper>
+    </TitleContainer>
   );
 };
 
-const TitleWrapper = styled.div`
-  ${FlexAttribute("row", "space-evenly", "center")}
+const TitleContainer = styled.div`
+  ${FlexAttribute("row", "center")}
   width: 100%;
-  margin: 16px auto;
   ${PostTitleBorderStyle}
+  margin: 16px 0;
 `;
 
-const State = styled.span`
-  ${StateSpanStyle}
-  flex-basis: 35px;
+const TitleWrapper = styled.div`
+  ${FlexAttribute("row", "space-evenly", "center")}
+  width: 335px;
 `;
 
 const SemiText = styled.span`

@@ -1,7 +1,7 @@
 import React from "react";
 
 import styled from "styled-components";
-import { FlexAttribute, StateSpanStyle } from "../../../style/Mixin";
+import { FlexAttribute } from "../../../style/Mixin";
 import { Body_400_14 } from "../../../style/theme";
 import CardInfo from "./CardInfo";
 import petworkRefineData from "../../../utils/petworkRefine";
@@ -10,6 +10,7 @@ import location from "../../../asset/location.svg";
 import time from "../../../asset/time.svg";
 import informationIcon from "../../../asset/information.svg";
 import ClippingEmpty from "../../../asset/Clippingwhite.jsx";
+import State from "../../../elements/State";
 
 const Card = ({ item }) => {
   const refineData = petworkRefineData(item);
@@ -17,7 +18,7 @@ const Card = ({ item }) => {
     <ListCard>
       <CardImgWrapper imgae={item.postImages[0]?.imageURL}>
         <CardImg src={item.postImages[0]?.imageURL}></CardImg>
-        <StateSpan>{refineData.upkind}</StateSpan>
+        <State category={"petworkKind"}>{refineData.upkind}</State>
         <ScrapState />
       </CardImgWrapper>
       <CardInfoContainer>
@@ -59,13 +60,6 @@ const CardImg = styled.img`
   height: 120px;
   object-fit: contain;
   backdrop-filter: blur(3px);
-`;
-
-const StateSpan = styled.span`
-  ${StateSpanStyle}
-  position: absolute;
-  top: 16px;
-  left: 16px;
 `;
 
 const ScrapState = styled(ClippingEmpty)`

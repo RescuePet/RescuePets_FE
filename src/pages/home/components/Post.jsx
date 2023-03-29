@@ -1,25 +1,52 @@
 import React from "react";
 
 import styled from "styled-components";
-import { FlexAttribute, StateSpanStyle } from "../../../style/Mixin";
+import { FlexAttribute } from "../../../style/Mixin";
 import location from "../../../asset/location.svg";
 import time from "../../../asset/time.svg";
 import information from "../../../asset/information.svg";
-
 import ClippingEmpty from "../../../asset/Clippingwhite.jsx";
+import { useNavigate } from "react-router-dom";
+import ClippingFill from "../../../asset/profile/ClippingFill";
+import { useDispatch } from "react-redux";
+import { __postAdoptionListScrap } from "../../../redux/modules/adoptionSlice";
+import State from "../../../elements/State";
 
 const Post = ({ item }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const scrapHandler = (e) => {
+    e.stopPropagation();
+    let payload = {
+      page: "home",
+      state: item.isScrap,
+      desertionNo: item.desertionNo,
+    };
+    dispatch(__postAdoptionListScrap(payload));
+  };
+
   return (
-    <PostContainer>
+    <PostContainer
+      onClick={() => navigate(`/adoptiondetail/${item.desertionNo}`)}
+    >
       <ThunbnailWrapper image={item.filename}>
         <Tuumbnail src={item.filename}></Tuumbnail>
-        <KindSpan>{item.data.refinedata.kind}</KindSpan>
+        <State category={"adoptionKind"}>{item.data.refinedata.kind}</State>
       </ThunbnailWrapper>
       <InformationWrapper>
         <TitleBox>
+          <State category={"adoptionstate"}>{item.state}</State>
           <h2>{item.data.refinedata.kindCd}</h2>
           <img src={item.data.refinedata.sexCd} alt="sexCd" />
-          <ScrapState />
+          {item.isScrap ? (
+            <ScrapButtonBox onClick={(e) => scrapHandler(e)}>
+              <ClippingFill />
+            </ScrapButtonBox>
+          ) : (
+            <ScrapButtonBox onClick={(e) => scrapHandler(e)}>
+              <ScrapState />
+            </ScrapButtonBox>
+          )}
         </TitleBox>
         <TextBox>
           <img src={location} alt="location" />
@@ -27,11 +54,11 @@ const Post = ({ item }) => {
         </TextBox>
         <TextBox>
           <img src={time} alt="time" />
-          <span>{item.happenDt}</span>
+          <span>{item.noticeDate}</span>
         </TextBox>
         <TextBox>
           <img src={information} alt="information" />
-          <span>{item.data.refinedata.information.join("/")}</span>
+          <span>{item.ageWeightNeuterYn}</span>
         </TextBox>
       </InformationWrapper>
     </PostContainer>
@@ -39,6 +66,8 @@ const Post = ({ item }) => {
 };
 
 const PostContainer = styled.div`
+  position: relative;
+  z-index: 1;
   ${FlexAttribute("row", "space-between", "center")}
   margin-top: 16px;
   width: 335px;
@@ -67,13 +96,6 @@ const Tuumbnail = styled.img`
   backdrop-filter: blur(3px);
 `;
 
-const KindSpan = styled.span`
-  ${StateSpanStyle}
-  position: absolute;
-  top: 10px;
-  left: 10px;
-`;
-
 const InformationWrapper = styled.div`
   padding: 8px 15px;
   width: 213px;
@@ -88,16 +110,6 @@ const TitleBox = styled.div`
   }
 `;
 
-const ScrapState = styled(ClippingEmpty)`
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 10;
-  path {
-    fill: ${(props) => props.theme.color.text_alternative};
-  }
-`;
-
 const TextBox = styled.div`
   ${FlexAttribute("row", "", "flex-start")}
   margin-top: 2px;
@@ -105,6 +117,21 @@ const TextBox = styled.div`
     ${(props) => props.theme.Body_400_12}
     color: #999999;
     line-height: 18px;
+  }
+`;
+
+const ScrapButtonBox = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  z-index: 10;
+`;
+
+const ScrapState = styled(ClippingEmpty)`
+  path {
+    fill: ${(props) => props.theme.color.text_alternative};
   }
 `;
 

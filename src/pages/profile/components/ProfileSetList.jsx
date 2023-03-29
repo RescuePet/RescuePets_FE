@@ -7,7 +7,7 @@ import memo from "../../../asset/memo.svg";
 import setting from "../../../asset/profile/setting.svg";
 import headphone from "../../../asset/profile/headphone.svg";
 import Reportcatch from "../../../asset/Reportcatch";
-import clipping from "../../../asset/profile/clipping.svg";
+import ClippingFill from "../../../asset/profile/ClippingFill";
 
 const ProfileSetList = () => {
   return (
@@ -18,7 +18,7 @@ const ProfileSetList = () => {
         <ArrowSvg>&gt;</ArrowSvg>
       </ListBox>
       <ListBox>
-        <img src={clipping} alt="scrapbook" />
+        <ClippingFill />
         <List>스크랩 목록</List>
         <ArrowSvg>&gt;</ArrowSvg>
       </ListBox>

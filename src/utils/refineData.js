@@ -7,7 +7,8 @@ const refineData = (item) => {
     kind: "",
     kindCd: "",
     sexCd: "",
-    information: [],
+    processState: null,
+    process: null,
   };
   if (item) {
     refinedata.kind = item.kindCd.split(/\[|\]/g)[1];
@@ -29,10 +30,10 @@ const refineData = (item) => {
     } else if (item.neuterYn === "N") {
       refinedata.information.push("중성화 X");
     }
-    refinedata.information.push(item.age);
-    refinedata.information.push(item.weight);
-    refinedata.information.push(item.colorCd);
-
+    if (item.state === "종료" && item.processState != null) {
+      refinedata.process = item.processState.split(/\(|\)/g)[0];
+      refinedata.processState = item.processState.split(/\(|\)/g)[1];
+    }
     return refinedata;
   }
   return console.log("refineData Error");

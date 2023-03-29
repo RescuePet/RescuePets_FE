@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { home } from "../../utils/api";
+import { home, instance } from "../../utils/api";
 
 // Get adoption list
 export const __getAdoptionList = createAsyncThunk(
@@ -33,11 +33,51 @@ export const __getAdoptionDetail = createAsyncThunk(
   }
 );
 
+// Post Scrap
+export const __postAdoptionListScrap = createAsyncThunk(
+  "postAdoptionScrap",
+  async (payload, thunkAPI) => {
+    try {
+      let data = {
+        page: payload.page,
+        boolean: null,
+        desertionNo: payload.desertionNo,
+      };
+      if (!payload.state) {
+        await instance.post(`/api/pets/scrap/${payload.desertionNo}`);
+        data.boolean = true;
+        return thunkAPI.fulfillWithValue(data);
+      } else if (payload.state) {
+        await instance.delete(`/api/pets/scrap/${payload.desertionNo}`);
+        data.boolean = false;
+        return thunkAPI.fulfillWithValue(data);
+      }
+    } catch (error) {
+      console.log(error.response.data.message);
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
+// Adoption inquiry
+export const __postAdoptionInquiry = createAsyncThunk(
+  "postAdoptionInquiry",
+  async (payload, thunkAPI) => {
+    try {
+      await instance.post(`/api/pets/inquiry/${payload}`);
+      return thunkAPI.fulfillWithValue(1);
+    } catch (error) {
+      console.log(error.response.data.message);
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
 const initialState = {
   error: false,
   loading: false,
   adoptionLists: [],
-  adiotionDetail: {},
+  adoptionDetail: {},
   adoptionPage: 1,
 };
 
@@ -72,10 +112,58 @@ export const adoptionSlice = createSlice({
       })
       .addCase(__getAdoptionDetail.fulfilled, (state, action) => {
         state.loading = false;
-        state.adiotionDetail = action.payload;
+        state.adoptionDetail = action.payload;
       })
       .addCase(__getAdoptionDetail.rejected, (state) => {
         state.loading = false;
+        state.error = true;
+      });
+
+    builder
+      .addCase(__postAdoptionListScrap.fulfilled, (state, action) => {
+        const index = state.adoptionLists.findIndex(
+          (item) => item.desertionNo === action.payload.desertionNo
+        );
+        if (action.payload.page === "home") {
+          const updateListsItem = {
+            ...state.adoptionLists[index],
+            isScrap: action.payload.boolean,
+          };
+          state.adoptionLists[index] = updateListsItem;
+        } else if (action.payload.page === "adoptiondetail") {
+          let updateDetailItem;
+          if (action.payload.boolean) {
+            updateDetailItem = {
+              ...state.adoptionDetail,
+              isScrap: action.payload.boolean,
+              scrapCount: state.adoptionDetail.scrapCount + 1,
+            };
+          } else {
+            updateDetailItem = {
+              ...state.adoptionDetail,
+              isScrap: action.payload.boolean,
+              scrapCount: state.adoptionDetail.scrapCount - 1,
+            };
+          }
+          const updateListsItem = {
+            ...state.adoptionLists[index],
+            isScrap: action.payload.boolean,
+          };
+
+          state.adoptionDetail = updateDetailItem;
+          state.adoptionLists[index] = updateListsItem;
+        }
+      })
+      .addCase(__postAdoptionListScrap.rejected, (state) => {
+        state.error = true;
+      });
+
+    builder
+      .addCase(__postAdoptionInquiry.fulfilled, (state, action) => {
+        state.adoptionDetail.inquiryCount =
+          state.adoptionDetail.inquiryCount + action.payload;
+      })
+      .addCase(__postAdoptionInquiry.rejected, (state) => {
         state.error = true;
       });
   },
