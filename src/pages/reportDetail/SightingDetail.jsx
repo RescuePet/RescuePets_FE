@@ -31,6 +31,7 @@ import memo from "../../asset/memo.svg";
 import PostInformation from "./components/PostInformation";
 import FloatingButton from "./components/FloatingButton";
 import { instance } from "../../utils/api";
+import ScrollToTop from "../../elements/ScrollToTop";
 
 const SightingDetail = () => {
   const { id } = useParams();
@@ -117,6 +118,7 @@ const SightingDetail = () => {
 
   return (
     <Layout>
+      <ScrollToTop />
       <ImageCarousel
         images={catchPostDetail?.postImages}
         imageCarouselInfo={imageCarouselInfo}

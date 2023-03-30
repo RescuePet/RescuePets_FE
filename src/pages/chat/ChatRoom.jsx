@@ -76,6 +76,7 @@ const ChatRoom = () => {
       message: message,
     };
     client.send(`/pub/${id}`, {}, JSON.stringify(sendSettings));
+    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
   }, []);
 
   return (
@@ -111,6 +112,10 @@ const ChatRoom = () => {
 const ChatRoomHeader = styled.div`
   ${FlexAttribute("row", "center", "center")}
   ${HeaderStyle}
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: ${(props) => props.theme.color.white};
 `;
 
 const HeaderTitle = styled.span`

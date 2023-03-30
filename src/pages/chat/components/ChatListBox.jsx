@@ -28,13 +28,11 @@ const ChatListBox = ({ item }) => {
         />
         <TextWrapper>
           <TitleWrapper>
-            <div>
-              <PostKindCd>{item.roomName}</PostKindCd>
-              <UserName>{item.partner}</UserName>
-            </div>
+            <UserName>{item.partner}</UserName>
             <PostState category={refineData.state}>
               {refineData.state}
             </PostState>
+            <PostKindCd>{item.roomName}</PostKindCd>
           </TitleWrapper>
           <Contents>{item.lastChat}</Contents>
         </TextWrapper>
@@ -71,8 +69,7 @@ const TextWrapper = styled.div`
 `;
 
 const TitleWrapper = styled.div`
-  ${FlexAttribute("row", "space-between", "center")}
-  flex-flow: 300px;
+  ${FlexAttribute("row", "", "center")}
   span:not(:first-child) {
     margin-left: 8px;
   }
@@ -103,15 +100,15 @@ const PostState = styled.span`
 `;
 
 const PostKindCd = styled.span`
-  ${(props) => props.theme.Body_400_14};
-  line-height: 16px;
+  ${(props) => props.theme.Body_400_12};
+  line-height: 20px;
+  color: ${(props) => props.theme.color.text_alternative};
 `;
 
 const UserName = styled.span`
-  ${Body_400_12}
-  flex-basis: 90px;
-  line-height: 16px;
-  color: ${(props) => props.theme.color.text_assistive};
+  ${(props) => props.theme.Body_400_14};
+  line-height: 20px;
+  color: ${(props) => props.theme.color.text_normal};
 `;
 
 const Contents = styled.span`

@@ -23,6 +23,7 @@ import { FlexAttribute, PostBorderStyle } from "../../style/Mixin";
 import AdoptionInformation from "./components/AdoptionInformation";
 import Button from "../../elements/Button";
 import ClippingFill from "../../asset/profile/ClippingFill";
+import ScrollToTop from "../../elements/ScrollToTop";
 
 const AdoptionDetail = () => {
   const { id } = useParams();
@@ -106,6 +107,7 @@ const AdoptionDetail = () => {
 
   return (
     <Layout>
+      <ScrollToTop />
       <ImageContainer image={adoptionDetail.popfile}>
         <Image src={adoptionDetail.popfile} />
         <BackButton onClick={() => navigate(-1)}>
@@ -151,7 +153,11 @@ const ImageContainer = styled.div`
   position: relative;
   width: 100%;
   height: 240px;
-  background-image: url(${(props) => props.image});
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.3),
+      rgba(255, 255, 255, 0.3)
+    ),
+    url(${(props) => props.image});
   background-repeat: no-repeat;
   background-size: cover;
 `;

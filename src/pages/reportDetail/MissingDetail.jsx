@@ -32,6 +32,7 @@ import gratuity from "../../asset/gratuity.svg";
 import PostInformation from "./components/PostInformation";
 import FloatingButton from "./components/FloatingButton";
 import { instance } from "../../utils/api";
+import ScrollToTop from "../../elements/ScrollToTop";
 
 const MissingDetail = () => {
   const { id } = useParams();
@@ -120,6 +121,7 @@ const MissingDetail = () => {
 
   return (
     <Layout>
+      <ScrollToTop />
       <ImageCarousel
         images={missingPostDetail.postImages}
         imageCarouselInfo={imageCarouselInfo}
