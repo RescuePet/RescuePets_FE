@@ -12,10 +12,10 @@ const FloatingButton = ({ onClick }) => {
 };
 
 const FloatingChatButton = styled.div`
-  position: sticky;
+  position: fixed;
   ${FlexAttribute("row", "center", "center")}
   bottom: 96px;
-  transform: translateX(350px);
+  right: 20px;
   width: 56px;
   height: 56px;
   z-index: 50;
