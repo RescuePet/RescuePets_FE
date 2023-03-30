@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FlexAttribute, SignSvgStyle } from "../../../style/Mixin"
+import { FlexAttribute, SignSvgStyle, Border_1_color } from "../../../style/Mixin"
 
 export const ReportMissingContainer = styled.form`
   width: 100%;
@@ -176,8 +176,9 @@ export const ReportInput = styled.input`
   width: 9.75rem;
   height: 1.5625rem;
   margin-top: 5px;
-  /* border: 1px solid red; */
-  border-bottom: 1px solid ${props => props.theme.color.text_alternative};
+  ${Border_1_color}
+  border-radius: 0;
+  /* border-bottom: 1px solid gray; */
   background: transparent;
   font-size: 12px;
 `;
@@ -186,8 +187,10 @@ export const ReportLgInput = styled.input`
   width: 20.9375rem;
   height: 1.5625rem;
   margin-top: 5px;
+  border-radius: 0;
+  ${Border_1_color}
   /* border: 1px solid red; */
-  border-bottom: 1px solid ${props => props.theme.color.text_alternative};
+  /* border-bottom: 1px solid ${props => props.theme.color.text_alternative}; */
   background: transparent;
   font-size: 12px;
 `;

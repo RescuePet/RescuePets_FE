@@ -54,7 +54,7 @@ const KakaoMap = () => {
   function onFailure() {
     setLong(defaultValue.lng)
     setLati(defaultValue.lat)
-    console.log("위치 정보를 찾을수 없습니다.");
+    console.log("위치 정보를 찾을수 없습니당.");
   }
   console.log(long)
   const mapRef = useRef();
@@ -283,8 +283,8 @@ const KakaoMap = () => {
         ]
 
         const polyline = new kakao.maps.Polyline({
-          path: linePath, 
-          strokeWeight: 0, 
+          path: linePath,
+          strokeWeight: 0,
           strokeColor: '#FFAE00',
           strokeOpacity: 0,
         });
@@ -314,7 +314,7 @@ const KakaoMap = () => {
         )
           :
           (
-            <div id="myMap" style={{ width: "100%", height: "91vh", position: "relative" }}>
+            <div id="myMap" style={{ width: "100%", height: "90vh", position: "relative" }}>
               <MarkerModal
                 isOpen={loginModal}
                 toggle={toggleModal}

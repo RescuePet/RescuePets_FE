@@ -10,7 +10,7 @@ export const __PutMyinfoEdit = createAsyncThunk(
             console.log(response);
             return thunkAPI.fulfillWithValue(response.data.data);
         } catch (error) {
-            console.log(error.response.data.message);
+            console.log(error.response.data);
             throw new Error(error.response.data.message);
         }
     }
@@ -44,5 +44,5 @@ export const putMyinfoEdit = createSlice({
     },
 });
 
-// export const { addAdoptionPage } = adoptionSlice.actions;
+
 export default putMyinfoEdit.reducer;

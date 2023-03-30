@@ -203,7 +203,10 @@ const Catch = () => {
         formData.append("postImages", img)
       })
 
-      dispatch(__PostCatchData(formData))
+      for (let key of formData.keys()) {
+        console.log(key, ":", formData.get(key));
+      }
+      dispatch(__PostCatchData({ formData }))
       toggleModal()
       // reset()
       // alert('등록완료')

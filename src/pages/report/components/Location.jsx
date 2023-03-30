@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Marker from "../../../asset/marker/marker.png"
 import questionmark from "../../../asset/questionmark.svg"
+import { Border_1_color } from "../../../style/Mixin"
 
 const Location = () => {
     const { kakao } = window;
@@ -86,7 +87,7 @@ const Location = () => {
             <ReportKakaoMapBoxTitle>
 
                 <ReportKakaomapTitleInfoBox>
-                    <p>실종위치 <span>*</span></p>
+                    <p>실종위치 </p>
                     <img id="img"
                         src={questionmark} />
                     <div className="tooltip">지도상에서 마커를 움직여 위치를 표현해주세요</div>
@@ -135,17 +136,13 @@ const ReportKakaomapTitleInfoBox = styled.div`
     text-align: left;
     ${props => props.theme.Body_400_14}
     color: #222222;
-        > span {
-        position: absolute;
-        top: 2.5px;
-      }
     }
     > img {
         position: absolute;
         width: 10%;
         height: 100%;
-        left: 50px;
-        bottom: 2.5px;
+        left: 2.5rem;
+        bottom: .1563rem;
        
     }
     > div {
@@ -188,7 +185,8 @@ const ReportKakaomapTitleValueBox = styled.div`
     > div {
         width: 100%;
         height: 1.8125rem;
-        border-bottom: 1px solid ${props => props.theme.color.text_alternative};
+        ${Border_1_color}
+        /* border-bottom: 1px solid ${props => props.theme.color.text_alternative}; */
         display: flex;
         align-items: center;
     }

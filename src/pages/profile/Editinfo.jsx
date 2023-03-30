@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import camera from "../../asset/profile/camera.png"
 import close from "../../asset/Close.svg"
 import Button from '../../elements/Button'
+import { Border_1_color } from '../../style/Mixin'
 import { __PutMyinfoEdit } from '../../redux/modules/infoeditSlice'
 
 
@@ -31,7 +32,7 @@ const Editinfo = () => {
     }
 
     // 이미지로 로직
-    const [imageFormData, setImageFormData] = useState();
+    const [imageFormData, setImageFormData] = useState('');
     const [imageShow, setImageShow] = useState('');
 
     const onChangeUploadHandler = async (e) => {
@@ -70,9 +71,15 @@ const Editinfo = () => {
     const onSubmitmyInfoHandler = (data) => {
 
         const formData = new FormData();
-        formData.append("nickname", JSON.stringify(data.name))
+        formData.append(
+            "nickname",
+            new Blob([JSON.stringify(data.name)], { type: "application/json" })
+        )
         formData.append("image", imageFormData)
 
+        for (let key of formData.keys()) {
+            console.log(key, ":", formData.get(key));
+        }
         dispatch(__PutMyinfoEdit(formData))
     }
 
@@ -125,7 +132,7 @@ const Editinfo = () => {
                 </EditInfoTextBox>
                 <EditinfoButtonBox>
                     {
-                        isActive === true ? <Button emptyButton>값입력</Button>
+                        isActive === true ? <Button disable emptyButton>값입력</Button>
                             : <Button type="submit" fillButton>등록</Button>
                     }
 
@@ -210,7 +217,9 @@ const EditInfoTextBox = styled.div`
     > input {
         width: 100%;
         height: 1.5rem;
-        border-bottom: 1px solid #000;
+        /* border-bottom: 1px solid #000; */
+        ${Border_1_color}
+        border-radius: 0;
         ${props => props.theme.Body_400_12}
     }
     > span {
