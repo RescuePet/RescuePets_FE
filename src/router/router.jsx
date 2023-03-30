@@ -15,7 +15,7 @@ import MissingDetail from "../pages/reportDetail/MissingDetail";
 import SightingDetail from "../pages/reportDetail/SightingDetail";
 import Catch from "../pages/report/Catch";
 import KakaoSignin from "../pages/sign/KakaoSignin";
-import Editinfo from "../pages/profile/components/Editinfo";
+import Editinfo from "../pages/profile/Editinfo"
 
 const Router = () => {
   return (
