@@ -22,7 +22,7 @@ const ChatListBox = ({ item }) => {
   console.log(item);
   return (
     <ChatRoomListContainer>
-      <ClickDiv to={`/chatroom/${item.roomId}`}>
+      <ClickDiv to={`/chatroom/${item.partner}/${item.roomId}`}>
         <ProfileImage
           src={item.profileImage !== null ? item.profileImage : profile}
         />

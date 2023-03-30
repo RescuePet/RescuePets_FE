@@ -28,7 +28,7 @@ const Router = () => {
         <Route path="/adoptiondetail/:id" element={<AdoptionDetail />} />
         <Route path="/map" element={<Map />} />
         <Route path="/chatlist" element={<ChatList />} />
-        <Route path="/chatroom/:id" element={<ChatRoom />} />
+        <Route path="/chatroom/:nickname/:id" element={<ChatRoom />} />
         <Route path="/missing" element={<Missing />} />
         <Route path="/catch" element={<Catch />} />
         <Route path="/profile" element={<Profile />} />
@@ -37,7 +37,7 @@ const Router = () => {
         <Route path="/missingdetail/:id" element={<MissingDetail />} />
         <Route path="/sightingdetail/:id" element={<SightingDetail />} />
         <Route path="/kakaologin" element={<KakaoSignin />} />
-        <Route path="/poster" element={ <Poster />} />
+        <Route path="/poster" element={<Poster />} />
       </Routes>
     </BrowserRouter>
   );

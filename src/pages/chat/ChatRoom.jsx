@@ -14,7 +14,7 @@ import { instance } from "../../utils/api";
 import { useParams } from "react-router-dom";
 
 const ChatRoom = () => {
-  const { id } = useParams();
+  const { id, nickname } = useParams();
   const [chatlog, setChatLog] = useState([]);
   const sender = JSON.parse(localStorage.getItem("userInfo"));
 
@@ -81,7 +81,7 @@ const ChatRoom = () => {
   return (
     <Layout>
       <ChatRoomHeader>
-        <HeaderTitle>밤빵이아빠</HeaderTitle>
+        <HeaderTitle>{nickname}</HeaderTitle>
       </ChatRoomHeader>
       <ChatRoomBody>
         {chatlog.length !== 0 &&

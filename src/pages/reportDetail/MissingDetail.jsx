@@ -88,6 +88,9 @@ const MissingDetail = () => {
       id: id,
       content: content.message,
     };
+    if (content.message === "") {
+      return;
+    }
     dispatch(__postMissingComment(data)).then(() => {
       dispatch(__getMissingComment(id));
     });
@@ -98,7 +101,7 @@ const MissingDetail = () => {
       `/chat/missing-room/${missingPostDetail.id}`
     );
     console.log("post response", response.data);
-    navigate(`/chatroom/${response.data}`);
+    navigate(`/chatroom/${missingPostDetail.nickname}/${response.data}`);
   };
 
   const scrapHandler = () => {

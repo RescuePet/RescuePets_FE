@@ -85,6 +85,9 @@ const SightingDetail = () => {
       id: id,
       content: content.message,
     };
+    if (content.message === "") {
+      return;
+    }
     dispatch(__postCatchComment(data)).then(() => {
       dispatch(__getCatchComment(id));
     });
@@ -95,7 +98,7 @@ const SightingDetail = () => {
       `/chat/catch-room/${catchPostDetail.id}`
     );
     console.log("post response", response.data);
-    navigate(`/chatroom/${response.data}`);
+    navigate(`/chatroom/${catchPostDetail.nickname}/${response.data}`);
   };
 
   const scrapHandler = () => {

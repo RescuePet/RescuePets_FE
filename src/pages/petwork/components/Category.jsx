@@ -50,6 +50,7 @@ const ActiveButton = styled.button`
   height: 49px;
   ${Button_700_16}
   background-color: transparent;
+  color: ${(props) => props.theme.color.black};
   ${(props) =>
     props.active
       ? css`
