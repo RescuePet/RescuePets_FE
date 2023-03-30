@@ -3,9 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Border_1_color, FlexAttribute } from "../style/Mixin";
 import Footer from "./Footer";
-import isSignin from "../utils/token";
+import { TokenCheck } from "../utils/TokenCheck";
+// import isSignin from "../utils/TokenCheck";
 
 const Layout = ({ children }) => {
+  TokenCheck()
   const location = useLocation();
 
   // 이미지 닉네임 만 넣어서 변경

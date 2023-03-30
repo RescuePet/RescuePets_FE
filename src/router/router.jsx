@@ -15,7 +15,9 @@ import MissingDetail from "../pages/reportDetail/MissingDetail";
 import SightingDetail from "../pages/reportDetail/SightingDetail";
 import Catch from "../pages/report/Catch";
 import KakaoSignin from "../pages/sign/KakaoSignin";
+import Editinfo from "../pages/profile/Editinfo"
 import Poster from "../pages/poster/Poster";
+
 
 const Router = () => {
   return (
@@ -32,6 +34,7 @@ const Router = () => {
         <Route path="/missing" element={<Missing />} />
         <Route path="/catch" element={<Catch />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/editinfo" element={<Editinfo />} />
         <Route path="/testreport" element={<ReportPosting />} />
         <Route path="/petwork" element={<PetworkList />} />
         <Route path="/missingdetail/:id" element={<MissingDetail />} />

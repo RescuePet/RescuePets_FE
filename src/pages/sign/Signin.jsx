@@ -53,25 +53,25 @@ const Signin = () => {
     dispatch(__signinUser(siginInfo));
   };
 
-  // 에러 메시지만 받아서 처리하면 좋을 듯
   const SignInMessage = useSelector((state) => {
-    return state?.users?.Signinmessage;
-  });
-  // console.log(SignInMessage)
-  // 로그인 성공시
+    return state?.users?.Signinmessage
+  })
+
+  const [SignInMsg, setSignInMsg] = useState('');
+
   useEffect(() => {
-    if (SignInMessage === "success") {
-      console.log("로그인성공");
-      setTimeout(function () {
-        navigate("/home");
-      }, 1000);
-      // navigate('/home')
-    } else if (SignInMessage === "아이디,비밀번호를 확인해주세요") {
-      // toggleModal()
-      console.log("로그인실패");
-      // alert('로그인 실패')
+    if (SignInMessage === 'success') {
+      setSignInMsg("✅ 로그인 성공")
+
+      // setTimeout(function () {
+      //   navigate('/home')
+      // }, 1000);
+
+    } else if (SignInMessage === '아이디,비밀번호를 확인해주세요') {
+      setSignInMsg("⛔ 아이디 혹은 비밀번호를 확인해주세요")
     }
-  }, [SignInMessage]);
+
+  }, [SignInMessage])
 
   const URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_SIGN_ID}&redirect_uri=${process.env.REACT_APP_RESCUEPETS}/kakaologin`;
 
@@ -142,13 +142,12 @@ const Signin = () => {
             <span>{errors?.password?.message}</span>
           </InputWrapper>
         </SignForm>
-        {SignInMessage === null ? null : (
+        {SignInMsg == '' ? null : (
           <CheckModal
             isOpen={loginModal}
             toggle={toggleModal}
-            onClose={toggleModal}
-          >
-            {SignInMessage}
+            onClose={toggleModal}>
+            {SignInMsg}
           </CheckModal>
         )}
         <AutoSignInWrapper>

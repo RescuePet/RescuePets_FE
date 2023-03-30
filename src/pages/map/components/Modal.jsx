@@ -1,6 +1,12 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SignSvgStyle, FlexAttribute } from '../../../style/Mixin';
+import location from "../../../asset/location.svg"
+import time from "../../../asset/time.svg"
+import information from "../../../asset/information.svg"
+import Button from "../../../elements/Button"
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Modal({ isOpen, onClose, children }) {
@@ -50,7 +56,7 @@ export default function Modal({ isOpen, onClose, children }) {
 const Backdrop = styled(motion.div)`
   ${(props) => props.theme.FlexRow};
   position: fixed;
-  z-index: 99999;
+  z-index: 9;
   left: 0;
   top: 0;
   width: 100%;
@@ -68,8 +74,9 @@ const ModalContainer = styled(motion.div)`
   position: absolute;
   bottom: 0%;
   width: 23.4375rem;
-  height: 15rem;
-  box-shadow: 0 4px 0 2px rgba(0,0,0,0.4);
+  height: 13rem;
+  /* box-shadow: 0 4px 0 2px rgba(0,0,0,0.4); */
+  padding: .625rem;
 `;
 
 export const CloseContainer = styled.div`
@@ -82,57 +89,198 @@ export const CloseContainer = styled.div`
   align-items: center;
   `;
 
+export const ModalInBox = styled.div`
+    width: 95%;
+    height: 100%;
+    margin: 0 auto;
+`;
 export const ModalTitle = styled.div`
-  font-size: 16px;
-  padding: 10px 20px;
-  ${props => props.theme.FlexRow}
-  /* letter-spacing: -0.5px;
-  white-space: pre-line; */
-  line-height: 21px;
-  font-weight: bold;
-  color: #333333;
-  gap: 0 20px;
-  border: 1px solid red;
-  > p {
-
-  }
-  > span {
+    width: 100%;
+    height: 15%;
+    ${props => props.theme.FlexRow}
     
-  }
+`;
+export const ModalTitleinfo = styled.div`
+  /* ${FlexAttribute()} */
+  ${FlexAttribute("row", "", "center")}
+       display: flex;
+       align-items: center;
+       width: 70%;
+       height: 100%;
+       ${props => props.theme.Body_400_14}
+       /* border: 1px solid red; */
+       /* gap: 0 .625rem; */
+       h1 {
+        border: 1px solid #D6459C;
+        color: #D6459C;
+        width: 2.5rem;
+        ${props => props.theme.FlexCenter}
+        border-radius: .5rem;
+        padding: .25rem,.25rem, .125rem, .25rem;
+       }
+       h2{
+        padding-left: .625rem;
+        font-weight: 700;
+       }
+       h3{
+        padding-left: .3125rem;
+        color: ${props => props.theme.color.gray};
+        ${props => props.theme.Body_400_12}
+       }
+       > p {
+        padding-left:  .625rem;
+        color: ${props => props.theme.color.gray};
+        ${props => props.theme.Body_400_12}
+       }
+       
+`;
+export const ModalTitleKm = styled.div`
+       display: flex;
+       align-items: center;
+       justify-content: right;
+       width: 30%;
+       height: 100%;
+       gap: 0 55px;
+       ${props => props.theme.Body_400_12}
 `;
 
-const ModlaMainInfo = styled.div`
+export const ModlaMiddlContianer = styled.div`
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
     width: 100%;
-    height: 50%;
-    border: 1px solid red;
-`
+    height: 100%;
+    gap: 0 10px;
+`;
+
+export const ModlaMiddleInfoBox = styled.div`
+    width: 65%;
+    height: 5.8125rem;
+    /* border: 1px solid red; */
+    padding: .3125rem 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: .3125rem 0;
+    > p{ 
+    width: 100%;
+    color: ${props => props.theme.color.text_alternative};
+    ${props => props.theme.Body_400_12};
+    display: flex;
+    align-items: center;
+    > img {
+        ${SignSvgStyle}
+    }
+    }
+    > span{ 
+    width: 100%;
+    color: ${props => props.theme.color.text_alternative};
+    ${props => props.theme.Body_400_12};
+    display: flex;
+    align-items: center;
+    > img {
+        ${SignSvgStyle}
+    }
+
+    }
+    > h4{
+        ${props => props.theme.FlexCenter}
+    }
+   
+`;
+export const ModlaImgInfoBox = styled.div`
+    width: 6.0625rem;
+    height: 5.8125rem;
+    /* border: 1px solid red; */
+    > div {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        >img {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        > p {
+        position: absolute;
+        ${SignSvgStyle}
+        ${props => props.theme.FlexCenter}
+        background: ${props => props.theme.color.gray};
+        color : ${props => props.theme.color.white};
+        ${props => props.theme.Body_300_10}
+        bottom: 0;
+        right: 0;
+        }
+    }
+`;
+
 
 // 마커 클릭시 보여줄 모달 
 export function MarkerModal(props) {
+    const navigate = useNavigate()
+
+
     const data = props?.data
     // console.log(data)
     const Stringkm = String(data?.km)
     const Arraykm = Stringkm.split('')
     Arraykm.splice(Arraykm.length - 3, 0, '.')
     const KMDATA = Arraykm.slice(0, 5)
+    if (data?.upkind === 'DOG') {
+        data.upkind = '강아지'
+    } else if (data?.upkind === "CAT") {
+        data.upkind = '고양이'
+    }
 
+    // console.log(data)
+    // postImages.[0].imageURL
 
+    const MoveToDetailPageHandler = () => {
+        navigate(`/${data.name}/${data.id}`)
+    }
     return (
         <Modal isOpen={props.isOpen} onClose={props.toggle}>
-            <ModalTitle>
-                <p>{data?.upkind}</p>
-                <span>{data?.kindCd}</span>
-                <h4>{data?.id}번</h4>
-                <p>{KMDATA}Km</p>
-            </ModalTitle>
-            <ModlaMainInfo>
-                위치 : {data?.happenPlace}
-                {
-                    data?.postImages?.map((item, index) => {
-                        return <img src={item?.imageURL} key={index} style={{ width: "100px", height: "100px" }} />
-                    })
-                }
-            </ModlaMainInfo>
+            <ModalInBox >
+                <ModalTitle>
+                    <ModalTitleinfo>
+                        {data?.name === 'missingdetail' ? <h1 style={{ border: "1px solid #714FD1", color: "#714FD1" }}>목격</h1>
+                            : <h1 >실종</h1>
+                        }
+                        <h2>{data?.upkind}</h2>
+                        <h3>{data?.kindCd}</h3>
+                        <p>{data?.age}살/{data?.weight}kg</p>
+                    </ModalTitleinfo>
+                    <ModalTitleKm>
+                        <h3>거리: {KMDATA}Km</h3>
+                    </ModalTitleKm>
+                </ModalTitle>
+
+                <ModlaMiddlContianer>
+                    <ModlaMiddleInfoBox>
+                        <p><img src={location} />위치:&nbsp;{data?.happenPlace}</p>
+                        <p><img src={time} />일시:&nbsp;{data?.happenDt} / {data?.happenHour} </p>
+
+                        {data?.name === 'missingdetail' ? <span><img src={information} />색깔: {data?.colorCd}</span>
+                            : <span><img src={information} />이름:&nbsp;{data?.nickname} / 색깔: {data?.colorCd}</span>
+                        }
+                        {/* <span><img src={information} />이름:&nbsp;{data?.nickname} / 색깔: {data?.colorCd}</span> */}
+                        <h4><Button moveToDetailButton onClick={MoveToDetailPageHandler}>상세보기</Button></h4>
+                    </ModlaMiddleInfoBox>
+                    <ModlaImgInfoBox>
+                        <div>
+                            {
+                                data?.postImages?.length > 0 ? (
+                                    <>
+                                        <p>{data?.postImages?.length}</p>
+                                        <img src={data?.postImages[0].imageURL} />
+                                    </>
+                                ) : null
+                            }
+                        </div>
+                    </ModlaImgInfoBox>
+                </ModlaMiddlContianer>
+            </ModalInBox>
         </Modal >
     );
 }
