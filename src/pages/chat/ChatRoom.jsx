@@ -14,22 +14,12 @@ import { instance } from "../../utils/api";
 import { useParams } from "react-router-dom";
 
 const ChatRoom = () => {
-  const { id, postname } = useParams();
+  const { id } = useParams();
   const [chatlog, setChatLog] = useState([]);
   const sender = JSON.parse(localStorage.getItem("userInfo"));
 
   let client;
-  let roomId;
-
-  const getRoomId = async () => {
-    try {
-      const response = await instance.post(`/chat/${postname}/${id}`);
-      roomId = response.data;
-      return roomId;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  console.log("roomId", id);
   const getChatLog = async (roomId) => {
     try {
       const response = await instance.get(`/room/${roomId}`);
@@ -44,12 +34,12 @@ const ChatRoom = () => {
     client = Stomp.over(socket);
     client.connect({}, () => {
       client.subscribe(
-        `/sub/${roomId}`,
+        `/sub/${id}`,
         (response) => {
           let data = JSON.parse(response.body);
           setChatLog((prev) => [...prev, data]);
         },
-        { id: roomId }
+        { id: id }
       );
     });
   };
@@ -57,7 +47,7 @@ const ChatRoom = () => {
   const stompDisconnect = async () => {
     try {
       await client.disconnect();
-      await client.unsubscribe(roomId);
+      await client.unsubscribe(id);
     } catch (error) {
       console.log(error);
     }
@@ -65,8 +55,7 @@ const ChatRoom = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getRoomId();
-      await getChatLog(response);
+      await getChatLog(id);
       stompConnect();
     };
     fetchData();
@@ -86,7 +75,7 @@ const ChatRoom = () => {
       sender: sender.nickname,
       message: message,
     };
-    client.send(`/pub/${roomId}`, {}, JSON.stringify(sendSettings));
+    client.send(`/pub/${id}`, {}, JSON.stringify(sendSettings));
   }, []);
 
   return (

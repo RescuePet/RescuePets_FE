@@ -16,6 +16,8 @@ import SightingDetail from "../pages/reportDetail/SightingDetail";
 import Catch from "../pages/report/Catch";
 import KakaoSignin from "../pages/sign/KakaoSignin";
 import Editinfo from "../pages/profile/Editinfo"
+import Poster from "../pages/poster/Poster";
+
 
 const Router = () => {
   return (
@@ -28,7 +30,7 @@ const Router = () => {
         <Route path="/adoptiondetail/:id" element={<AdoptionDetail />} />
         <Route path="/map" element={<Map />} />
         <Route path="/chatlist" element={<ChatList />} />
-        <Route path="/chatroom/:postname/:id" element={<ChatRoom />} />
+        <Route path="/chatroom/:id" element={<ChatRoom />} />
         <Route path="/missing" element={<Missing />} />
         <Route path="/catch" element={<Catch />} />
         <Route path="/profile" element={<Profile />} />
@@ -38,6 +40,7 @@ const Router = () => {
         <Route path="/missingdetail/:id" element={<MissingDetail />} />
         <Route path="/sightingdetail/:id" element={<SightingDetail />} />
         <Route path="/kakaologin" element={<KakaoSignin />} />
+        <Route path="/poster" element={ <Poster />} />
       </Routes>
     </BrowserRouter>
   );

@@ -32,7 +32,7 @@ const SendMessage = styled.div`
   margin-bottom: 8px;
   padding: 6px 16px;
   border-radius: 4px;
-  background: #666666;
+  background: ${(props) => props.theme.color.primary_normal};
   word-break: break-all;
   ::after {
     content: "";
@@ -42,7 +42,7 @@ const SendMessage = styled.div`
     width: 0;
     height: 0;
     border: 8px solid transparent;
-    border-left-color: #666666;
+    border-left-color: ${(props) => props.theme.color.primary_normal};
     border-right: 0;
     border-top: 0;
     margin-top: -2.5px;
@@ -52,7 +52,7 @@ const SendMessage = styled.div`
 
 const ContentText = styled.span`
   ${Body_400_14};
-  color: white;
+  color: ${(props) => props.theme.color.white};
 `;
 
 const SendTimeSpan = styled.span`

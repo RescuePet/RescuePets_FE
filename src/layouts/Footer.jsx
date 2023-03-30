@@ -124,7 +124,7 @@ const FooterMenuList = styled.div`
   z-index: 1000;
   margin-top: 10px;
   border-radius: 4px;
-  background: ${(props) => props.theme.color.text_nomal};
+  background: ${(props) => props.theme.color.text_normal};
   color: ${(props) => props.theme.color.white};
   ${(props) => props.theme.FlexCenter};
   cursor: pointer;
@@ -142,7 +142,7 @@ const FooterIconToggleBtn = styled.div`
   ${FlexAttribute("row", "center", "center")}
   width: 40px;
   height: 40px;
-  background: ${(props) => props.theme.color.text_nomal};
+  background: ${(props) => props.theme.color.text_normal};
   border-radius: 50%;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
   cursor: pointer;
@@ -170,13 +170,13 @@ const FooterEachIconContiner = styled.div`
     props.active &&
     css`
   span {
-      color: ${(props) => props.theme.color.primary_nomal};
+      color: ${(props) => props.theme.color.primary_normal};
     }
     path {
-      fill: ${(props) => props.theme.color.primary_nomal};
+      fill: ${(props) => props.theme.color.primary_normal};
     }
     circle {
-      fill: ${(props) => props.theme.color.primary_nomal};
+      fill: ${(props) => props.theme.color.primary_normal};
     }
     .default {
       fill: ${(props) => props.theme.color.white};

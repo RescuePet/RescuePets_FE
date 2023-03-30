@@ -12,7 +12,10 @@ import Title from "./components/Title";
 import Location from "./components/Location";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { __getMissingPostDetail } from "../../redux/modules/petworkSlice";
+import {
+  __getMissingPostDetail,
+  __postMissingScrap,
+} from "../../redux/modules/petworkSlice";
 import Comment from "./components/Comment";
 import {
   toggleEditDone,
@@ -28,11 +31,13 @@ import memo from "../../asset/memo.svg";
 import gratuity from "../../asset/gratuity.svg";
 import PostInformation from "./components/PostInformation";
 import FloatingButton from "./components/FloatingButton";
+import { instance } from "../../utils/api";
 
 const MissingDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userName = JSON.parse(localStorage.getItem("userInfo"));
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
   const { missingComment, editDone } = useSelector((state) => state?.comment);
@@ -73,6 +78,11 @@ const MissingDetail = () => {
     happenLongitude: missingPostDetail.happenLongitude,
   };
 
+  const postInfo = {
+    commentCount: missingComment.length,
+    scrapCount: missingPostDetail.wishedCount,
+  };
+
   const submitHandler = async (content) => {
     let data = {
       id: id,
@@ -84,13 +94,33 @@ const MissingDetail = () => {
   };
 
   const chatHandler = async () => {
-    const postname = "missing-room";
-    navigate(`/chatroom/${postname}/${id}`);
+    const response = await instance.post(
+      `/chat/missing-room/${missingPostDetail.id}`
+    );
+    console.log("post response", response.data);
+    navigate(`/chatroom/${response.data}`);
+  };
+
+  const scrapHandler = () => {
+    let payload = {
+      page: "petworkDetail",
+      state: missingPostDetail.isWished,
+      id: missingPostDetail.id,
+    };
+    dispatch(__postMissingScrap(payload));
+  };
+
+  const imageCarouselInfo = {
+    scrapState: missingPostDetail.isWished,
+    scrapHandler: scrapHandler,
   };
 
   return (
     <Layout>
-      <ImageCarousel images={missingPostDetail.postImages} />
+      <ImageCarousel
+        images={missingPostDetail.postImages}
+        imageCarouselInfo={imageCarouselInfo}
+      />
       <TitleWrapper>
         <Title titleInfo={titleInfo}></Title>
       </TitleWrapper>
@@ -153,7 +183,7 @@ const MissingDetail = () => {
           </InfoWrapper>
         )}
       </InfoContainer>
-      <PostInformation comment={missingComment.length}></PostInformation>
+      <PostInformation postInfo={postInfo}></PostInformation>
       <CommentContainer>
         <CommentListWrapper>
           {missingComment?.map((item) => {
@@ -163,7 +193,13 @@ const MissingDetail = () => {
           })}
         </CommentListWrapper>
       </CommentContainer>
-      <FloatingButton onClick={chatHandler}></FloatingButton>
+      {userName.nickname !== missingPostDetail.nickname && (
+        <FloatingButton
+          onClick={() => {
+            chatHandler();
+          }}
+        ></FloatingButton>
+      )}
       <InputContainer
         placeholder="댓글을 입력해주세요."
         submitHandler={submitHandler}

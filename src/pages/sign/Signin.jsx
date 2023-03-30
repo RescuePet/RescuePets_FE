@@ -12,24 +12,26 @@ import { useNavigate } from "react-router-dom";
 import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
 
-
 const Signin = () => {
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginModal, toggleModal] = useModalState(false);
 
   const {
-    register, handleSubmit, formState: { errors }, reset,
-    resetField, watch } = useForm({ mode: 'onChange' });
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    resetField,
+    watch,
+  } = useForm({ mode: "onChange" });
 
   // 삭제로직
   const onClickDeleteValue = (data) => {
-    resetField(data)
-  }
+    resetField(data);
+  };
   // 입력값에 따라 버튼 활성화
   const [isActive, setIsActive] = useState(false);
-
 
   const watchAll = Object.values(watch());
 
@@ -41,16 +43,15 @@ const Signin = () => {
     }
   }, [watchAll]);
 
-
   const onSubmitSigninHanler = (data) => {
     const siginInfo = {
       email: data.email,
-      password: data.password
-    }
+      password: data.password,
+    };
     // 토
-    toggleModal()
-    dispatch(__signinUser(siginInfo))
-  }
+    toggleModal();
+    dispatch(__signinUser(siginInfo));
+  };
 
   const SignInMessage = useSelector((state) => {
     return state?.users?.Signinmessage
@@ -72,7 +73,7 @@ const Signin = () => {
 
   }, [SignInMessage])
 
-  const URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_SIGN_ID}&redirect_uri=http://localhost:3000/kakaologin`;
+  const URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_SIGN_ID}&redirect_uri=${process.env.REACT_APP_RESCUEPETS}/kakaologin`;
 
   const kakaoSignUp = () => {
     window.location.href = URL;
@@ -80,14 +81,16 @@ const Signin = () => {
 
   return (
     <Layout>
-      <SignContainer onSubmit={handleSubmit(onSubmitSigninHanler)} >
+      <SignContainer onSubmit={handleSubmit(onSubmitSigninHanler)}>
         <SignHeader>
           <span>로그인</span>
         </SignHeader>
-        <SignForm >
+        <SignForm>
           <SignText>아이디</SignText>
           <InputWrapper>
-            <SignInput name="email" placeholder="이메일 주소"
+            <SignInput
+              name="email"
+              placeholder="이메일 주소"
               {...register("email", {
                 pattern: {
                   value: /^[a-z0-9\.\-_]+@([a-z0-9\-]+\.)+[a-z]{2,6}$/,
@@ -95,20 +98,31 @@ const Signin = () => {
                 },
                 maxLength: {
                   value: 30,
-                  message: "30글자이내 작성"
+                  message: "30글자이내 작성",
                 },
               })}
             />
-            <img onClick={(() => { onClickDeleteValue("email") })} src={cancel} alt="cancel" name="email" />
+            <img
+              onClick={() => {
+                onClickDeleteValue("email");
+              }}
+              src={cancel}
+              alt="cancel"
+              name="email"
+            />
             <span>{errors?.email?.message}</span>
           </InputWrapper>
           <SignText>비밀번호</SignText>
           <InputWrapper>
-            <SignInput name="password" type="password" placeholder="영문, 숫자, 특수문자 조합 8자리 이상"
+            <SignInput
+              name="password"
+              type="password"
+              placeholder="영문, 숫자, 특수문자 조합 8자리 이상"
               {...register("password", {
                 required: true,
                 pattern: {
-                  value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,12}$/,
+                  value:
+                    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,12}$/,
                   message: "8~12 자리 숫자, 문자, 특수문자 최소 1개",
                 },
                 maxLength: {
@@ -117,7 +131,14 @@ const Signin = () => {
                 },
               })}
             />
-            <img onClick={(() => { onClickDeleteValue("password") })} src={cancel} alt="cancel" name="password" />
+            <img
+              onClick={() => {
+                onClickDeleteValue("password");
+              }}
+              src={cancel}
+              alt="cancel"
+              name="password"
+            />
             <span>{errors?.password?.message}</span>
           </InputWrapper>
         </SignForm>
@@ -128,22 +149,23 @@ const Signin = () => {
             onClose={toggleModal}>
             {SignInMsg}
           </CheckModal>
-
-        )
-        }
+        )}
         <AutoSignInWrapper>
           <img src={check} alt="check" />
           <span>자동로그인</span>
         </AutoSignInWrapper>
         <ButtonWrapper>
+          {isActive === false ? (
+            <Button type="submit" disable assistiveFillButton>
+              로그인
+            </Button>
+          ) : (
+            <Button type="submit" fillButton>
+              로그인
+            </Button>
+          )}
 
-
-          {
-            isActive === false ? <Button type="submit" disable assistiveFillButton>로그인</Button>
-              : (<Button type="submit" fillButton>로그인</Button>)
-          }
-
-          <Button type="button" emptyButton onClick={() => kakaoSignUp()}>
+          <Button type="button" fillButton onClick={() => kakaoSignUp()}>
             카카오톡으로 로그인
           </Button>
         </ButtonWrapper>
@@ -194,9 +216,8 @@ const InputWrapper = styled.div`
     position: absolute;
     top: 50px;
     right: 50%;
-    ${props => props.theme.Span_alert}
+    ${(props) => props.theme.Span_alert}
   }
-
 `;
 
 const SignInput = styled.input`

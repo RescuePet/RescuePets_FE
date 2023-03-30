@@ -12,7 +12,6 @@ import {
   addAdoptionPage,
   __getAdoptionList,
 } from "../../redux/modules/adoptionSlice";
-import { Link } from "react-router-dom";
 import refresh from "../../asset/refresh.svg";
 import profile from "../../asset/profile.svg";
 import search from "../../asset/search.svg";
@@ -54,12 +53,7 @@ const Home = () => {
         </TitleBox>
         {adoptionLists.map((item, index) => {
           return (
-            <Link
-              key={`post-item-${item.id}-${index}`}
-              to={`/adoptiondetail/${item.desertionNo}`}
-            >
-              <Post item={item}></Post>
-            </Link>
+            <Post key={`post-item-${item.id}-${index}`} item={item}></Post>
           );
         })}
         <div ref={ref}></div>

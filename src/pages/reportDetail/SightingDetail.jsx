@@ -12,7 +12,10 @@ import Title from "./components/Title";
 import Location from "./components/Location";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { __getCatchPostDetail } from "../../redux/modules/petworkSlice";
+import {
+  __getCatchPostDetail,
+  __postCatchScrap,
+} from "../../redux/modules/petworkSlice";
 import {
   toggleEditDone,
   __getCatchComment,
@@ -27,6 +30,7 @@ import informationIcon from "../../asset/information.svg";
 import memo from "../../asset/memo.svg";
 import PostInformation from "./components/PostInformation";
 import FloatingButton from "./components/FloatingButton";
+import { instance } from "../../utils/api";
 
 const SightingDetail = () => {
   const { id } = useParams();
@@ -35,6 +39,7 @@ const SightingDetail = () => {
 
   const { catchPostDetail } = useSelector((state) => state.petwork);
   const { catchComment, editDone } = useSelector((state) => state?.comment);
+  const userName = JSON.parse(localStorage.getItem("userInfo"));
 
   useEffect(() => {
     dispatch(__getCatchPostDetail(id));
@@ -70,6 +75,11 @@ const SightingDetail = () => {
     happenLongitude: catchPostDetail.happenLongitude,
   };
 
+  const postInfo = {
+    commentCount: catchComment.length,
+    scrapCount: catchPostDetail.wishedCount,
+  };
+
   const submitHandler = (content) => {
     let data = {
       id: id,
@@ -81,14 +91,33 @@ const SightingDetail = () => {
   };
 
   const chatHandler = async () => {
-    console.log("hi");
-    const postname = "catch-room";
-    navigate(`/chatroom/${postname}/${id}`);
+    const response = await instance.post(
+      `/chat/catch-room/${catchPostDetail.id}`
+    );
+    console.log("post response", response.data);
+    navigate(`/chatroom/${response.data}`);
+  };
+
+  const scrapHandler = () => {
+    let payload = {
+      page: "petworkDetail",
+      state: catchPostDetail.isWished,
+      id: catchPostDetail.id,
+    };
+    dispatch(__postCatchScrap(payload));
+  };
+
+  const imageCarouselInfo = {
+    scrapState: catchPostDetail.isWished,
+    scrapHandler: scrapHandler,
   };
 
   return (
     <Layout>
-      <ImageCarousel images={catchPostDetail?.postImages} />
+      <ImageCarousel
+        images={catchPostDetail?.postImages}
+        imageCarouselInfo={imageCarouselInfo}
+      />
       <TitleWrapper>
         <Title titleInfo={titleInfo}></Title>
       </TitleWrapper>
@@ -144,7 +173,7 @@ const SightingDetail = () => {
           </ContentTextWrapper>
         </InfoWrapper>
       </InfoContainer>
-      <PostInformation comment={catchComment.length}></PostInformation>
+      <PostInformation postInfo={postInfo}></PostInformation>
       <CommentContainer>
         <CommentListWrapper>
           {catchComment?.map((item) => {
@@ -158,11 +187,13 @@ const SightingDetail = () => {
         placeholder="댓글을 입력해주세요."
         submitHandler={submitHandler}
       ></InputContainer>
-      <FloatingButton
-        onClick={() => {
-          chatHandler();
-        }}
-      ></FloatingButton>
+      {userName.nickname !== catchPostDetail.nickname && (
+        <FloatingButton
+          onClick={() => {
+            chatHandler();
+          }}
+        ></FloatingButton>
+      )}
     </Layout>
   );
 };

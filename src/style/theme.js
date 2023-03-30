@@ -1,20 +1,20 @@
 import { css } from "styled-components";
 
 export const color = {
-  primary_nomal: "#FF9900",
+  primary_normal: "#FF9900",
   primary_strong: "#FF8A00",
   primary_heavy: "#FF7A00",
   primary_altemative: "#FFC672",
   primary_assistive: "#FFE4BC",
   text_strong: "#000000",
-  text_nomal: "#171717",
+  text_normal: "#171717",
   text_alternative: "#8A8A8A",
   text_assistive: "#C4C4C4",
   text_disable: "#DCDCDC",
   background_primary: "#FFFFFF",
   background_secondary: "#F2F2F7",
   background_tertiary: "#F2F2F7",
-  line_nomal: "#E1E2E4",
+  line_normal: "#E1E2E4",
   line_alternative: "#F4F4F5",
   status_alert: "#714FD1",
   status_caution: "#D6459C",
@@ -22,7 +22,7 @@ export const color = {
   white: "#ffffff",
   black: "#000000",
   gray: "#666666",
-  input_border: "#EEEEEE"
+  input_border: "#EEEEEE",
 };
 
 export const FlexCenter = css`

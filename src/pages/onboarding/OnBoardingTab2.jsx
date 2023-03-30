@@ -103,7 +103,7 @@ const TabButtonBox = styled.div`
 const TabThisBox = styled.div`
   width: 23px;
   height: 8px;
-  background: ${(props) => props.theme.color.primary_nomal};
+  background: ${(props) => props.theme.color.primary_normal};
   border-radius: 10px;
 `;
 

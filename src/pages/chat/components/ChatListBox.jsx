@@ -6,7 +6,7 @@ import {
   PostBorderStyle,
 } from "../../../style/Mixin";
 import styled, { css } from "styled-components";
-import { Body_400_14, Body_400_12, Body_300_10 } from "../../../style/theme";
+import { Body_400_12, Body_300_10 } from "../../../style/theme";
 import profile from "../../../asset/profile.svg";
 import { Link } from "react-router-dom";
 
@@ -19,9 +19,10 @@ const ChatListBox = ({ item }) => {
   } else if (item.postName === "catch-room") {
     refineData.state = "목격";
   }
+  console.log(item);
   return (
     <ChatRoomListContainer>
-      <ClickDiv to={`/chatroom/${item.postName}/${item.postId}`}>
+      <ClickDiv to={`/chatroom/${item.roomId}`}>
         <ProfileImage
           src={item.profileImage !== null ? item.profileImage : profile}
         />
