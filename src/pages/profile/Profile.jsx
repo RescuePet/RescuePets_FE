@@ -7,7 +7,7 @@ import ProfileSetList from "./components/ProfileSetList";
 import UserInformation from "./components/UserInformation";
 import { useNavigate } from 'react-router-dom';
 import profileHeader from "./../../asset/header/profileheader.png";
-import hamburger from "../../asset/hamburger.png"
+import setting from "../../asset/profile/setting.svg"
 import Cookies from 'js-cookie';
 import { useModalState } from "../../hooks/useModalState";
 // import { HamburgerModal } from "./components/Modal";
@@ -19,20 +19,18 @@ const Profile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const [loginModal, toggleModal] = useModalState(false);
-  const [menubar, setmenubar] = useState(false)
 
-  // DB에 저장된 리프레시 토큰 삭제하기 위해서 ? 
 
-  // const onClickMenuBarHandler = () => {
-  //   setmenubar(!menubar)
-  // }
+  const MoveToSettingHandler = () => {
+    navigate('/editinfo')
+  }
 
-  // useEffect(() => {
-  //   if (menubar === true) {
-  //     toggleModal()
-  //   }
-  // }, [menubar])
-  // console.log(menubar)
+  // // useEffect(() => {
+  // //   if (menubar === true) {
+  // //     toggleModal()
+  // //   }
+  // // }, [menubar])
+  // // console.log(menubar)
 
 
   const [Msg, setMsg] = useState('');
@@ -71,8 +69,8 @@ const Profile = () => {
     <Layout>
       <ProfileHeader>
         <HeaderImage> <img src={profileHeader} /></HeaderImage>
-        <HeaderHamburgermenu><img src={hamburger}
-        //  onClick={onClickMenuBarHandler} 
+        <HeaderHamburgermenu><img src={setting}
+          onClick={MoveToSettingHandler}
         /></HeaderHamburgermenu>
       </ProfileHeader>
       <UserInformation />
