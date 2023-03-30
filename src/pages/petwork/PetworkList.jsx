@@ -61,22 +61,20 @@ const PetworkList = () => {
         {petwork.category === "우리집 반려동물을 찾아주세요"
           ? petwork?.missingPostLists?.map((item, index) => {
               return (
-                <Link
+                <Card
                   key={`missing-post-${index}`}
-                  to={`/missingdetail/${item.id}`}
-                >
-                  <Card item={item}></Card>
-                </Link>
+                  item={item}
+                  page="missingdetail"
+                ></Card>
               );
             })
           : petwork?.catchPostLists?.map((item, index) => {
               return (
-                <Link
+                <Card
                   key={`catch-post-${index}`}
-                  to={`/sightingdetail/${item.id}`}
-                >
-                  <Card item={item}></Card>
-                </Link>
+                  item={item}
+                  page="sightingdetail"
+                ></Card>
               );
             })}
         {petwork.category === "우리집 반려동물을 찾아주세요" ? (

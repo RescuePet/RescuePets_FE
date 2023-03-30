@@ -23,6 +23,17 @@ body {
   font-family: "Roboto","Noto_Sans_KR";
   height: 100%;
 }
+img {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+}
 
 `;
 

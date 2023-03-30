@@ -11,15 +11,46 @@ import time from "../../../asset/time.svg";
 import informationIcon from "../../../asset/information.svg";
 import ClippingEmpty from "../../../asset/Clippingwhite.jsx";
 import State from "../../../elements/State";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {
+  __postCatchScrap,
+  __postMissingScrap,
+} from "../../../redux/modules/petworkSlice";
+import ClippingFill from "../../../asset/profile/ClippingFill";
 
-const Card = ({ item }) => {
+const Card = ({ item, page }) => {
+  console.log(item);
   const refineData = petworkRefineData(item);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const scrapHandler = (e) => {
+    e.stopPropagation();
+    console.log("petwork scrap");
+    let payload = {
+      page: "petworkLists",
+      state: item.isWished,
+      id: item.id,
+    };
+    if (page === "missingdetail") {
+      console.log(page);
+      dispatch(__postMissingScrap(payload));
+    } else if (page === "sightingdetail") {
+      console.log(page);
+      dispatch(__postCatchScrap(payload));
+    }
+  };
+
   return (
-    <ListCard>
+    <ListCard onClick={() => navigate(`/${page}/${item.id}`)}>
       <CardImgWrapper imgae={item.postImages[0]?.imageURL}>
         <CardImg src={item.postImages[0]?.imageURL}></CardImg>
         <State category={"petworkKind"}>{refineData.upkind}</State>
-        <ScrapState />
+        {item.isWished ? (
+          <ScrapStateTrue onClick={scrapHandler} />
+        ) : (
+          <ScrapStateFalse onClick={scrapHandler} />
+        )}
       </CardImgWrapper>
       <CardInfoContainer>
         <CardTitleWrapper>
@@ -44,6 +75,7 @@ const ListCard = styled.div`
   border: 1px solid #eeeeee;
   border-radius: 4px;
   overflow: hidden;
+  cursor: pointer;
 `;
 
 const CardImgWrapper = styled.div`
@@ -62,11 +94,23 @@ const CardImg = styled.img`
   backdrop-filter: blur(3px);
 `;
 
-const ScrapState = styled(ClippingEmpty)`
+const ScrapStateTrue = styled(ClippingFill)`
   position: absolute;
   top: 11px;
   right: 16px;
   z-index: 10;
+  cursor: pointer;
+  path {
+    fill: ${(props) => props.theme.color.white};
+  }
+`;
+
+const ScrapStateFalse = styled(ClippingEmpty)`
+  position: absolute;
+  top: 11px;
+  right: 16px;
+  z-index: 10;
+  cursor: pointer;
 `;
 
 const CardInfoContainer = styled.div`

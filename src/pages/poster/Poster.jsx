@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Title from "./components/Title";
 import Button from "../../elements/Button";
 import { Body_400_14 } from "../../style/theme";
-import { FlexAttribute, StateSpanStyle } from "../../style/Mixin";
+import { FlexAttribute } from "../../style/Mixin";
 import QRCode from "qrcode.react";
 import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
@@ -16,13 +16,13 @@ const Poster = () => {
   // 컴포넌트 다운
   const makeImageHandler = () => {
     domtoimage.toBlob(document.querySelector(".poster")).then((blob) => {
-      saveAs(blob, "card.jpg");
+      saveAs(blob, "poster.jpg");
     });
   };
 
   const dispatch = useDispatch();
   // const { id } = useParams();
-  const id = 1;
+  const id = 5;
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
 
@@ -42,7 +42,10 @@ const Poster = () => {
       <PosterLayout className="poster">
         <SecondSpan>강아지를 찾습니다</SecondSpan>
         <ImageWrapper images={missingPostDetail.postImages[0].imageURL}>
-          <ImageMain src={missingPostDetail.postImages[0].imageURL} />
+          <ImageMain
+            src={missingPostDetail.postImages[0].imageURL}
+            crossorigin="anonymous"
+          />
           <QRCodeWrapper>
             <QRCode
               id="qrcode"

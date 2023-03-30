@@ -4,18 +4,18 @@ import { FlexAttribute, PostBorderStyle } from "../../../style/Mixin";
 import ClippingFill from "../../../asset/profile/ClippingFill";
 import commentIcon from "../../../asset/comment.svg";
 
-const PostInformation = ({ comment }) => {
+const PostInformation = ({ postInfo }) => {
   return (
     <PostInfoWrapper>
       <InfoBox>
         <img src={commentIcon} alt="postComment" />
         <span>댓글</span>
-        <span>{comment}</span>
+        <span>{postInfo.commentCount}</span>
       </InfoBox>
       <InfoBox>
         <ClippingFill />
         <span>북마크</span>
-        <span>0</span>
+        <span>{postInfo.scrapCount}</span>
       </InfoBox>
     </PostInfoWrapper>
   );
