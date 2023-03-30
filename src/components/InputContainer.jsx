@@ -30,15 +30,15 @@ const InputContainer = ({ placeholder, submitHandler }) => {
 
 const ChatFooter = styled.div`
   ${FlexAttribute("row", "space-around", "center")}
-  width: 430px;
-  height: 74px;
+  width: 26.875rem;
+  height: 4.625rem;
   position: fixed;
   bottom: 0;
-  padding-top: 16px;
-  padding-bottom: 24px;
-  border-top: 1px solid ${(props) => props.theme.color.text_disable};
+  padding-top: 1rem;
+  padding-bottom: 1.5rem;
+  border-top: 0.0625rem solid ${(props) => props.theme.color.text_disable};
   background-color: ${(props) => props.theme.color.white};
-  @media screen and (max-width: 431px) {
+  @media screen and (max-width: 26.9375rem) {
     width: 100%;
     position: fixed;
     bottom: 0;
@@ -52,13 +52,13 @@ const ChatContainer = styled.div`
 
 const InputWrapper = styled.form`
   position: relative;
-  flex-basis: 263px;
+  flex-basis: 16.4375rem;
 `;
 
 const Input = styled.input`
-  width: 263px;
-  height: 32px;
-  padding-left: 25px;
+  width: 16.4375rem;
+  height: 2rem;
+  padding-left: 1.5625rem;
   ${Body_400_12}
   ${InputBorder_1};
   ::placeholder {
@@ -69,10 +69,10 @@ const Input = styled.input`
 
 const SubmitButton = styled.button`
   position: absolute;
-  right: 4px;
-  transform: translate(0, 4px);
-  width: 24px;
-  height: 24px;
+  right: 0.25rem;
+  transform: translate(0, 0.25rem);
+  width: 1.5rem;
+  height: 1.5rem;
   background-color: #eeeeee;
   border-radius: 50%;
 `;

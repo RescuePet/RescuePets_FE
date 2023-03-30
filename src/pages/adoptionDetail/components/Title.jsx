@@ -25,27 +25,27 @@ const TitleContainer = styled.div`
   ${FlexAttribute("row", "center")}
   width: 100%;
   ${PostTitleBorderStyle}
-  margin: 16px 0;
+  margin: 1rem 0;
 `;
 
 const TitleWrapper = styled.div`
   ${FlexAttribute("row", "space-evenly", "center")}
-  width: 335px;
+  width: 20.9375rem;
 `;
 
 const SemiText = styled.span`
-  flex-basis: 80px;
+  flex-basis: 5rem;
   text-align: center;
   ${Body_400_14}
 `;
 
 const SexCd = styled.img`
-  flex-basis: 30px;
+  flex-basis: 1.875rem;
 `;
 
 const RegularText = styled.span`
   ${ContentInformationStyle}
-  flex-basis: 190px;
+  flex-basis: 11.875rem;
 `;
 
 export default Title;

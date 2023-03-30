@@ -65,37 +65,37 @@ const Home = () => {
 const Header = styled.div`
   ${FlexAttribute("row", "space-between", "center")}
   margin: 0 auto;
-  width: 335px;
-  height: 80px;
-  padding-top: 40px;
-  padding-bottom: 9px;
-  font-size: 18px;
+  width: 20.9375rem;
+  height: 5rem;
+  padding-top: 2.5rem;
+  padding-bottom: 0.5625rem;
+  font-size: 1.125rem;
   font-weight: 700;
   span {
-    flex-basis: 240px;
+    flex-basis: 15rem;
   }
   img {
-    width: 40px;
-    height: 40px;
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: 50%;
   }
 `;
 
 const PostContainer = styled.div`
   ${FlexAttribute("column", "", "center")}
-  padding-bottom: 76px;
+  padding-bottom: 4.75rem;
 `;
 
 const TitleBox = styled.div`
   ${FlexAttribute("row", "space-between", "center")}
-  margin-top: 24px;
-  width: 335px;
+  margin-top: 1.5rem;
+  width: 20.9375rem;
   h2 {
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: 700;
   }
   span {
-    font-size: 12px;
+    font-size: 0.75rem;
     cursor: pointer;
   }
 `;

@@ -215,8 +215,8 @@ const MissingDetail = () => {
 
 const TitleWrapper = styled.div`
   ${FlexAttribute("row", "center", "center")}
-  margin: 16px auto;
-  padding-bottom: 16px;
+  margin: 1rem auto;
+  padding-bottom: 1rem;
   width: 100%;
   ${Border_2_color}
 `;
@@ -231,29 +231,29 @@ const InfoWrapper = styled.div`
 
 const BodyTitleWrapper = styled.div`
   ${FlexAttribute("row", "center")}
-  width: 80px;
+  width: 5rem;
 `;
 
 const BodyTitleSvg = styled.img`
-  width: 24px;
-  height: 24px;
+  width: 1.5rem;
+  height: 1.5rem;
 `;
 
 const BodyTitleText = styled.span`
-  flex-basis: 50px;
+  flex-basis: 3.125rem;
   font-weight: 400;
-  margin-left: 4px;
-  padding-top: 1px;
-  font-size: 14px;
-  line-height: 24px;
+  margin-left: 0.25rem;
+  padding-top: 0.0625rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
   color: #999999;
 `;
 
 const ContentTextWrapper = styled.div`
-  flex-basis: 220px;
-  margin-top: 2px;
+  flex-basis: 13.75rem;
+  margin-top: 0.125rem;
   span:first-child {
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
   }
 `;
 
@@ -263,16 +263,16 @@ const ContentTextBox = styled.div`
 
 const ContentOptionText = styled.span`
   font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
   color: #666666;
 `;
 
 const ContentText = styled.span`
   display: inline-block;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
   color: #222222;
 `;
 

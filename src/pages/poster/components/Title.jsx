@@ -39,23 +39,23 @@ const Title = ({ titleData }) => {
 const TitleWrapper = styled.div`
   ${FlexAttribute("row", "space-evenly", "center")}
   width: 100%;
-  margin: 16px auto;
+  margin: 1rem auto;
   ${PostTitleBorderStyle}
 `;
 
 const SemiText = styled.span`
-  flex-basis: 80px;
+  flex-basis: 5rem;
   text-align: center;
   ${Body_400_14}
 `;
 
 const SexCd = styled.div`
-  flex-basis: 30px;
+  flex-basis: 1.875rem;
 `;
 
 const RegularText = styled.span`
   ${ContentInformationStyle}
-  flex-basis: 190px;
+  flex-basis: 11.875rem;
 `;
 
 export default Title;

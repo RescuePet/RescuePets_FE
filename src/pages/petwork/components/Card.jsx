@@ -70,18 +70,18 @@ const Card = ({ item, page }) => {
 };
 
 const ListCard = styled.div`
-  width: 160px;
-  height: 236px;
-  border: 1px solid #eeeeee;
-  border-radius: 4px;
+  width: 10rem;
+  height: 14.75rem;
+  border: 0.0625rem solid #eeeeee;
+  border-radius: 0.25rem;
   overflow: hidden;
   cursor: pointer;
 `;
 
 const CardImgWrapper = styled.div`
   position: relative;
-  width: 160px;
-  height: 120px;
+  width: 10rem;
+  height: 7.5rem;
   background: linear-gradient(
       rgba(255, 255, 255, 0.2),
       rgba(255, 255, 255, 0.2)
@@ -93,16 +93,16 @@ const CardImgWrapper = styled.div`
 `;
 
 const CardImg = styled.img`
-  width: 160px;
-  height: 120px;
+  width: 10rem;
+  height: 7.5rem;
   object-fit: contain;
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(0.1875rem);
 `;
 
 const ScrapStateTrue = styled(ClippingFill)`
   position: absolute;
-  top: 11px;
-  right: 16px;
+  top: 0.6875rem;
+  right: 1rem;
   z-index: 10;
   cursor: pointer;
   path {
@@ -112,14 +112,14 @@ const ScrapStateTrue = styled(ClippingFill)`
 
 const ScrapStateFalse = styled(ClippingEmpty)`
   position: absolute;
-  top: 11px;
-  right: 16px;
+  top: 0.6875rem;
+  right: 1rem;
   z-index: 10;
   cursor: pointer;
 `;
 
 const CardInfoContainer = styled.div`
-  padding: 10px 17px 16px 17px;
+  padding: 0.625rem 1.0625rem 1rem 1.0625rem;
 `;
 
 const CardTitleWrapper = styled.div`
@@ -128,12 +128,12 @@ const CardTitleWrapper = styled.div`
 
 const CardTitle = styled.span`
   ${Body_400_14}
-  line-height: 24px;
+  line-height: 1.5rem;
 `;
 
 const CardInfoWrapper = styled.div`
   ${FlexAttribute("column")}
-  padding-bottom: 16px;
+  padding-bottom: 1rem;
 `;
 
 export default Card;

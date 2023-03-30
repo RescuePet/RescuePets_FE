@@ -15,20 +15,20 @@ const FloatingChatButton = styled.div`
   position: fixed;
   ${FlexAttribute("row", "center", "center")}
   left: 0;
-  bottom: 105px;
-  margin-left: calc(50% + 140px);
-  width: 56px;
-  height: 56px;
+  bottom: 6.5625rem;
+  margin-left: calc(50% + 8.75rem);
+  width: 3.5rem;
+  height: 3.5rem;
   z-index: 50;
   background-color: ${(props) => props.theme.color.primary_normal};
   border-radius: 50%;
-  box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.25);
+  box-shadow: 0.125rem 0.125rem 0.25rem 0.125rem rgba(0, 0, 0, 0.25);
   cursor: pointer;
 `;
 
 const FloatingChatButtonSvg = styled(FooterIconChat)`
-  width: 30px;
-  height: 30px;
+  width: 1.875rem;
+  height: 1.875rem;
   .default {
     fill: ${(props) => props.theme.color.primary_normal};
   }

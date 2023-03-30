@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import sheltermarker from "../../../asset/marker/sheltermarker.png"
+import sheltermarker from "../../../asset/marker/sheltermarker.png";
 import { ContentTextStyle } from "../../../style/Mixin";
 import { Body_400_14, BorderRadius } from "../../../style/theme";
 import {
@@ -13,44 +13,45 @@ const Location = ({ locationData }) => {
   const { kakao } = window;
 
   useEffect(() => {
-
-    const mapContainer = document.getElementById('map'),
+    const mapContainer = document.getElementById("map"),
       mapOption = {
         center: new kakao.maps.LatLng(37, 127),
-        level: 4
+        level: 4,
       };
     const map = new kakao.maps.Map(mapContainer, mapOption);
     // 주소-좌표 변환 객체를 생성합니다
     var geocoder = new kakao.maps.services.Geocoder();
     // 주소로 좌표를 검색합니다
-    geocoder.addressSearch(`${locationData.address}`, function (result, status) {
+    geocoder.addressSearch(
+      `${locationData.address}`,
+      function (result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+          console.log("성공");
+          const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+          const imageSrc = `${sheltermarker}`;
+          const imageSize = new kakao.maps.Size(32, 32);
+          const imageOption = { offset: new kakao.maps.Point(10, 20) };
+          const markerImage = new kakao.maps.MarkerImage(
+            imageSrc,
+            imageSize,
+            imageOption
+          );
+          // 결과값으로 받은 위치를 마커로 표시합니다
+          var marker = new kakao.maps.Marker({
+            map: map,
+            position: coords,
+            image: markerImage,
+          });
 
-      if (status === kakao.maps.services.Status.OK) {
-        console.log('성공')
-        const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-        const imageSrc = `${sheltermarker}`
-        const imageSize = new kakao.maps.Size(32, 32)
-        const imageOption = { offset: new kakao.maps.Point(10, 20) };
-        const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
-        // 결과값으로 받은 위치를 마커로 표시합니다
-        var marker = new kakao.maps.Marker({
-          map: map,
-          position: coords,
-          image: markerImage
-        });
-
-        map.setCenter(coords);
+          map.setCenter(coords);
+        } else {
+          console.log("위치를 찾을수가 없어요 ㅠㅗㅜ");
+        }
       }
-      else {
-        console.log('위치를 찾을수가 없어요 ㅠㅗㅜ')
-      }
-    })
+    );
+  }, [locationData]);
 
-
-  }, [locationData])
-
-
-  console.log(locationData)
+  console.log(locationData);
   return (
     <LocationContainer>
       <LocationWrapper>
@@ -78,18 +79,18 @@ const LocationContainer = styled.div`
 `;
 
 const LocationWrapper = styled.div`
-  width: 335px;
+  width: 20.9375rem;
   ${FlexAttribute("row", "center")}
   .locationtitle {
-    flex-basis: 114px;
+    flex-basis: 7.125rem;
   }
 `;
 
 const ContentTextWrapper = styled.div`
-  flex-basis: 220px;
-  margin-top: 2px;
+  flex-basis: 13.75rem;
+  margin-top: 0.125rem;
   span:first-child {
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
   }
 `;
 
@@ -107,8 +108,8 @@ const ContentText = styled.span`
 `;
 
 const MapDiv = styled.div`
-  width: 335px;
-  height: 112px;
+  width: 20.9375rem;
+  height: 7rem;
   ${BorderRadius}
   background-color: #666666;
 `;

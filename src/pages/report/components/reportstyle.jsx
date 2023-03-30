@@ -1,18 +1,22 @@
 import styled from "styled-components";
-import { FlexAttribute, SignSvgStyle, Border_1_color } from "../../../style/Mixin"
+import {
+  FlexAttribute,
+  SignSvgStyle,
+  Border_1_color,
+} from "../../../style/Mixin";
 
 export const ReportMissingContainer = styled.form`
   width: 100%;
   height: 83.375rem;
   ${FlexAttribute("column", "center", "center")}
-  gap: 10px 0;
+  gap: .625rem 0;
 `;
 export const ReportSightingContainer = styled.form`
   width: 100%;
   height: 72rem;
   padding-top: 30px;
   ${FlexAttribute("column", "", "center")}
-  gap: 10px 0;
+  gap: .625rem 0;
 `;
 
 export const ReportHeader = styled.div`
@@ -60,7 +64,7 @@ export const ReportanimaltypesSelect = styled.div`
     position: relative;
     width: 50%;
     height: 100%;
-    padding: 10px 0 20px 0;
+    padding: 0.625rem 0 1.25rem 0;
     > p {
       color: ${(props) => props.theme.color.gray};
       ${(props) => props.theme.Body_400_12}
@@ -68,8 +72,8 @@ export const ReportanimaltypesSelect = styled.div`
     > img {
       position: absolute;
       ${SignSvgStyle}
-      right: 10px;
-      top: 30px;
+      right: .625rem;
+      top: 1.875rem;
     }
     > span {
       ${(props) => props.theme.Span_alert}
@@ -93,7 +97,7 @@ export const ReportAnimalInfoCheckBoxTitle = styled.div`
 export const ReportAnimalInfoCheckBoxSelete = styled.ul`
   width: 100%;
   height: 80%;
-  gap: 0 16px;
+  gap: 0 1rem;
   ${(props) => props.theme.FlexCenter}
   > li {
     width: 6.3125rem;
@@ -117,8 +121,8 @@ export const ReportAnimalInfoCheckBoxSelete = styled.ul`
 export const ReportAnimalInfoBoxColumn = styled.div`
   width: 100%;
   height: 50%;
-  margin-top: 5px;
-  font-size: 12px;
+  margin-top: 0.3125rem;
+  font-size: 0.75rem;
   ${(props) => props.theme.FlexRow}
 `;
 
@@ -134,8 +138,8 @@ export const ReportAnimalInfoBoxColumnRow = styled.div`
   > img {
     position: absolute;
     ${SignSvgStyle}
-    bottom: 30px;
-    right: 10px;
+    bottom: 1.875rem;
+    right: 0.625rem;
   }
   > span {
     ${(props) => props.theme.Span_alert}
@@ -154,8 +158,8 @@ export const ReportAnimalInfoBoxColumnColumn = styled.div`
   > img {
     position: absolute;
     ${SignSvgStyle}
-    bottom: 30px;
-    right: 10px;
+    bottom: 1.875rem;
+    right: 0.625rem;
   }
   > span {
     ${(props) => props.theme.Span_alert}
@@ -172,7 +176,7 @@ export const ReportanimaltypesBox = styled.div`
 export const ReportInput = styled.input`
   width: 9.75rem;
   height: 1.5625rem;
-  margin-top: 5px;
+  margin-top: 0.3125rem;
   ${Border_1_color}
   border-radius: 0;
   /* border-bottom: 1px solid gray; */
@@ -183,12 +187,12 @@ export const ReportInput = styled.input`
 export const ReportLgInput = styled.input`
   width: 20.9375rem;
   height: 1.5625rem;
-  margin-top: 5px;
+  margin-top: 0.3125rem;
   border-radius: 0;
   ${Border_1_color}
   /* border: 1px solid red; */
   background: transparent;
-  font-size: 12px;
+  font-size: 0.75rem;
 `;
 
 export const ReportAnimalDayBox = styled.div`
@@ -216,8 +220,8 @@ export const ReportAnimalDayBox = styled.div`
       img {
         position: absolute;
         ${SignSvgStyle}
-        bottom: 25px;
-        right: 10px;
+        bottom: 1.5625rem;
+        right: 0.625rem;
       }
       span {
         ${(props) => props.theme.Span_alert}
@@ -244,7 +248,7 @@ export const ReportAnimalSignificantBoxInputArea = styled.div`
   width: 100%;
   height: 85%;
   color: #222222;
-  font-size: 20px;
+  font-size: 1.25rem;
   ${(props) => props.theme.FlexColumn}
   > div {
     position: relative;
@@ -253,13 +257,13 @@ export const ReportAnimalSignificantBoxInputArea = styled.div`
     > p {
       color: ${(props) => props.theme.color.gray};
       ${(props) => props.theme.Body_400_12}
-      padding-top: 10px;
+      padding-top: .625rem;
     }
     > img {
       position: absolute;
       ${SignSvgStyle}
-      bottom: 25px;
-      right: 15px;
+      bottom: 1.5625rem;
+      right: 0.9375rem;
     }
     > span {
       ${(props) => props.theme.Span_alert}
@@ -287,16 +291,16 @@ export const ReportAnimalPictureAreaInputBox = styled.div`
   height: 80%;
   display: flex;
   align-items: center;
-  gap: 0px 20px;
+  gap: 0px 1.25rem;
 `;
 
 export const ReportAnimalPictureInput = styled.div`
-  width: 56px;
-  height: 56px;
+  width: 3.5rem;
+  height: 3.5rem;
   /* gary */
   background: ${(props) => props.theme.color.gray};
   /* background: gray; */
-  border-radius: 4px;
+  border-radius: 0.25rem;
   ${(props) => props.theme.FlexCenter}
   > h3 {
     color: #ffffff;
@@ -306,8 +310,8 @@ export const ReportAnimalPictureInput = styled.div`
 `;
 export const ReportAnimalPicturePreview = styled.div`
   position: relative;
-  width: 56px;
-  height: 56px;
+  width: 3.5rem;
+  height: 3.5rem;
   background: #eeeeee;
   border-radius: 0.25rem;
   ${(props) => props.theme.FlexCenter}
@@ -317,10 +321,10 @@ export const ReportAnimalPicturePreview = styled.div`
     width: 1rem;
     height: 1rem;
     background: #ffffff;
-    top: -5px;
-    right: -5px;
+    top: -0.3125rem;
+    right: -0.3125rem;
     border-radius: 50%;
-    font-size: 6px;
+    font-size: 0.375rem;
     color: #cccccc;
   }
   > img {
@@ -332,7 +336,7 @@ export const ReportAnimalPicturePreview = styled.div`
 export const ReportAnimalUserInfo = styled.div`
   width: 20.9375rem;
   height: 5.5rem;
-  margin-top: 10px;
+  margin-top: 0.625rem;
   ${(props) => props.theme.FlexRow}
   > div {
     position: relative;
@@ -345,8 +349,8 @@ export const ReportAnimalUserInfo = styled.div`
       position: absolute;
       width: 1rem;
       height: 1rem;
-      bottom: 45px;
-      right: 15px;
+      bottom: 2.8125rem;
+      right: 0.9375rem;
     }
     > span {
       ${(props) => props.theme.Span_alert}

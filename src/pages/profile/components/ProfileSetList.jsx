@@ -48,8 +48,8 @@ const ProfileSetListsContainer = styled.div`
 
 const ListBox = styled.div`
   ${FlexAttribute("row", "space-between", "center")}
-  width: 335px;
-  height: 68px;
+  width: 20.9375rem;
+  height: 4.25rem;
   ${Border_1_color}
 `;
 
@@ -61,7 +61,7 @@ const ReportSvg = styled(Reportcatch)`
 
 const List = styled.span`
   ${Body_500_14}
-  flex-basis: 289px;
+  flex-basis: 18.0625rem;
 `;
 
 const ArrowSvg = styled.div`

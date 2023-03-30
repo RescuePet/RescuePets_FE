@@ -145,14 +145,14 @@ const HeadSpan = styled.div`
 const SecondSpan = styled.div`
   height: 5rem;
   padding-top: 2rem;
-  border-radius: 10px 10px 0 0;
+  border-radius: 0.625rem 0.625rem 0 0;
   display: flex;
   justify-content: center;
 `;
 const ImageWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 240px;
+  height: 15rem;
   background-image: url(${(props) => props.images});
   background-size: cover;
   background-repeat: no-repeat;
@@ -163,12 +163,12 @@ const ImageMain = styled.img`
   height: 240px;
   object-fit: contain;
   position: absolute;
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(0.1875rem);
 `;
 
 const QRCodeWrapper = styled.div`
-  padding: 20px;
-  border-radius: 10px;
+  padding: 1.25rem;
+  border-radius: 0.625rem;
   position: absolute;
   right: 0;
   bottom: 0;
@@ -183,7 +183,7 @@ const InfoWrapper = styled.div`
 const BodyTitle = styled.div`
   display: flex;
   justify-content: sapce-between;
-  width: 70px;
+  width: 4.375rem;
 `;
 
 const BodyTitleSvg = styled.div`
@@ -213,31 +213,31 @@ const ContentTextBox = styled.div`
 
 const ContentOptionText = styled.span`
   font-weight: 400;
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 0.875rem;
+  line-height: 1rem;
   color: #666666;
 `;
 
 const ContentText = styled.span`
   display: inline-block;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 0.875rem;
+  line-height: 1rem;
   color: #222222;
 `;
 
 const PhoneNumberContainer = styled.div`
   ${FlexAttribute("row", "space-evenly")}
-  padding: 16px 0;
-  border-top: 1px solid ${(props) => props.theme.color.text_assistive};
+  padding: 1rem 0;
+  border-top: 0.0625rem solid ${(props) => props.theme.color.text_assistive};
 `;
 
 const PhonNumberTitle = styled.div`
-  flex-basis: 70px;
+  flex-basis: 4.375rem;
 `;
 
 const PhoneNumberWrapper = styled.div`
-  flex-basis: 210px;
+  flex-basis: 13.125rem;
 `;
 const PhoneNumber = styled.span``;
 

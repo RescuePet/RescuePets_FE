@@ -152,7 +152,7 @@ const AdoptionDetail = () => {
 const ImageContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 240px;
+  height: 15rem;
   background: linear-gradient(
       rgba(255, 255, 255, 0.3),
       rgba(255, 255, 255, 0.3)
@@ -166,29 +166,29 @@ const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: contain;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(0.125rem);
 `;
 
 const BackButton = styled.div`
   position: absolute;
-  top: 26px;
-  left: 20px;
+  top: 1.625rem;
+  left: 1.25rem;
   z-index: 10;
   cursor: pointer;
 `;
 
 const ScrapStateFalse = styled(Clippingwhite)`
   position: absolute;
-  top: 26px;
-  right: 20px;
+  top: 1.625rem;
+  right: 1.25rem;
   z-index: 10;
   cursor: pointer;
 `;
 
 const ScrapStateTrue = styled(ClippingFill)`
   position: absolute;
-  top: 26px;
-  right: 20px;
+  top: 1.625rem;
+  right: 1.25rem;
   z-index: 10;
   cursor: pointer;
   path {
@@ -200,7 +200,7 @@ const ProcessBox = styled.div`
   position: absolute;
   width: 100%;
   bottom: 0;
-  padding: 6px 0;
+  padding: 0.375rem 0;
   background-color: RGB(23, 23, 23, 0.5);
   text-align: center;
   ${(props) => props.theme.Body_500_16};
@@ -211,12 +211,12 @@ const ProcessBox = styled.div`
 
 const ShelterContainer = styled.div`
   ${PostBorderStyle}
-  padding-top: 16px;
+  padding-top: 1rem;
 `;
 
 const ButtonWrapper = styled.div`
   ${FlexAttribute("row", "center", "center")}
-  margin-top: 24px;
+  margin-top: 1.5rem;
 `;
 
 export default AdoptionDetail;

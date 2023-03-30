@@ -37,7 +37,7 @@ const Category = () => {
 const CategoryWrapper = styled.div`
   ${FlexAttribute("row", "space-evenly", "center")}
   ${Border_2_color}
-  height: 48px;
+  height: 3rem;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -46,19 +46,19 @@ const CategoryWrapper = styled.div`
 
 const ActiveButton = styled.button`
   right: 60%;
-  width: 120px;
-  height: 49px;
+  width: 7.5rem;
+  height: 3.0625rem;
   ${Button_700_16}
   background-color: transparent;
   color: ${(props) => props.theme.color.black};
   ${(props) =>
     props.active
       ? css`
-          border-bottom: 2px solid
+          border-bottom: 0.125rem solid
             ${(props) => props.theme.color.primary_normal}; ;
         `
       : css`
-          border-bottom: 2px solid transparent;
+          border-bottom: 0.125rem solid transparent;
         `}
 `;
 

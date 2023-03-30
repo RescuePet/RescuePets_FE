@@ -17,22 +17,22 @@ const Title = ({ titleInfo }) => {
 
 const TitleWrapper = styled.div`
   ${FlexAttribute("row", "space-between", "center")}
-  width: 335px;
+  width: 20.9375rem;
 `;
 
 const PetworkState = styled(State)`
-  flex-basis: 35px;
+  flex-basis: 2.1875rem;
 `;
 
 const SemiText = styled.span`
-  flex-basis: 80px;
+  flex-basis: 5rem;
   text-align: center;
   ${Body_400_14}
 `;
 
 const RegularText = styled.span`
   ${ContentInformationStyle}
-  flex-basis: 190px;
+  flex-basis: 11.875rem;
 `;
 
 export default Title;

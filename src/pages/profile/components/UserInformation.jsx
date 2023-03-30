@@ -65,26 +65,26 @@ const UserInformation = () => {
 
 const UserInfoContainer = styled.div`
   ${FlexAttribute("column", "center", "center")}
-  padding: 32px 0;
+  padding: 2rem 0;
   ${Border_1_color}
 `;
 
 const UserImage = styled.img`
-  width: 80px;
-  height: 80px;
-  margin-bottom: 14px;
+  width: 5rem;
+  height: 5rem;
+  margin-bottom: 0.875rem;
   border-radius: 50%;
   background-color: tran;
 `;
 
 const UserName = styled.span`
   ${Button_700_16}
-  margin-bottom: 4px;
+  margin-bottom: .25rem;
 `;
 
 const UserEmail = styled.span`
   ${Body_400_12}
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
   color: #999999;
 `;
 
@@ -99,8 +99,8 @@ const CountBox = styled.div`
 
 const CountSpan = styled.span`
   font-weight: 700;
-  font-size: 24px;
-  line-height: 24px;
+  font-size: 1.5rem;
+  line-height: 1.5rem;
 `;
 
 const TitleSpan = styled.span`

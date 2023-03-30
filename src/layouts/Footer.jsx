@@ -29,7 +29,7 @@ const Footer = () => {
     dispatch(toggleMenu(menuBarToggle));
     const ToggleBtn = document.querySelector(".toggleBtn");
     if (menuBar === true) {
-      ToggleBtn.classList.remove("active");
+      ToggleBtn.classListNaNpxove("active");
     } else {
       ToggleBtn.classList.add("active");
     }
@@ -94,14 +94,14 @@ export default Footer;
 
 const FooterContiner = styled.div`
   ${FlexAttribute("row", "space-around", "center")}
-  width: 430px;
-  height: 74px;
-  border-top: 1px solid ${(props) => props.theme.color.text_disable};
+  width: 26.875rem;
+  height: 4.625rem;
+  border-top: 0.0625rem solid ${(props) => props.theme.color.text_disable};
   position: fixed;
   bottom: 0;
   background-color: ${(props) => props.theme.color.white};
   z-index: 10;
-  @media screen and (max-width: 431px) {
+  @media screen and (max-width: 26.9375rem) {
     width: 100%;
     position: fixed;
     bottom: 0;
@@ -111,26 +111,26 @@ const FooterContiner = styled.div`
 // 메뉴바 모달
 const Navigation = styled.div`
   position: absolute;
-  right: 10px;
-  bottom: 40px;
-  width: 200px;
-  height: 170px;
+  right: 0.625rem;
+  bottom: 2.5rem;
+  width: 12.5rem;
+  height: 10.625rem;
   ${(props) => props.theme.FlexColumn}
 `;
 
 const FooterMenuList = styled.div`
-  width: 9.6875rem;
-  height: 2.75rem;
+  width: 155px;
+  height: 44px;
   z-index: 1000;
-  margin-top: 10px;
-  border-radius: 4px;
+  margin-top: 0.625rem;
+  border-radius: 0.25rem;
   background: ${(props) => props.theme.color.text_normal};
   color: ${(props) => props.theme.color.white};
   ${(props) => props.theme.FlexCenter};
   cursor: pointer;
   span {
     ${(props) => props.theme.Body_400_14};
-    line-height: 24px;
+    line-height: 1.5rem;
     vertical-align: middle;
   }
 `;
@@ -140,18 +140,18 @@ const FooterIconToggleBtn = styled.div`
   position: relative;
   z-index: 1000;
   ${FlexAttribute("row", "center", "center")}
-  width: 40px;
-  height: 40px;
+  width: 2.5rem;
+  height: 2.5rem;
   background: ${(props) => props.theme.color.text_normal};
   border-radius: 50%;
-  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0.9375rem 1.5625rem rgba(0, 0, 0, 0.15);
   cursor: pointer;
   font-weight: 300;
   &::before {
     content: "+";
-    line-height: 40px;
+    line-height: 2.5rem;
     text-align: center;
-    font-size: 40px;
+    font-size: 2.5rem;
     color: ${(props) => props.theme.color.white};
     transition: 1s;
   }
@@ -159,7 +159,7 @@ const FooterIconToggleBtn = styled.div`
 
 const FooterEachIconContiner = styled.div`
   ${FlexAttribute("column", "", "center")};
-  width: 30px;
+  width: 1.875rem;
   cursor: pointer;
   span {
     ${(props) => props.theme.Body_400_12};

@@ -69,19 +69,19 @@ const PostContainer = styled.div`
   position: relative;
   z-index: 1;
   ${FlexAttribute("row", "space-between", "center")}
-  margin-top: 16px;
-  width: 335px;
-  border: 1px solid ${(props) => props.theme.color.text_disable};
-  border-radius: 4px;
+  margin-top: 1rem;
+  width: 20.9375rem;
+  border: 0.0625rem solid ${(props) => props.theme.color.text_disable};
+  border-radius: 0.25rem;
   cursor: pointer;
 `;
 
 const ThunbnailWrapper = styled.div`
   position: relative;
   ${FlexAttribute("row", "center", "center")};
-  width: 120px;
-  height: 120px;
-  border-radius: 4px;
+  width: 7.5rem;
+  height: 7.5rem;
+  border-radius: 0.25rem;
   overflow: hidden;
   background: linear-gradient(
       rgba(255, 255, 255, 0.2),
@@ -93,16 +93,16 @@ const ThunbnailWrapper = styled.div`
 `;
 
 const Tuumbnail = styled.img`
-  width: 120px;
-  height: 120px;
+  width: 7.5rem;
+  height: 7.5rem;
   object-fit: contain;
   position: absolute;
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(0.1875rem);
 `;
 
 const InformationWrapper = styled.div`
-  padding: 8px 15px;
-  width: 213px;
+  padding: 0.5rem 0.9375rem;
+  width: 13.3125rem;
 `;
 
 const TitleBox = styled.div`
@@ -110,17 +110,17 @@ const TitleBox = styled.div`
   ${FlexAttribute("row", "", "center")}
   h2 {
     ${(props) => props.theme.Body_400_14};
-    padding-top: 2px;
+    padding-top: 0.125rem;
   }
 `;
 
 const TextBox = styled.div`
   ${FlexAttribute("row", "", "flex-start")}
-  margin-top: 2px;
+  margin-top: .125rem;
   span {
     ${(props) => props.theme.Body_400_12}
     color: #999999;
-    line-height: 18px;
+    line-height: 1.125rem;
   }
 `;
 
@@ -128,8 +128,8 @@ const ScrapButtonBox = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-  width: 24px;
-  height: 24px;
+  width: 1.5rem;
+  height: 1.5rem;
   z-index: 10;
 `;
 

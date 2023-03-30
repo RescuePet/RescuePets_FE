@@ -54,24 +54,24 @@ const Signin = () => {
   };
 
   const SignInMessage = useSelector((state) => {
-    return state?.users?.Signinmessage
-  })
+    return state?.users?.Signinmessage;
+  });
 
-  const [SignInMsg, setSignInMsg] = useState('');
+  const [SignInMsg, setSignInMsg] = useState("");
 
   useEffect(() => {
-    if (SignInMessage === 'success') {
-      setSignInMsg("✅ 로그인 성공")
-
-      // setTimeout(function () {
-      //   navigate('/home')
-      // }, 1000);
-
-    } else if (SignInMessage === '아이디,비밀번호를 확인해주세요') {
-      setSignInMsg("⛔ 아이디 혹은 비밀번호를 확인해주세요")
+    if (SignInMessage === "success") {
+      setSignInMsg("✅ 로그인 성공");
+    } else if (SignInMessage === "아이디,비밀번호를 확인해주세요") {
+      setSignInMsg("⛔ 아이디 혹은 비밀번호를 확인해주세요");
     }
+  }, [SignInMessage]);
 
-  }, [SignInMessage])
+  if (SignInMsg === "✅ 로그인 성공") {
+    setTimeout(function () {
+      navigate("/home");
+    }, 1000);
+  }
 
   const URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_SIGN_ID}&redirect_uri=${process.env.REACT_APP_RESCUEPETS}/kakaologin`;
 
@@ -142,11 +142,12 @@ const Signin = () => {
             <span>{errors?.password?.message}</span>
           </InputWrapper>
         </SignForm>
-        {SignInMsg == '' ? null : (
+        {SignInMsg == "" ? null : (
           <CheckModal
             isOpen={loginModal}
             toggle={toggleModal}
-            onClose={toggleModal}>
+            onClose={toggleModal}
+          >
             {SignInMsg}
           </CheckModal>
         )}
@@ -191,7 +192,7 @@ const SignHeader = styled.div`
 
 const SignForm = styled.div`
   ${FlexAttribute("column", "center")}
-  margin: 0px 20px 0px 20px;
+  margin: 0px 1.25rem 0px 1.25rem;
   img {
     ${SignSvgStyle}
   }

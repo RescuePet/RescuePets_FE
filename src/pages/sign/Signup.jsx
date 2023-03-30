@@ -22,7 +22,7 @@ const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginModal, toggleModal] = useModalState(false);
-  const [SignUpMsg, setSignUpMsg] = useState('');
+  const [SignUpMsg, setSignUpMsg] = useState("");
 
   const data = [
     { id: 0, name: "naver.com" },
@@ -51,7 +51,7 @@ const Signup = () => {
     } else {
       setEmailCheck(false);
     }
-  }, [emailWatch])
+  }, [emailWatch]);
   // console.log(emailCheck)
 
   // 비밀번호 체크 로직
@@ -101,28 +101,28 @@ const Signup = () => {
       dispatch(__signupUser(userInfo));
       reset();
     } else {
-      console.log('d')
+      console.log("d");
     }
   };
 
   const SignUpmessage = useSelector((state) => {
-    return state.users?.Signupmessage
-  })
+    return state.users?.Signupmessage;
+  });
 
   useEffect(() => {
     // console.log(SignUpmessage)
     if (SignUpmessage === "중복된 이메일이 존재합니다.") {
-      setSignUpMsg("⛔ 중복된 이메일이 존재합니다.")
+      setSignUpMsg("⛔ 중복된 이메일이 존재합니다.");
       // 모달 띄우기
     } else if (SignUpmessage === "중복된 닉네임이 존재합니다.") {
-      setSignUpMsg("⛔ 중복된 닉네임이 존재합니다.")
+      setSignUpMsg("⛔ 중복된 닉네임이 존재합니다.");
     } else if (SignUpmessage === "회원가입이 완료 되었습니다.") {
-      setSignUpMsg("✅ 회원가입이 완료 되었습니다.")
+      setSignUpMsg("✅ 회원가입이 완료 되었습니다.");
       setTimeout(function () {
         navigate("/signin");
       }, 1000);
     }
-  }, [SignUpmessage])
+  }, [SignUpmessage]);
 
   // console.log(Message)
 
@@ -244,25 +244,27 @@ const Signup = () => {
           </div>
         </SignIdNincknameBox>
         <SignBtnBox>
-          {
-            isActive === false ? <Button type="submit" disable assistiveFillButton>회원가입</Button>
-              : (<Button type="submit" fillButton>회원가입</Button>)
-          }
-
+          {isActive === false ? (
+            <Button type="submit" disable assistiveFillButton>
+              회원가입
+            </Button>
+          ) : (
+            <Button type="submit" fillButton>
+              회원가입
+            </Button>
+          )}
         </SignBtnBox>
       </SignContainer>
 
-      {
-        SignUpMsg == '' ? null : (
-          <CheckModal
-            isOpen={loginModal}
-            toggle={toggleModal}
-            onClose={toggleModal}>
-            {SignUpMsg}
-          </CheckModal>
-
-        )
-      }
+      {SignUpMsg == "" ? null : (
+        <CheckModal
+          isOpen={loginModal}
+          toggle={toggleModal}
+          onClose={toggleModal}
+        >
+          {SignUpMsg}
+        </CheckModal>
+      )}
     </Layout>
   );
 };
@@ -289,9 +291,9 @@ const SignHeader = styled.div`
     ${(props) => props.theme.Title_700_18}
   }
   img {
-    width: 24px;
-    height: 24px;
-    margin-right: 50px;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 3.125rem;
   }
 `;
 
@@ -316,11 +318,11 @@ const SignIdNincknameBox = styled.div`
         ${(props) => props.theme.Span_alert}
         /* border: 1px solid red; */
         color: #D6459C;
-        font-size: 10px;
+        font-size: 0.625rem;
         > img {
           position: absolute;
-          left: 5px;
-          bottom: 4px;
+          left: 0.3125rem;
+          bottom: 0.25rem;
           width: 0.625rem;
           height: 0.5625rem;
           ${(props) => props.theme.FlexCenter}/* border: 1px solid red; */
@@ -330,7 +332,7 @@ const SignIdNincknameBox = styled.div`
 
     > span {
       position: absolute;
-      top: 40px;
+      top: 2.5rem;
       ${(props) => props.theme.Span_alert}
     }
   }
@@ -390,10 +392,10 @@ const SignsmInput = styled.input`
 const SignLgInput = styled.input`
   width: 20.9375rem;
   height: 1.5625rem;
-  margin-top: 5px;
+  margin-top: 0.3125rem;
   ${Border_1_color}
   background: transparent;
-  font-size: 12px;
+  font-size: 0.75rem;
   cursor: pointer;
   ::placeholder {
     color: ${(props) => props.theme.color.text_assistive};

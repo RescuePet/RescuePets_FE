@@ -29,24 +29,24 @@ const ShelterWrapper = styled.div`
 `;
 
 const BodyTitleSvg = styled.img`
-  flex-basis: 24px;
-  height: 24px;
+  flex-basis: 1.5rem;
+  height: 1.5rem;
 `;
 
 const BodyTitleText = styled.span`
-  flex-basis: 50px;
+  flex-basis: 3.125rem;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
   color: #999999;
   vertical-align: middle;
   white-space: nowrap;
 `;
 
 const ContentTextWrapper = styled.div`
-  flex-basis: 220px;
+  flex-basis: 13.75rem;
   span:first-child {
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
   }
 `;
 
@@ -56,8 +56,8 @@ const ContentTextBox = styled.div`
 
 const ContentOptionText = styled.span`
   font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
   color: #666666;
 `;
 
@@ -65,8 +65,8 @@ const ContentText = styled.span`
   display: inline-block;
 
   font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
   color: #222222;
 `;
 

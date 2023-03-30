@@ -1,53 +1,52 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import { motion, AnimatePresence } from 'framer-motion';
-import Button from './Button';
-import cancel from "../asset/cancel.svg"
+import React, { useEffect } from "react";
+import styled from "styled-components";
+import { motion, AnimatePresence } from "framer-motion";
+import cancel from "../asset/cancel.svg";
 
 export default function Modal({ isOpen, onClose, children }) {
-    const backdropVariants = {
-        visible: { opacity: 1 },
-        hidden: { opacity: 0 },
-    };
-    // 위에서 아래에서 
-    // 좌에서 우로는 visible x 0 
+  const backdropVariants = {
+    visible: { opacity: 1 },
+    hidden: { opacity: 0 },
+  };
+  // 위에서 아래에서
+  // 좌에서 우로는 visible x 0
 
-    const modalVariants = {
-        visible: { opacity: 1, y: 0 },
-        hidden: { opacity: 0, y: '-50%', transition: { duration: 0.1 } },
-    };
+  const modalVariants = {
+    visible: { opacity: 1, y: 0 },
+    hidden: { opacity: 0, y: "-50%", transition: { duration: 0.1 } },
+  };
 
-    useEffect(() => {
-        if (isOpen) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'auto';
-        }
-    }, [isOpen]);
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [isOpen]);
 
-    return (
-        <AnimatePresence>
-            {isOpen && (
-                <Backdrop
-                    variants={backdropVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    onClick={onClose}
-                >
-                    <ModalContainer
-                        variants={modalVariants}
-                        initial="hidden"
-                        animate="visible"
-                        exit="hidden"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        {children}
-                    </ModalContainer>
-                </Backdrop>
-            )}
-        </AnimatePresence>
-    );
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <Backdrop
+          variants={backdropVariants}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          onClick={onClose}
+        >
+          <ModalContainer
+            variants={modalVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {children}
+          </ModalContainer>
+        </Backdrop>
+      )}
+    </AnimatePresence>
+  );
 }
 
 const Backdrop = styled(motion.div)`
@@ -78,36 +77,36 @@ export const ModalMsgContainer = styled.div`
   width: 100%;
   height: 100%;
   color: #333333;
-  display: flex;    
+  display: flex;
   align-items: center;
-  
+
   > h2 {
     margin-left: 1.25rem;
-    ${props => props.theme.Body_400_14_16}
+    ${(props) => props.theme.Body_400_14_16}
   }
 `;
 
 export const CloseContainer = styled.div`
-    position: absolute;
-    width: 1rem;
-    height: 1rem;
-    right: 3%;
-    top: 8%;
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  right: 3%;
+  top: 8%;
 `;
-
-
 
 // Sign 커스텀 모달
 export function CheckModal(props) {
-    return (
-        <>
-            {/* 모달밖을 클릭하거나 확인 버튼 클릭시 사라진다  사라진다  */}
-            <Modal isOpen={props.isOpen} onClose={props.toggle}>
-                <ModalMsgContainer>
-                    <CloseContainer><img src={cancel} onClick={props.onClose} /></CloseContainer>
-                    <h2>{props.children}</h2> </ModalMsgContainer>
-            </Modal>
-        </>
-    );
+  return (
+    <>
+      {/* 모달밖을 클릭하거나 확인 버튼 클릭시 사라진다  사라진다  */}
+      <Modal isOpen={props.isOpen} onClose={props.toggle}>
+        <ModalMsgContainer>
+          <CloseContainer>
+            <img src={cancel} onClick={props.onClose} />
+          </CloseContainer>
+          <h2>{props.children}</h2>{" "}
+        </ModalMsgContainer>
+      </Modal>
+    </>
+  );
 }
-

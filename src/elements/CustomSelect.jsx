@@ -45,19 +45,19 @@ const SelectBox = styled.div`
   width: 9.75rem;
   height: 1.5625rem;
   ${Border_1_color}
-  padding: 8px 0 20px 0;
+  padding: .5rem 0 1.25rem 0;
   cursor: pointer;
   &::before {
     content: "⌵";
     position: absolute;
-    top: 1px;
-    right: 8px;
+    top: 0.0625rem;
+    right: 0.5rem;
     color: #999999;
-    font-size: 20px;
+    font-size: 1.25rem;
   }
 `;
 const Label = styled.label`
-  margin-left: 4px;
+  margin-left: 0.25rem;
   text-align: center;
   ${(props) => props.theme.Body_400_12}
   color: ${(props) => props.theme.color.text_normal};
@@ -66,20 +66,20 @@ const Label = styled.label`
 const SelectOptions = styled.ul`
   position: absolute;
   list-style: none;
-  top: 35px;
+  top: 2.1875rem;
   left: 0;
   width: 100%;
   overflow: scroll;
-  height: 100px;
+  height: 6.25rem;
   max-height: ${(props) => (props.show ? "none" : "0")};
   padding: 0;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   background-color: ${(props) => props.theme.color.line_alternative};
   z-index: 10;
 `;
 
 const Option = styled.li`
-  padding: 6px 8px;
+  padding: 0.375rem 0.5rem;
   transition: background-color 0.2s ease-in;
   ${(props) => props.theme.Body_400_12};
   color: ${(props) => props.theme.color.text_alternative};

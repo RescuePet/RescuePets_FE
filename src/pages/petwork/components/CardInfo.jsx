@@ -17,13 +17,13 @@ const InfoWrapper = styled.div`
 `;
 
 const Svg = styled.img`
-  width: 16px;
-  height: 16px;
+  width: 1rem;
+  height: 1rem;
 `;
 
 const Contents = styled.span`
   ${Body_400_12}
-  line-height: 16px;
+  line-height: 1rem;
   color: #999999;
 `;
 

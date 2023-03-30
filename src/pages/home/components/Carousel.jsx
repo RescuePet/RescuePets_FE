@@ -40,8 +40,8 @@ const StyledSlider = styled(Slider)`
     background-color: transparent;
   }
   .slick-dots li button {
-    width: 6px;
-    height: 6px;
+    width: 0.375rem;
+    height: 0.375rem;
   }
 
   .slick-dots li button:before {
@@ -60,17 +60,17 @@ const Container = styled.div`
 
 const Image = styled.img`
   width: 100%;
-  height: 160px;
+  height: 10rem;
   object-fit: cover;
 `;
 
 const PrevTo = styled.div`
-  left: 10px;
+  left: 0.625rem;
   z-index: -1;
 `;
 
 const NextTo = styled.div`
-  right: 10px;
+  right: 0.625rem;
   z-index: -1;
 `;
 

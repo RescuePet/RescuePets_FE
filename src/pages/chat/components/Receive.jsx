@@ -15,22 +15,22 @@ const Receive = ({ message }) => {
 };
 const ReceiveBox = styled.div`
   ${FlexAttribute("column", "center", "flex-start")}
-  margin: 0px 20px 0 26px;
+  margin: 0rem 1.25rem 0 1.625rem;
   :first-child {
-    margin-top: 16px;
+    margin-top: 1rem;
   }
   :last-child {
-    margin-bottom: 18px;
+    margin-bottom: 1.125rem;
   }
 `;
 
 const ReceiveMessage = styled.div`
   position: relative;
-  min-height: 32px;
-  max-width: 250px;
-  margin-bottom: 8px;
-  padding: 6px 16px;
-  border-radius: 4px;
+  min-height: 2rem;
+  max-width: 15.625rem;
+  margin-bottom: 0.5rem;
+  padding: 0.375rem 1rem;
+  border-radius: 0.25rem;
   background: ${(props) => props.theme.color.text_normal};
   word-break: break-all;
   ::after {
@@ -40,12 +40,12 @@ const ReceiveMessage = styled.div`
     top: 35%;
     width: 0;
     height: 0;
-    border: 11px solid transparent;
+    border: 0.6875rem solid transparent;
     border-right-color: ${(props) => props.theme.color.text_normal};
     border-left: 0;
     border-top: 0;
-    margin-top: -2.5px;
-    margin-left: -5px;
+    margin-top: -0.1563rem;
+    margin-left: -0.3125rem;
   }
 `;
 
@@ -56,8 +56,8 @@ const ReceiveSpan = styled.span`
 
 const ReceiveTimeSpan = styled.span`
   position: absolute;
-  right: -45px;
-  bottom: 1px;
+  right: -2.8125rem;
+  bottom: 0.0625rem;
   ${Body_400_10}
   color:#CCCCCC;
 `;

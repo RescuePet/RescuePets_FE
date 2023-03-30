@@ -56,7 +56,7 @@ const TabContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding: 30px 16px;
+  padding: 1.875rem 1rem;
   width: 100%;
   height: 100vh;
 `;
@@ -67,7 +67,7 @@ const TabHander = styled.div`
   display: flex;
   align-items: center;
   justify-content: right;
-  padding-right: 20px;
+  padding-right: 1.25rem;
   font-weight: 700;
   cursor: pointer;
   ${Body_500_14}
@@ -76,15 +76,15 @@ const TabHander = styled.div`
 
 const TabImageBox = styled.img`
   margin: auto 0;
-  width: 182px;
-  height: 242px;
+  width: 11.375rem;
+  height: 15.125rem;
 `;
 
 const TabTextBox = styled.div`
   width: 80%;
   height: 10%;
-  margin-top: 1.5625rem;
-  padding: 0 50px;
+  margin-top: 25px;
+  padding: 0 3.125rem;
   text-align: center;
   h3 {
     ${(props) => props.theme.Title_700_18}
@@ -95,26 +95,26 @@ const TabButtonBox = styled.div`
   width: 50%;
   height: 3%;
   ${(props) => props.theme.FlexCenter}
-  gap: 0 10px;
+  gap: 0 .625rem;
 
   /* 23 */
 `;
 
 const TabThisBox = styled.div`
-  width: 23px;
-  height: 8px;
+  width: 1.4375rem;
+  height: 0.5rem;
   background: ${(props) => props.theme.color.primary_normal};
-  border-radius: 10px;
+  border-radius: 0.625rem;
 `;
 
 const TabNoneThisBox = styled.div`
-  width: 8px;
-  height: 8px;
+  width: 0.5rem;
+  height: 0.5rem;
   background: #cccccc;
-  border-radius: 4px;
+  border-radius: 0.25rem;
 `;
 
 const TabNextButtonArea = styled.div`
-  margin-top: 100px;
+  margin-top: 6.25rem;
   ${(props) => props.theme.FlexCenter}
 `;

@@ -25,8 +25,8 @@ const Comment = ({ item }) => {
 
 const CommentBox = styled.div`
   ${FlexAttribute("column")}
-  width: 335px;
-  padding: 16px 0;
+  width: 20.9375rem;
+  padding: 1rem 0;
   word-break: break-all;
   :not(:last-child) {
     ${Border_1_color}
@@ -34,8 +34,8 @@ const CommentBox = styled.div`
 `;
 
 const UserImg = styled.img`
-  width: 32px;
-  height: 32px;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
 `;
 
@@ -44,8 +44,8 @@ const UserInfo = styled.div`
 `;
 
 const UserBox = styled.div`
-  margin-left: 16px;
-  margin-bottom: 8px;
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
   ${FlexAttribute("column")}
 `;
 
@@ -60,7 +60,7 @@ const CommentTime = styled.span`
 
 const CommentText = styled.span`
   ${Body_400_12}
-  margin-left: 49px;
+  margin-left: 3.0625rem;
 `;
 
 export default Comment;

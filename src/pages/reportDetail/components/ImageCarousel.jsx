@@ -55,8 +55,8 @@ const StyledSlider = styled(Slider)`
     background-color: transparent;
   }
   .slick-dots li button {
-    width: 6px;
-    height: 6px;
+    width: 0.375rem;
+    height: 0.375rem;
   }
 
   .slick-dots li button:before {
@@ -65,11 +65,11 @@ const StyledSlider = styled(Slider)`
 
   .slick-dots li.slick-active button:before {
     content: "";
-    width: 23px;
-    height: 8px;
+    width: 1.4375rem;
+    height: 0.5rem;
     background-color: #666666;
-    border-radius: 10px;
-    margin-top: 5px;
+    border-radius: 0.625rem;
+    margin-top: 0.3125rem;
   }
 `;
 
@@ -81,7 +81,7 @@ const Container = styled.div`
 
 const ImageWrapper = styled.div`
   width: 100%;
-  height: 240px;
+  height: 15rem;
   background: linear-gradient(
       rgba(255, 255, 255, 0.2),
       rgba(255, 255, 255, 0.2)
@@ -94,26 +94,26 @@ const ImageWrapper = styled.div`
 
 const Image = styled.img`
   width: 100%;
-  height: 240px;
+  height: 15rem;
   object-fit: contain;
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(0.1875rem);
 `;
 
 const BackButton = styled.img`
   position: absolute;
-  top: 40px;
-  left: 27px;
-  width: 24px;
-  height: 24px;
+  top: 2.5rem;
+  left: 1.6875rem;
+  width: 1.5rem;
+  height: 1.5rem;
   cursor: pointer;
 `;
 
 const ScrapStateTrue = styled(ClippingFill)`
   position: absolute;
-  top: 40px;
-  right: 27px;
-  width: 24px;
-  height: 24px;
+  top: 2.5rem;
+  right: 1.6875rem;
+  width: 1.5rem;
+  height: 1.5rem;
   cursor: pointer;
   path {
     fill: ${(props) => props.theme.color.white};
@@ -122,21 +122,21 @@ const ScrapStateTrue = styled(ClippingFill)`
 
 const ScrapStateFalse = styled(ClippingEmpty)`
   position: absolute;
-  top: 40px;
-  right: 27px;
-  width: 24px;
-  height: 24px;
+  top: 2.5rem;
+  right: 1.6875rem;
+  width: 1.5rem;
+  height: 1.5rem;
   cursor: pointer;
 `;
 
 const PrevTo = styled.div`
-  left: 10px;
+  left: 0.625rem;
   z-index: 10;
   visibility: hidden;
 `;
 
 const NextTo = styled.div`
-  right: 10px;
+  right: 0.625rem;
   z-index: 10;
   visibility: hidden;
 `;

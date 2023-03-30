@@ -3,17 +3,17 @@ import { Body_400_12, Body_400_14, Body_400_14_16 } from "./theme";
 
 //BorderStyle
 export const Border_1_color = css`
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 0.0625rem solid #eeeeee;
 `;
 
 export const Border_2_color = css`
-  border-bottom: 2px solid #eeeeee;
+  border-bottom: 0.125rem solid #eeeeee;
 `;
 
 export const InputBorder_1 = css`
   background: #ffffff;
-  border: 1px solid #cccccc;
-  border-radius: 20px;
+  border: 0.0625rem solid #cccccc;
+  border-radius: 1.25rem;
 `;
 
 //Mixin
@@ -27,7 +27,7 @@ export const FlexAttribute = (direction, justify, align) => css`
 export const HeaderStyle = css`
   width: 100%;
   height: 5rem;
-  padding-top: 38px;
+  padding-top: 2.375rem;
   ${Border_2_color}
 `;
 
@@ -43,12 +43,12 @@ export const InfoTitleTextStyle = css`
 `;
 
 export const PostTitleBorderStyle = css`
-  padding-bottom: 16px;
-  border-bottom: 2px solid #eeeeee;
+  padding-bottom: 1rem;
+  border-bottom: 0.125rem solid #eeeeee;
 `;
 
 export const PostBorderStyle = css`
-  padding-bottom: 16px;
+  padding-bottom: 1rem;
   ${Border_1_color};
 `;
 
@@ -70,30 +70,30 @@ export const ContentInformationStyle = css`
 export const AlertMessageCountStyle = css`
   border-radius: 50%;
   display: inline-block;
-  margin-top: 4px;
-  padding-top: 0.15rem;
-  width: 16px;
-  height: 16px;
+  margin-top: 0.25rem;
+  padding-top: 2.4px;
+  width: 1rem;
+  height: 1rem;
   background-color: black;
   font-weight: 500;
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 0.625rem;
+  line-height: 0.75rem;
   text-align: center;
   color: white;
 `;
 
 export const FooterStyle = css`
   width: 100%;
-  height: 4.75rem;
-  border-top: 1px solid #eeeeee;
-  padding-top: 10px;
+  height: 76px;
+  border-top: 0.0625rem solid #eeeeee;
+  padding-top: 0.625rem;
   ${(props) => props.theme.FlexCenter}
-  gap: 10px 72px;
+  gap: .625rem 4.5rem;
   position: fixed;
   bottom: 0;
   z-index: 10;
   background-color: white;
-  @media screen and (max-width: 431px) {
+  @media screen and (max-width: 26.9375rem) {
     position: fixed;
     bottom: 0%;
     z-index: 11;

@@ -24,22 +24,22 @@ const PostInformation = ({ postInfo }) => {
 const PostInfoWrapper = styled.div`
   ${FlexAttribute("row", "space-evenly")}
   width: 100%;
-  height: 40px;
-  padding-top: 16px;
+  height: 2.5rem;
+  padding-top: 1rem;
   ${PostBorderStyle}
 `;
 
 const InfoBox = styled.div`
   ${FlexAttribute("row", "space-around", "center")}
-  width: 80px;
+  width: 5rem;
   img {
-    width: 24px;
-    height: 24px;
+    width: 1.5rem;
+    height: 1.5rem;
   }
   span {
     ${(props) => props.theme.Body_400_12};
     color: ${(props) => props.theme.color.text_alternative};
-    line-height: 24px;
+    line-height: 1.5rem;
   }
 `;
 
