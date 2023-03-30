@@ -25,6 +25,7 @@ const Editinfo = () => {
     const {
         register, handleSubmit, formState: { errors },
         reset, watch } = useForm({ mode: 'onChange' });
+
     // console.log(userInfo.profileImage)
 
     const MoveToBackPage = () => {
@@ -39,51 +40,34 @@ const Editinfo = () => {
         e.preventDefault();
         const imageFile = e.target.files[0];
 
-        const options = {
-            maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true,
-        };
+        const currentImageUrl = URL.createObjectURL(imageFile);
+        setImageShow(currentImageUrl)
+        setImageFormData(imageFile)
 
-        try {
-            const compressedFile = await imageCompression(imageFile, options);
-            const currentImageUrl = URL.createObjectURL(compressedFile);
-            setImageShow(currentImageUrl)
-            setImageFormData(compressedFile)
-
-        } catch {
-            const currentImageUrl = URL.createObjectURL(imageFile);
-            setImageShow(currentImageUrl)
-            setImageFormData(imageFile)
-        }
     }
 
 
     const [isActive, setIsActive] = useState(true);
 
     useEffect(() => {
-        if (watch("name") !== "" || imageFormData !== '') {
+        if (watch("name") !== "" && imageFormData !== '') {
             setIsActive(false);
         } else {
             setIsActive(true);
         }
     }, [watch()]);
 
-
+    console.log(userInfo)
     const onSubmitmyInfoHandler = (data) => {
-        console.log(data)
+
         const formData = new FormData()
 
-        let obj = {
-            nickname:
-                // data.name
-                userInfo.nickname === data.name ? "" : data.name,
-        }
-        // formData.append("nickname", JSON.stringify(obj),)
-        formData.append(
-            "nickname",
-            new Blob([JSON.stringify(obj)], { type: "application/json" })
-        )
-        console.log(imageFormData)
+
+        formData.append("nickname", data.name)
+
+
         formData.append("image", imageFormData)
+
 
         for (let key of formData.keys()) {
             console.log(key, ":", formData.get(key));
@@ -91,12 +75,29 @@ const Editinfo = () => {
         dispatch(__PutMyinfoEdit(formData))
     }
 
+    const [EditInfoMsg, setEditInfoMsg] = useState('')
+
     const EditMsg = useSelector((state) => {
         return state.infoEdit
     })
 
     useEffect(() => {
-        // console.log(EditMsg)
+
+        console.log("통신결과", EditMsg)
+        if (EditMsg?.message?.status === true) {
+            console.log(userInfo)
+            // console.log("성공")
+            console.log(EditMsg?.message)
+            console.log(EditMsg?.message?.message)
+            console.log(EditMsg?.message?.data)
+            // localStorage.removeItem("nickname");
+            // localStorage.removeItem("profileImage");
+            // localStorage.setItem("nickname", EditMsg?.message?.data?.nickname)
+            // localStorage.setItem("profileImage", EditMsg?.message?.data?.image)
+        } else {
+            console.log('실패')
+        }
+        // setEditInfoMsg()
     }, [EditMsg])
 
     // 통신중일떄 보여줄것 

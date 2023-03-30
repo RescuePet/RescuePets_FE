@@ -8,7 +8,7 @@ export const __PutMyinfoEdit = createAsyncThunk(
         try {
             const response = await instance.put('/api/member/edit', payload);
             console.log(response);
-            return thunkAPI.fulfillWithValue(response.data.data);
+            return thunkAPI.fulfillWithValue(response.data);
         } catch (error) {
             console.log(error.response.data);
             throw new Error(error.response.data.message);
