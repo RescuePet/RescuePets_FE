@@ -31,6 +31,7 @@ import memo from "../../asset/memo.svg";
 import PostInformation from "./components/PostInformation";
 import FloatingButton from "./components/FloatingButton";
 import { instance } from "../../utils/api";
+import ScrollToTop from "../../elements/ScrollToTop";
 
 const SightingDetail = () => {
   const { id } = useParams();
@@ -85,6 +86,9 @@ const SightingDetail = () => {
       id: id,
       content: content.message,
     };
+    if (content.message === "") {
+      return;
+    }
     dispatch(__postCatchComment(data)).then(() => {
       dispatch(__getCatchComment(id));
     });
@@ -95,7 +99,7 @@ const SightingDetail = () => {
       `/chat/catch-room/${catchPostDetail.id}`
     );
     console.log("post response", response.data);
-    navigate(`/chatroom/${response.data}`);
+    navigate(`/chatroom/${catchPostDetail.nickname}/${response.data}`);
   };
 
   const scrapHandler = () => {
@@ -114,6 +118,7 @@ const SightingDetail = () => {
 
   return (
     <Layout>
+      <ScrollToTop />
       <ImageCarousel
         images={catchPostDetail?.postImages}
         imageCarouselInfo={imageCarouselInfo}

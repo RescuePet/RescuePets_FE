@@ -83,7 +83,11 @@ const ThunbnailWrapper = styled.div`
   height: 120px;
   border-radius: 4px;
   overflow: hidden;
-  background-image: url(${(props) => props.image});
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.2)
+    ),
+    url(${(props) => props.image});
   background-repeat: no-repeat;
   background-size: cover;
 `;

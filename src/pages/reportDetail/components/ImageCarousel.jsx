@@ -82,9 +82,14 @@ const Container = styled.div`
 const ImageWrapper = styled.div`
   width: 100%;
   height: 240px;
-  background-image: url(${(props) => props.imageUrl});
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.2)
+    ),
+    url(${(props) => props.imageUrl});
   background-repeat: no-repeat;
-  background-size: 100% 240px;
+  background-size: cover;
+  background-position: center;
 `;
 
 const Image = styled.img`

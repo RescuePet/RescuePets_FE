@@ -6,13 +6,13 @@ import { Body_400_10, Body_400_12, Body_500_14 } from "../../../style/theme";
 import profileIcon from "../../../asset/profile.svg";
 
 const Comment = ({ item }) => {
-  const { profileImage } = JSON.parse(localStorage.getItem("userInfo"));
-  console.log(profileImage);
   console.log(item);
   return (
     <CommentBox>
       <UserInfo>
-        <UserImg src={profileImage !== null ? profileImage : profileIcon} />
+        <UserImg
+          src={item.profileImage !== null ? item.profileImage : profileIcon}
+        />
         <UserBox>
           <UserName>{item.userNickName}</UserName>
           {/* <CommentTime>43분전</CommentTime> */}

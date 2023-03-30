@@ -14,7 +14,7 @@ const PostInformation = ({ postInfo }) => {
       </InfoBox>
       <InfoBox>
         <ClippingFill />
-        <span>북마크</span>
+        <span>스크랩</span>
         <span>{postInfo.scrapCount}</span>
       </InfoBox>
     </PostInfoWrapper>

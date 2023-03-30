@@ -32,6 +32,7 @@ import gratuity from "../../asset/gratuity.svg";
 import PostInformation from "./components/PostInformation";
 import FloatingButton from "./components/FloatingButton";
 import { instance } from "../../utils/api";
+import ScrollToTop from "../../elements/ScrollToTop";
 
 const MissingDetail = () => {
   const { id } = useParams();
@@ -88,6 +89,9 @@ const MissingDetail = () => {
       id: id,
       content: content.message,
     };
+    if (content.message === "") {
+      return;
+    }
     dispatch(__postMissingComment(data)).then(() => {
       dispatch(__getMissingComment(id));
     });
@@ -98,7 +102,7 @@ const MissingDetail = () => {
       `/chat/missing-room/${missingPostDetail.id}`
     );
     console.log("post response", response.data);
-    navigate(`/chatroom/${response.data}`);
+    navigate(`/chatroom/${missingPostDetail.nickname}/${response.data}`);
   };
 
   const scrapHandler = () => {
@@ -117,6 +121,7 @@ const MissingDetail = () => {
 
   return (
     <Layout>
+      <ScrollToTop />
       <ImageCarousel
         images={missingPostDetail.postImages}
         imageCarouselInfo={imageCarouselInfo}

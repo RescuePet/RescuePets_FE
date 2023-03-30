@@ -82,9 +82,14 @@ const CardImgWrapper = styled.div`
   position: relative;
   width: 160px;
   height: 120px;
-  background-image: url(${(props) => props.imgae});
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.2)
+    ),
+    url(${(props) => props.imgae});
   background-repeat: no-repeat;
-  background-size: 160px 120px;
+  background-size: cover;
+  background-position: center;
 `;
 
 const CardImg = styled.img`
