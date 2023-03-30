@@ -31,7 +31,7 @@ const Editinfo = () => {
     }
 
     // 이미지로 로직
-    const [imageFormData, setImageFormData] = useState('');
+    const [imageFormData, setImageFormData] = useState();
     const [imageShow, setImageShow] = useState('');
 
     const onChangeUploadHandler = async (e) => {
@@ -69,14 +69,11 @@ const Editinfo = () => {
 
     const onSubmitmyInfoHandler = (data) => {
 
-        const newInfo = {
-            nickname: {
-                nickname: data.name
-            },
-            image: imageFormData
-        }
-        dispatch(__PutMyinfoEdit(newInfo))
-        // console.log(newInfo)
+        const formData = new FormData();
+        formData.append("nickname", JSON.stringify(data.name))
+        formData.append("image", imageFormData)
+
+        dispatch(__PutMyinfoEdit(formData))
     }
 
     const EditMsg = useSelector((state) => {
@@ -84,10 +81,10 @@ const Editinfo = () => {
     })
 
     useEffect(() => {
-        console.log(EditMsg)
+        // console.log(EditMsg)
     }, [EditMsg])
 
-
+    // 통신중일떄 보여줄것 
     if (JSON.stringify(EditMsg.loading) === "true") {
         return <div>Loading...</div>;
     }

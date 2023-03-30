@@ -59,21 +59,21 @@ export const signsSlice = createSlice({
     builder
       .addCase(__signinUser.fulfilled, (state, action) => {
         state.Signinmessage = action.payload;
-        console.log("sign in ", state.message);
+        // console.log("sign in ", state.message);
       })
       .addCase(__signinUser.rejected, (state, action) => {
         state.Signinmessage = action.error.message;
       })
       .addCase(__signupUser.fulfilled, (state, action) => {
         state.Signupmessage = action.payload;
-        console.log("sign up ", state.message);
+        // console.log("sign up ", state.message);
       })
       .addCase(__signupUser.rejected, (state, action) => {
         state.Signupmessage = action.error.message;
       })
       .addCase(__SignoutUser.fulfilled, (state, action) => {
         state.Signoutmessage = action.payload;
-        console.log("sign up ", state.message);
+        // console.log("sign up ", state.message);
       })
       .addCase(__SignoutUser.rejected, (state, action) => {
         state.Signoutmessage = action.error.message;

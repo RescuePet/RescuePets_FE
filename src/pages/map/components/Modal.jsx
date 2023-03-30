@@ -222,7 +222,7 @@ export function MarkerModal(props) {
 
 
     const data = props?.data
-    console.log(data)
+    // console.log(data)
     const Stringkm = String(data?.km)
     const Arraykm = Stringkm.split('')
     Arraykm.splice(Arraykm.length - 3, 0, '.')
@@ -233,7 +233,7 @@ export function MarkerModal(props) {
         data.upkind = '고양이'
     }
 
-    console.log(data)
+    // console.log(data)
     // postImages.[0].imageURL
 
     const MoveToDetailPageHandler = () => {
