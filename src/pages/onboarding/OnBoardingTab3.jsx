@@ -52,9 +52,11 @@ const TabContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding: 1.875rem 1rem;
+  justify-content: space-between;
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  margin-top: calc(50% - 90px);
+  padding: 1.875rem 1rem;
 `;
 
 const TabHander = styled.div`
@@ -74,12 +76,13 @@ const TabImageBox = styled.img`
   margin: auto 0;
   width: 15rem;
   height: 12.0625rem;
+  margin-top: calc(50% - 100px);
 `;
 
 const TabTextBox = styled.div`
   width: 80%;
   height: 10%;
-  margin-top: 1.5625rem;
+  margin-top: 1.875rem;
   padding: 0 3.125rem;
   text-align: center;
   h3 {
@@ -93,7 +96,7 @@ const TabButtonBox = styled.div`
   /* border: .0625rem solid red; */
   ${(props) => props.theme.FlexCenter}
   gap: 0 .625rem;
-
+  margin-top: 1.875rem;
   /* 23 */
 `;
 

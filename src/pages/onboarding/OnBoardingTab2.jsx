@@ -54,11 +54,13 @@ export default OnBoardingTab2;
 
 const TabContainer = styled.div`
   display: flex;
-  align-items: center;
   flex-direction: column;
-  padding: 1.875rem 1rem;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  padding: 1.875rem 1rem;
+  margin-top: calc(50% - 65px);
 `;
 
 const TabHander = styled.div`
@@ -83,7 +85,7 @@ const TabImageBox = styled.img`
 const TabTextBox = styled.div`
   width: 80%;
   height: 10%;
-  margin-top: 25px;
+  margin-top: 30px;
   padding: 0 3.125rem;
   text-align: center;
   h3 {
@@ -96,7 +98,7 @@ const TabButtonBox = styled.div`
   height: 3%;
   ${(props) => props.theme.FlexCenter}
   gap: 0 .625rem;
-
+  margin-top: 30px;
   /* 23 */
 `;
 

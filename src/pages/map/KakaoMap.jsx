@@ -335,7 +335,7 @@ const KakaoMap = () => {
       ) : (
         <div
           id="myMap"
-          style={{ width: "100%", height: "90vh", position: "relative" }}
+          style={{ width: "100%", height: "90%", position: "relative" }}
         >
           <MarkerModal
             isOpen={loginModal}

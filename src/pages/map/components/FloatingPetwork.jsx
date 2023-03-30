@@ -17,17 +17,21 @@ export const FloatingPetwork = () => {
 };
 
 const FloatingPetNetworkContainer = styled.div`
-  position: absolute;
+  position: fixed;
   ${(props) => props.theme.FlexCenter}
   z-index: 8;
   background: ${(props) => props.theme.color.white};
-  top: 85%;
+  bottom: 6.5625rem;
+  left: 0;
+  margin-left: calc(50% + 8.75rem);
   width: 3.5rem;
   height: 3.5rem;
-  right: 4%;
   border-radius: 50%;
   cursor: pointer;
   box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.25);
+  @media screen and (max-width: 26.875rem) {
+    margin-left: calc(50% + 7.6875rem);
+  }
   > img {
     width: 1.125rem;
     height: 1.125rem;

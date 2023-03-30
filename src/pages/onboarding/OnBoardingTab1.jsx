@@ -29,11 +29,9 @@ const OnBoardingTab1 = () => {
           SKIP
         </TabHander>
         <TabImageBox src={onboarding1}></TabImageBox>
-
         <TabTextBox>
           <h3>API기반으로 실시간 유기동물을 구할 수 있어요!</h3>
         </TabTextBox>
-
         <TabButtonBox>
           <TabThisBox></TabThisBox>
           <TabNoneThisBox></TabNoneThisBox>
@@ -58,7 +56,8 @@ const TabContainer = styled.div`
   flex-direction: column;
   padding: 1.875rem 1rem;
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  margin-top: calc(50% - 100px);
 `;
 const TabHander = styled.div`
   width: 100%;
@@ -76,16 +75,18 @@ const TabHander = styled.div`
 const TabImageBox = styled.img`
   width: 15rem;
   height: 9.3125rem;
-  margin: auto 0;
+  margin-top: calc(50% - 70px);
 `;
 
 const TabTextBox = styled.div`
   width: 80%;
   height: 10%;
   padding: 0 3.125rem;
+  margin-top: 30px;
   text-align: center;
   h3 {
     ${(props) => props.theme.Title_700_18}
+    word-break: keep-all;
   }
 `;
 
@@ -94,6 +95,7 @@ const TabButtonBox = styled.div`
   height: 3%;
   ${(props) => props.theme.FlexCenter}
   gap: 0 .625rem;
+  margin-top: 30px;
 `;
 
 const TabThisBox = styled.div`
