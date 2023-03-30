@@ -14,9 +14,9 @@ const FloatingButton = ({ onClick }) => {
 const FloatingChatButton = styled.div`
   position: fixed;
   ${FlexAttribute("row", "center", "center")}
-  bottom: 6.5625rem;
-  left: 0;
-  margin-left: calc(50% + 8.75rem);
+  bottom: 5.625rem;
+  right: 0px;
+  margin-right: calc(50% - 10.75rem);
   width: 3.5rem;
   height: 3.5rem;
   z-index: 10;

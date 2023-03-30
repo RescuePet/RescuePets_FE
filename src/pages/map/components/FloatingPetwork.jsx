@@ -21,9 +21,9 @@ const FloatingPetNetworkContainer = styled.div`
   ${(props) => props.theme.FlexCenter}
   z-index: 8;
   background: ${(props) => props.theme.color.white};
-  bottom: 6.5625rem;
-  left: 0;
-  margin-left: calc(50% + 8.75rem);
+  bottom: 5.625rem;
+  right: 0px;
+  margin-right: calc(50% - 10.75rem);
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;

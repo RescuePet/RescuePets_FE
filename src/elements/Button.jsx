@@ -57,13 +57,13 @@ const BtnStyle = styled.button`
       width: 4rem;
       height: 1rem;
       ${(props) => props.theme.Body_400_12}
-      ${props => props.theme.FlexCenter}
+      ${(props) => props.theme.FlexCenter}
       color: ${(props) => props.theme.color.black};
-      background: ${(props) => props.theme.color.primary_nomal};
+      background: ${(props) => props.theme.color.primary_normal};
       &:hover {
-    cursor: pointer;
-    transition: 0.2s ease;
-  }
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
     `}
     /* &:hover {
     cursor: pointer;
