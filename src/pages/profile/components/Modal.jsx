@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { __SignoutUser } from '../../../redux/modules/signSlice';
-import { useState } from 'react';
+
 
 
 
@@ -123,7 +123,7 @@ export function HamburgerModal(props) {
                 <div>내정보수정</div>
             </ModalEachBox>
             <ModalEachBox>
-                <div onClick={onClickLogoutHandler}>로그아웃</div>
+                {/* <div onClick={onClickLogoutHandler}>로그아웃</div> */}
             </ModalEachBox>
         </Modal >
     );
