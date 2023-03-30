@@ -69,12 +69,20 @@ const Editinfo = () => {
 
 
     const onSubmitmyInfoHandler = (data) => {
+        console.log(data)
+        const formData = new FormData()
 
-        const formData = new FormData();
+        let obj = {
+            nickname:
+                // data.name
+                userInfo.nickname === data.name ? "" : data.name,
+        }
+        // formData.append("nickname", JSON.stringify(obj),)
         formData.append(
             "nickname",
-            new Blob([JSON.stringify(data.name)], { type: "application/json" })
+            new Blob([JSON.stringify(obj)], { type: "application/json" })
         )
+        console.log(imageFormData)
         formData.append("image", imageFormData)
 
         for (let key of formData.keys()) {
