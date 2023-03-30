@@ -5,70 +5,77 @@ import { HeaderStyle } from '../../style/Mixin'
 import { useNavigate } from 'react-router-dom'
 import imageCompression from 'browser-image-compression';
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from 'react-redux';
 // import Input
 import camera from "../../asset/profile/camera.png"
 import close from "../../asset/Close.svg"
 import Button from '../../elements/Button'
 
 
+
 // import 
 const Editinfo = () => {
     let imageRef;
     const navigate = useNavigate()
-
+    const dispatch = useDispatch();
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
     const {
         register, handleSubmit, formState: { errors },
-        reset,  watch } = useForm({ mode: 'onChange' });
+        reset, watch } = useForm({ mode: 'onChange' });
     // console.log(userInfo.profileImage)
 
     const MoveToBackPage = () => {
         navigate(-1)
     }
 
+    // 이미지로 로직
     const [imageFormData, setImageFormData] = useState('');
     const [imageShow, setImageShow] = useState('');
 
     const onChangeUploadHandler = async (e) => {
-        // console.log("뿅")
         e.preventDefault();
         const imageFile = e.target.files[0];
 
         const options = {
-            maxSizeMB: 1,
-            maxWidthOrHeight: 1920,
-            useWebWorker: true,
+            maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true,
         };
+
         try {
-            // console.log("압축성공")
             const compressedFile = await imageCompression(imageFile, options);
             const currentImageUrl = URL.createObjectURL(compressedFile);
-            // console.log(currentImageUrl)
             setImageShow(currentImageUrl)
             setImageFormData(compressedFile)
-            // console.log(compressedFile)
+
         } catch {
-            // console.log("압축실패")
             const currentImageUrl = URL.createObjectURL(imageFile);
             setImageShow(currentImageUrl)
             setImageFormData(imageFile)
         }
     }
-    // console.log(imageFormData)
+
 
     const [isActive, setIsActive] = useState(true);
+
     useEffect(() => {
         if (watch("name") !== "" || imageFormData !== '') {
             setIsActive(false);
         } else {
-
             setIsActive(true);
         }
     }, [watch()]);
 
 
     const onSubmitmyInfoHandler = (data) => {
-        console.log(data)
+
+        const data2 = {
+            nickname: {
+                nickname: data.name
+            },
+            image: imageFormData
+        }
+        // dispatch()
+        console.log(data2)
     }
 
 
@@ -89,7 +96,7 @@ const Editinfo = () => {
                         }
                         <input type="file" accept="image/*" style={{ display: 'none' }}
                             ref={(refer) => (imageRef = refer)} onChange={onChangeUploadHandler}
-                            required />
+                        />
                         <EditInfoImgInput src={camera} onClick={() => imageRef.click()} />
                     </EditInfoImgBack>
                 </EditInfoImgBox>
@@ -98,18 +105,19 @@ const Editinfo = () => {
                     <p>닉네임</p>
                     <input type="text" placeholder={userInfo.nickname}
                         {...register("name", {
-                            required: true,
+                            required: false,
                             pattern: { value: /^[ㄱ-ㅎ|가-힣]+$/, message: "한글만 2 ~ 8글자 사이로 입력", },
+                            maxLength: { value: 8, message: "8글자 이하이어야 합니다.", },
                         })} />
                     <span>{errors?.name?.message}</span>
                 </EditInfoTextBox>
                 <EditinfoButtonBox>
                     {
-                        isActive === true ? <Button emptyButton>값입력</Button> :
-                            (
-                                <Button type="submit" fillButton>등록</Button>
-                            )
+                        isActive === true ? <Button emptyButton>값입력</Button>
+                            : <Button type="submit" fillButton>등록</Button>
                     }
+
+
                 </EditinfoButtonBox>
 
             </EditInfoForm>
@@ -177,18 +185,15 @@ const EditInfoTextBox = styled.div`
     width: 20.9375rem;
     height: 5.1875rem;
     margin: 0 auto;
-    /* border-bottom: 1px solid ${props => props.theme.color.black}; */
     display: flex;
     flex-direction: column;
     margin-top: 1.25rem;
     gap: 5px 0;
-    /* border: 1px solid red; */
     > P {
         width: 100%;
         height: 20%;
         ${props => props.theme.Body_400_14_16}
         color: ${props => props.theme.color.black};
-        /* border: 1px solid red; */
     }
     > input {
         width: 100%;
@@ -205,4 +210,5 @@ const EditInfoTextBox = styled.div`
 
 const EditinfoButtonBox = styled.div`
    ${props => props.theme.FlexCenter}
+   margin-top: 15.625rem;
 `
