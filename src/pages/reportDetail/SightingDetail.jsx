@@ -12,7 +12,10 @@ import Title from "./components/Title";
 import Location from "./components/Location";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { __getCatchPostDetail } from "../../redux/modules/petworkSlice";
+import {
+  __getCatchPostDetail,
+  __postCatchScrap,
+} from "../../redux/modules/petworkSlice";
 import {
   toggleEditDone,
   __getCatchComment,
@@ -72,6 +75,11 @@ const SightingDetail = () => {
     happenLongitude: catchPostDetail.happenLongitude,
   };
 
+  const postInfo = {
+    commentCount: catchComment.length,
+    scrapCount: catchPostDetail.wishedCount,
+  };
+
   const submitHandler = (content) => {
     let data = {
       id: id,
@@ -90,11 +98,26 @@ const SightingDetail = () => {
     navigate(`/chatroom/${response.data}`);
   };
 
-  console.log("post detail", catchPostDetail);
+  const scrapHandler = () => {
+    let payload = {
+      page: "petworkDetail",
+      state: catchPostDetail.isWished,
+      id: catchPostDetail.id,
+    };
+    dispatch(__postCatchScrap(payload));
+  };
+
+  const imageCarouselInfo = {
+    scrapState: catchPostDetail.isWished,
+    scrapHandler: scrapHandler,
+  };
 
   return (
     <Layout>
-      <ImageCarousel images={catchPostDetail?.postImages} />
+      <ImageCarousel
+        images={catchPostDetail?.postImages}
+        imageCarouselInfo={imageCarouselInfo}
+      />
       <TitleWrapper>
         <Title titleInfo={titleInfo}></Title>
       </TitleWrapper>
@@ -150,7 +173,7 @@ const SightingDetail = () => {
           </ContentTextWrapper>
         </InfoWrapper>
       </InfoContainer>
-      <PostInformation comment={catchComment.length}></PostInformation>
+      <PostInformation postInfo={postInfo}></PostInformation>
       <CommentContainer>
         <CommentListWrapper>
           {catchComment?.map((item) => {

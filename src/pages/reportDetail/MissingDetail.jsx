@@ -12,7 +12,10 @@ import Title from "./components/Title";
 import Location from "./components/Location";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { __getMissingPostDetail } from "../../redux/modules/petworkSlice";
+import {
+  __getMissingPostDetail,
+  __postMissingScrap,
+} from "../../redux/modules/petworkSlice";
 import Comment from "./components/Comment";
 import {
   toggleEditDone,
@@ -75,6 +78,11 @@ const MissingDetail = () => {
     happenLongitude: missingPostDetail.happenLongitude,
   };
 
+  const postInfo = {
+    commentCount: missingComment.length,
+    scrapCount: missingPostDetail.wishedCount,
+  };
+
   const submitHandler = async (content) => {
     let data = {
       id: id,
@@ -93,9 +101,26 @@ const MissingDetail = () => {
     navigate(`/chatroom/${response.data}`);
   };
 
+  const scrapHandler = () => {
+    let payload = {
+      page: "petworkDetail",
+      state: missingPostDetail.isWished,
+      id: missingPostDetail.id,
+    };
+    dispatch(__postMissingScrap(payload));
+  };
+
+  const imageCarouselInfo = {
+    scrapState: missingPostDetail.isWished,
+    scrapHandler: scrapHandler,
+  };
+
   return (
     <Layout>
-      <ImageCarousel images={missingPostDetail.postImages} />
+      <ImageCarousel
+        images={missingPostDetail.postImages}
+        imageCarouselInfo={imageCarouselInfo}
+      />
       <TitleWrapper>
         <Title titleInfo={titleInfo}></Title>
       </TitleWrapper>
@@ -158,7 +183,7 @@ const MissingDetail = () => {
           </InfoWrapper>
         )}
       </InfoContainer>
-      <PostInformation comment={missingComment.length}></PostInformation>
+      <PostInformation postInfo={postInfo}></PostInformation>
       <CommentContainer>
         <CommentListWrapper>
           {missingComment?.map((item) => {

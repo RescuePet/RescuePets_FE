@@ -22,7 +22,6 @@ export const __getMissingPostDetail = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await instance.get(`/api/pets/missing/${payload}`);
-      console.log(response.data);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       throw new Error(error.response.data.message);
@@ -53,6 +52,65 @@ export const __getCatchPostDetail = createAsyncThunk(
       const response = await instance.get(`/api/pets/catch/${payload}`);
       console.log(response.data);
       return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
+// Post Missing Scrap
+export const __postMissingScrap = createAsyncThunk(
+  "postPetworkScrap",
+  async (payload, thunkAPI) => {
+    try {
+      let data = {
+        id: payload.id,
+        page: payload.page,
+        state: Boolean,
+      };
+      if (!payload.state) {
+        const response = await instance.post(`/api/wish/missing/${payload.id}`);
+        console.log(response.data);
+        data.state = true;
+        return thunkAPI.fulfillWithValue(data);
+      } else {
+        const response = await instance.delete(
+          `/api/wish/missing/${payload.id}`
+        );
+        console.log(response.data);
+        data.state = false;
+        return thunkAPI.fulfillWithValue(data);
+      }
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
+// Post Catch Scrap
+export const __postCatchScrap = createAsyncThunk(
+  "postCatchScrap",
+  async (payload, thunkAPI) => {
+    try {
+      let data = {
+        id: payload.id,
+        page: payload.page,
+        state: Boolean,
+        count: Number,
+      };
+      if (!payload.state) {
+        const response = await instance.post(`/api/wish/catch/${payload.id}`);
+        console.log(response.data);
+        data.state = true;
+        data.count = 1;
+        return thunkAPI.fulfillWithValue(data);
+      } else {
+        const response = await instance.delete(`/api/wish/catch/${payload.id}`);
+        console.log(response.data);
+        data.state = false;
+        data.count = -1;
+        return thunkAPI.fulfillWithValue(data);
+      }
     } catch (error) {
       throw new Error(error.response.data.message);
     }
@@ -129,6 +187,58 @@ export const petworkSlice = createSlice({
         state.catchPostDetail = action.payload;
       })
       .addCase(__getCatchPostDetail.rejected, (state) => {
+        state.error = true;
+      });
+
+    builder
+      .addCase(__postCatchScrap.fulfilled, (state, action) => {
+        const index = state.catchPostLists.findIndex(
+          (item) => item.id === action.payload.id
+        );
+        if (action.payload.page === "petworkLists") {
+          const updateListsItem = {
+            ...state.catchPostLists[index],
+            isWished: action.payload.state,
+          };
+          state.catchPostLists[index] = updateListsItem;
+        } else if (action.payload.page === "petworkDetail") {
+          state.catchPostDetail.isWished = action.payload.state;
+          if (state.catchPostDetail.isWished) {
+            state.catchPostDetail.wishedCount =
+              state.catchPostDetail.wishedCount + 1;
+          } else {
+            state.catchPostDetail.wishedCount =
+              state.catchPostDetail.wishedCount - 1;
+          }
+        }
+      })
+      .addCase(__postCatchScrap.rejected, (state) => {
+        state.error = true;
+      });
+
+    builder
+      .addCase(__postMissingScrap.fulfilled, (state, action) => {
+        const index = state.missingPostLists.findIndex(
+          (item) => item.id === action.payload.id
+        );
+        if (action.payload.page === "petworkLists") {
+          const updateListsItem = {
+            ...state.missingPostLists[index],
+            isWished: action.payload.state,
+          };
+          state.missingPostLists[index] = updateListsItem;
+        } else if (action.payload.page === "petworkDetail") {
+          state.missingPostDetail.isWished = action.payload.state;
+          if (state.missingPostDetail.isWished) {
+            state.missingPostDetail.wishedCount =
+              state.missingPostDetail.wishedCount + 1;
+          } else {
+            state.missingPostDetail.wishedCount =
+              state.missingPostDetail.wishedCount - 1;
+          }
+        }
+      })
+      .addCase(__postMissingScrap.rejected, (state) => {
         state.error = true;
       });
   },

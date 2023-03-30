@@ -7,8 +7,9 @@ import { useNavigate } from "react-router-dom";
 
 import back from "../../../asset/backwhite.svg";
 import ClippingEmpty from "../../../asset/Clippingwhite.jsx";
+import ClippingFill from "../../../asset/profile/ClippingFill";
 
-const ImageCarousel = ({ images }) => {
+const ImageCarousel = ({ images, imageCarouselInfo }) => {
   const navigate = useNavigate();
   const settings = {
     dots: true,
@@ -36,7 +37,11 @@ const ImageCarousel = ({ images }) => {
         ))}
       </StyledSlider>
       <BackButton src={back} onClick={() => navigate(-1)} />
-      <ScrapButton />
+      {imageCarouselInfo.scrapState ? (
+        <ScrapStateTrue onClick={imageCarouselInfo.scrapHandler} />
+      ) : (
+        <ScrapStateFalse onClick={imageCarouselInfo.scrapHandler} />
+      )}
     </Container>
   );
 };
@@ -98,7 +103,19 @@ const BackButton = styled.img`
   cursor: pointer;
 `;
 
-const ScrapButton = styled(ClippingEmpty)`
+const ScrapStateTrue = styled(ClippingFill)`
+  position: absolute;
+  top: 40px;
+  right: 27px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  path {
+    fill: ${(props) => props.theme.color.white};
+  }
+`;
+
+const ScrapStateFalse = styled(ClippingEmpty)`
   position: absolute;
   top: 40px;
   right: 27px;
