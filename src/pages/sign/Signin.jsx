@@ -211,7 +211,7 @@ const InputWrapper = styled.div`
   border-bottom: .125rem solid #eeeeee;
   > img {
     position: absolute;
-    right: 0;
+    right: 0.625rem;
   }
   > span {
     position: absolute;
@@ -225,6 +225,7 @@ const SignInput = styled.input`
   width: 100%;
   height: 2.875rem;
   font-size: 0.75rem;
+  padding: 0.625rem;
   ::placeholder {
     color: #cccccc;
   }
