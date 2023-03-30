@@ -9,6 +9,11 @@ const Location = () => {
     const [long, setLong] = useState("");
     const [lati, setLati] = useState("");
 
+    const defaultValue = {
+        lat: '37.515133',
+        lng: "126.934086"
+    }
+
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(onSucces, onFailure);
@@ -22,8 +27,12 @@ const Location = () => {
         }
         // 실패
         function onFailure() {
-            alert("위치 정보를 찾을수 없습니다.");
+            setLong(defaultValue.lng)
+            setLati(defaultValue.lat)
+            console.log("위치 정보를 찾을수 없습니다.");
+            // alert("위치 정보를 찾을수 없습니다.");
         }
+
     }, [])
 
     useEffect(() => {

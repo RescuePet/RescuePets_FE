@@ -225,34 +225,34 @@ const KakaoMap = () => {
         position: new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
         image: missingmarkerImage
       })
-      // kakao.maps.event.addListener(marker, 'click', function () {
-      //   // console.log(item)
-      //   toggleModal()
-      //   // 현재 내위치랑 클릭한 마커에 위치를 가져오는 로직 거리도 구해야만한다 
-      //   const linePath = [
-      //     new kakao.maps.LatLng(lati, long),
-      //     new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude)
-      //   ]
+      kakao.maps.event.addListener(marker, 'click', function () {
+        // console.log(item)
+        toggleModal()
+        // 현재 내위치랑 클릭한 마커에 위치를 가져오는 로직 거리도 구해야만한다 
+        const linePath = [
+          new kakao.maps.LatLng(lati, long),
+          new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude)
+        ]
 
-      //   const polyline = new kakao.maps.Polyline({
-      //     path: linePath, // 선을 구성하는 좌표배열 입니다
-      //     strokeWeight: 0, // 선의 두께 입니다
-      //     strokeColor: '#FFAE00', // 선의 색깔입니다
-      //     strokeOpacity: 0, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-      //   });
-
-
-      //   // // 선의 총 거리를 계산합니다 이값을 item이라는 객체안에 넣어애만한다
-      //   const distance = Math.round(polyline.getLength())
-      //   const data = { km: distance, name: "missingdetail" }
+        const polyline = new kakao.maps.Polyline({
+          path: linePath, // 선을 구성하는 좌표배열 입니다
+          strokeWeight: 0, // 선의 두께 입니다
+          strokeColor: '#FFAE00', // 선의 색깔입니다
+          strokeOpacity: 0, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+        });
 
 
-      //   const newItem = {
-      //     ...data, ...item
-      //   }
-      //   setNewCatchData(newItem)
-      //   polyline.setMap(mapRef.current);
-      // });
+        // // 선의 총 거리를 계산합니다 이값을 item이라는 객체안에 넣어애만한다
+        const distance = Math.round(polyline.getLength())
+        const data = { km: distance, name: "missingdetail" }
+
+
+        const newItem = {
+          ...data, ...item
+        }
+        setNewCatchData(newItem)
+        polyline.setMap(mapRef.current);
+      });
     })
 
     // 목격글 마커 
@@ -274,47 +274,36 @@ const KakaoMap = () => {
 
 
 
-      // kakao.maps.event.addListener(marker, 'click', function () {
-      //   toggleModal()
-      //   // 현재 내위치랑 클릭한 마커에 위치를 가져오는 로직 거리도 구해야만한다 
-      //   const linePath = [
-      //     new kakao.maps.LatLng(lati, long),
-      //     new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude)
-      //   ]
+      kakao.maps.event.addListener(marker, 'click', function () {
+        toggleModal()
+        // 현재 내위치랑 클릭한 마커에 위치를 가져오는 로직 거리도 구해야만한다 
+        const linePath = [
+          new kakao.maps.LatLng(lati, long),
+          new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude)
+        ]
 
-      //   const polyline = new kakao.maps.Polyline({
-      //     path: linePath, // 선을 구성하는 좌표배열 입니다
-      //     strokeWeight: 0, // 선의 두께 입니다
-      //     strokeColor: '#FFAE00', // 선의 색깔입니다
-      //     strokeOpacity: 0, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-      //   });
-      //   const distance = Math.round(polyline.getLength())
-      //   const data = { km: distance, name: "sightingdetail" }
+        const polyline = new kakao.maps.Polyline({
+          path: linePath, 
+          strokeWeight: 0, 
+          strokeColor: '#FFAE00',
+          strokeOpacity: 0,
+        });
+        const distance = Math.round(polyline.getLength())
+        const data = { km: distance, name: "sightingdetail" }
 
-      //   const newItem = {
-      //     ...data, ...item
-      //   }
-      //   setNewCatchData(newItem)
-      //   polyline.setMap(mapRef.current);
+        const newItem = {
+          ...data, ...item
+        }
+        setNewCatchData(newItem)
+        polyline.setMap(mapRef.current);
 
-      // });
-
-
-
+      });
     });
 
 
   }, [onFailure]);
 
 
-
-  // useEffect(() => {
-  //   if (long === '') {
-  //     return <div>Loading...</div>;
-  //   } else {
-
-  //   }
-  // }, [long])
 
   return (
     <>
