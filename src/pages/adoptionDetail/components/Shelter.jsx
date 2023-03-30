@@ -40,6 +40,7 @@ const BodyTitleText = styled.span`
   line-height: 24px;
   color: #999999;
   vertical-align: middle;
+  white-space: nowrap;
 `;
 
 const ContentTextWrapper = styled.div`

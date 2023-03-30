@@ -14,6 +14,7 @@ const StateSpan = styled.span`
   font-weight: 500;
   font-size: 10px;
   color: ${(props) => props.theme.color.white};
+  white-space: nowrap;
   ${(props) =>
     props.category === "실종" &&
     css`

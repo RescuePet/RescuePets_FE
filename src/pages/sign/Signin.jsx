@@ -166,7 +166,7 @@ const Signin = () => {
             </Button>
           )}
 
-          <Button type="button" emptyButton onClick={() => kakaoSignUp()}>
+          <Button type="button" fillButton onClick={() => kakaoSignUp()}>
             카카오톡으로 로그인
           </Button>
         </ButtonWrapper>
