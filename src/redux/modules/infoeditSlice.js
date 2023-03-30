@@ -1,31 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { home } from "../../utils/api";
+import { instance } from "../../utils/api";
 
 // Get adoption list
-export const __getAdoptionList = createAsyncThunk(
-    "getAdoptionList",
+export const __PutMyinfoEdit = createAsyncThunk(
+    "putMyinfoEdit",
     async (payload, thunkAPI) => {
         try {
-            console.log("hihi");
-            const response = await home.get(
-                `/api/pets/info-list?page=${payload.page}&size=${payload.size}&sortBy=happenDt`
-            );
+            const response = await instance.put('/api/member/edit', payload);
             console.log(response.data);
             return thunkAPI.fulfillWithValue(response.data.data);
-        } catch (error) {
-            console.log(error.response.data.message);
-            throw new Error(error.response.data.message);
-        }
-    }
-);
-
-// Get adoption Detail
-export const __getAdoptionDetail = createAsyncThunk(
-    "getAdoptionDetail",
-    async (payload, thunkAPI) => {
-        try {
-            const response = await home.get(`/api/pets/details/${payload}`);
-            return thunkAPI.fulfillWithValue(response.data);
         } catch (error) {
             console.log(error.response.data.message);
             throw new Error(error.response.data.message);
@@ -36,50 +19,30 @@ export const __getAdoptionDetail = createAsyncThunk(
 const initialState = {
     error: false,
     loading: false,
-    adoptionLists: [],
-    adiotionDetail: {},
-    adoptionPage: 1,
+    message: '',
 };
 
-export const adoptionSlice = createSlice({
-    name: "adoption",
+
+export const putMyinfoEdit = createSlice({
+    name: "putMyinfoEdit",
     initialState,
-    reducers: {
-        addAdoptionPage: (state) => {
-            state.adoptionPage = state.adoptionPage + 1;
-        },
-    },
+    reducers: {},
+
     extraReducers: (builder) => {
         builder
-            .addCase(__getAdoptionList.pending, (state) => {
+            .addCase(__PutMyinfoEdit.pending, (state) => {
                 state.loading = true;
             })
-            .addCase(__getAdoptionList.fulfilled, (state, action) => {
+            .addCase(__PutMyinfoEdit.fulfilled, (state, action) => {
                 state.loading = false;
-                state.adoptionLists = [
-                    ...state.adoptionLists,
-                    ...action.payload.publicPetResponsDto,
-                ];
+                state.message = action.payload;
             })
-            .addCase(__getAdoptionList.rejected, (state) => {
-                state.loading = false;
-                state.error = true;
-            });
-
-        builder
-            .addCase(__getAdoptionDetail.pending, (state) => {
-                state.loading = true;
-            })
-            .addCase(__getAdoptionDetail.fulfilled, (state, action) => {
-                state.loading = false;
-                state.adiotionDetail = action.payload;
-            })
-            .addCase(__getAdoptionDetail.rejected, (state) => {
+            .addCase(__PutMyinfoEdit.rejected, (state) => {
                 state.loading = false;
                 state.error = true;
             });
     },
 });
 
-export const { addAdoptionPage } = adoptionSlice.actions;
-export default adoptionSlice.reducer;
+// export const { addAdoptionPage } = adoptionSlice.actions;
+export default putMyinfoEdit.reducer;

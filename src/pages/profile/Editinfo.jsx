@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import camera from "../../asset/profile/camera.png"
 import close from "../../asset/Close.svg"
 import Button from '../../elements/Button'
+import { __PutMyinfoEdit } from '../../redux/modules/infoeditSlice'
 
 
 
@@ -68,15 +69,29 @@ const Editinfo = () => {
 
     const onSubmitmyInfoHandler = (data) => {
 
-        const data2 = {
+        const newInfo = {
             nickname: {
                 nickname: data.name
             },
             image: imageFormData
         }
-        // dispatch()
-        console.log(data2)
+        dispatch(__PutMyinfoEdit(newInfo))
+        // console.log(newInfo)
     }
+
+    const EditMsg = useSelector((state) => {
+        return state.infoEdit
+    })
+
+    useEffect(() => {
+        console.log(EditMsg)
+    }, [EditMsg])
+
+
+    if (JSON.stringify(EditMsg.loading) === "true") {
+        return <div>Loading...</div>;
+    }
+
 
 
     return (
