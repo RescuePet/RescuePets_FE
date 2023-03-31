@@ -10,7 +10,6 @@ import male from "../../../asset/male.svg";
 import female from "../../../asset/female.svg";
 import questionmark from "../../../asset/questionmark.svg";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { instance } from "../../../utils/api";
 
 const ScrapList = ({ item }) => {

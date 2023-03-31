@@ -1,31 +1,22 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import { FlexAttribute, HeaderStyle } from "../../style/Mixin";
-import PostList from "./components/PostList";
-import {
-  addMyPostPage,
-  __getMyCatchPost,
-  __getMyMissingPost,
-} from "../../redux/modules/profileSlice";
-import { useInView } from "react-intersection-observer";
+import { instance } from "../../utils/api";
+import CommentList from "./components/CommentList";
 
 const MyComment = () => {
-  const dispatch = useDispatch();
-  const [ref, inView] = useInView();
-
-  let payload = {
-    size: 5,
+  const [mycomment, setMycomment] = useState([]);
+  const MycommnetAxios = async () => {
+    const response = await instance.get("api/pets/comments/member");
+    console.log(response);
+    setMycomment(response.data.data);
   };
 
   useEffect(() => {
-    if (inView) {
-      dispatch(addMyPostPage());
-      dispatch(__getMyMissingPost(payload));
-      dispatch(__getMyCatchPost(payload));
-    }
-  }, [inView]);
+    MycommnetAxios();
+  }, []);
 
   return (
     <Layout>
@@ -35,14 +26,20 @@ const MyComment = () => {
       <PostInfoContainer>
         <PostInfoWrapper>
           <div>
-            <EntireTitle></EntireTitle>
-            <EntireCount></EntireCount>
+            <EntireTitle>총 댓글</EntireTitle>
+            <EntireCount>3</EntireCount>
           </div>
-          {/* <EditButton>편집</EditButton> */}
         </PostInfoWrapper>
       </PostInfoContainer>
       <ListContainer>
-        <div ref={ref}></div>
+        {mycomment.map((item) => {
+          return (
+            <CommentList
+              key={`comment-item-${item.id}`}
+              item={item}
+            ></CommentList>
+          );
+        })}
       </ListContainer>
     </Layout>
   );
