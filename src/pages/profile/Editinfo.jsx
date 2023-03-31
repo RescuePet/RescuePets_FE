@@ -29,7 +29,6 @@ const Editinfo = () => {
     watch,
   } = useForm({ mode: "onChange" });
 
-  // console.log(userInfo.profileImage)
 
   const MoveToBackPage = () => {
     navigate(-1);
@@ -58,7 +57,7 @@ const Editinfo = () => {
     }
   }, [watch()]);
 
-  console.log(userInfo);
+
   const onSubmitmyInfoHandler = (data) => {
     const formData = new FormData();
 
@@ -69,7 +68,7 @@ const Editinfo = () => {
     for (let key of formData.keys()) {
       console.log(key, ":", formData.get(key));
     }
-    dispatch(__PutMyinfoEdit(formData));
+    // dispatch(__PutMyinfoEdit(formData));
   };
 
   const [EditInfoMsg, setEditInfoMsg] = useState("");
@@ -138,24 +137,31 @@ const Editinfo = () => {
             type="text"
             placeholder={userInfo.nickname}
             {...register("name", {
-              required: false,
+              required: true,
               pattern: {
                 value: /^[ㄱ-ㅎ|가-힣]+$/,
-                message: "한글만 2 ~ 8글자 사이로 입력",
+                message: "한글만 2 ~ 6글자 사이로 입력",
               },
-              maxLength: { value: 8, message: "8글자 이하이어야 합니다." },
+              maxLength: { value: 6, message: "6글자 이하이어야 합니다." },
             })}
           />
           <span>{errors?.name?.message}</span>
         </EditInfoTextBox>
+
+        <EditInfoTextBox>
+        <p>이메일</p>
+            <input  type="text"
+            value={userInfo.email}/>
+        </EditInfoTextBox>
+
         <EditinfoButtonBox>
           {isActive === true ? (
             <Button disable emptyButton>
-              값입력
+              저장대기 중
             </Button>
           ) : (
             <Button type="submit" fillButton>
-              등록
+              저장하기
             </Button>
           )}
         </EditinfoButtonBox>
@@ -250,5 +256,5 @@ const EditInfoTextBox = styled.div`
 
 const EditinfoButtonBox = styled.div`
   ${(props) => props.theme.FlexCenter}
-  margin-top: 15.625rem;
+  margin-top: 9.375rem;
 `;
