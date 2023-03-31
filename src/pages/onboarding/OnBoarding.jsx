@@ -1,9 +1,24 @@
-import React from "react";
+import Cookies from "js-cookie";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import OnbooardingCarousel from "./components/OnboardingCarousel";
+import isLogin from "../../utils/isLogin";
 
 const OnBoarding = () => {
+  const navigate = useNavigate();
+  const onBoardingCheck = Cookies.get("OnBoardingCheck");
+
+  useEffect(() => {
+    Cookies.set("OnBoardingCheck", true);
+    if (!!onBoardingCheck && isLogin()) {
+      navigate("/home");
+    } else if (!!onBoardingCheck && !isLogin()) {
+      navigate("/signin");
+    }
+  }, []);
+
   return (
     <OnboardingLayout>
       <OnbooardingCarousel />
