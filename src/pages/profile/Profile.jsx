@@ -89,7 +89,6 @@ const Profile = () => {
 const ProfileHeader = styled.div`
   ${HeaderStyle}
   ${FlexAttribute("row", "space-between", "center")}
-  border: 1px solid red;
   padding-left: 1.25rem;
   padding-right: 1.25rem;
 `;
