@@ -37,6 +37,8 @@ export const __getMyCatchPost = createAsyncThunk(
 
 const initialState = {
   error: false,
+  entirePostList: [],
+  entirePostPage: 1,
   myMissing: [],
   myCatch: [],
 };
@@ -44,11 +46,16 @@ const initialState = {
 export const profileSlice = createSlice({
   name: "profile",
   initialState,
-  reducers: {},
+  reducers: {
+    addMyPostPage: (state) => {
+      state.entirePostPage = state.entirePostPage + 1;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(__getMyMissingPost.fulfilled, (state, action) => {
         state.myMissing = action.payload;
+        state.entirePostList = [...state.entirePostList, ...action.payload];
       })
       .addCase(__getMyMissingPost.rejected, (state) => {
         state.error = true;
@@ -57,6 +64,7 @@ export const profileSlice = createSlice({
     builder
       .addCase(__getMyCatchPost.fulfilled, (state, action) => {
         state.myCatch = action.payload;
+        state.entirePostList = [...state.entirePostList, ...action.payload];
       })
       .addCase(__getMyCatchPost.rejected, (state) => {
         state.error = true;
@@ -64,4 +72,5 @@ export const profileSlice = createSlice({
   },
 });
 
+export const { addMyPostPage } = profileSlice.actions;
 export default profileSlice.reducer;

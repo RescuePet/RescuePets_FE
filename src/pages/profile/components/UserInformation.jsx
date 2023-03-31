@@ -1,33 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import { Border_1_color, FlexAttribute } from "../../../style/Mixin";
 import { Body_400_12, Button_700_16 } from "../../../style/theme";
 
 import defaultProfile from "../../../asset/profile.svg";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  __getMyCatchPost,
-  __getMyMissingPost,
-} from "../../../redux/modules/profileSlice";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import isLogin from "../../../utils/isLogin";
+import { instance } from "../../../utils/api";
 
 const UserInformation = () => {
   const [userInfo, setUserInfo] = useState({});
+  const [myData, setMyData] = useState({});
 
-  const disapatch = useDispatch();
   const navigate = useNavigate();
 
-  const missingPayload = {
-    page: 1,
-    size: 1000,
+  const fetchData = async () => {
+    try {
+      const response = await instance.get("api/mypage");
+      setMyData(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const catchPayload = {
-    page: 1,
-    size: 1000,
-  };
   useEffect(() => {
     if (isLogin() === false) {
       navigate("/signin");
@@ -37,14 +33,8 @@ const UserInformation = () => {
   }, [navigate]);
 
   useEffect(() => {
-    disapatch(__getMyMissingPost(missingPayload));
-    disapatch(__getMyCatchPost(catchPayload));
+    fetchData();
   }, []);
-
-  const { myMissing, myCatch } = useSelector((state) => state.profile);
-
-  // console.log("myMissing", myMissing);
-  // console.log("myCatch", myCatch);
 
   return (
     <UserInfoContainer>
@@ -59,15 +49,15 @@ const UserInformation = () => {
       <UserEmail>{userInfo.email}</UserEmail>
       <UserActivityWrapper>
         <CountBox>
-          <CountSpan>{myMissing.length + myCatch.length}</CountSpan>
+          <CountSpan>{myData.postCount}</CountSpan>
           <TitleSpan>작성 글</TitleSpan>
         </CountBox>
         <CountBox>
-          <CountSpan>11</CountSpan>
+          <CountSpan>{myData.commentCount}</CountSpan>
           <TitleSpan>댓글</TitleSpan>
         </CountBox>
         <CountBox>
-          <CountSpan>11</CountSpan>
+          <CountSpan>{myData.scrapCount}</CountSpan>
           <TitleSpan>스크랩</TitleSpan>
         </CountBox>
       </UserActivityWrapper>

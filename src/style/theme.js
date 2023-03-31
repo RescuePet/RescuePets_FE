@@ -80,6 +80,12 @@ export const Body_500_14 = css`
   line-height: 20px;
 `;
 
+export const Body_500_12 = css`
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 20px;
+`;
+
 export const Body_400_20_14 = css`
   font-weight: 400;
   font-size: 14px;
