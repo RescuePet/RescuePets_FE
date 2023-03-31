@@ -47,14 +47,12 @@ import { __PostMissingData } from "../../redux/modules/missingSlice";
 import { toggleMenu } from "../../redux/modules/menubarSlice";
 import { PostModal } from "./components/Modal";
 import { useModalState } from "../../hooks/useModalState";
-
 const Missing = () => {
   let imageRef;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginModal, toggleModal] = useModalState(false);
   const [postNumber, setPostNumber] = useState("");
-
   const MissingNumber = useSelector((state) => {
     return state.MissingData?.data;
   });
@@ -65,49 +63,38 @@ const Missing = () => {
   useEffect(() => {
     setPostNumber(data);
   }, [MissingNumber]);
-
   // 리덕스에 저장되어있는 메뉴바 토글상태를 가지고 오고
   const menutoggle = useSelector((state) => {
     return state.menubar.toggle;
   });
-
   const [mapBg, setMapBg] = useState(menutoggle);
-
   useEffect(() => {
     setMapBg(true);
   }, [menutoggle]);
-
   const MoveToBackPage = () => {
     dispatch(toggleMenu(mapBg));
     navigate(-1);
   };
-
   // 종류데이터
   const [type, setType] = useState(NameValue[0].name);
   const [typeID, setTypeID] = useState("DOG");
-
   const onChangeData = (newData) => {
     setType(newData);
   };
-
   const onChangeID = (newValue) => {
     setTypeID(newValue);
   };
-
   const [time, setTime] = useState(TimeValue[0].name);
   const onChangeTimeData = (newData) => {
     setTime(newData);
   };
   const onChangeTimeValeu = () => {};
-
   const [currentGenderTab, setCurrentGenderTab] = useState(0);
   const [currentNeuteredTab, setCurrentNeuteredTab] = useState(0);
-
   const [currentGenderValue, setCurrentGenderValue] = useState("수컷");
   const [currentGenderEnValue, setCurrentGenderEnValue] = useState("DOG");
   const [currentNeuteredValue, setCurrentNeuteredValue] = useState("완료");
   const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState("YES");
-
   const selectMGenderHandler = (index) => {
     setCurrentGenderTab(index);
     setCurrentGenderValue(SeletegenderArr[index].gender);
@@ -118,16 +105,13 @@ const Missing = () => {
     setCurrentNeuteredValue(seleteneuteredArr[index].neutered);
     setCurrentNeuteredEnValue(seleteneuteredArr[index].value);
   };
-
   // 사진 로직
   // 올린 이미지 담을 관리하는 State
   const [showImages, setShowImages] = useState([]);
   // 폼데이터로 이미지 관리하는 State
   const [imageFormData, setImageFormData] = useState([]);
-
   const onChangeUploadHandler = async (e) => {
     e.preventDefault();
-
     // 인풋에서 선택된 이미지들
     const imageLists = e.target.files;
     console.log(imageLists);
@@ -135,7 +119,6 @@ const Missing = () => {
     let imageUrlLists = [...showImages];
     // 폼데이터 담을것
     let imageFormLists = [...imageFormData];
-
     // 미리보기 로직
     for (let i = 0; i < imageLists.length; i++) {
       const currentImageUrl = URL.createObjectURL(imageLists[i]);
@@ -146,16 +129,13 @@ const Missing = () => {
       imageUrlLists = imageUrlLists.slice(0, 3);
       imageFormLists = imageFormLists.slice(0, 3);
     }
-
     setShowImages(imageUrlLists);
     setImageFormData(imageFormLists);
   };
-
   const onClickDeleteHandler = () => {
     setShowImages("");
     setImageFormData("");
   };
-
   const {
     register,
     handleSubmit,
@@ -169,10 +149,18 @@ const Missing = () => {
   // 좌표값들
   const addressLatDiv = document.getElementById("addressLat");
   const addressLngDiv = document.getElementById("addressLng");
-
   // 입력값에 따라 버튼 활성화
   const [isActive, setIsActive] = useState(false);
-
+  const onClickDeleteValue = (data) => {
+    resetField(data);
+  };
+  const [selectedDate, setSelectedDate] = useState("");
+  // console.log(selectedDate)
+  // 현재 날짜를 가져옵니다.
+  const currentDate = new Date().toISOString().split("T")[0];
+  const handleDateChange = (e) => {
+    setSelectedDate(e.target.value);
+  };
   useEffect(() => {
     if (
       watch("animaltypes") !== "" &&
@@ -183,7 +171,7 @@ const Missing = () => {
       watch("address") !== "" &&
       watch("animalcolor") !== "" &&
       addressDiv?.innerHTML !== "" &&
-      watch("days") !== ""
+      selectedDate !== ""
     ) {
       // console.log('성공')
       setIsActive(false);
@@ -193,9 +181,6 @@ const Missing = () => {
     }
   }, [watch()]);
 
-  const onClickDeleteValue = (data) => {
-    resetField(data);
-  };
   // POST
   const onSubmitMissingHanlder = (data) => {
     if (addressDiv?.innerHTML === "") {
@@ -213,24 +198,21 @@ const Missing = () => {
       formData.append("happenPlace", addressDiv.innerHTML);
       formData.append("happenLatitude", addressLatDiv.innerHTML);
       formData.append("happenLongitude", addressLngDiv.innerHTML);
-      formData.append("happenDt", data.days);
+      formData.append("happenDt", selectedDate);
       formData.append("happenHour", time);
       formData.append("specialMark", data.characteristic);
       formData.append("content", data.memo);
       formData.append("gratuity", data.money);
       formData.append("contact", data.number);
-
       imageFormData.map((img) => {
         formData.append("postImages", img);
       });
-
       dispatch(__PostMissingData(formData));
       toggleModal();
-      // reset()
+      reset();
       // alert('등록완료')
     }
   };
-
   return (
     <Layout>
       <ReportMissingContainer onSubmit={handleSubmit(onSubmitMissingHanlder)}>
@@ -241,7 +223,6 @@ const Missing = () => {
             <img src={close} onClick={MoveToBackPage} />
           </div>
         </ReportHeader>
-
         <ReportAnimalInfoArea>
           <ReportanimaltypesBox>
             <ReportanimaltypesTitle>동물 정보 *</ReportanimaltypesTitle>
@@ -254,7 +235,6 @@ const Missing = () => {
                   onChangeID={onChangeID}
                 />
               </div>
-
               <div>
                 <p>품종</p>
                 {/* Input */}
@@ -279,7 +259,6 @@ const Missing = () => {
               </div>
             </ReportanimaltypesSelect>
           </ReportanimaltypesBox>
-
           <ReportAnimalInfoBox>
             <ReportAnimalInfoCheckBox>
               <ReportAnimalInfoCheckBoxTitle>
@@ -300,7 +279,6 @@ const Missing = () => {
                 ))}
               </ReportAnimalInfoCheckBoxSelete>
             </ReportAnimalInfoCheckBox>
-
             <ReportAnimalInfoCheckBox>
               <ReportAnimalInfoCheckBoxTitle>
                 {" "}
@@ -323,7 +301,6 @@ const Missing = () => {
               </ReportAnimalInfoCheckBoxSelete>
             </ReportAnimalInfoCheckBox>
           </ReportAnimalInfoBox>
-
           <ReportAnimalInfoBox>
             <ReportAnimalInfoBoxColumn>
               <ReportAnimalInfoBoxColumnRow>
@@ -351,7 +328,6 @@ const Missing = () => {
                 />
                 <span>{errors?.animalName?.message}</span>
               </ReportAnimalInfoBoxColumnRow>
-
               <ReportAnimalInfoBoxColumnRow>
                 <p>나이(살)</p>
                 <ReportInput
@@ -375,7 +351,6 @@ const Missing = () => {
                 <span>{errors?.animalAge?.message}</span>
               </ReportAnimalInfoBoxColumnRow>
             </ReportAnimalInfoBoxColumn>
-
             <ReportAnimalInfoBoxColumn>
               <ReportAnimalInfoBoxColumnRow>
                 <p>체중(Kg)</p>
@@ -399,7 +374,6 @@ const Missing = () => {
                 />
                 <span>{errors?.animalkg?.message}</span>
               </ReportAnimalInfoBoxColumnRow>
-
               <ReportAnimalInfoBoxColumnRow>
                 <p>색상</p>
                 <ReportInput
@@ -437,24 +411,13 @@ const Missing = () => {
             <div>
               <p>날짜</p>
               <ReportInput
-                type="text"
-                placeholder="20xx.xx.xx"
-                // onChange={onChangeDays}
-                {...register("days", {
-                  required: true,
-                  pattern: {
-                    value: /^\d{4}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[01])$/,
-                    message: "20xx.xx.xx 형식으로 입력",
-                  },
-                })}
+                type="date"
+                onChange={handleDateChange}
+                value={selectedDate}
+                max={currentDate}
               />
-              <img
-                src={cancel}
-                onClick={() => {
-                  onClickDeleteValue("days");
-                }}
-              />
-              <span>{errors?.days?.message}</span>
+              {/* <img src={cancel} onClick={(() => { onClickDeleteValue('days') })} /> */}
+              {/* <span>{errors?.days?.message}</span> */}
             </div>
             <div>
               <p>시간대</p>
@@ -525,7 +488,6 @@ const Missing = () => {
             </div>
           </ReportAnimalSignificantBoxInputArea>
         </ReportAnimalSignificantBox>
-
         <ReportAnimalPictureArea>
           <ReportAnimalPictureAreaTitle>
             <p>사진첨부</p>
@@ -593,7 +555,6 @@ const Missing = () => {
             />
             <span>{errors?.money?.message}</span>
           </div>
-
           <div>
             <p>연락처</p>
             <ReportInput
@@ -645,5 +606,4 @@ const Missing = () => {
     </Layout>
   );
 };
-
 export default Missing;

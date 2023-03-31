@@ -1,14 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { instance } from "../../utils/api";
-import Cookies from "js-cookie";
 
 // Sign In
 export const __signinUser = createAsyncThunk(
   "signinUser",
   async (payload, thunkAPI) => {
     try {
-      await instance.post("/api/member/login", payload);
-      return thunkAPI.fulfillWithValue("success");
+      const response = await instance.post("/api/member/login", payload);
+      console.log(response.data.data)
+      return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       throw new Error(error.response.data.message);
     }
@@ -21,9 +21,6 @@ export const __signupUser = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await instance.post("/api/member/signup", payload);
-      // console.log(response.data.message)
-      // status
-
       return thunkAPI.fulfillWithValue(response.data.message);
     } catch (error) {
       throw new Error(error.response.data.message);
@@ -45,7 +42,7 @@ export const __SignoutUser = createAsyncThunk(
 );
 
 const initialState = {
-  Signinmessage: "",
+  Signin: [],
   Signupmessage: "",
   Signoutmessage: "",
 };
@@ -57,11 +54,11 @@ export const signsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(__signinUser.fulfilled, (state, action) => {
-        state.Signinmessage = action.payload;
+        state.Signin = action.payload;
         // console.log("sign in ", state.message);
       })
       .addCase(__signinUser.rejected, (state, action) => {
-        state.Signinmessage = action.error.message;
+        state.Signin = action.error.message;
       })
       .addCase(__signupUser.fulfilled, (state, action) => {
         state.Signupmessage = action.payload;

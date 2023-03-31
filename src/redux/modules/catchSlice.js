@@ -19,7 +19,13 @@ export const __PostCatchData = createAsyncThunk(
   "postgetCatchData",
   async (payload, thunkAPI) => {
     try {
-      await instance.post("/api/pets/catch/", payload);
+      await instance.post("/api/pets/catch/", payload, 
+      // {
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data',
+      //   },
+      // }
+      );
       return thunkAPI.fulfillWithValue("success");
     } catch (error) {
       console.log(error.response);

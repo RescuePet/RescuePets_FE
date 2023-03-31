@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
-import cancel from "../asset/cancel.svg";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function Modal({ isOpen, onClose, children }) {
   const backdropVariants = {
@@ -101,9 +102,6 @@ export function CheckModal(props) {
       {/* 모달밖을 클릭하거나 확인 버튼 클릭시 사라진다  사라진다  */}
       <Modal isOpen={props.isOpen} onClose={props.toggle}>
         <ModalMsgContainer>
-          <CloseContainer>
-            <img src={cancel} onClick={props.onClose} />
-          </CloseContainer>
           <h2>{props.children}</h2>{" "}
         </ModalMsgContainer>
       </Modal>

@@ -64,7 +64,7 @@ const Catch = () => {
   useEffect(() => {
     setPostNumber(data);
   }, [catchNumber]);
-  console.log(postNumber);
+  // console.log(postNumber)
   // 리덕스에 저장되어있는 메뉴바 토글상태를 가지고 오고
   const menutoggle = useSelector((state) => {
     return state.menubar.toggle;
@@ -132,7 +132,7 @@ const Catch = () => {
 
     // 인풋에서 선택된 이미지들
     const imageLists = e.target.files;
-    console.log(imageLists);
+    // console.log(imageLists)
     // 미리보기 담을것
     let imageUrlLists = [...showImages];
     // 폼데이터 담을것
@@ -176,6 +176,32 @@ const Catch = () => {
     resetField(data);
   };
 
+  const [selectedDate, setSelectedDate] = useState("");
+
+  // 현재 날짜를 가져옵니다.
+  const currentDate = new Date().toISOString().split("T")[0];
+  // console.log(currentDate)
+  // input 요소에서 날짜가 변경될 때마다 호출됩니다.
+  const handleDateChange = (e) => {
+    // console.log(e.target.value)
+    // const dateValue = e.target.value;
+    // const d1 = dateValue.split('')
+    // const newDate = []
+    // console.log(d1[0])
+
+    // for (let i = 0; i < d1.length; i++) {
+    //   if (d1[i] !== '-') {
+    //     newDate.push(d1[i])
+    //   }
+    // }
+    // const D = newDate
+
+    // console.log(D.splice(4, 0, '.'));
+
+    // console.log(d1.find(() => { d1',' }))
+    setSelectedDate(e.target.value);
+  };
+
   // 주소 좌표값을 보내기 위한 것들
   const addressDiv = document.getElementById("address");
   const addressLatDiv = document.getElementById("addressLat");
@@ -186,15 +212,13 @@ const Catch = () => {
   useEffect(() => {
     if (
       watch("animaltypes") !== "" &&
-      // watch("animaltypes") !== "" &&
       watch("animalAge") !== "" &&
       watch("animalkg") !== "" &&
       watch("address") !== "" &&
       watch("animalcolor") !== "" &&
       addressDiv?.innerHTML !== "" &&
-      watch("days") !== ""
+      selectedDate !== ""
     ) {
-      // console.log('성공')
       setIsActive(false);
     } else {
       // console.log('실패')
@@ -218,12 +242,13 @@ const Catch = () => {
       formData.append("happenPlace", addressDiv.innerHTML);
       formData.append("happenLatitude", addressLatDiv.innerHTML);
       formData.append("happenLongitude", addressLngDiv.innerHTML);
-      formData.append("happenDt", data.days);
+      formData.append("happenDt", selectedDate);
       formData.append("happenHour", time);
       formData.append("specialMark", data.characteristic);
       formData.append("content", data.memo);
       formData.append("gratuity", data.money);
       formData.append("contact", data.number);
+
       imageFormData.map((img) => {
         formData.append("postImages", img);
       });
@@ -231,9 +256,9 @@ const Catch = () => {
       for (let key of formData.keys()) {
         console.log(key, ":", formData.get(key));
       }
-      dispatch(__PostCatchData({ formData }));
+      dispatch(__PostCatchData(formData));
       toggleModal();
-      // reset()
+      reset();
       // alert('등록완료')
     }
   };
@@ -423,23 +448,13 @@ const Catch = () => {
             <div>
               <p>날짜</p>
               <ReportInput
-                type="text"
-                placeholder="20xx.xx.xx"
-                {...register("days", {
-                  required: true,
-                  pattern: {
-                    value: /^\d{4}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[01])$/,
-                    message: "20xx.xx.xx 형식으로 입력",
-                  },
-                })}
+                type="date"
+                onChange={handleDateChange}
+                value={selectedDate}
+                max={currentDate}
               />
-              <img
-                src={cancel}
-                onClick={() => {
-                  onClickDeleteValue("days");
-                }}
-              />
-              <span>{errors?.days?.message}</span>
+              {/* <img src={cancel} onClick={(() => { onClickDeleteValue('days') })} /> */}
+              {/* <span>{errors?.days?.message}</span> */}
             </div>
             {/* 시간대 */}
             <div>

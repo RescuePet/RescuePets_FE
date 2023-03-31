@@ -63,27 +63,21 @@ const Signin = () => {
     dispatch(__signinUser(siginInfo));
   };
 
-  const SignInMessage = useSelector((state) => {
-    return state?.users?.Signinmessage;
-  });
-
   const [SignInMsg, setSignInMsg] = useState("");
 
+  const SignInMessage = useSelector((state) => {
+    return state?.users?.Signin;
+  });
+
   useEffect(() => {
-    if (SignInMessage === "success" && isLogin()) {
-      setSignInMsg("✅ 로그인 성공");
-    } else if (SignInMessage === "아이디,비밀번호를 확인해주세요") {
-      setSignInMsg("⛔ 아이디 혹은 비밀번호를 확인해주세요");
+    if (SignInMessage?.status === true && isLogin()) {
+      setSignInMsg(`✅  ${SignInMessage?.message}`);
+      setSignInMsg("");
+      navigate("/home");
+    } else if (SignInMessage == "아이디,비밀번호를 확인해주세요") {
+      setSignInMsg(`⛔  ${SignInMessage}`);
     }
   }, [SignInMessage]);
-
-  if (SignInMsg === "✅ 로그인 성공" && isLogin()) {
-    setTimeout(() => {
-      setToggle(false);
-      console.log(loginModal);
-      navigate("/home");
-    }, 1000);
-  }
 
   const URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_SIGN_ID}&redirect_uri=${process.env.REACT_APP_RESCUEPETS}/kakaologin`;
 
