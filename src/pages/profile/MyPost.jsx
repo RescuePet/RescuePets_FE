@@ -10,16 +10,18 @@ import {
   __getMyMissingPost,
 } from "../../redux/modules/profileSlice";
 import { useInView } from "react-intersection-observer";
+import { useNavigate } from "react-router-dom";
+
+import close from "../../asset/Close.svg";
 
 const MyPost = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [ref, inView] = useInView();
 
   const { entirePostList, entirePostPage } = useSelector(
     (state) => state.profile
   );
-
-  console.log(entirePostList);
 
   let payload = {
     page: entirePostPage,
@@ -38,6 +40,7 @@ const MyPost = () => {
     <Layout>
       <MyPostHeader>
         <h2>작성 글 목록</h2>
+        <CloseSvg src={close} onClick={() => navigate("/profile")} />
       </MyPostHeader>
       <PostInfoContainer>
         <PostInfoWrapper>
@@ -61,17 +64,25 @@ const MyPost = () => {
 };
 
 const MyPostHeader = styled.div`
+  position: relative;
   ${FlexAttribute("row", "center")}
   ${HeaderStyle}
   h2 {
     ${(props) => props.theme.Body_500_16};
     color: ${(props) => props.theme.color.text_normal};
+    line-height: 1.5rem;
   }
+`;
+
+const CloseSvg = styled.img`
+  position: absolute;
+  right: 1.25rem;
+  cursor: pointer;
 `;
 
 const PostInfoContainer = styled.div`
   width: 100%;
-  border-bottom: 1px solid ${(props) => props.theme.color.input_border}; ;
+  border-bottom: 0.0625rem solid ${(props) => props.theme.color.input_border}; ;
 `;
 
 const EntireTitle = styled.span`
@@ -79,7 +90,7 @@ const EntireTitle = styled.span`
 `;
 
 const EntireCount = styled.span`
-  margin-left: 8px;
+  margin-left: 0.5rem;
   ${(props) => props.theme.Body_500_12};
   color: ${(props) => props.theme.color.primary_normal};
 `;
@@ -91,7 +102,7 @@ const EditButton = styled.button`
 
 const PostInfoWrapper = styled.div`
   ${FlexAttribute("row", "space-between", "center")}
-  margin: 8px 20px;
+  margin: .5rem 1.25rem;
 `;
 
 const ListContainer = styled.div`

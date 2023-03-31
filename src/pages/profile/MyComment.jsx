@@ -6,7 +6,11 @@ import { FlexAttribute, HeaderStyle } from "../../style/Mixin";
 import { instance } from "../../utils/api";
 import CommentList from "./components/CommentList";
 
+import close from "../../asset/Close.svg";
+import { useNavigate } from "react-router-dom";
+
 const MyComment = () => {
+  const navigate = useNavigate();
   const [mycomment, setMycomment] = useState([]);
   const MycommnetAxios = async () => {
     const response = await instance.get("api/pets/comments/member");
@@ -22,6 +26,7 @@ const MyComment = () => {
     <Layout>
       <MyPostHeader>
         <h2>댓글 목록</h2>
+        <CloseSvg src={close} onClick={() => navigate("/profile")} />
       </MyPostHeader>
       <PostInfoContainer>
         <PostInfoWrapper>
@@ -46,12 +51,20 @@ const MyComment = () => {
 };
 
 const MyPostHeader = styled.div`
+  position: relative;
   ${FlexAttribute("row", "center")}
   ${HeaderStyle}
   h2 {
     ${(props) => props.theme.Body_500_16};
     color: ${(props) => props.theme.color.text_normal};
+    line-height: 1.5rem;
   }
+`;
+
+const CloseSvg = styled.img`
+  position: absolute;
+  right: 1.25rem;
+  cursor: pointer;
 `;
 
 const PostInfoContainer = styled.div`
