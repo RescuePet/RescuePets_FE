@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Marker from "../../../asset/marker/marker.png"
 import questionmark from "../../../asset/questionmark.svg"
 import { Border_1_color } from "../../../style/Mixin"
 
 const Location = () => {
+    const location = useLocation()
+    console.log(location.pathname)
     const { kakao } = window;
     // 현재위치를 받아오는 로직
     const [long, setLong] = useState("");
@@ -87,14 +90,14 @@ const Location = () => {
             <ReportKakaoMapBoxTitle>
 
                 <ReportKakaomapTitleInfoBox>
-                    <p>실종위치 </p>
+                    {location.pathname === '/missing' ? <p>실종위치 </p> : <p>목격위치</p>}
                     <img id="img"
                         src={questionmark} />
-                    <div className="tooltip">지도상에서 마커를 움직여 위치를 표현해주세요</div>
+                    <div className="tooltip">지도상에서  클릭하여 위치 마커 를 표시해주세요</div>
                 </ReportKakaomapTitleInfoBox>
 
                 <ReportKakaomapTitleValueBox>
-                    <p>위치</p>
+                    {/* <p>위치</p> */}
                     <div id='address'></div>
                     <div style={{ display: "none" }}><label id='addressLat'></label></div>
                     <div style={{ display: "none" }}><label id='addressLng'></label></div>
@@ -136,12 +139,13 @@ const ReportKakaomapTitleInfoBox = styled.div`
     text-align: left;
     ${props => props.theme.Body_400_14}
     color: #222222;
+    word-break: keep-all ;
     }
     > img {
         position: absolute;
         width: 10%;
         height: 100%;
-        left: 2.5rem;
+        left: 2.8125rem;
         bottom: .1563rem;
        
     }

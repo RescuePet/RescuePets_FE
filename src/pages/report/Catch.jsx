@@ -174,8 +174,8 @@ const Catch = () => {
     }
   }, [watch()]);
 
-
-
+  const date = watch('days')
+  console.log(date)
   // form submit 로직
   const onSubmitSightingHanlder = (data) => {
 
@@ -193,7 +193,8 @@ const Catch = () => {
       formData.append("happenPlace", addressDiv.innerHTML)
       formData.append("happenLatitude", addressLatDiv.innerHTML)
       formData.append("happenLongitude", addressLngDiv.innerHTML)
-      formData.append("happenDt", data.days)
+      console.log()
+      // formData.append("happenDt", data.days)
       formData.append("happenHour", time)
       formData.append("specialMark", data.characteristic)
       formData.append("content", data.memo)
@@ -206,7 +207,7 @@ const Catch = () => {
       for (let key of formData.keys()) {
         console.log(key, ":", formData.get(key));
       }
-      dispatch(__PostCatchData({ formData }))
+      // dispatch(__PostCatchData({ formData }))
       toggleModal()
       // reset()
       // alert('등록완료')
@@ -338,7 +339,7 @@ const Catch = () => {
           <div>
             <div>
               <p>날짜</p>
-              <ReportInput type="text" placeholder='20xx.xx.xx'
+              <ReportInput type="date" placeholder='20xx.xx.xx'
                 {...register("days", {
                   required: true,
                   pattern: {
@@ -346,7 +347,7 @@ const Catch = () => {
                     message: "20xx.xx.xx 형식으로 입력",
                   },
                 })} />
-              <img src={cancel} onClick={(() => { onClickDeleteValue('days') })} />
+              {/* <img src={cancel} onClick={(() => { onClickDeleteValue('days') })} /> */}
               <span>{errors?.days?.message}</span>
             </div>
             {/* 시간대 */}
