@@ -7,7 +7,7 @@ import { Border_1_color } from "../../../style/Mixin"
 
 const Location = () => {
     const location = useLocation()
-    console.log(location.pathname)
+    // console.log(location.pathname)
     const { kakao } = window;
     // 현재위치를 받아오는 로직
     const [long, setLong] = useState("");

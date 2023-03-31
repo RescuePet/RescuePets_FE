@@ -150,6 +150,19 @@ const Missing = () => {
     // 입력값에 따라 버튼 활성화
     const [isActive, setIsActive] = useState(false);
 
+    const onClickDeleteValue = (data) => {
+        resetField(data)
+    }
+
+    const [selectedDate, setSelectedDate] = useState("");
+    // console.log(selectedDate)
+    // 현재 날짜를 가져옵니다.
+    const currentDate = new Date().toISOString().split("T")[0];
+
+    const handleDateChange = (e) => {
+        setSelectedDate(e.target.value);
+    };
+
     useEffect(() => {
         if (
             watch("animaltypes") !== "" &&
@@ -160,7 +173,7 @@ const Missing = () => {
             watch("address") !== "" &&
             watch("animalcolor") !== "" &&
             addressDiv?.innerHTML !== "" &&
-            watch("days") !== ""
+            selectedDate !== ""
         ) {
             // console.log('성공')
             setIsActive(false);
@@ -170,10 +183,6 @@ const Missing = () => {
         }
     }, [watch()]);
 
-
-    const onClickDeleteValue = (data) => {
-        resetField(data)
-    }
     // POST 
     const onSubmitMissingHanlder = (data) => {
         if (addressDiv?.innerHTML === '') {
@@ -191,7 +200,7 @@ const Missing = () => {
             formData.append("happenPlace", addressDiv.innerHTML)
             formData.append("happenLatitude", addressLatDiv.innerHTML)
             formData.append("happenLongitude", addressLngDiv.innerHTML)
-            formData.append("happenDt", data.days)
+            formData.append("happenDt", selectedDate)
             formData.append("happenHour", time)
             formData.append("specialMark", data.characteristic)
             formData.append("content", data.memo)
@@ -204,7 +213,7 @@ const Missing = () => {
 
             dispatch(__PostMissingData(formData))
             toggleModal()
-            // reset()
+            reset()
             // alert('등록완료')
         }
 
@@ -341,17 +350,9 @@ const Missing = () => {
                     <div>
                         <div>
                             <p>날짜</p>
-                            <ReportInput type="text" placeholder='20xx.xx.xx'
-                                // onChange={onChangeDays}
-                                {...register("days", {
-                                    required: true,
-                                    pattern: {
-                                        value: /^\d{4}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[01])$/,
-                                        message: "20xx.xx.xx 형식으로 입력",
-                                    },
-                                })} />
-                            <img src={cancel} onClick={(() => { onClickDeleteValue('days') })} />
-                            <span>{errors?.days?.message}</span>
+                            <ReportInput type="date" onChange={handleDateChange} value={selectedDate} max={currentDate} />
+                            {/* <img src={cancel} onClick={(() => { onClickDeleteValue('days') })} /> */}
+                            {/* <span>{errors?.days?.message}</span> */}
                         </div>
                         <div>
                             <p>시간대</p>
