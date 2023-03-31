@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import FooterIconChat from "../../../asset/footericon/FooterIconChat";
-import { FlexAttribute } from "../../../style/Mixin";
+import { FlexAttribute, FloatingButtonStyle } from "../../../style/Mixin";
 
 const FloatingButton = ({ onClick }) => {
   return (
@@ -14,9 +14,7 @@ const FloatingButton = ({ onClick }) => {
 const FloatingChatButton = styled.div`
   position: fixed;
   ${FlexAttribute("row", "center", "center")}
-  bottom: 5.625rem;
-  right: 0px;
-  margin-right: calc(50% - 10.75rem);
+  ${FloatingButtonStyle}
   width: 3.5rem;
   height: 3.5rem;
   z-index: 50;

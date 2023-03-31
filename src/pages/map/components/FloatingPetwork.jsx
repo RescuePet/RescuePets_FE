@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import floating from "../../../asset/floating.png";
+import { FloatingButtonStyle } from "../../../style/Mixin";
 
 export const FloatingPetwork = () => {
   const navigate = useNavigate();
@@ -21,9 +22,7 @@ const FloatingPetNetworkContainer = styled.div`
   ${(props) => props.theme.FlexCenter}
   z-index: 8;
   background: ${(props) => props.theme.color.white};
-  bottom: 5.625rem;
-  right: 0px;
-  margin-right: calc(50% - 10.75rem);
+  ${FloatingButtonStyle}
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;

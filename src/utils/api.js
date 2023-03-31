@@ -47,16 +47,18 @@ instance.interceptors.response.use((response) => {
   if (response.config.url === "/api/member/login") {
     const TOKEN = response.headers.authorization;
     const REFRESH = response.headers.refresh;
+    const USERINFO = JSON.stringify(response.data.data);
     Cookies.set("Token", TOKEN);
     Cookies.set("Refresh", REFRESH);
-    localStorage.setItem("userInfo", JSON.stringify(response.data.data));
+    Cookies.set("UserInfo", USERINFO);
     return response;
   } else if (response.config.url.split("?")[0] === "/member/kakao/callback/") {
     const TOKEN = response.headers.authorization;
     const REFRESH = response.headers.refresh;
+    const USERINFO = response.data.data;
     Cookies.set("Token", TOKEN);
     Cookies.set("Refresh", REFRESH);
-    localStorage.setItem("userInfo", JSON.stringify(response.data.data));
+    Cookies.set("UserInfo", JSON.stringify(USERINFO));
     return response;
   }
   return response;
@@ -88,14 +90,14 @@ home.interceptors.response.use((response) => {
     response.data = newData;
     return response;
   } else if (response.config.url.split("?")[0] === "/api/pets/info-list") {
-    let newArray = [...response.data.data.publicPetResponsDto];
+    let newArray = [...response.data.data.publicPetResponseDto];
     newArray.map((item) => {
       const refinedata = refineData(item);
       const newData = { ...item.data, refinedata };
       item.data = newData;
       return newData;
     });
-    response.data.publicPetResponsDto = [...newArray];
+    response.data.publicPetResponseDto = [...newArray];
     return response;
   }
   return response;

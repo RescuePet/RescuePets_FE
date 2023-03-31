@@ -32,6 +32,7 @@ import PostInformation from "./components/PostInformation";
 import FloatingButton from "./components/FloatingButton";
 import { instance } from "../../utils/api";
 import ScrollToTop from "../../elements/ScrollToTop";
+import Cookies from "js-cookie";
 
 const SightingDetail = () => {
   const { id } = useParams();
@@ -40,7 +41,7 @@ const SightingDetail = () => {
 
   const { catchPostDetail } = useSelector((state) => state.petwork);
   const { catchComment, editDone } = useSelector((state) => state?.comment);
-  const userName = JSON.parse(localStorage.getItem("userInfo"));
+  const userName = JSON.parse(Cookies.get("UserInfo"));
 
   useEffect(() => {
     dispatch(__getCatchPostDetail(id));

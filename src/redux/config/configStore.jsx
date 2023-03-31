@@ -2,7 +2,6 @@ import { configureStore } from "@reduxjs/toolkit";
 import users from "../modules/signSlice";
 import adoption from "../modules/adoptionSlice";
 import menubar from "../modules/menubarSlice";
-import onboarding from "../modules/onboardingSlice";
 import petwork from "../modules/petworkSlice";
 import comment from "../modules/commentSlice";
 import MissingData from "../modules/missingSlice";
@@ -15,7 +14,6 @@ const store = configureStore({
   reducer: {
     users,
     menubar,
-    onboarding,
     petwork,
     comment,
     adoption,
@@ -23,7 +21,7 @@ const store = configureStore({
     catchData,
     profile,
     myChat,
-    infoEdit
+    infoEdit,
   },
 });
 

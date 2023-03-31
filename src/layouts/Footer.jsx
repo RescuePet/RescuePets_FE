@@ -29,7 +29,7 @@ const Footer = () => {
     dispatch(toggleMenu(menuBarToggle));
     const ToggleBtn = document.querySelector(".toggleBtn");
     if (menuBar === true) {
-      ToggleBtn.classListNaNpxove("active");
+      ToggleBtn.classList.remove("active");
     } else {
       ToggleBtn.classList.add("active");
     }
@@ -74,11 +74,21 @@ const Footer = () => {
         ></FooterIconToggleBtn>
         {menuBar && (
           <Navigation>
-            <FooterMenuList onClick={() => navigate("/missing")}>
+            <FooterMenuList
+              onClick={() => {
+                navigate("/missing");
+                dispatch(toggleMenu(!menuBarToggle));
+              }}
+            >
               <img src={reportmissing} alt="missing" />
               <span>실종 글 작성하기</span>
             </FooterMenuList>
-            <FooterMenuList onClick={() => navigate("/catch")}>
+            <FooterMenuList
+              onClick={() => {
+                navigate("/catch");
+                dispatch(toggleMenu(!menuBarToggle));
+              }}
+            >
               <Reportcatch></Reportcatch>
               <span>목격 글 작성하기</span>
             </FooterMenuList>

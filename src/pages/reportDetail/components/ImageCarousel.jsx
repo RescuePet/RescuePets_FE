@@ -60,14 +60,15 @@ const StyledSlider = styled(Slider)`
   }
 
   .slick-dots li button:before {
-    color: white;
+    color: ${(props) => props.theme.color.white};
+    opacity: 1;
   }
 
   .slick-dots li.slick-active button:before {
     content: "";
     width: 1.4375rem;
     height: 0.5rem;
-    background-color: #666666;
+    background-color: ${(props) => props.theme.color.primary_normal};
     border-radius: 0.625rem;
     margin-top: 0.3125rem;
   }

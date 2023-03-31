@@ -11,11 +11,21 @@ import Button from "../../elements/Button";
 import { useNavigate } from "react-router-dom";
 import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
+import isLogin from "../../utils/isLogin";
 
 const Signin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [loginModal, toggleModal] = useModalState(false);
+
+  useEffect(() => {
+    if (isLogin() === true) {
+      navigate("/home");
+    }
+  }, []);
+
+  const [loginModal, toggleModal, setToggle] = useModalState(false);
+
+  console.log(loginModal);
 
   const {
     register,
@@ -60,15 +70,17 @@ const Signin = () => {
   const [SignInMsg, setSignInMsg] = useState("");
 
   useEffect(() => {
-    if (SignInMessage === "success") {
+    if (SignInMessage === "success" && isLogin()) {
       setSignInMsg("✅ 로그인 성공");
     } else if (SignInMessage === "아이디,비밀번호를 확인해주세요") {
       setSignInMsg("⛔ 아이디 혹은 비밀번호를 확인해주세요");
     }
   }, [SignInMessage]);
 
-  if (SignInMsg === "✅ 로그인 성공") {
-    setTimeout(function () {
+  if (SignInMsg === "✅ 로그인 성공" && isLogin()) {
+    setTimeout(() => {
+      setToggle(false);
+      console.log(loginModal);
       navigate("/home");
     }, 1000);
   }

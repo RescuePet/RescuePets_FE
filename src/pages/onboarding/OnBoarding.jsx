@@ -1,26 +1,34 @@
-import React, { useState } from "react";
+import Cookies from "js-cookie";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import Layout from "../../layouts/Layout";
-import OnBoardingTab1 from "./OnBoardingTab1";
-import OnBoardingTab2 from "./OnBoardingTab2";
-import OnBoardingTab3 from "./OnBoardingTab3";
-import { useSelector } from "react-redux";
+import OnbooardingCarousel from "./components/OnboardingCarousel";
+import isLogin from "../../utils/isLogin";
 
 const OnBoarding = () => {
-  const data = useSelector((state) => {
-    return state.onboarding.page;
-  });
+  const navigate = useNavigate();
+  const onBoardingCheck = Cookies.get("OnBoardingCheck");
+
+  useEffect(() => {
+    Cookies.set("OnBoardingCheck", true);
+    if (!!onBoardingCheck && isLogin()) {
+      navigate("/home");
+    } else if (!!onBoardingCheck && !isLogin()) {
+      navigate("/signin");
+    }
+  }, []);
 
   return (
-    <Layout>
-      {data === 0 ? (
-        <OnBoardingTab1 />
-      ) : data === 1 ? (
-        <OnBoardingTab2 />
-      ) : (
-        <OnBoardingTab3 />
-      )}
-    </Layout>
+    <OnboardingLayout>
+      <OnbooardingCarousel />
+    </OnboardingLayout>
   );
 };
+
+const OnboardingLayout = styled(Layout)`
+  position: relative;
+  padding-bottom: 0;
+`;
 
 export default OnBoarding;

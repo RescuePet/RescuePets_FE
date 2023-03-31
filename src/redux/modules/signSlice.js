@@ -48,7 +48,6 @@ const initialState = {
   Signinmessage: "",
   Signupmessage: "",
   Signoutmessage: "",
-
 };
 
 export const signsSlice = createSlice({
@@ -78,8 +77,6 @@ export const signsSlice = createSlice({
       .addCase(__SignoutUser.rejected, (state, action) => {
         state.Signoutmessage = action.error.message;
       });
-
-
   },
 });
 
