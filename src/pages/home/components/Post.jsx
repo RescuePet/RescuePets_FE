@@ -40,11 +40,11 @@ const Post = ({ item }) => {
           <img src={item.data.refinedata.sexCd} alt="sexCd" />
           {item.isScrap ? (
             <ScrapButtonBox onClick={(e) => scrapHandler(e)}>
-              <ClippingFill />
+              <ScrapTrue />
             </ScrapButtonBox>
           ) : (
             <ScrapButtonBox onClick={(e) => scrapHandler(e)}>
-              <ScrapState />
+              <ScrapFalse />
             </ScrapButtonBox>
           )}
         </TitleBox>
@@ -133,9 +133,15 @@ const ScrapButtonBox = styled.div`
   z-index: 10;
 `;
 
-const ScrapState = styled(ClippingEmpty)`
+const ScrapTrue = styled(ClippingFill)`
   path {
-    fill: ${(props) => props.theme.color.text_alternative};
+    fill: ${(props) => props.theme.color.primary_normal};
+  }
+`;
+
+const ScrapFalse = styled(ClippingEmpty)`
+  path {
+    fill: ${(props) => props.theme.color.primary_normal};
   }
 `;
 
