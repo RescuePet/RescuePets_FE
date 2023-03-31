@@ -9,9 +9,10 @@ import {
   __getMyCatchPost,
   __getMyMissingPost,
 } from "../../../redux/modules/profileSlice";
+import Cookies from "js-cookie";
 
 const UserInformation = () => {
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const userInfo = JSON.parse(Cookies.get("UserInfo"));
   const disapatch = useDispatch();
 
   const missingPayload = {

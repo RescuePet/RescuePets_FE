@@ -1,13 +1,18 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FlexAttribute } from "../style/Mixin";
 import Footer from "./Footer";
-import { TokenCheck } from "../utils/TokenCheck";
-// import isSignin from "../utils/TokenCheck";
+import isLogin from "../utils/isLogin";
 
 const Layout = ({ children }) => {
-  TokenCheck();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLogin() === false) {
+      navigate("/signin");
+    }
+  }, [navigate]);
 
   const location = useLocation();
 

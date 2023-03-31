@@ -12,13 +12,14 @@ import close from "../../asset/Close.svg";
 import Button from "../../elements/Button";
 import { Border_1_color } from "../../style/Mixin";
 import { __PutMyinfoEdit } from "../../redux/modules/infoeditSlice";
+import Cookies from "js-cookie";
 
 // import
 const Editinfo = () => {
   let imageRef;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const userInfo = JSON.parse(Cookies.get("UserInfo"));
 
   const {
     register,

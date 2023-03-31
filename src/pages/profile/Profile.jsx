@@ -46,9 +46,9 @@ const Profile = () => {
     if (SignoutMsg === "LOGOUT_SUCCESS") {
       setMsg("✅ 로그아웃 성공");
       setTimeout(function () {
-        localStorage.removeItem("userInfo");
         Cookies.remove("Token");
         Cookies.remove("Refresh");
+        Cookies.remove("UserInfo");
         console.log("로그아웃성공");
         setMsg("");
         navigate("/");

@@ -99,3 +99,9 @@ export const FooterStyle = css`
     z-index: 11;
   }
 `;
+
+export const FloatingButtonStyle = css`
+  bottom: 5.625rem;
+  right: 0px;
+  margin-right: calc(50% - 10.75rem);
+`;

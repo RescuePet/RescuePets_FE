@@ -21,6 +21,7 @@ const Poster = () => {
   };
 
   const dispatch = useDispatch();
+
   // const { id } = useParams();
   const id = 5;
 
@@ -31,10 +32,10 @@ const Poster = () => {
     // console.log(missingPostDetail);
   }, [id]);
 
+  console.log("missingPostDetail", missingPostDetail.postImages[0].imageURL);
   if (JSON.stringify(missingPostDetail) === "{}") {
     return <div>Loading...</div>;
   }
-  console.log("missingPostDetail", missingPostDetail.postImages[0].imageURL);
 
   return (
     <Layout>

@@ -11,11 +11,18 @@ import Button from "../../elements/Button";
 import { useNavigate } from "react-router-dom";
 import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
+import isLogin from "../../utils/isLogin";
 
 const Signin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginModal, toggleModal] = useModalState(false);
+
+  useEffect(() => {
+    if (isLogin()) {
+      navigate("/home");
+    }
+  }, [navigate]);
 
   const {
     register,
