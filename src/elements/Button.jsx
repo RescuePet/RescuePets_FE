@@ -22,14 +22,14 @@ const BtnStyle = styled.button`
   outline: none;
   ${(props) => props.theme.FlexCenter}
   ${(props) =>
-    props.emptyButton &&
+    (props.emptyButton || props.propName === "emptyButton") &&
     css`
       ${(props) => props.theme.Body_700_14}
       color: ${(props) => props.theme.color.black};
       border: 1px solid ${(props) => props.theme.color.primary_normal};
     `}
     ${(props) =>
-    props.fillButton &&
+    (props.fillButton || props.propName === "fillButton") &&
     css`
       ${(props) => props.theme.Body_700_14}
       color: ${(props) => props.theme.color.white};
