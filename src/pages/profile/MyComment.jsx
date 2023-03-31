@@ -32,7 +32,7 @@ const MyComment = () => {
         <PostInfoWrapper>
           <div>
             <EntireTitle>총 댓글</EntireTitle>
-            <EntireCount>3</EntireCount>
+            <EntireCount>{mycomment.length}</EntireCount>
           </div>
         </PostInfoWrapper>
       </PostInfoContainer>

@@ -54,7 +54,7 @@ const ScrapList = ({ item }) => {
   const scrapHandler = (e, state) => {
     e.stopPropagation();
     setScrapState((prev) => !prev);
-    if (state === "publickPet") {
+    if (state === "publicPet") {
       publicScrap();
     } else if (state === "실종") {
       missingScrap();

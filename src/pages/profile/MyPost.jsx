@@ -48,7 +48,6 @@ const MyPost = () => {
             <EntireTitle>총 작성 글</EntireTitle>
             <EntireCount>{entirePostList.length}</EntireCount>
           </div>
-          {/* <EditButton>편집</EditButton> */}
         </PostInfoWrapper>
       </PostInfoContainer>
       <ListContainer>
