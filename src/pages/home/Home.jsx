@@ -43,7 +43,7 @@ const Home = () => {
           alt="profile"
         />
         <span>안녕하세요! {userInfo.nickname}님</span>
-        <img src={search} alt="search" />
+        {/* <img src={search} alt="search" /> */}
       </Header>
       <Carousel images={images} />
       <PostContainer>
@@ -63,7 +63,7 @@ const Home = () => {
 };
 
 const Header = styled.div`
-  ${FlexAttribute("row", "space-between", "center")}
+  ${FlexAttribute("row", "", "center")}
   margin: 0 auto;
   width: 20.9375rem;
   height: 5rem;
@@ -73,6 +73,8 @@ const Header = styled.div`
   font-weight: 700;
   span {
     flex-basis: 15rem;
+    margin-left: 0.625rem;
+    white-space: nowrap;
   }
   img {
     width: 2.5rem;
