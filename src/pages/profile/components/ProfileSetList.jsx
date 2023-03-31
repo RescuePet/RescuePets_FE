@@ -21,12 +21,12 @@ const ProfileSetList = () => {
         <List>작성 글 목록</List>
         <ArrowSvg>&gt;</ArrowSvg>
       </ListBox>
-      <ListBox onClick={() => alert("준비중 입니다.")}>
+      <ListBox onClick={() => navigate("/profile/mycomment")}>
         <img src={comment} alt="my_post" />
         <List>댓글 목록</List>
         <ArrowSvg>&gt;</ArrowSvg>
       </ListBox>
-      <ListBox onClick={() => alert("준비중 입니다.")}>
+      <ListBox onClick={() => navigate("/profile/myscrap")}>
         <ClippingFill />
         <List>스크랩 목록</List>
         <ArrowSvg>&gt;</ArrowSvg>

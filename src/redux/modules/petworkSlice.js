@@ -69,13 +69,15 @@ export const __postMissingScrap = createAsyncThunk(
         state: Boolean,
       };
       if (!payload.state) {
-        const response = await instance.post(`/api/wish/missing/${payload.id}`);
+        const response = await instance.post(
+          `/api/scrap/missing/${payload.id}`
+        );
         console.log(response.data);
         data.state = true;
         return thunkAPI.fulfillWithValue(data);
       } else {
         const response = await instance.delete(
-          `/api/wish/missing/${payload.id}`
+          `/api/scrap/missing/${payload.id}`
         );
         console.log(response.data);
         data.state = false;
@@ -99,13 +101,15 @@ export const __postCatchScrap = createAsyncThunk(
         count: Number,
       };
       if (!payload.state) {
-        const response = await instance.post(`/api/wish/catch/${payload.id}`);
+        const response = await instance.post(`/api/scrap/catch/${payload.id}`);
         console.log(response.data);
         data.state = true;
         data.count = 1;
         return thunkAPI.fulfillWithValue(data);
       } else {
-        const response = await instance.delete(`/api/wish/catch/${payload.id}`);
+        const response = await instance.delete(
+          `/api/scrap/catch/${payload.id}`
+        );
         console.log(response.data);
         data.state = false;
         data.count = -1;

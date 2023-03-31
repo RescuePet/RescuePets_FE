@@ -44,16 +44,16 @@ export const __postAdoptionListScrap = createAsyncThunk(
         desertionNo: payload.desertionNo,
       };
       if (!payload.state) {
-        await instance.post(`/api/pets/scrap/${payload.desertionNo}`);
+        await instance.post(`/api/scrap/scrap/${payload.desertionNo}`);
         data.boolean = true;
         return thunkAPI.fulfillWithValue(data);
       } else if (payload.state) {
-        await instance.delete(`/api/pets/scrap/${payload.desertionNo}`);
+        await instance.delete(`/api/scrap/scrap/${payload.desertionNo}`);
         data.boolean = false;
         return thunkAPI.fulfillWithValue(data);
       }
     } catch (error) {
-      console.log(error.response.data.message);
+      console.log(error);
       throw new Error(error.response.data.message);
     }
   }

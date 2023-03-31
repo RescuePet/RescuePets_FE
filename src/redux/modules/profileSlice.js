@@ -34,6 +34,20 @@ export const __getMyCatchPost = createAsyncThunk(
 );
 
 // Get My Scrap post
+export const __getMyScrap = createAsyncThunk(
+  "getMyScrap",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await instance.get(
+        `api/scrap/list/?page=${payload.page}&size=${payload.size}`
+      );
+      console.log("__getMyScrapPost", response.data.data);
+      return thunkAPI.fulfillWithValue(response.data.data.scrapResponseDtoList);
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
 
 const initialState = {
   error: false,
@@ -41,6 +55,8 @@ const initialState = {
   entirePostPage: 1,
   myMissing: [],
   myCatch: [],
+  myScrapList: [],
+  myScrapPage: 1,
 };
 
 export const profileSlice = createSlice({
@@ -67,6 +83,15 @@ export const profileSlice = createSlice({
         state.entirePostList = [...state.entirePostList, ...action.payload];
       })
       .addCase(__getMyCatchPost.rejected, (state) => {
+        state.error = true;
+      });
+
+    builder
+      .addCase(__getMyScrap.fulfilled, (state, action) => {
+        state.myScrapPage = state.myScrapPage + 1;
+        state.myScrapList = [...state.myScrapList, ...action.payload];
+      })
+      .addCase(__getMyScrap.rejected, (state) => {
         state.error = true;
       });
   },
