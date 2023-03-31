@@ -15,7 +15,7 @@ import { CheckModal } from "../../elements/Modal";
 const Signin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [loginModal, toggleModal] = useModalState(false);
+  const [loginModal, toggleModal, setIsOpen] = useModalState(false);
 
   const {
     register,
@@ -53,25 +53,52 @@ const Signin = () => {
     dispatch(__signinUser(siginInfo));
   };
 
-  const SignInMessage = useSelector((state) => {
-    return state?.users?.Signinmessage
-  })
-
   const [SignInMsg, setSignInMsg] = useState('');
 
+  const SignInMessage = useSelector((state) => {
+    return state?.users?.Signin
+  })
+
   useEffect(() => {
-    if (SignInMessage === 'success') {
-      setSignInMsg("✅ 로그인 성공")
-
-      // setTimeout(function () {
-      //   navigate('/home')
-      // }, 1000);
-
-    } else if (SignInMessage === '아이디,비밀번호를 확인해주세요') {
-      setSignInMsg("⛔ 아이디 혹은 비밀번호를 확인해주세요")
+    // console.log(SignInMessage)
+    if (SignInMessage?.status === true) {
+      setSignInMsg(`✅  ${SignInMessage?.message}`)
+      setSignInMsg('')
+      navigate('/home')
+    }
+    else if (SignInMessage == '아이디,비밀번호를 확인해주세요') {
+      setSignInMsg(`⛔  ${SignInMessage}`)
     }
 
   }, [SignInMessage])
+
+
+
+  // // setSignInMsg(SignInMessage)
+  // useEffect(() => {
+
+  //   if (SignInMessage === '아이디,비밀번호를 확인해주세요') {
+  //     setSignInMsg("⛔ 아이디 혹은 비밀번호를 확인해주세요")
+  //     //  setSignInMsg("") 
+  //   }
+  //   // else if ( )
+  // })
+
+
+
+  // // useEffect(() => {
+  // //   if (SignInMessage === 'success') {
+  // //     setSignInMsg("✅ 로그인 성공")
+  // //   } else if (SignInMessage === '아이디,비밀번호를 확인해주세요') {
+  // //     setSignInMsg("⛔ 아이디 혹은 비밀번호를 확인해주세요")
+  // //   }
+  // // }, [SignInMessage])
+
+  // // if (SignInMsg === "✅ 로그인 성공") {
+  // //   // setTimeout(function () {
+  // //   // navigate("/home");
+  // //   // }, 1000);
+  // // }
 
   const URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_SIGN_ID}&redirect_uri=${process.env.REACT_APP_RESCUEPETS}/kakaologin`;
 
@@ -146,7 +173,8 @@ const Signin = () => {
           <CheckModal
             isOpen={loginModal}
             toggle={toggleModal}
-            onClose={toggleModal}>
+            onClose={toggleModal}
+            setIsOpen={setIsOpen}>
             {SignInMsg}
           </CheckModal>
         )}

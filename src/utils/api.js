@@ -88,14 +88,14 @@ home.interceptors.response.use((response) => {
     response.data = newData;
     return response;
   } else if (response.config.url.split("?")[0] === "/api/pets/info-list") {
-    let newArray = [...response.data.data.publicPetResponsDto];
+    let newArray = [...response.data.data.publicPetResponseDto];
     newArray.map((item) => {
       const refinedata = refineData(item);
       const newData = { ...item.data, refinedata };
       item.data = newData;
       return newData;
     });
-    response.data.publicPetResponsDto = [...newArray];
+    response.data.publicPetResponseDto = [...newArray];
     return response;
   }
   return response;

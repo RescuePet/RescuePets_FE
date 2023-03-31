@@ -5,5 +5,5 @@ export const useModalState = (initialState = false) => {
 
     const toggle = () => setIsOpen((prev) => !prev);
 
-    return [isOpen, toggle];
+    return [isOpen, toggle, setIsOpen];
 };

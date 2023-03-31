@@ -98,7 +98,7 @@ export const adoptionSlice = createSlice({
         state.loading = false;
         state.adoptionLists = [
           ...state.adoptionLists,
-          ...action.payload.publicPetResponsDto,
+          ...action.payload.publicPetResponseDto,
         ];
       })
       .addCase(__getAdoptionList.rejected, (state) => {

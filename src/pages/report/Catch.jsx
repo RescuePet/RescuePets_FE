@@ -143,8 +143,8 @@ const Catch = () => {
   const {
     register, handleSubmit, formState: { errors },
     reset, resetField, watch } = useForm({ mode: 'onChange' });
-
-  // 버튼을 누르면 선택된 usehookForm 제거 
+    
+  // 버튼을 누르  면 선택된 usehookForm 제거 
   const onClickDeleteValue = (data) => {
     resetField(data)
   }
