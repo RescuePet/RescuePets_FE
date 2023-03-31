@@ -87,6 +87,7 @@ const UserImage = styled.img`
   margin-bottom: 0.875rem;
   border-radius: 50%;
   background-color: tran;
+  object-fit: cover;
 `;
 
 const UserName = styled.span`

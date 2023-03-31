@@ -105,7 +105,9 @@ const Editinfo = () => {
           
 
     <EditHeaderText> 
-      <h2>프로필 수정하기</h2>
+      <div></div>
+      <div><h2>프로필 수정하기</h2></div>
+      {/* <h2>프로필 수정하기</h2> */}
          </EditHeaderText>
     <EditHeaderImg>   
        <img src={close} onClick={MoveToBackPage} />
@@ -193,10 +195,16 @@ const EditHeaderText = styled.div`
   align-items: center;
   justify-content: right;
   padding-right: 2.3125rem;
-  >h2 {
+  >div{
+    width: 50%;
+    height: 100%;
+    ${props => props.theme.FlexCenter}
+    >h2 {
     ${(props) => props.theme.Body_500_16}
       color: ${(props) => props.theme.color.black};
   }
+  }
+  
  
     
 `;
@@ -219,7 +227,6 @@ const EditInfoImgBox = styled.div`
   width: 100%;
   height: 7.5rem;
   padding-top: 20px;
-
   ${(props) => props.theme.FlexCenter}
 `;
 
@@ -245,9 +252,10 @@ const EditInfoImgInput = styled.img`
   position: absolute;
   width: 1.5rem;
   height: 1.5rem;
-  right: 28px;
-  top: 40px;
+  right: 1.75rem;
+  top: 1.875rem;
   background: transparent;
+  cursor: pointer;
 `;
 
 const EditInfoTextBox = styled.div`
@@ -267,7 +275,6 @@ const EditInfoTextBox = styled.div`
   > input {
     width: 100%;
     height: 1.5rem;
-    /* border-bottom: 1px solid #000; */
     ${Border_1_color}
     border-radius: 0;
     ${(props) => props.theme.Body_400_12}
