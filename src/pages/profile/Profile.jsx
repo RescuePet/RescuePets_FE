@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
-import { HeaderStyle } from "../../style/Mixin";
+import { FlexAttribute, HeaderStyle } from "../../style/Mixin";
 import { Body_400_12 } from "../../style/theme";
 import ProfileSetList from "./components/ProfileSetList";
 import UserInformation from "./components/UserInformation";
@@ -45,13 +45,13 @@ const Profile = () => {
   useEffect(() => {
     if (SignoutMsg === "LOGOUT_SUCCESS") {
       setMsg("✅ 로그아웃 성공");
-      setTimeout(function () {
+      setTimeout(() => {
         Cookies.remove("Token");
         Cookies.remove("Refresh");
         Cookies.remove("UserInfo");
         console.log("로그아웃성공");
         setMsg("");
-        navigate("/");
+        navigate("/signin");
       }, 1000);
     } else {
       setMsg("서버오류");
@@ -88,27 +88,25 @@ const Profile = () => {
 
 const ProfileHeader = styled.div`
   ${HeaderStyle}
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  margin-left: 18px;
+  ${FlexAttribute("row", "space-between", "center")}
 `;
 
 const HeaderImage = styled.div`
   margin-left: 18px;
   width: 50%;
   height: 100%;
+
   > img {
-    width: 8.75rem;
     height: 1.875rem;
   }
 `;
 
 const HeaderHamburgermenu = styled.div`
-  margin-left: 7.5rem;
+  cursor: pointer;
   > img {
     width: 1.5rem;
     height: 1.5rem;
+    margin-right: 20px;
   }
 `;
 

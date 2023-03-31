@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Splash from "../../elements/Splash";
 import { instance } from "../../utils/api";
 
 const KakaoSignin = () => {
@@ -15,7 +16,7 @@ const KakaoSignin = () => {
     navigate("/home");
   };
 
-  return <div>KakaoSignin</div>;
+  return <Splash />;
 };
 
 export default KakaoSignin;

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Border_1_color, FlexAttribute } from "../../../style/Mixin";
 import { Body_400_12, Button_700_16 } from "../../../style/theme";
@@ -10,10 +10,14 @@ import {
   __getMyMissingPost,
 } from "../../../redux/modules/profileSlice";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+import isLogin from "../../../utils/isLogin";
 
 const UserInformation = () => {
-  const userInfo = JSON.parse(Cookies.get("UserInfo"));
+  const [userInfo, setUserInfo] = useState({});
+
   const disapatch = useDispatch();
+  const navigate = useNavigate();
 
   const missingPayload = {
     page: 1,
@@ -24,6 +28,13 @@ const UserInformation = () => {
     page: 1,
     size: 1000,
   };
+  useEffect(() => {
+    if (isLogin() === false) {
+      navigate("/signin");
+      return;
+    }
+    setUserInfo(JSON.parse(Cookies.get("UserInfo")));
+  }, [navigate]);
 
   useEffect(() => {
     disapatch(__getMyMissingPost(missingPayload));
