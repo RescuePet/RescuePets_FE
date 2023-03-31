@@ -12,21 +12,10 @@ import { useNavigate } from "react-router-dom";
 import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
 import isLogin from "../../utils/isLogin";
-
 const Signin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isLogin() === true) {
-      navigate("/home");
-    }
-  }, []);
-
-  const [loginModal, toggleModal, setToggle] = useModalState(false);
-
-  console.log(loginModal);
-
+  const [loginModal, toggleModal, setIsOpen] = useModalState(false);
   const {
     register,
     handleSubmit,
@@ -35,16 +24,13 @@ const Signin = () => {
     resetField,
     watch,
   } = useForm({ mode: "onChange" });
-
   // 삭제로직
   const onClickDeleteValue = (data) => {
     resetField(data);
   };
   // 입력값에 따라 버튼 활성화
   const [isActive, setIsActive] = useState(false);
-
   const watchAll = Object.values(watch());
-
   useEffect(() => {
     if (watchAll.every((el) => el)) {
       setIsActive(true);
@@ -52,7 +38,6 @@ const Signin = () => {
       setIsActive(false);
     }
   }, [watchAll]);
-
   const onSubmitSigninHanler = (data) => {
     const siginInfo = {
       email: data.email,
@@ -62,29 +47,24 @@ const Signin = () => {
     toggleModal();
     dispatch(__signinUser(siginInfo));
   };
-
   const [SignInMsg, setSignInMsg] = useState("");
-
   const SignInMessage = useSelector((state) => {
     return state?.users?.Signin;
   });
-
   useEffect(() => {
+    // console.log(SignInMessage)
     if (SignInMessage?.status === true && isLogin()) {
-      setSignInMsg(`✅  ${SignInMessage?.message}`);
+      setSignInMsg(`:흰색_확인_표시:  ${SignInMessage?.message}`);
       setSignInMsg("");
       navigate("/home");
     } else if (SignInMessage == "아이디,비밀번호를 확인해주세요") {
-      setSignInMsg(`⛔  ${SignInMessage}`);
+      setSignInMsg(`:출입금지:  ${SignInMessage}`);
     }
   }, [SignInMessage]);
-
   const URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_SIGN_ID}&redirect_uri=${process.env.REACT_APP_RESCUEPETS}/kakaologin`;
-
   const kakaoSignUp = () => {
     window.location.href = URL;
   };
-
   return (
     <Layout>
       <SignContainer onSubmit={handleSubmit(onSubmitSigninHanler)}>
@@ -153,6 +133,7 @@ const Signin = () => {
             isOpen={loginModal}
             toggle={toggleModal}
             onClose={toggleModal}
+            setIsOpen={setIsOpen}
           >
             {SignInMsg}
           </CheckModal>
@@ -171,7 +152,6 @@ const Signin = () => {
               로그인
             </Button>
           )}
-
           <Button type="button" fillButton onClick={() => kakaoSignUp()}>
             카카오톡으로 로그인
           </Button>
@@ -185,39 +165,34 @@ const Signin = () => {
     </Layout>
   );
 };
-
 const SignContainer = styled.form`
   ${FlexAttribute("column")}
   width: 100%;
 `;
-
 const SignHeader = styled.div`
   ${FlexAttribute("row", "center")}
   ${HeaderStyle}
 `;
-
 const SignForm = styled.div`
   ${FlexAttribute("column", "center")}
-  margin: 0px 1.25rem 0px 1.25rem;
+  margin: 0px 20px 0px 20px;
   img {
     ${SignSvgStyle}
   }
 `;
-
 const SignText = styled.span`
   font-size: 0.875rem;
   margin-top: 2rem;
 `;
-
 const InputWrapper = styled.div`
   position: relative;
   display: flex;
   align-items: center;
   ${FlexAttribute("row", "", "center")}
-  border-bottom: .125rem solid #eeeeee;
+  border-bottom: .125rem solid #EEEEEE;
   > img {
     position: absolute;
-    right: 0.625rem;
+    right: 0;
   }
   > span {
     position: absolute;
@@ -226,17 +201,14 @@ const InputWrapper = styled.div`
     ${(props) => props.theme.Span_alert}
   }
 `;
-
 const SignInput = styled.input`
   width: 100%;
   height: 2.875rem;
   font-size: 0.75rem;
-  padding: 0.625rem;
   ::placeholder {
     color: #cccccc;
   }
 `;
-
 const ButtonWrapper = styled.div`
   ${FlexAttribute("column", "center", "center")}
   margin-top: 3.25rem;
@@ -244,7 +216,6 @@ const ButtonWrapper = styled.div`
     margin-bottom: 1.125rem;
   }
 `;
-
 const AutoSignInWrapper = styled.div`
   ${FlexAttribute("row", "flex-end", "center")}
   margin: 1.125rem 1.9375rem 0 0;
@@ -258,27 +229,22 @@ const AutoSignInWrapper = styled.div`
     color: #666666;
   }
 `;
-
 const SignUpWrapper = styled.div`
   ${FlexAttribute("row", "center", "center")}
   margin-top: 1.5rem;
 `;
-
 const SignUpSpan = styled.span`
   font-size: 0.875rem;
   cursor: pointer;
 `;
-
 const Forgot = styled.span`
   font-size: 0.75rem;
   color: #999999;
   cursor: pointer;
 `;
-
 const BrSpan = styled.span`
   margin: 0 1rem;
   font-size: 0.75rem;
   color: #999999;
 `;
-
 export default Signin;
