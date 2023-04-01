@@ -84,6 +84,7 @@ const Catch = () => {
 
   // 종류데이터
   const [type, setType] = useState(NameValue[0].name);
+
   const [typeID, setTypeID] = useState("DOG");
 
   const onChangeData = (newData) => {
@@ -94,22 +95,22 @@ const Catch = () => {
     setTypeID(newValue);
   };
 
-  const [time, setTime] = useState(TimeValue[0].name);
+  const [time, setTime] = useState(TimeValue[0]?.name);
+  // console.log(time)
   const onChangeTimeData = (newData) => {
     setTime(newData);
+    // console.log(time)
   };
   // 콘솔없애기 위한 로직
   const onChangeTimeValeu = () => {};
 
-  // Tab 로직
-  const [currentGenderTab, setCurrentGenderTab] = useState(0); //tab
-  const [currentGenderValue, setCurrentGenderValue] = useState("수컷");
-  const [currentGenderEnValue, setCurrentGenderEnValue] = useState("DOG");
-
+  // TAB 로직 
+  const [currentGenderTab, setCurrentGenderTab] = useState(0);
   const [currentNeuteredTab, setCurrentNeuteredTab] = useState(0);
+  const [currentGenderValue, setCurrentGenderValue] = useState("수컷");
+  const [currentGenderEnValue, setCurrentGenderEnValue] = useState("MALE");
   const [currentNeuteredValue, setCurrentNeuteredValue] = useState("완료");
   const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState("YES");
-
   const selectMGenderHandler = (index) => {
     setCurrentGenderTab(index);
     setCurrentGenderValue(SeletegenderArr[index].gender);
@@ -153,8 +154,7 @@ const Catch = () => {
     setImageFormData(imageFormLists);
   };
 
-  // console.log("마지막이미지", showImages)
-  // console.log("마지막폼데이터", imageFormData)
+
 
   const onClickDeleteHandler = () => {
     setShowImages("");
@@ -228,6 +228,9 @@ const Catch = () => {
 
   // form submit 로직
   const onSubmitSightingHanlder = (data) => {
+    console.log(time)
+    console.log(currentGenderEnValue)
+    console.log(currentNeuteredEnValue)
     if (addressDiv?.innerHTML === "") {
       alert("지도에 위치를 표기해주세요");
     } else {
@@ -580,13 +583,13 @@ const Catch = () => {
           </Button>
         )}
 
-        {
+      {postNumber == ''? null : (
           <PostModal
             isOpen={loginModal}
             toggle={toggleModal}
             onClose={toggleModal}
             data={postNumber}
-          ></PostModal>
+          ></PostModal>)
         }
       </ReportSightingContainer>
     </Layout>

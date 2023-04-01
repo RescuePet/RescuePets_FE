@@ -11,6 +11,7 @@ import close from "../../asset/Close.svg";
 import Button from "../../elements/Button";
 import { __PutMyinfoEdit } from "../../redux/modules/infoeditSlice";
 import Cookies from "js-cookie";
+import { Loading } from "../../components/Loading";
 
 // import
 const Editinfo = () => {
@@ -100,9 +101,10 @@ const Editinfo = () => {
 
   return (
     <Layout>
+      {/* <Loading></Loading> */}
       <EditInfoForm onSubmit={handleSubmit(onSubmitmyInfoHandler)}>
         <EditInfoHeader>
-          
+        
 
     <EditHeaderText> 
       <div></div>
@@ -177,7 +179,6 @@ export default Editinfo;
 const EditInfoForm = styled.form`
   width: 100%;
   height: 100%;
-
 `;
 
 const EditInfoHeader = styled.div`
@@ -202,11 +203,8 @@ const EditHeaderText = styled.div`
     >h2 {
     ${(props) => props.theme.Body_500_16}
       color: ${(props) => props.theme.color.black};
+    }
   }
-  }
-  
- 
-    
 `;
 const EditHeaderImg = styled.div`
   position: absolute;
@@ -215,13 +213,6 @@ const EditHeaderImg = styled.div`
   height: 100%;
   ${props => props.theme.FlexCenter}
 `;
-
-
-
-
-
-
-
 
 const EditInfoImgBox = styled.div`
   width: 100%;
