@@ -53,17 +53,16 @@ const Missing = () => {
   const navigate = useNavigate();
   const [loginModal, toggleModal] = useModalState(false);
   const [postNumber, setPostNumber] = useState("");
-
   const MissingNumber = useSelector((state) => {
-    return state?.MissingData?.data;
+    return state.MissingData
   });
 
   const data = {
     number: MissingNumber?.data,
     name: "missingdetail",
   };
-
   useEffect(() => {
+    console.log(MissingNumber) // console.log(catchNumber.data[0].id)
     setPostNumber(data);
   }, [MissingNumber]);
   // 리덕스에 저장되어있는 메뉴바 토글상태를 가지고 오고
@@ -95,7 +94,7 @@ const Missing = () => {
   const [currentGenderTab, setCurrentGenderTab] = useState(0);
   const [currentNeuteredTab, setCurrentNeuteredTab] = useState(0);
   const [currentGenderValue, setCurrentGenderValue] = useState("수컷");
-  const [currentGenderEnValue, setCurrentGenderEnValue] = useState("MALE");
+  const [currentGenderEnValue, setCurrentGenderEnValue] = useState("DOG");
   const [currentNeuteredValue, setCurrentNeuteredValue] = useState("완료");
   const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState("YES");
   const selectMGenderHandler = (index) => {
@@ -135,10 +134,12 @@ const Missing = () => {
     setShowImages(imageUrlLists);
     setImageFormData(imageFormLists);
   };
+
   const onClickDeleteHandler = () => {
     setShowImages("");
     setImageFormData("");
   };
+  
   const {
     register,
     handleSubmit,
@@ -212,7 +213,7 @@ const Missing = () => {
       });
       dispatch(__PostMissingData(formData));
       toggleModal();
-      reset();
+      // reset();
       // alert('등록완료')
     }
   };
@@ -597,13 +598,13 @@ const Missing = () => {
             작성 완료
           </Button>
         )}
-        {postNumber == ''? null : (
+        {
           <PostModal
             isOpen={loginModal}
             toggle={toggleModal}
             onClose={toggleModal}
             data={postNumber}
-          ></PostModal>)
+          ></PostModal>
         }
       </ReportMissingContainer>
     </Layout>

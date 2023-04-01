@@ -23,7 +23,8 @@ export const __PostMissingData = createAsyncThunk(
         console.log(payload)
         try {
             const response = await instance.post('/api/pets/missing/', payload);
-            return thunkAPI.fulfillWithValue(response.data);
+            console.log(response)
+            return thunkAPI.fulfillWithValue(response?.data?.data);
         } catch (error) {
             console.log(error.response);
         }

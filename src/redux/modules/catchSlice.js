@@ -19,14 +19,9 @@ export const __PostCatchData = createAsyncThunk(
   "postgetCatchData",
   async (payload, thunkAPI) => {
     try {
-      await instance.post("/api/pets/catch/", payload, 
-      // {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // }
-      );
-      return thunkAPI.fulfillWithValue("success");
+      const response = await instance.post("/api/pets/catch/", payload);
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response?.data?.data);
     } catch (error) {
       console.log(error.response);
       throw new Error(error.response.data.message);
@@ -51,7 +46,7 @@ export const catchData = createSlice({
     });
     builder.addCase(__PostCatchData.fulfilled, (state, action) => {
       state.loading = false;
-      // state.data = action.payload;
+      state.data = action.payload;
       state.error = null;
     });
     builder.addCase(__PostCatchData.rejected, (state, action) => {

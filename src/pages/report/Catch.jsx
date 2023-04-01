@@ -55,13 +55,17 @@ const Catch = () => {
   const [postNumber, setPostNumber] = useState("");
 
   const catchNumber = useSelector((state) => {
-    return state.catchData?.data;
+    return state.catchData
   });
+
+  console.log(postNumber)
   const data = {
     number: catchNumber?.data,
     name: "sightingdetail",
   };
+
   useEffect(() => {
+    console.log(catchNumber) // console.log(catchNumber.data[0].id)
     setPostNumber(data);
   }, [catchNumber]);
   // console.log(postNumber)
@@ -261,7 +265,7 @@ const Catch = () => {
       }
       dispatch(__PostCatchData(formData));
       toggleModal();
-      reset();
+      // reset();
       // alert('등록완료')
     }
   };
