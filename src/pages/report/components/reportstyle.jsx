@@ -33,6 +33,9 @@ export const ReportHeader = styled.div`
     width: 33.3%;
     ${(props) => props.theme.FlexCenter}
     ${(props) => props.theme.Title_700_18}
+    >img{
+      cursor: pointer;
+    }
   }
 `;
 
