@@ -53,13 +53,16 @@ const Missing = () => {
   const navigate = useNavigate();
   const [loginModal, toggleModal] = useModalState(false);
   const [postNumber, setPostNumber] = useState("");
+
   const MissingNumber = useSelector((state) => {
-    return state.MissingData?.data;
+    return state?.MissingData?.data;
   });
+
   const data = {
     number: MissingNumber?.data,
     name: "missingdetail",
   };
+
   useEffect(() => {
     setPostNumber(data);
   }, [MissingNumber]);
@@ -92,7 +95,7 @@ const Missing = () => {
   const [currentGenderTab, setCurrentGenderTab] = useState(0);
   const [currentNeuteredTab, setCurrentNeuteredTab] = useState(0);
   const [currentGenderValue, setCurrentGenderValue] = useState("수컷");
-  const [currentGenderEnValue, setCurrentGenderEnValue] = useState("DOG");
+  const [currentGenderEnValue, setCurrentGenderEnValue] = useState("MALE");
   const [currentNeuteredValue, setCurrentNeuteredValue] = useState("완료");
   const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState("YES");
   const selectMGenderHandler = (index) => {
@@ -594,13 +597,13 @@ const Missing = () => {
             작성 완료
           </Button>
         )}
-        {
+        {postNumber == ''? null : (
           <PostModal
             isOpen={loginModal}
             toggle={toggleModal}
             onClose={toggleModal}
             data={postNumber}
-          ></PostModal>
+          ></PostModal>)
         }
       </ReportMissingContainer>
     </Layout>
