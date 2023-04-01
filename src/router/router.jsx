@@ -17,6 +17,9 @@ import Catch from "../pages/report/Catch";
 import KakaoSignin from "../pages/sign/KakaoSignin";
 import Editinfo from "../pages/profile/Editinfo";
 import Poster from "../pages/poster/Poster";
+import MyComment from "../pages/profile/MyComment";
+import MyPost from "../pages/profile/MyPost";
+import MyScrap from "../pages/profile/MyScrap";
 
 const Router = () => {
   return (
@@ -40,6 +43,9 @@ const Router = () => {
         <Route path="/sightingdetail/:id" element={<SightingDetail />} />
         <Route path="/kakaologin" element={<KakaoSignin />} />
         <Route path="/poster" element={<Poster />} />
+        <Route path="/profile/mycomment" element={<MyComment />} />
+        <Route path="/profile/mypost" element={<MyPost />} />
+        <Route path="/profile/myscrap" element={<MyScrap />} />
       </Routes>
     </BrowserRouter>
   );

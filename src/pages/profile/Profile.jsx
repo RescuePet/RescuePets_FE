@@ -64,10 +64,14 @@ const Profile = () => {
       <ProfileHeader>
         <HeaderImage>
           {" "}
-          <img src={profileHeader} />
+          <img src={profileHeader} alt="proflieheader" />
         </HeaderImage>
         <HeaderHamburgermenu>
-          <img src={setting} onClick={MoveToSettingHandler} />
+          <img
+            src={setting}
+            onClick={MoveToSettingHandler}
+            alt="profilesetting"
+          />
         </HeaderHamburgermenu>
       </ProfileHeader>
       <UserInformation />

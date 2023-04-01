@@ -38,6 +38,7 @@ const Home = () => {
     }
     setUserInfo(JSON.parse(Cookies.get("UserInfo")));
   }, [navigate]);
+
   useEffect(() => {
     if (inView) {
       dispatch(addAdoptionPage());

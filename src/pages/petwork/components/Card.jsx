@@ -106,7 +106,7 @@ const ScrapStateTrue = styled(ClippingFill)`
   z-index: 10;
   cursor: pointer;
   path {
-    fill: ${(props) => props.theme.color.white};
+    fill: ${(props) => props.theme.color.primary_normal};
   }
 `;
 
@@ -116,6 +116,9 @@ const ScrapStateFalse = styled(ClippingEmpty)`
   right: 1rem;
   z-index: 10;
   cursor: pointer;
+  path {
+    fill: ${(props) => props.theme.color.primary_normal};
+  }
 `;
 
 const CardInfoContainer = styled.div`
