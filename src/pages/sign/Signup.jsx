@@ -150,21 +150,12 @@ const Signup = () => {
                   pattern: {
                     value: /^[a-zA-Z0-9]+$/,
                     // Error 영문 숫자 2 ~ 8글자 사이로 입력
-                    message: "영문 숫자 2 ~ 8글자 사이로 입력",
+                    message: "영문 숫자 2 ~ 12글자 사이로 입력",
                   },
                   maxLength: { value: 12, message: "12글자이내 작성" },
                 })}
               />
               <span>{errors?.id?.message}</span>
-              {/* {
-                emailCheck === true ? (
-                  <span>
-                    {
-                      errors?.id?.message === '' ? null : <img src={Vector} />
-                    }
-                    {errors?.id?.message}</span>
-                ) : null
-              } */}
             </div>
             <p style={{ position: "aabsoluteb", top: "-5px" }}>@</p>
             <div>
@@ -232,9 +223,9 @@ const Signup = () => {
                 required: true,
                 pattern: {
                   value: /^[ㄱ-ㅎ|가-힣]+$/,
-                  message: "8자이내 한글 또는 영문",
+                  message: "6자이내 한글 또는 영문",
                 },
-                maxLength: { value: 8, message: "8자이내 한글 또는 영문" },
+                maxLength: { value: 6, message: "6자이내 한글 또는 영문" },
               })}
               name="nickname"
               type="text"

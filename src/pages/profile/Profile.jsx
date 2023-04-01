@@ -89,13 +89,13 @@ const Profile = () => {
 const ProfileHeader = styled.div`
   ${HeaderStyle}
   ${FlexAttribute("row", "space-between", "center")}
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
 `;
 
 const HeaderImage = styled.div`
-  margin-left: 18px;
   width: 50%;
   height: 100%;
-
   > img {
     height: 1.875rem;
   }
@@ -103,6 +103,12 @@ const HeaderImage = styled.div`
 
 const HeaderHamburgermenu = styled.div`
   cursor: pointer;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+
   > img {
     width: 1.5rem;
     height: 1.5rem;
