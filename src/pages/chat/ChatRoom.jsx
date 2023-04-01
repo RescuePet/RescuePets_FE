@@ -12,11 +12,12 @@ import Send from "./components/Send";
 import Receive from "./components/Receive";
 import { instance } from "../../utils/api";
 import { useParams } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const ChatRoom = () => {
   const { id, nickname } = useParams();
   const [chatlog, setChatLog] = useState([]);
-  const sender = JSON.parse(localStorage.getItem("userInfo"));
+  const sender = JSON.parse(Cookies.get("UserInfo"));
 
   let client;
   console.log("roomId", id);
