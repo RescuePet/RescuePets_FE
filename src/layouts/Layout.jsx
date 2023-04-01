@@ -7,14 +7,13 @@ import isLogin from "../utils/isLogin";
 
 const Layout = ({ children }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (isLogin() === false) {
       navigate("/signin");
     }
   }, [navigate]);
-
-  const location = useLocation();
 
   return (
     <>
