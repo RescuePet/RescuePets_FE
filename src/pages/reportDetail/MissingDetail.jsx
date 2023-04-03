@@ -35,6 +35,7 @@ import { instance } from "../../utils/api";
 import ScrollToTop from "../../elements/ScrollToTop";
 import Cookies from "js-cookie";
 
+
 const MissingDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -61,7 +62,7 @@ const MissingDetail = () => {
   }, [missingComment]);
 
   if (JSON.stringify(missingPostDetail) === "{}") {
-    return <div>로딩중...</div>;
+    return <div>로딩중...12312</div>;
   }
 
   const refineData = petworkRefineData(missingPostDetail);

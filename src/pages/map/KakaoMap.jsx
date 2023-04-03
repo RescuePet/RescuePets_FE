@@ -9,12 +9,18 @@ import { __GetMissingData } from "../../redux/modules/missingSlice";
 import { __GetCatchData } from "../../redux/modules/catchSlice";
 import { useModalState } from "../../hooks/useModalState";
 import { MarkerModal } from "./components/Modal";
+import { Spinner } from "../../components/Spinner";
 const { kakao } = window;
 
 const KakaoMap = () => {
   const dispatch = useDispatch();
   const [newCatchData, setNewCatchData] = useState("");
   const [loginModal, toggleModal] = useModalState(false);
+  const [isLoading, setIsLoading]= useState(true);
+
+  // if(isLoading === true) {
+  //   return <Spinner/>
+  // }
 
   const menutoggle = useSelector((state) => {
     return state.menubar.toggle;
@@ -30,18 +36,20 @@ const KakaoMap = () => {
   useEffect(() => {
     dispatch(__GetMissingData());
     dispatch(__GetCatchData());
-    // toggleModal()
   }, []);
 
   // 현재위치를 가지고오는 로직
   const [long, setLong] = useState("");
   const [lati, setLati] = useState("");
 
-  navigator.geolocation.getCurrentPosition(onSucces, onFailure);
 
+
+  navigator.geolocation.getCurrentPosition(onSucces, onFailure);
+  // console.log(onSucces)
   function onSucces(position) {
     const lat = position.coords.latitude;
     const lng = position.coords.longitude;
+    setIsLoading(false)
     setLong(lng);
     setLati(lat);
   }
@@ -56,7 +64,7 @@ const KakaoMap = () => {
     setLati(defaultValue.lat);
     console.log("위치 정보를 찾을수 없습니당.");
   }
-  console.log(long);
+  // console.log(long);
   const mapRef = useRef();
   // 유저가 직접올리는 것들 !
   const missingData = useSelector((state) => state.MissingData?.data);
@@ -217,7 +225,7 @@ const KakaoMap = () => {
   // 실패시 작동 로직
 
   useEffect(() => {
-    console.log("여기작동");
+    // console.log("좌표못가지고옴");
     // 목격글 마커
     const missingimageSrc = `${missingmarker}`;
     const missingimageSize = new kakao.maps.Size(16, 20);
@@ -320,34 +328,38 @@ const KakaoMap = () => {
     });
   }, [onFailure]);
 
+ 
+  // 통신중일떄 보여줄것
+  // if (JSON.stringify(EditMsg.loading) === "true") {
+  //   return <div>Loading...</div>;
+  // }
+   // if(isLoading === true) {
+  //   return <Spinner/>
+  // }
+console.log(isLoading)
   return (
-    <>
-      {mapBg === false ? (
-        <div
-          id="myMap"
-          style={{
-            width: "100%",
-            height: "91vh",
-            filter: "brightness(20%)",
-            position: "relative",
-          }}
-        ></div>
-      ) : (
-        <div
-          id="myMap"
-          style={{ width: "100%", height: "90vh", position: "relative" }}
-        >
-          <MarkerModal
-            isOpen={loginModal}
-            toggle={toggleModal}
-            onClose={toggleModal}
-            data={newCatchData}
-          ></MarkerModal>
-          <FloatingPetwork />
-        </div>
-      )}
-    </>
-  );
-};
+    isLoading === true ? (
+
+      <div
+      id="myMap"
+      style={{ width: "100%", height: "90vh", position: "relative" }}>
+        <Spinner/>
+      <FloatingPetwork />
+    </div>
+
+    ) : (
+      <div
+      id="myMap"
+      style={{ width: "100%", height: "90vh", position: "relative" }}>
+      <MarkerModal
+        isOpen={loginModal}
+        toggle={toggleModal}
+        onClose={toggleModal}
+        data={newCatchData}
+      ></MarkerModal>
+      <FloatingPetwork />
+    </div>
+    )
+  )};
 
 export default KakaoMap;
