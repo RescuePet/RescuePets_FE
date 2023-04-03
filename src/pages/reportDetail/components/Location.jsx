@@ -6,7 +6,7 @@ import Marker from "../../../asset/marker/marker.png";
 
 const Location = ({ locationInfo }) => {
   const { kakao } = window;
-  console.log(locationInfo);
+  // console.log(locationInfo);
 
   useEffect(() => {
     const mapContainer = document.getElementById("map"), // 지도를 표시할 div

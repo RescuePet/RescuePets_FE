@@ -6,7 +6,7 @@ import { Body_400_10, Body_400_12, Body_500_14 } from "../../../style/theme";
 import profileIcon from "../../../asset/profile.svg";
 
 const Comment = ({ item }) => {
-  console.log(item);
+  // console.log(item);
   return (
     <CommentBox>
       <UserInfo>

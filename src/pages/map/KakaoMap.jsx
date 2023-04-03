@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import styled from "styled-components";
 import { FloatingPetwork } from "./components/FloatingPetwork";
 import missingmarker from "../../asset/marker/missingmarker.png";
 import catchmarker from "../../asset/marker/catchmarker.png";
@@ -18,9 +17,6 @@ const KakaoMap = () => {
   const [loginModal, toggleModal] = useModalState(false);
   const [isLoading, setIsLoading]= useState(true);
 
-  // if(isLoading === true) {
-  //   return <Spinner/>
-  // }
 
   const menutoggle = useSelector((state) => {
     return state.menubar.toggle;
@@ -38,11 +34,19 @@ const KakaoMap = () => {
     dispatch(__GetCatchData());
   }, []);
 
+
+  // 마커클릭시 모달창에 정보뜨고 상세보기 이동시 값 지워주는 로직 
+  const deleteData = (data)=>{
+    setNewCatchData(data)
+  }
+
+
+
+
+
   // 현재위치를 가지고오는 로직
   const [long, setLong] = useState("");
   const [lati, setLati] = useState("");
-
-
 
   navigator.geolocation.getCurrentPosition(onSucces, onFailure);
   // console.log(onSucces)
@@ -62,11 +66,12 @@ const KakaoMap = () => {
   function onFailure() {
     setLong(defaultValue.lng);
     setLati(defaultValue.lat);
+    setIsLoading(false)
     console.log("위치 정보를 찾을수 없습니당.");
   }
-  // console.log(long);
+
   const mapRef = useRef();
-  // 유저가 직접올리는 것들 !
+
   const missingData = useSelector((state) => state.MissingData?.data);
   // console.log("실종데이터 ", missingData)
   useEffect(() => {
@@ -115,12 +120,12 @@ const KakaoMap = () => {
     marker.setMap(mapRef.current);
   }, [long]);
 
-  // if (onSucces == '') {
-  //   return <div>Loading...</div>;
-  // }
 
   useEffect(() => {
     // 목격글 마커
+    // missingmarker 보라색
+    // catchmarker   분홍색 
+    // 실종 Missing 분홍색 상세가면 
     const missingimageSrc = `${missingmarker}`;
     const missingimageSize = new kakao.maps.Size(16, 20);
     const missingimageOption = { offset: new kakao.maps.Point(10, 20) };
@@ -166,6 +171,7 @@ const KakaoMap = () => {
           ...data,
           ...item,
         };
+
         setNewCatchData(newItem);
         polyline.setMap(mapRef.current);
       });
@@ -196,6 +202,7 @@ const KakaoMap = () => {
       });
 
       kakao.maps.event.addListener(marker, "click", function () {
+
         toggleModal();
         // 현재 내위치랑 클릭한 마커에 위치를 가져오는 로직 거리도 구해야만한다
         const linePath = [
@@ -209,7 +216,9 @@ const KakaoMap = () => {
           strokeColor: "#FFAE00",
           strokeOpacity: 0,
         });
+
         const distance = Math.round(polyline.getLength());
+
         const data = { km: distance, name: "sightingdetail" };
 
         const newItem = {
@@ -239,7 +248,7 @@ const KakaoMap = () => {
 
     // 실종글 작성 마커 인포 생성 로직
     missingData?.data?.map((item) => {
-      // console.log(item)
+
       let marker = new kakao.maps.Marker({
         map: mapRef.current,
         position: new kakao.maps.LatLng(
@@ -249,9 +258,9 @@ const KakaoMap = () => {
         image: missingmarkerImage,
       });
       kakao.maps.event.addListener(marker, "click", function () {
-        // console.log(item)
+
         toggleModal();
-        // 현재 내위치랑 클릭한 마커에 위치를 가져오는 로직 거리도 구해야만한다
+
         const linePath = [
           new kakao.maps.LatLng(lati, long),
           new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
@@ -264,7 +273,7 @@ const KakaoMap = () => {
           strokeOpacity: 0, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
         });
 
-        // // 선의 총 거리를 계산합니다 이값을 item이라는 객체안에 넣어애만한다
+
         const distance = Math.round(polyline.getLength());
         const data = { km: distance, name: "missingdetail" };
 
@@ -274,6 +283,7 @@ const KakaoMap = () => {
         };
         setNewCatchData(newItem);
         polyline.setMap(mapRef.current);
+
       });
     });
 
@@ -290,7 +300,7 @@ const KakaoMap = () => {
 
     // 목격글 작성 마커 인포 생성 로직
     catchData?.data?.map((item) => {
-      // console.log(item)
+
       let marker = new kakao.maps.Marker({
         map: mapRef.current,
         position: new kakao.maps.LatLng(
@@ -303,7 +313,7 @@ const KakaoMap = () => {
 
       kakao.maps.event.addListener(marker, "click", function () {
         toggleModal();
-        // 현재 내위치랑 클릭한 마커에 위치를 가져오는 로직 거리도 구해야만한다
+  
         const linePath = [
           new kakao.maps.LatLng(lati, long),
           new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
@@ -327,19 +337,9 @@ const KakaoMap = () => {
       });
     });
   }, [onFailure]);
-
- 
-  // 통신중일떄 보여줄것
-  // if (JSON.stringify(EditMsg.loading) === "true") {
-  //   return <div>Loading...</div>;
-  // }
-   // if(isLoading === true) {
-  //   return <Spinner/>
-  // }
-console.log(isLoading)
+  console.log("값지워야함",newCatchData)
   return (
     isLoading === true ? (
-
       <div
       id="myMap"
       style={{ width: "100%", height: "90vh", position: "relative" }}>
@@ -356,6 +356,7 @@ console.log(isLoading)
         toggle={toggleModal}
         onClose={toggleModal}
         data={newCatchData}
+        deleteData={deleteData}
       ></MarkerModal>
       <FloatingPetwork />
     </div>

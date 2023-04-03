@@ -215,29 +215,34 @@ export function MarkerModal(props) {
   const navigate = useNavigate();
 
   const data = props?.data;
-  // console.log(data)
+  const deleteData = props?.deleteData;
+  // console.log(deleteData)
   const Stringkm = String(data?.km);
   const Arraykm = Stringkm.split("");
   Arraykm.splice(Arraykm.length - 3, 0, ".");
   const KMDATA = Arraykm.slice(0, 5);
+
   if (data?.upkind === "DOG") {
     data.upkind = "강아지";
   } else if (data?.upkind === "CAT") {
     data.upkind = "고양이";
+  }else if (data?.upkind === "ECT") {
+    data.upkind = "기타";
   }
+  console.log("최신값",props)
 
-  // console.log(data)
-  // postImages.[0].imageURL
 
   const MoveToDetailPageHandler = () => {
+    props.onClose()
     navigate(`/${data.name}/${data.id}`);
+    
   };
   return (
     <Modal isOpen={props.isOpen} onClose={props.toggle}>
       <ModalInBox>
         <ModalTitle>
           <ModalTitleinfo>
-            {data?.name === "missingdetail" ? (
+            {data?.name !== "missingdetail" ? (
               <h1
                 style={{ border: ".0625rem solid #714FD1", color: "#714FD1" }}
               >

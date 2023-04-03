@@ -31,6 +31,7 @@ const Signin = () => {
   // 입력값에 따라 버튼 활성화
   const [isActive, setIsActive] = useState(false);
   const watchAll = Object.values(watch());
+
   useEffect(() => {
     if (watchAll.every((el) => el)) {
       setIsActive(true);
@@ -38,6 +39,7 @@ const Signin = () => {
       setIsActive(false);
     }
   }, [watchAll]);
+
   const onSubmitSigninHanler = (data) => {
     const siginInfo = {
       email: data.email,
@@ -47,10 +49,12 @@ const Signin = () => {
     toggleModal();
     dispatch(__signinUser(siginInfo));
   };
+
   const [SignInMsg, setSignInMsg] = useState("");
   const SignInMessage = useSelector((state) => {
     return state?.users?.Signin;
   });
+
   useEffect(() => {
     // console.log(SignInMessage)
     if (SignInMessage?.status === true && isLogin()) {
@@ -61,7 +65,9 @@ const Signin = () => {
       setSignInMsg(`:출입금지:  ${SignInMessage}`);
     }
   }, [SignInMessage]);
+
   const URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_SIGN_ID}&redirect_uri=${process.env.REACT_APP_RESCUEPETS}/kakaologin`;
+  
   const kakaoSignUp = () => {
     window.location.href = URL;
   };
