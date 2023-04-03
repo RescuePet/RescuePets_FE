@@ -43,7 +43,7 @@ import {
   SeletegenderArr,
   seleteneuteredArr,
 } from "./components/data";
-import { __PostMissingData } from "../../redux/modules/missingSlice";
+import { __PostMissingData, addImage } from "../../redux/modules/missingSlice";
 import { toggleMenu } from "../../redux/modules/menubarSlice";
 import { PostModal } from "./components/Modal";
 import { useModalState } from "../../hooks/useModalState";
@@ -54,7 +54,7 @@ const Missing = () => {
   const [loginModal, toggleModal] = useModalState(false);
   const [postNumber, setPostNumber] = useState("");
   const MissingNumber = useSelector((state) => {
-    return state.MissingData
+    return state.MissingData;
   });
 
   const data = {
@@ -62,7 +62,7 @@ const Missing = () => {
     name: "missingdetail",
   };
   useEffect(() => {
-    console.log(MissingNumber) // console.log(catchNumber.data[0].id)
+    console.log(MissingNumber); // console.log(catchNumber.data[0].id)
     setPostNumber(data);
   }, [MissingNumber]);
   // 리덕스에 저장되어있는 메뉴바 토글상태를 가지고 오고
@@ -139,7 +139,7 @@ const Missing = () => {
     setShowImages("");
     setImageFormData("");
   };
-  
+
   const {
     register,
     handleSubmit,
@@ -211,10 +211,11 @@ const Missing = () => {
       imageFormData.map((img) => {
         formData.append("postImages", img);
       });
-      dispatch(__PostMissingData(formData));
-      toggleModal();
-      // reset();
-      // alert('등록완료')
+      dispatch(addImage(imageFormData[0]));
+      dispatch(__PostMissingData(formData)).then((response) => {
+        navigate(`/poster/${response.payload}`);
+      });
+      reset();
     }
   };
   return (

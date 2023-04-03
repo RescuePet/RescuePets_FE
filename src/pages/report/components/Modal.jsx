@@ -111,7 +111,7 @@ const ModlaMainInfo = styled.div`
 
 // 마커 클릭시 보여줄 모달
 export function PostModal(props) {
-  console.log(props.data)
+  console.log(props.data);
   const navigate = useNavigate();
 
   return (
@@ -127,7 +127,14 @@ export function PostModal(props) {
           상세보기
         </Button>
 
-        <Button GOToDetailButton>포스터만들기</Button>
+        <Button
+          GOToDetailButton
+          onClick={() => {
+            navigate(`/poster/${props?.data?.number}`);
+          }}
+        >
+          포스터만들기
+        </Button>
       </ModlaMainInfo>
     </Modal>
   );
