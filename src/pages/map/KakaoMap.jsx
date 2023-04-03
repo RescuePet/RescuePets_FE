@@ -337,7 +337,7 @@ const KakaoMap = () => {
       });
     });
   }, [onFailure]);
-  console.log("값지워야함",newCatchData)
+  // console.log("값지워야함",newCatchData)
   return (
     isLoading === true ? (
       <div

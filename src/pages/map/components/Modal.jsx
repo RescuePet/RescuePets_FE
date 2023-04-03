@@ -213,7 +213,7 @@ export const ModlaImgInfoBox = styled.div`
 // 마커 클릭시 보여줄 모달
 export function MarkerModal(props) {
   const navigate = useNavigate();
-
+  console.log("최신값",props)
   const data = props?.data;
   const deleteData = props?.deleteData;
   // console.log(deleteData)
@@ -229,14 +229,13 @@ export function MarkerModal(props) {
   }else if (data?.upkind === "ECT") {
     data.upkind = "기타";
   }
-  console.log("최신값",props)
-
 
   const MoveToDetailPageHandler = () => {
-    props.onClose()
-    navigate(`/${data.name}/${data.id}`);
-    
+    setTimeout(() =>  
+    navigate(`/${data.name}/${data.id}`)
+    , 1);
   };
+
   return (
     <Modal isOpen={props.isOpen} onClose={props.toggle}>
       <ModalInBox>
@@ -284,9 +283,13 @@ export function MarkerModal(props) {
                 이름:&nbsp;{data?.nickname} / 색깔: {data?.colorCd}
               </span>
             )}
-            {/* <span><img src={information} />이름:&nbsp;{data?.nickname} / 색깔: {data?.colorCd}</span> */}
+
             <h4>
-              <Button moveToDetailButton onClick={MoveToDetailPageHandler}>
+              <Button moveToDetailButton type="button"
+              onClick={() => {
+                props.onClose();
+                MoveToDetailPageHandler();
+                   }}>
                 상세보기
               </Button>
             </h4>
