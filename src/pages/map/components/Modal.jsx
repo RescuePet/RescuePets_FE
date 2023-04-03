@@ -19,13 +19,6 @@ export default function Modal({ isOpen, onClose, children }) {
     hidden: { opacity: 0, y: "-100%", transition: { duration: 0.1 } },
   };
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-  }, [isOpen]);
 
   return (
     <AnimatePresence>
@@ -99,15 +92,12 @@ export const ModalTitle = styled.div`
   ${(props) => props.theme.FlexRow}
 `;
 export const ModalTitleinfo = styled.div`
-  /* ${FlexAttribute()} */
   ${FlexAttribute("row", "", "center")}
   display: flex;
   align-items: center;
   width: 70%;
   height: 100%;
   ${(props) => props.theme.Body_400_14}
-  /* border: .0625rem solid red; */
-       /* gap: 0 10px; */
        h1 {
     border: 0.0625rem solid #d6459c;
     color: #d6459c;
@@ -153,7 +143,6 @@ export const ModlaMiddlContianer = styled.div`
 export const ModlaMiddleInfoBox = styled.div`
   width: 65%;
   height: 5.8125rem;
-  /* border: .0625rem solid red; */
   padding: 5px 0;
   display: flex;
   align-items: center;
@@ -186,7 +175,6 @@ export const ModlaMiddleInfoBox = styled.div`
 export const ModlaImgInfoBox = styled.div`
   width: 6.0625rem;
   height: 5.8125rem;
-  /* border: .0625rem solid red; */
   > div {
     position: relative;
     width: 100%;
@@ -213,11 +201,10 @@ export const ModlaImgInfoBox = styled.div`
 // 마커 클릭시 보여줄 모달
 export function MarkerModal(props) {
   const navigate = useNavigate();
-  console.log("최신값",props)
+
   const data = props?.data;
-  const deleteData = props?.deleteData;
-  // console.log(deleteData)
   const Stringkm = String(data?.km);
+
   const Arraykm = Stringkm.split("");
   Arraykm.splice(Arraykm.length - 3, 0, ".");
   const KMDATA = Arraykm.slice(0, 5);
@@ -231,9 +218,7 @@ export function MarkerModal(props) {
   }
 
   const MoveToDetailPageHandler = () => {
-    setTimeout(() =>  
     navigate(`/${data.name}/${data.id}`)
-    , 1);
   };
 
   return (
@@ -286,12 +271,10 @@ export function MarkerModal(props) {
 
             <h4>
               <Button moveToDetailButton type="button"
-              onClick={() => {
+                onClick={() => {
                 props.onClose();
                 MoveToDetailPageHandler();
-                   }}>
-                상세보기
-              </Button>
+                   }}>상세보기</Button>
             </h4>
           </ModlaMiddleInfoBox>
           <ModlaImgInfoBox>

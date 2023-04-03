@@ -45,6 +45,7 @@ const imgAni2 = keyframes`
 25% {
   opacity: 0;
 }`;
+
 const imgAni3 = keyframes`
 0% {
   opacity: 0;
@@ -55,6 +56,7 @@ const imgAni3 = keyframes`
 50% {
   opacity: 0;
 }`;
+
 const imgAni4 = keyframes`
 0% {
   opacity: 0;

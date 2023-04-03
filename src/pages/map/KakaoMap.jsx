@@ -34,16 +34,6 @@ const KakaoMap = () => {
     dispatch(__GetCatchData());
   }, []);
 
-
-  // 마커클릭시 모달창에 정보뜨고 상세보기 이동시 값 지워주는 로직 
-  const deleteData = (data)=>{
-    setNewCatchData(data)
-  }
-
-
-
-
-
   // 현재위치를 가지고오는 로직
   const [long, setLong] = useState("");
   const [lati, setLati] = useState("");
@@ -356,7 +346,6 @@ const KakaoMap = () => {
         toggle={toggleModal}
         onClose={toggleModal}
         data={newCatchData}
-        deleteData={deleteData}
       ></MarkerModal>
       <FloatingPetwork />
     </div>
