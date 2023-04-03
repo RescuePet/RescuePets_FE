@@ -11,7 +11,7 @@ import close from "../../asset/Close.svg";
 import Button from "../../elements/Button";
 import { __PutMyinfoEdit } from "../../redux/modules/infoeditSlice";
 import Cookies from "js-cookie";
-import { Loading } from "../../components/Loading";
+import { Spinner } from "../../components/Spinner";
 
 // import
 const Editinfo = () => {
@@ -67,10 +67,10 @@ const Editinfo = () => {
     for (let key of formData.keys()) {
       console.log(key, ":", formData.get(key));
     }
-    // dispatch(__PutMyinfoEdit(formData));
+    dispatch(__PutMyinfoEdit(formData));
   };
 
-  const [EditInfoMsg, setEditInfoMsg] = useState("");
+  // const [EditInfoMsg, setEditInfoMsg] = useState("");
 
   const EditMsg = useSelector((state) => {
     return state.infoEdit;
@@ -101,7 +101,7 @@ const Editinfo = () => {
 
   return (
     <Layout>
-      {/* <Loading></Loading> */}
+      <Spinner></Spinner>
       <EditInfoForm onSubmit={handleSubmit(onSubmitmyInfoHandler)}>
         <EditInfoHeader>
         
