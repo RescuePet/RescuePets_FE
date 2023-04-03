@@ -6,13 +6,6 @@ import { FlexAttribute } from "../../../style/Mixin";
 const CommentList = ({ item }) => {
   const navigate = useNavigate();
 
-  let refineData = {
-    ...item,
-    URL: null,
-  };
-
-  console.log("refineData", refineData);
-
   const navigateHandler = () => {
     if (item.petPostCatchId == null) {
       navigate(`/missingdetail/${item.petPostMissingId}`);

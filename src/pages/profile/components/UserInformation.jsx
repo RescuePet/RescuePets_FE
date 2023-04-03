@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Border_1_color, FlexAttribute } from "../../../style/Mixin";
 import { Body_400_12, Button_700_16 } from "../../../style/theme";

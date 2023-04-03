@@ -23,10 +23,11 @@ const Poster = () => {
   const dispatch = useDispatch();
 
   // const { id } = useParams();
-  const id = 5;
+  const id = 3;
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
 
+  console.log(missingPostDetail);
   useEffect(() => {
     dispatch(__getMissingPostDetail(id));
     // console.log(missingPostDetail);
@@ -42,7 +43,7 @@ const Poster = () => {
       <HeadSpan>실종 글 작성하기</HeadSpan>
       <PosterLayout className="poster">
         <SecondSpan>강아지를 찾습니다</SecondSpan>
-        <ImageWrapper images={missingPostDetail.postImages[0].imageURL}>
+        <ImageWrapper images={missingPostDetail.postImages.imageURL}>
           <ImageMain
             src={missingPostDetail.postImages[0].imageURL}
             crossorigin="anonymous"
