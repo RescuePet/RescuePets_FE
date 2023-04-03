@@ -5,7 +5,7 @@ import { Body_400_12, Button_700_16 } from "../../../style/theme";
 
 import defaultProfile from "../../../asset/profile.svg";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import isLogin from "../../../utils/isLogin";
 import { instance } from "../../../utils/api";
 
@@ -48,15 +48,15 @@ const UserInformation = () => {
       <UserName>{userInfo.nickname}</UserName>
       <UserEmail>{userInfo.email}</UserEmail>
       <UserActivityWrapper>
-        <CountBox>
+        <CountBox to="/profile/mypost">
           <CountSpan>{myData.postCount}</CountSpan>
           <TitleSpan>작성 글</TitleSpan>
         </CountBox>
-        <CountBox>
+        <CountBox to="/profile/mycomment">
           <CountSpan>{myData.commentCount}</CountSpan>
           <TitleSpan>댓글</TitleSpan>
         </CountBox>
-        <CountBox>
+        <CountBox to="/profile/myscrap">
           <CountSpan>{myData.scrapCount}</CountSpan>
           <TitleSpan>스크랩</TitleSpan>
         </CountBox>
@@ -96,7 +96,7 @@ const UserActivityWrapper = styled.div`
   width: 100%;
 `;
 
-const CountBox = styled.div`
+const CountBox = styled(Link)`
   ${FlexAttribute("column", "center", "center")}
 `;
 
