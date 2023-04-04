@@ -11,8 +11,8 @@ const Layout = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname !== "signup" && isLogin() === true) {
-      navigate("/home");
+    if (location.pathname === "/signup" && isLogin() === false) {
+      return;
     } else if (isLogin() === false) {
       navigate("/signin");
     }
