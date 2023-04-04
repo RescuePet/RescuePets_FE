@@ -24,15 +24,13 @@ import {
 } from "./components/data";
 import { __PostMissingData, addImage } from "../../redux/modules/missingSlice";
 import { toggleMenu } from "../../redux/modules/menubarSlice";
-import { PostModal } from "./components/Modal";
-import { useModalState } from "../../hooks/useModalState";
 
 const Missing = () => {
   let imageRef;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [loginModal, toggleModal] = useModalState(false);
   const [postNumber, setPostNumber] = useState("");
+
   const MissingNumber = useSelector((state) => {
     return state.MissingData;
   });
@@ -226,7 +224,6 @@ const Missing = () => {
               </div>
               <div>
                 <p>품종</p>
-                {/* Input */}
                 <ReportInput
                   type="text"
                   placeholder="입력하기"
@@ -405,8 +402,6 @@ const Missing = () => {
                 value={selectedDate}
                 max={currentDate}
               />
-              {/* <img src={cancel} onClick={(() => { onClickDeleteValue('days') })} /> */}
-              {/* <span>{errors?.days?.message}</span> */}
             </div>
             <div>
               <p>시간대</p>
@@ -483,11 +478,8 @@ const Missing = () => {
           </ReportAnimalPictureAreaTitle>
           <ReportAnimalPictureAreaInputBox>
             <input
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
-              multiple
-              ref={(refer) => (imageRef = refer)}
+              type="file" accept="image/*"  style={{ display: "none" }}
+              multiple  ref={(refer) => (imageRef = refer)}
               onChange={onChangeUploadHandler}
             />
             <ReportAnimalPictureInput onClick={() => imageRef.click()}>
@@ -547,13 +539,10 @@ const Missing = () => {
           <div>
             <p>연락처</p>
             <ReportInput
-              type="tel"
-              placeholder="010-xxxx-xxxx"
-              inputMode="numeric"
-              onChange={(event) => {
-                const value = event.target.value;
+              type="tel" placeholder="010-xxxx-xxxx" inputMode="numeric"
+              onChange={(event) => { const value = event.target.value;
                 event.target.value = Number(
-                  value.replace(/[^0-9]/g, "")
+                value.replace(/[^0-9]/g, "")
                 ).toLocaleString();
               }}
               {...register("number", {
@@ -583,14 +572,6 @@ const Missing = () => {
             작성 완료
           </Button>
         )}
-        {
-          <PostModal
-            isOpen={loginModal}
-            toggle={toggleModal}
-            onClose={toggleModal}
-            data={postNumber}
-          ></PostModal>
-        }
       </ReportMissingContainer>
     </Layout>
   );
