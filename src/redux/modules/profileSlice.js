@@ -39,9 +39,9 @@ export const __getMyScrap = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await instance.get(
-        `api/scrap/list/?page=${payload.page}&size=${payload.size}`
+        `api/scrap/list/?page=${payload.page}&size=${payload.size}&sortBy=createdAt`
       );
-      console.log("__getMyScrapPost", response.data.data);
+      console.log("__getMyScrapPost", response);
       return thunkAPI.fulfillWithValue(response.data.data.scrapResponseDtoList);
     } catch (error) {
       throw new Error(error.response.data.message);
@@ -50,13 +50,13 @@ export const __getMyScrap = createAsyncThunk(
 );
 
 const initialState = {
+  loading: false,
   error: false,
   entirePostList: [],
   entirePostPage: 1,
   myMissing: [],
   myCatch: [],
   myScrapList: [],
-  myScrapPage: 1,
 };
 
 export const profileSlice = createSlice({
@@ -85,17 +85,8 @@ export const profileSlice = createSlice({
       .addCase(__getMyCatchPost.rejected, (state) => {
         state.error = true;
       });
-
-    builder
-      .addCase(__getMyScrap.fulfilled, (state, action) => {
-        state.myScrapPage = state.myScrapPage + 1;
-        state.myScrapList = [...state.myScrapList, ...action.payload];
-      })
-      .addCase(__getMyScrap.rejected, (state) => {
-        state.error = true;
-      });
   },
 });
 
-export const { addMyPostPage } = profileSlice.actions;
+export const { addMyPostPage, resetMyScrapPage } = profileSlice.actions;
 export default profileSlice.reducer;

@@ -20,6 +20,7 @@ const StateSpan = styled.span`
     css`
       border: 0.0625rem solid ${(props) => props.theme.color.status_caution};
       color: ${(props) => props.theme.color.status_caution};
+      background-color: ${(props) => props.theme.color.white};
       flex-basis: 2.1875rem;
     `}
   ${(props) =>

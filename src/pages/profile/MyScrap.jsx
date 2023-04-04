@@ -1,23 +1,21 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import { FlexAttribute, HeaderStyle } from "../../style/Mixin";
-import { __getMyScrap } from "../../redux/modules/profileSlice";
 import { useInView } from "react-intersection-observer";
 import ScrapList from "./components/ScrapList";
 
 import close from "../../asset/Close.svg";
 import { useNavigate } from "react-router-dom";
+import { instance } from "../../utils/api";
+import ScrollToTop from "../../elements/ScrollToTop";
+import refresh from "../../asset/refresh.svg";
 
 const MyScrap = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [ref, inView] = useInView();
-
-  const { myScrapList, myScrapPage } = useSelector((state) => state.profile);
-
-  console.log(myScrapList);
+  const [myScrapList, setMyScrapList] = useState([]);
+  const [myScrapPage, setMyScrapPage] = useState(1);
 
   let payload = {
     page: myScrapPage,
@@ -26,12 +24,32 @@ const MyScrap = () => {
 
   useEffect(() => {
     if (inView) {
-      dispatch(__getMyScrap(payload));
+      fetchData();
     }
   }, [inView]);
 
+  const fetchData = async () => {
+    try {
+      const response = await instance.get(
+        `api/scrap/list?page=${payload.page}&size=${payload.size}`
+      );
+      setMyScrapList((prev) => [
+        ...prev,
+        ...response.data.data.scrapResponseDtoList,
+      ]);
+      setMyScrapPage((prev) => prev + 1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const refreshHandler = () => {
+    window.location.reload();
+  };
+
   return (
     <Layout>
+      <ScrollToTop />
       <MyPostHeader>
         <h2>스크랩 목록</h2>
         <CloseSvg src={close} onClick={() => navigate("/profile")} />
@@ -42,7 +60,7 @@ const MyScrap = () => {
             <EntireTitle>총 작성 글</EntireTitle>
             <EntireCount>{myScrapList.length}</EntireCount>
           </div>
-          {/* <EditButton>편집</EditButton> */}
+          <RefreshButton src={refresh} onClick={refreshHandler} />
         </PostInfoWrapper>
       </PostInfoContainer>
       <ListContainer>
@@ -92,7 +110,8 @@ const EntireCount = styled.span`
   color: ${(props) => props.theme.color.primary_normal};
 `;
 
-const EditButton = styled.button`
+const RefreshButton = styled.img`
+  cursor: pointer;
   ${(props) => props.theme.Body_400_12};
   color: ${(props) => props.theme.color.text_alternative};
 `;

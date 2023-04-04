@@ -22,7 +22,7 @@ import {
 import {
   NameValue, TimeValue,SeletegenderArr, seleteneuteredArr,
 } from "./components/data";
-import { __PostMissingData } from "../../redux/modules/missingSlice";
+import { __PostMissingData, addImage } from "../../redux/modules/missingSlice";
 import { toggleMenu } from "../../redux/modules/menubarSlice";
 import { PostModal } from "./components/Modal";
 import { useModalState } from "../../hooks/useModalState";
@@ -34,7 +34,7 @@ const Missing = () => {
   const [loginModal, toggleModal] = useModalState(false);
   const [postNumber, setPostNumber] = useState("");
   const MissingNumber = useSelector((state) => {
-    return state.MissingData
+    return state.MissingData;
   });
 
   const data = {
@@ -123,7 +123,7 @@ const Missing = () => {
     setShowImages("");
     setImageFormData("");
   };
-  
+
   const {
     register,
     handleSubmit,
@@ -195,8 +195,10 @@ const Missing = () => {
       imageFormData.map((img) => {
         formData.append("postImages", img);
       });
-      dispatch(__PostMissingData(formData));
-      toggleModal();
+      dispatch(addImage(imageFormData[0]));
+      dispatch(__PostMissingData(formData)).then((response) => {
+        navigate(`/poster/${response.payload}`);
+      });
       reset();
     }
   };

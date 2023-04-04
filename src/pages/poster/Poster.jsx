@@ -1,93 +1,154 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Layout from "../../layouts/Layout";
 import styled from "styled-components";
 import Title from "./components/Title";
 import Button from "../../elements/Button";
-import { Body_400_14 } from "../../style/theme";
-import { FlexAttribute } from "../../style/Mixin";
-import QRCode from "qrcode.react";
-import domtoimage from "dom-to-image";
-import { saveAs } from "file-saver";
+import {
+  Border_2_color,
+  FlexAttribute,
+  PostBorderStyle,
+} from "../../style/Mixin";
 import { useDispatch, useSelector } from "react-redux";
 import { __getMissingPostDetail } from "../../redux/modules/petworkSlice";
-import { useEffect, useParams } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import QRCode from "qrcode.react";
+
+import html2canvas from "html2canvas";
+import { saveAs } from "file-saver";
+
+import location from "../../asset/location.svg";
+import time from "../../asset/time.svg";
+import informationIcon from "../../asset/information.svg";
+import memo from "../../asset/memo.svg";
+import gratuity from "../../asset/gratuity.svg";
+import petworkRefineData from "../../utils/petworkRefine";
 
 const Poster = () => {
-  // 컴포넌트 다운
-  const makeImageHandler = () => {
-    domtoimage.toBlob(document.querySelector(".poster")).then((blob) => {
-      saveAs(blob, "poster.jpg");
-    });
-  };
-
+  const containerRef = useRef(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { id } = useParams();
+  console.log("params id", id);
 
-  // const { id } = useParams();
-  const id = 5;
+  const [imageURLState, setImageURLState] = useState("");
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
+  const { imageURL } = useSelector((state) => state.MissingData);
+
+  console.log("image URL", imageURL);
+
+  const refineData = petworkRefineData(missingPostDetail);
+
+  const titleInfo = {
+    state: "실종",
+    kindCd: missingPostDetail.kindCd,
+    upkind: refineData.upkind,
+    sexCd: refineData.sexCd,
+    info: refineData.information.join("/"),
+  };
 
   useEffect(() => {
     dispatch(__getMissingPostDetail(id));
-    // console.log(missingPostDetail);
   }, [id]);
 
-  console.log("missingPostDetail", missingPostDetail.postImages[0].imageURL);
   if (JSON.stringify(missingPostDetail) === "{}") {
     return <div>Loading...</div>;
   }
 
+  // imageurl : missingPostDetail.
+  console.log(missingPostDetail);
+
+  const fileToImageUrl = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.addEventListener("load", () => {
+        resolve(reader.result);
+      });
+
+      reader.addEventListener("error", () => {
+        reject(new Error("파일 읽기 실패"));
+      });
+
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const ImageHandler = () => {
+    const file = imageURL;
+    console.log("file", file);
+
+    if (file) {
+      fileToImageUrl(file)
+        .then((url) => setImageURLState(url))
+        .catch((error) => console.log(error));
+    }
+  };
+  ImageHandler();
+
+  // html2canvas를 사용
+  const makeImageHandler = async () => {
+    try {
+      const canvas = await html2canvas(containerRef.current);
+      canvas.toBlob((blob) => {
+        console.log(blob);
+        saveAs(blob, "image.png");
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Layout>
-      <HeadSpan>실종 글 작성하기</HeadSpan>
-      <PosterLayout className="poster">
-        <SecondSpan>강아지를 찾습니다</SecondSpan>
-        <ImageWrapper images={missingPostDetail.postImages[0].imageURL}>
-          <ImageMain
-            src={missingPostDetail.postImages[0].imageURL}
-            crossorigin="anonymous"
-          />
+      <PosterLayout ref={containerRef}>
+        <SecondSpan>동물을 찾습니다</SecondSpan>
+        <ImageWrapper images={imageURLState}>
+          <ImageMain src={imageURLState} />
           <QRCodeWrapper>
             <QRCode
               id="qrcode"
-              value="http://localhost:3000/missingdetail/${missingPostDetail.id}"
+              value={`rescuepets.co.kr/missingdetail/${missingPostDetail.id}`}
               fgColor="#ffffff"
               bgColor="transparent"
               size="80"
             />
           </QRCodeWrapper>
         </ImageWrapper>
-        <Title></Title>
+        <TitleWrapper>
+          <Title titleInfo={titleInfo}></Title>
+        </TitleWrapper>
         <LocationWrapper>
           <InfoWrapper>
-            <BodyTitle>
-              <BodyTitleSvg>📍</BodyTitleSvg>
+            <BodyTitleWrapper>
+              <BodyTitleSvg src={location} />
               <BodyTitleText>위치</BodyTitleText>
-            </BodyTitle>
+            </BodyTitleWrapper>
             <ContentTextWrapper>
               <ContentText>{missingPostDetail.happenPlace}</ContentText>
             </ContentTextWrapper>
           </InfoWrapper>
           <InfoWrapper>
-            <BodyTitle>
-              <BodyTitleSvg>📍</BodyTitleSvg>
+            <BodyTitleWrapper>
+              <BodyTitleSvg src={time} />
               <BodyTitleText>실종일시</BodyTitleText>
-            </BodyTitle>
+            </BodyTitleWrapper>
             <ContentTextWrapper>
               <ContentTextBox>
                 <ContentOptionText>
                   {missingPostDetail.happenDt} |{" "}
                 </ContentOptionText>
-                &nbsp;<ContentText>{missingPostDetail.happenHour}</ContentText>
+                &nbsp;
+                <ContentText>{missingPostDetail.happenHour}</ContentText>
               </ContentTextBox>
             </ContentTextWrapper>
           </InfoWrapper>
           {missingPostDetail.specialMark && (
             <InfoWrapper>
-              <BodyTitle>
-                <BodyTitleSvg>📍</BodyTitleSvg>
+              <BodyTitleWrapper>
+                <BodyTitleSvg src={informationIcon} />
                 <BodyTitleText>특징</BodyTitleText>
-              </BodyTitle>
+              </BodyTitleWrapper>
               <ContentTextWrapper>
                 <ContentText>{missingPostDetail.specialMark}</ContentText>
               </ContentTextWrapper>
@@ -95,25 +156,26 @@ const Poster = () => {
           )}
           {missingPostDetail.content && (
             <InfoWrapper>
-              <BodyTitle>
-                <BodyTitleSvg>📍</BodyTitleSvg>
+              <BodyTitleWrapper>
+                <BodyTitleSvg src={memo} />
                 <BodyTitleText>메모</BodyTitleText>
-              </BodyTitle>
+              </BodyTitleWrapper>
               <ContentTextWrapper>
                 <ContentText>{missingPostDetail.content}</ContentText>
               </ContentTextWrapper>
             </InfoWrapper>
           )}
-
-          <InfoWrapper>
-            <BodyTitle>
-              <BodyTitleSvg>📍</BodyTitleSvg>
-              <BodyTitleText>사례금</BodyTitleText>
-            </BodyTitle>
-            <ContentTextWrapper>
-              <ContentText>{missingPostDetail.gratuity}</ContentText>
-            </ContentTextWrapper>
-          </InfoWrapper>
+          {missingPostDetail.gratuity && (
+            <InfoWrapper>
+              <BodyTitleWrapper>
+                <BodyTitleSvg src={gratuity} />
+                <BodyTitleText>사례금</BodyTitleText>
+              </BodyTitleWrapper>
+              <ContentTextWrapper>
+                <ContentText>{missingPostDetail.gratuity}원</ContentText>
+              </ContentTextWrapper>
+            </InfoWrapper>
+          )}
         </LocationWrapper>
         <PhoneNumberContainer>
           <PhonNumberTitle>연락처</PhonNumberTitle>
@@ -123,8 +185,14 @@ const Poster = () => {
         </PhoneNumberContainer>
       </PosterLayout>
       <ButtonWrapper>
-        <Button fillButton onClick={() => makeImageHandler()}>
+        <Button fillButton onClick={makeImageHandler}>
           포스터 저장하기
+        </Button>
+        <Button
+          emptyButton
+          onClick={() => navigate(`/missingdetail/${missingPostDetail.id}`)}
+        >
+          상세보기
         </Button>
       </ButtonWrapper>
     </Layout>
@@ -135,14 +203,6 @@ const PosterLayout = styled.div`
   background-color: ${(props) => props.theme.color.white};
 `;
 
-const HeadSpan = styled.div`
-  height: 5rem;
-  padding-top: 2rem;
-  background-color: gray;
-  display: flex;
-  justify-content: center;
-`;
-
 const SecondSpan = styled.div`
   height: 5rem;
   padding-top: 2rem;
@@ -150,21 +210,34 @@ const SecondSpan = styled.div`
   display: flex;
   justify-content: center;
 `;
+
 const ImageWrapper = styled.div`
   position: relative;
+  ${FlexAttribute("row", "center", "center")}
   width: 100%;
   height: 15rem;
-  background-image: url(${(props) => props.images});
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.2)
+    ),
+    url(${(props) => props.images});
   background-size: cover;
   background-repeat: no-repeat;
-  overflow: hidden;
+  background-position: center;
 `;
+
 const ImageMain = styled.img`
-  width: 100%;
   height: 240px;
   object-fit: contain;
-  position: absolute;
   backdrop-filter: blur(0.1875rem);
+`;
+
+const TitleWrapper = styled.div`
+  ${FlexAttribute("row", "center", "center")}
+  margin: 1rem auto;
+  padding-bottom: 1rem;
+  width: 100%;
+  ${Border_2_color}
 `;
 
 const QRCodeWrapper = styled.div`
@@ -175,36 +248,39 @@ const QRCodeWrapper = styled.div`
   bottom: 0;
 `;
 
-const LocationWrapper = styled.div``;
+const LocationWrapper = styled.div`
+  ${PostBorderStyle}
+`;
 
 const InfoWrapper = styled.div`
   ${FlexAttribute("row", "space-evenly")}
 `;
 
-const BodyTitle = styled.div`
-  display: flex;
-  justify-content: sapce-between;
-  width: 4.375rem;
+const BodyTitleWrapper = styled.div`
+  ${FlexAttribute("row", "center")}
+  width: 5rem;
 `;
 
-const BodyTitleSvg = styled.div`
-  flex-basis: 20px;
+const BodyTitleSvg = styled.img`
+  width: 1.5rem;
+  height: 1.5rem;
 `;
 
 const BodyTitleText = styled.span`
-  flex-basis: 50px;
-  padding-top: 2px;
+  flex-basis: 3.125rem;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 16px;
+  margin-left: 0.25rem;
+  padding-top: 0.0625rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
   color: #999999;
 `;
 
 const ContentTextWrapper = styled.div`
-  flex-basis: 220px;
-  margin-top: 2px;
+  flex-basis: 13.75rem;
+  margin-top: 0.125rem;
   span:first-child {
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
   }
 `;
 
@@ -215,7 +291,7 @@ const ContentTextBox = styled.div`
 const ContentOptionText = styled.span`
   font-weight: 400;
   font-size: 0.875rem;
-  line-height: 1rem;
+  line-height: 1.5rem;
   color: #666666;
 `;
 
@@ -223,7 +299,7 @@ const ContentText = styled.span`
   display: inline-block;
   font-weight: 400;
   font-size: 0.875rem;
-  line-height: 1rem;
+  line-height: 1.5rem;
   color: #222222;
 `;
 
@@ -235,16 +311,23 @@ const PhoneNumberContainer = styled.div`
 
 const PhonNumberTitle = styled.div`
   flex-basis: 4.375rem;
+  ${(props) => props.theme.Body_400_14};
 `;
 
 const PhoneNumberWrapper = styled.div`
   flex-basis: 13.125rem;
 `;
-const PhoneNumber = styled.span``;
+const PhoneNumber = styled.span`
+  ${(props) => props.theme.Body_400_14};
+`;
 
 const ButtonWrapper = styled.div`
   width: 100%;
-  ${FlexAttribute("row", "center", "center")}
+  ${FlexAttribute("column", "center", "center")}
+
+  button:last-child {
+    margin: 20px 0;
+  }
 `;
 
 export default Poster;

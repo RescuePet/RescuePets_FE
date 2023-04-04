@@ -119,7 +119,14 @@ export function PostModal(props) {
           상세보기
         </Button>
 
-        <Button GOToDetailButton>포스터만들기</Button>
+        <Button
+          GOToDetailButton
+          onClick={() => {
+            navigate(`/poster/${props?.data?.number}`);
+          }}
+        >
+          포스터만들기
+        </Button>
       </ModlaMainInfo>
     </Modal>
   );

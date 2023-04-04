@@ -42,7 +42,7 @@ const Router = () => {
         <Route path="/missingdetail/:id" element={<MissingDetail />} />
         <Route path="/sightingdetail/:id" element={<SightingDetail />} />
         <Route path="/kakaologin" element={<KakaoSignin />} />
-        <Route path="/poster" element={<Poster />} />
+        <Route path="/poster/:id" element={<Poster />} />
         <Route path="/profile/mycomment" element={<MyComment />} />
         <Route path="/profile/mypost" element={<MyPost />} />
         <Route path="/profile/myscrap" element={<MyScrap />} />

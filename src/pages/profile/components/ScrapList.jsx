@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import State from "../../../elements/State";
 import { FlexAttribute } from "../../../style/Mixin";
-import { color } from "../../../style/theme";
 
 import ClippingFill from "../../../asset/profile/ClippingFill";
 import Clippingwhite from "../../../asset/Clippingwhite";
@@ -10,9 +9,15 @@ import male from "../../../asset/male.svg";
 import female from "../../../asset/female.svg";
 import questionmark from "../../../asset/questionmark.svg";
 import { useNavigate } from "react-router-dom";
-import { instance } from "../../../utils/api";
+import { useDispatch } from "react-redux";
+import { __postAdoptionListScrap } from "../../../redux/modules/adoptionSlice";
+import {
+  __postCatchScrap,
+  __postMissingScrap,
+} from "../../../redux/modules/petworkSlice";
 
 const ScrapList = ({ item }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [scrapState, setScrapState] = useState(true);
@@ -64,49 +69,30 @@ const ScrapList = ({ item }) => {
   };
 
   const publicScrap = async () => {
-    console.log("공공");
-    if (scrapState) {
-      const response = await instance.delete(
-        `/api/scrap/scrap/${refineData.desertionNo}`
-      );
-      console.log(response);
-    } else {
-      const response = await instance.post(
-        `/api/scrap/scrap/${refineData.desertionNo}`
-      );
-      console.log(response);
-    }
+    let data = {
+      page: "home",
+      desertionNo: refineData.desertionNo,
+      state: scrapState,
+    };
+    dispatch(__postAdoptionListScrap(data));
   };
 
   const missingScrap = async () => {
-    if (scrapState) {
-      console.log("실종");
-      const response = await instance.delete(
-        `/api/scrap/missing/${refineData.desertionNo}`
-      );
-      console.log(response);
-    } else {
-      console.log("실종");
-      const response = await instance.post(
-        `/api/scrap/missing/${refineData.desertionNo}`
-      );
-      console.log(response);
-    }
+    let data = {
+      id: refineData.desertionNo,
+      page: "petworkLists",
+      state: scrapState,
+    };
+    dispatch(__postMissingScrap(data));
   };
 
   const catchScrap = async () => {
-    console.log("목격");
-    if (scrapState) {
-      const response = await instance.delete(
-        `/api/scrap/catch/${refineData.desertionNo}`
-      );
-      console.log(response);
-    } else {
-      const response = await instance.post(
-        `/api/scrap/catch/${refineData.desertionNo}`
-      );
-      console.log(response);
-    }
+    let data = {
+      id: refineData.desertionNo,
+      page: "petworkLists",
+      state: scrapState,
+    };
+    dispatch(__postCatchScrap(data));
   };
 
   return (
