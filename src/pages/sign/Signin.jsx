@@ -58,11 +58,11 @@ const Signin = () => {
   useEffect(() => {
     // console.log(SignInMessage)
     if (SignInMessage?.status === true && isLogin()) {
-      setSignInMsg(`:흰색_확인_표시:  ${SignInMessage?.message}`);
+      setSignInMsg(`✅  ${SignInMessage?.message}`);
       setSignInMsg("");
       navigate("/home");
     } else if (SignInMessage == "아이디,비밀번호를 확인해주세요") {
-      setSignInMsg(`:출입금지:  ${SignInMessage}`);
+      setSignInMsg(`⛔  ${SignInMessage}`);
     }
   }, [SignInMessage]);
 

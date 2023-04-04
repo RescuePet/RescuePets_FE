@@ -189,7 +189,7 @@ export const ModlaImgInfoBox = styled.div`
       position: absolute;
       ${SignSvgStyle}
       ${(props) => props.theme.FlexCenter}
-        background: ${(props) => props.theme.color.gray};
+      background: ${(props) => props.theme.color.gray};
       color: ${(props) => props.theme.color.white};
       ${(props) => props.theme.Body_300_10}
       bottom: 0;
@@ -216,10 +216,6 @@ export function MarkerModal(props) {
   }else if (data?.upkind === "ECT") {
     data.upkind = "기타";
   }
-
-  const MoveToDetailPageHandler = () => {
-    navigate(`/${data.name}/${data.id}`)
-  };
 
   return (
     <Modal isOpen={props.isOpen} onClose={props.toggle}>
@@ -273,7 +269,7 @@ export function MarkerModal(props) {
               <Button moveToDetailButton type="button"
                 onClick={() => {
                 props.onClose();
-                MoveToDetailPageHandler();
+                navigate(`/${data.name}/${data.id}`);
                    }}>상세보기</Button>
             </h4>
           </ModlaMiddleInfoBox>

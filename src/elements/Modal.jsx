@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+
 
 export default function Modal({ isOpen, onClose, children }) {
   const backdropVariants = {
@@ -16,14 +15,6 @@ export default function Modal({ isOpen, onClose, children }) {
     visible: { opacity: 1, y: 0 },
     hidden: { opacity: 0, y: "-50%", transition: { duration: 0.1 } },
   };
-
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-  }, [isOpen]);
 
   return (
     <AnimatePresence>
@@ -99,10 +90,9 @@ export const CloseContainer = styled.div`
 export function CheckModal(props) {
   return (
     <>
-      {/* 모달밖을 클릭하거나 확인 버튼 클릭시 사라진다  사라진다  */}
       <Modal isOpen={props.isOpen} onClose={props.toggle}>
         <ModalMsgContainer>
-          <h2>{props.children}</h2>{" "}
+          <h2>{props.children}</h2>
         </ModalMsgContainer>
       </Modal>
     </>
