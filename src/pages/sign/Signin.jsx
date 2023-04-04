@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import cancel from "../../asset/cancel.svg";
 import check from "../../asset/check.svg";
@@ -12,22 +12,19 @@ import { useNavigate } from "react-router-dom";
 import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
 import isLogin from "../../utils/isLogin";
+
 const Signin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginModal, toggleModal, setIsOpen] = useModalState(false);
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    resetField,
-    watch,
-  } = useForm({ mode: "onChange" });
+    register,handleSubmit,formState: { errors },
+    reset, resetField, watch, } = useForm({ mode: "onChange" });
   // 삭제로직
   const onClickDeleteValue = (data) => {
     resetField(data);
   };
+  
   // 입력값에 따라 버튼 활성화
   const [isActive, setIsActive] = useState(false);
   const watchAll = Object.values(watch());
@@ -40,6 +37,9 @@ const Signin = () => {
     }
   }, [watchAll]);
 
+  const [SignInMsg, setSignInMsg] = useState("");
+
+
   const onSubmitSigninHanler = (data) => {
     const siginInfo = {
       email: data.email,
@@ -48,30 +48,36 @@ const Signin = () => {
     // 토
     toggleModal();
     dispatch(__signinUser(siginInfo))
-      .then(() => {
-        console.log("성공");
-        // navigate(`/poster/${response.payload}`);
-      })
-      .catch((error) => {
-        console.log(error.error);
-      });
+    .then((response) => {
+      console.log(response);
+      if(response.type === 'signinUser/rejected'){
+        console.log('실패')
+        setSignInMsg(`⛔  ${response.error.message}`);
+      }else if(response.type ==="signinUser/fulfilled"){
+        console.log('성공')
+        setSignInMsg(`✅  ${response.payload.message}`);
+        setTimeout(function () {
+          navigate("/home");
+        }, 1000);
+      }
+    })
+  
   };
 
-  const [SignInMsg, setSignInMsg] = useState("");
-  const SignInMessage = useSelector((state) => {
-    return state?.users?.Signin;
-  });
+ 
+  // const SignInMessage = useSelector((state) => {
+  //   return state?.users?.Signin;
+  // });
 
-  useEffect(() => {
-    // console.log(SignInMessage)
-    if (SignInMessage?.status === true && isLogin()) {
-      setSignInMsg(`✅  ${SignInMessage?.message}`);
-      setSignInMsg("");
-      navigate("/home");
-    } else if (SignInMessage == "아이디,비밀번호를 확인해주세요") {
-      setSignInMsg(`⛔  ${SignInMessage}`);
-    }
-  }, [SignInMessage]);
+  // useEffect(() => {
+  //   // console.log(SignInMessage)
+  //   if (SignInMessage?.status === true && isLogin()) {
+  //     setSignInMsg(`✅  ${SignInMessage?.message}`);
+  //     navigate("/home");
+  //   } else if (SignInMessage == "아이디,비밀번호를 확인해주세요") {
+  //     setSignInMsg(`⛔  ${SignInMessage}`);
+  //   }
+  // }, [SignInMessage]);
 
   const URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_SIGN_ID}&redirect_uri=${process.env.REACT_APP_RESCUEPETS}/kakaologin`;
 
