@@ -2,11 +2,23 @@ import React from "react";
 import styled from "styled-components";
 import { Border_1_color, FlexAttribute } from "../../../style/Mixin";
 import { Body_400_10, Body_400_12, Body_500_14 } from "../../../style/theme";
-
 import profileIcon from "../../../asset/profile.svg";
+import close from "../../../asset/profile.svg";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { __deleteMissingComment } from "../../../redux/modules/commentSlice";
 
 const Comment = ({ item }) => {
   // console.log(item);
+  const { profileImage } = JSON.parse(localStorage.getItem("userInfo"));
+  console.log(profileImage);
+  console.log(item);
+  const dispatch = useDispatch();
+
+  const handleDeleteComment = () => {
+    dispatch(__deleteMissingComment(item.id));
+  };
+
   return (
     <CommentBox>
       <UserInfo>
@@ -18,7 +30,12 @@ const Comment = ({ item }) => {
           {/* <CommentTime>43분전</CommentTime> */}
         </UserBox>
       </UserInfo>
-      <CommentText>{item.content}</CommentText>
+      <CommentText>
+        {item.content}
+        <DeleteButton>
+          <img src={close} alt="delete" />
+        </DeleteButton>
+      </CommentText>
     </CommentBox>
   );
 };
@@ -62,5 +79,7 @@ const CommentText = styled.span`
   ${Body_400_12}
   margin-left: 3.0625rem;
 `;
+
+const DeleteButton = styled.button``;
 
 export default Comment;
