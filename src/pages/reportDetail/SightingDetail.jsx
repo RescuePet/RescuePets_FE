@@ -59,7 +59,7 @@ const SightingDetail = () => {
   }, [catchComment]);
 
   if (JSON.stringify(catchPostDetail) === "{}") {
-    return <Spinner/>;
+    return <Spinner />;
   }
 
   const refineData = petworkRefineData(catchPostDetail);
