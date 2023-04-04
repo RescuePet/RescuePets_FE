@@ -7,43 +7,20 @@ import Location from "./components/Location";
 import imageCompression from "browser-image-compression";
 import { CustomSelect } from "../../elements/CustomSelect";
 import {
-  ReportSightingContainer,
-  ReportHeader,
-  ReportAnimalInfoArea,
-  ReportAnimalInfoBox,
-  ReportAnimalInfoCheckBox,
-  ReportAnimalInfoCheckBoxTitle,
-  ReportAnimalInfoCheckBoxSelete,
-  ReportAnimalInfoBoxColumn,
-  ReportAnimalInfoBoxColumnRow,
-  ReportAnimalInfoBoxColumnColumn,
-  ReportanimaltypesTitle,
-  ReportanimaltypesSelect,
-  ReportInput,
-  ReportLgInput,
-  ReportAnimalDayBox,
-  ReportAnimalSignificantBox,
-  ReportAnimalSignificantBoxTitle,
-  ReportAnimalSignificantBoxInputArea,
-  ReportAnimalPictureArea,
-  ReportAnimalPictureAreaTitle,
-  ReportAnimalPictureAreaInputBox,
-  ReportAnimalPictureInput,
-  ReportAnimalPicturePreview,
-  PreviewImage,
+  ReportSightingContainer,ReportHeader,ReportAnimalInfoArea,ReportAnimalInfoBox, ReportAnimalInfoCheckBox,ReportAnimalInfoCheckBoxTitle,
+  ReportAnimalInfoCheckBoxSelete,ReportAnimalInfoBoxColumn,ReportAnimalInfoBoxColumnRow,ReportAnimalInfoBoxColumnColumn,ReportanimaltypesTitle,
+  ReportanimaltypesSelect, ReportInput,ReportLgInput, ReportAnimalDayBox, ReportAnimalSignificantBox, ReportAnimalSignificantBoxTitle,
+  ReportAnimalSignificantBoxInputArea, ReportAnimalPictureArea,ReportAnimalPictureAreaTitle,ReportAnimalPictureAreaInputBox,ReportAnimalPictureInput,
+  ReportAnimalPicturePreview,PreviewImage,
 } from "./components/reportstyle";
 import {
-  NameValue,
-  TimeValue,
-  SeletegenderArr,
-  seleteneuteredArr,
+  NameValue, TimeValue,SeletegenderArr,seleteneuteredArr,
 } from "./components/data";
 import { __PostCatchData } from "../../redux/modules/catchSlice";
 import { useDispatch, useSelector } from "react-redux";
 import imgdelete from "../../asset/imgDelete.svg";
 import close from "../../asset/Close.svg";
 import { useNavigate } from "react-router-dom";
-import { toggleMenu } from "../../redux/modules/menubarSlice";
 import { PostModal } from "./components/Modal";
 import { useModalState } from "../../hooks/useModalState";
 
@@ -58,7 +35,6 @@ const Catch = () => {
     return state.catchData
   });
 
-  console.log(postNumber)
   const data = {
     number: catchNumber?.data,
     name: "sightingdetail",
@@ -68,42 +44,27 @@ const Catch = () => {
     console.log(catchNumber) // console.log(catchNumber.data[0].id)
     setPostNumber(data);
   }, [catchNumber]);
-  // console.log(postNumber)
-  // 리덕스에 저장되어있는 메뉴바 토글상태를 가지고 오고
-  const menutoggle = useSelector((state) => {
-    return state.menubar.toggle;
-  });
 
-  const [mapBg, setMapBg] = useState(menutoggle);
-  useEffect(() => {
-    setMapBg(true);
-  }, [menutoggle]);
 
-  // 뒤로가기 버튼을 눌렀을때 원래 가지고 잇던 값을 제거해준다
+
   // 이전페이지로 이동
   const MoveToBackPage = () => {
-    dispatch(toggleMenu(mapBg));
     navigate(-1);
   };
 
-  // 종류데이터
+  // 커스텀 셀렉트 파트부분 
   const [type, setType] = useState(NameValue[0].name);
-
   const [typeID, setTypeID] = useState("DOG");
+  const [time, setTime] = useState(TimeValue[0]?.name);
 
   const onChangeData = (newData) => {
     setType(newData);
   };
-
   const onChangeID = (newValue) => {
     setTypeID(newValue);
   };
-
-  const [time, setTime] = useState(TimeValue[0]?.name);
-  // console.log(time)
   const onChangeTimeData = (newData) => {
     setTime(newData);
-    // console.log(time)
   };
   // 콘솔없애기 위한 로직
   const onChangeTimeValeu = () => {};
@@ -115,6 +76,7 @@ const Catch = () => {
   const [currentGenderEnValue, setCurrentGenderEnValue] = useState("MALE");
   const [currentNeuteredValue, setCurrentNeuteredValue] = useState("완료");
   const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState("YES");
+
   const selectMGenderHandler = (index) => {
     setCurrentGenderTab(index);
     setCurrentGenderValue(SeletegenderArr[index].gender);
@@ -127,17 +89,13 @@ const Catch = () => {
   };
 
   // 사진 로직
-  // 올린 이미지 담을 관리하는 State
   const [showImages, setShowImages] = useState([]);
-  // 폼데이터로 이미지 관리하는 State
   const [imageFormData, setImageFormData] = useState([]);
 
   const onChangeUploadHandler = async (e) => {
     e.preventDefault();
-
     // 인풋에서 선택된 이미지들
     const imageLists = e.target.files;
-    // console.log(imageLists)
     // 미리보기 담을것
     let imageUrlLists = [...showImages];
     // 폼데이터 담을것
@@ -161,19 +119,14 @@ const Catch = () => {
 
 
   const onClickDeleteHandler = () => {
-    setShowImages("");
-    setImageFormData("");
+    setShowImages('');
+    setImageFormData('');
   };
 
   // React-hook-form
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    resetField,
-    watch,
-  } = useForm({ mode: "onChange" });
+    register, handleSubmit, formState: { errors }, reset,
+    resetField, watch } = useForm({ mode: "onChange" });
 
   // 버튼을 누르면 선택된 usehookForm 제거
   const onClickDeleteValue = (data) => {
@@ -184,25 +137,8 @@ const Catch = () => {
 
   // 현재 날짜를 가져옵니다.
   const currentDate = new Date().toISOString().split("T")[0];
-  // console.log(currentDate)
-  // input 요소에서 날짜가 변경될 때마다 호출됩니다.
+
   const handleDateChange = (e) => {
-    // console.log(e.target.value)
-    // const dateValue = e.target.value;
-    // const d1 = dateValue.split('')
-    // const newDate = []
-    // console.log(d1[0])
-
-    // for (let i = 0; i < d1.length; i++) {
-    //   if (d1[i] !== '-') {
-    //     newDate.push(d1[i])
-    //   }
-    // }
-    // const D = newDate
-
-    // console.log(D.splice(4, 0, '.'));
-
-    // console.log(d1.find(() => { d1',' }))
     setSelectedDate(e.target.value);
   };
 
@@ -232,9 +168,6 @@ const Catch = () => {
 
   // form submit 로직
   const onSubmitSightingHanlder = (data) => {
-    console.log(time)
-    console.log(currentGenderEnValue)
-    console.log(currentNeuteredEnValue)
     if (addressDiv?.innerHTML === "") {
       alert("지도에 위치를 표기해주세요");
     } else {
@@ -260,13 +193,9 @@ const Catch = () => {
         formData.append("postImages", img);
       });
 
-      for (let key of formData.keys()) {
-        console.log(key, ":", formData.get(key));
-      }
       dispatch(__PostCatchData(formData));
       toggleModal();
-      // reset();
-      // alert('등록완료')
+      reset();
     }
   };
 
@@ -445,9 +374,7 @@ const Catch = () => {
           </ReportAnimalInfoBox>
         </ReportAnimalInfoArea>
 
-        {/* 카카오맵 */}
         <Location />
-        {/* 카카오맵  */}
 
         <ReportAnimalDayBox>
           <p>목격일시 *</p>
@@ -526,8 +453,7 @@ const Catch = () => {
                 src={cancel}
                 onClick={() => {
                   onClickDeleteValue("memo");
-                }}
-              />
+                }}/>
               <span>{errors?.memo?.message}</span>
             </div>
           </ReportAnimalSignificantBoxInputArea>
@@ -540,23 +466,19 @@ const Catch = () => {
 
           <ReportAnimalPictureAreaInputBox>
             <input
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
-              multiple
-              ref={(refer) => (imageRef = refer)}
-              onChange={onChangeUploadHandler}
+              type="file" accept="image/*" style={{ display: "none" }}
+              multiple ref={(refer) => (imageRef = refer)} onChange={onChangeUploadHandler}
               required
             />
             <ReportAnimalPictureInput onClick={() => imageRef.click()}>
               <h3>+</h3>
             </ReportAnimalPictureInput>
-            {showImages.length === 0 ? (
+            {showImages === '' ? (
               <ReportAnimalPicturePreview>
                 <div>
                   <img src={imgdelete} />
                 </div>
-                프리뷰
+                프리뷰2
               </ReportAnimalPicturePreview>
             ) : (
               <>

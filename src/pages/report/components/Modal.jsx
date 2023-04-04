@@ -16,14 +16,6 @@ export default function Modal({ isOpen, onClose, children }) {
     hidden: { opacity: 0, y: "-100%", transition: { duration: 0.1 } },
   };
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-  }, [isOpen]);
-
   return (
     <AnimatePresence>
       {isOpen && (
@@ -111,7 +103,7 @@ const ModlaMainInfo = styled.div`
 
 // 마커 클릭시 보여줄 모달
 export function PostModal(props) {
-  console.log(props.data);
+  // console.log(props.data)
   const navigate = useNavigate();
 
   return (

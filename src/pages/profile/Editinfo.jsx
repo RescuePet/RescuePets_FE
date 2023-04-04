@@ -58,64 +58,53 @@ const Editinfo = () => {
 
 
   const onSubmitmyInfoHandler = (data) => {
+
     const formData = new FormData();
-
     formData.append("nickname", data.name);
-
     formData.append("image", imageFormData);
 
-    for (let key of formData.keys()) {
-      console.log(key, ":", formData.get(key));
-    }
+    // for (let key of formData.keys()) {
+    //   console.log(key, ":", formData.get(key));
+    // }
     dispatch(__PutMyinfoEdit(formData));
   };
-
-  // const [EditInfoMsg, setEditInfoMsg] = useState("");
 
   const EditMsg = useSelector((state) => {
     return state.infoEdit;
   });
 
+  // 
   useEffect(() => {
     console.log("통신결과", EditMsg);
     if (EditMsg?.message?.status === true) {
-      console.log(userInfo);
-      // console.log("성공")
-      console.log(EditMsg?.message);
-      console.log(EditMsg?.message?.message);
-      console.log(EditMsg?.message?.data);
-      // localStorageNaNpxoveItem("nickname");
-      // localStorageNaNpxoveItem("profileImage");
-      // localStorage.setItem("nickname", EditMsg?.message?.data?.nickname)
-      // localStorage.setItem("profileImage", EditMsg?.message?.data?.image)
+      // console.log(userInfo);
+      // console.log(EditMsg?.message);
+      // console.log(EditMsg?.message?.message);
+      // console.log(EditMsg?.message?.data);
+      reset()
     } else {
       console.log("실패");
     }
     // setEditInfoMsg()
   }, [EditMsg]);
 
-  // 통신중일떄 보여줄것
   if (JSON.stringify(EditMsg.loading) === "true") {
-    return <div>Loading...</div>;
+    return  <Spinner/>;
   }
 
   return (
     <Layout>
-      <Spinner></Spinner>
       <EditInfoForm onSubmit={handleSubmit(onSubmitmyInfoHandler)}>
-        <EditInfoHeader>
-        
 
-    <EditHeaderText> 
-      <div></div>
-      <div><h2>프로필 수정하기</h2></div>
-      {/* <h2>프로필 수정하기</h2> */}
-         </EditHeaderText>
-    <EditHeaderImg>   
-       <img src={close} onClick={MoveToBackPage} />
-       </EditHeaderImg> 
-        
-        </EditInfoHeader>
+       <EditInfoHeader>
+        <EditHeaderText> 
+        <div></div>
+        <div><h2>프로필 수정하기</h2></div>
+        </EditHeaderText>
+        <EditHeaderImg>   
+        <img src={close} onClick={MoveToBackPage} />
+        </EditHeaderImg> 
+       </EditInfoHeader>
 
         <EditInfoImgBox>
           <EditInfoImgBack>
@@ -125,11 +114,8 @@ const Editinfo = () => {
               <EditInfoImgIn src={imageShow} />
             )}
             <input
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
-              ref={(refer) => (imageRef = refer)}
-              onChange={onChangeUploadHandler}
+              type="file" accept="image/*"  style={{ display: "none" }} 
+              ref={(refer) => (imageRef = refer)} onChange={onChangeUploadHandler}
             />
             <EditInfoImgInput src={camera} onClick={() => imageRef.click()} />
           </EditInfoImgBack>
@@ -160,13 +146,9 @@ const Editinfo = () => {
 
         <EditinfoButtonBox>
           {isActive === true ? (
-            <Button disable emptyButton>
-              저장대기 중
-            </Button>
+            <Button disable emptyButton>저장대기 중</Button>
           ) : (
-            <Button type="submit" fillButton>
-              저장하기
-            </Button>
+            <Button type="submit" fillButton>저장하기</Button>
           )}
         </EditinfoButtonBox>
       </EditInfoForm>

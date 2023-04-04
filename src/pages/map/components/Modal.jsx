@@ -19,13 +19,6 @@ export default function Modal({ isOpen, onClose, children }) {
     hidden: { opacity: 0, y: "-100%", transition: { duration: 0.1 } },
   };
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-  }, [isOpen]);
 
   return (
     <AnimatePresence>
@@ -99,15 +92,12 @@ export const ModalTitle = styled.div`
   ${(props) => props.theme.FlexRow}
 `;
 export const ModalTitleinfo = styled.div`
-  /* ${FlexAttribute()} */
   ${FlexAttribute("row", "", "center")}
   display: flex;
   align-items: center;
   width: 70%;
   height: 100%;
   ${(props) => props.theme.Body_400_14}
-  /* border: .0625rem solid red; */
-       /* gap: 0 10px; */
        h1 {
     border: 0.0625rem solid #d6459c;
     color: #d6459c;
@@ -153,7 +143,6 @@ export const ModlaMiddlContianer = styled.div`
 export const ModlaMiddleInfoBox = styled.div`
   width: 65%;
   height: 5.8125rem;
-  /* border: .0625rem solid red; */
   padding: 5px 0;
   display: flex;
   align-items: center;
@@ -186,7 +175,6 @@ export const ModlaMiddleInfoBox = styled.div`
 export const ModlaImgInfoBox = styled.div`
   width: 6.0625rem;
   height: 5.8125rem;
-  /* border: .0625rem solid red; */
   > div {
     position: relative;
     width: 100%;
@@ -201,7 +189,7 @@ export const ModlaImgInfoBox = styled.div`
       position: absolute;
       ${SignSvgStyle}
       ${(props) => props.theme.FlexCenter}
-        background: ${(props) => props.theme.color.gray};
+      background: ${(props) => props.theme.color.gray};
       color: ${(props) => props.theme.color.white};
       ${(props) => props.theme.Body_300_10}
       bottom: 0;
@@ -215,29 +203,26 @@ export function MarkerModal(props) {
   const navigate = useNavigate();
 
   const data = props?.data;
-  // console.log(data)
   const Stringkm = String(data?.km);
+
   const Arraykm = Stringkm.split("");
   Arraykm.splice(Arraykm.length - 3, 0, ".");
   const KMDATA = Arraykm.slice(0, 5);
+
   if (data?.upkind === "DOG") {
     data.upkind = "강아지";
   } else if (data?.upkind === "CAT") {
     data.upkind = "고양이";
+  }else if (data?.upkind === "ECT") {
+    data.upkind = "기타";
   }
 
-  // console.log(data)
-  // postImages.[0].imageURL
-
-  const MoveToDetailPageHandler = () => {
-    navigate(`/${data.name}/${data.id}`);
-  };
   return (
     <Modal isOpen={props.isOpen} onClose={props.toggle}>
       <ModalInBox>
         <ModalTitle>
           <ModalTitleinfo>
-            {data?.name === "missingdetail" ? (
+            {data?.name !== "missingdetail" ? (
               <h1
                 style={{ border: ".0625rem solid #714FD1", color: "#714FD1" }}
               >
@@ -279,11 +264,13 @@ export function MarkerModal(props) {
                 이름:&nbsp;{data?.nickname} / 색깔: {data?.colorCd}
               </span>
             )}
-            {/* <span><img src={information} />이름:&nbsp;{data?.nickname} / 색깔: {data?.colorCd}</span> */}
+
             <h4>
-              <Button moveToDetailButton onClick={MoveToDetailPageHandler}>
-                상세보기
-              </Button>
+              <Button moveToDetailButton type="button"
+                onClick={() => {
+                props.onClose();
+                navigate(`/${data.name}/${data.id}`);
+                   }}>상세보기</Button>
             </h4>
           </ModlaMiddleInfoBox>
           <ModlaImgInfoBox>

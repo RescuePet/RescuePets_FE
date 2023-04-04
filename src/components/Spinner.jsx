@@ -45,6 +45,7 @@ const imgAni2 = keyframes`
 25% {
   opacity: 0;
 }`;
+
 const imgAni3 = keyframes`
 0% {
   opacity: 0;
@@ -55,6 +56,7 @@ const imgAni3 = keyframes`
 50% {
   opacity: 0;
 }`;
+
 const imgAni4 = keyframes`
 0% {
   opacity: 0;
@@ -78,7 +80,7 @@ const LoadingInRound = styled.div`
     height: 6rem;
     background: ${props => props.theme.color.primary_assistive};
     border-radius: 50%;
-    animation: ${imgAni} 3s both infinite;
+    animation: ${imgAni} 1s both infinite;
 `;
 
 
@@ -88,7 +90,7 @@ const LoadingInRound2 = styled.div`
     height: 4rem;
     background: ${props => props.theme.color.primary_altemative};
     border-radius: 50%;
-    animation: ${imgAni2} 3s both infinite;
+    animation: ${imgAni2} 1s both infinite;
 `;
 
 
@@ -97,12 +99,12 @@ const LoadingInRound3= styled.div`
     height: 2rem;
     background: ${props => props.theme.color.primary_normal};
     border-radius: 50%;
-    animation: ${imgAni3} 3s both infinite;
+    animation: ${imgAni3} 1s both infinite;
 `;
 
 const LoadingInRound4 = styled.img`
   position: absolute;
   right: 1%;
   bottom: 0.5%;
-  animation: ${imgAni4} 3s both infinite;
+  animation: ${imgAni4} 1s both infinite;
 `

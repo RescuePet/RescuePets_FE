@@ -11,42 +11,22 @@ import imgdelete from "../../asset/imgDelete.svg";
 import close from "../../asset/Close.svg";
 import { CustomSelect } from "../../elements/CustomSelect";
 import {
-  ReportMissingContainer,
-  ReportHeader,
-  ReportAnimalInfoArea,
-  ReportAnimalInfoBox,
-  ReportAnimalInfoCheckBox,
-  ReportAnimalInfoCheckBoxTitle,
-  ReportAnimalInfoCheckBoxSelete,
-  ReportAnimalInfoBoxColumn,
-  ReportAnimalInfoBoxColumnRow,
-  ReportanimaltypesBox,
-  ReportanimaltypesTitle,
-  ReportanimaltypesSelect,
-  ReportInput,
-  ReportLgInput,
-  ReportAnimalDayBox,
-  ReportAnimalSignificantBox,
-  ReportAnimalSignificantBoxTitle,
-  ReportAnimalSignificantBoxInputArea,
-  ReportAnimalPictureArea,
-  ReportAnimalPictureAreaTitle,
-  ReportAnimalPictureAreaInputBox,
-  ReportAnimalPictureInput,
-  ReportAnimalPicturePreview,
-  ReportAnimalUserInfo,
-  PreviewImage,
+  ReportMissingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox,
+  ReportAnimalInfoCheckBox,ReportAnimalInfoCheckBoxTitle,ReportAnimalInfoCheckBoxSelete,
+  ReportAnimalInfoBoxColumn,ReportAnimalInfoBoxColumnRow,ReportanimaltypesBox,ReportanimaltypesTitle,
+  ReportanimaltypesSelect,ReportInput,ReportLgInput,ReportAnimalDayBox,ReportAnimalSignificantBox,
+  ReportAnimalSignificantBoxTitle,ReportAnimalSignificantBoxInputArea,ReportAnimalPictureArea,
+  ReportAnimalPictureAreaTitle, ReportAnimalPictureAreaInputBox, ReportAnimalPictureInput,
+  ReportAnimalPicturePreview, ReportAnimalUserInfo, PreviewImage,
 } from "./components/reportstyle";
 import {
-  NameValue,
-  TimeValue,
-  SeletegenderArr,
-  seleteneuteredArr,
+  NameValue, TimeValue,SeletegenderArr, seleteneuteredArr,
 } from "./components/data";
 import { __PostMissingData, addImage } from "../../redux/modules/missingSlice";
 import { toggleMenu } from "../../redux/modules/menubarSlice";
 import { PostModal } from "./components/Modal";
 import { useModalState } from "../../hooks/useModalState";
+
 const Missing = () => {
   let imageRef;
   const dispatch = useDispatch();
@@ -61,18 +41,22 @@ const Missing = () => {
     number: MissingNumber?.data,
     name: "missingdetail",
   };
+
   useEffect(() => {
-    console.log(MissingNumber); // console.log(catchNumber.data[0].id)
+    console.log(MissingNumber) 
     setPostNumber(data);
   }, [MissingNumber]);
+
   // 리덕스에 저장되어있는 메뉴바 토글상태를 가지고 오고
   const menutoggle = useSelector((state) => {
     return state.menubar.toggle;
   });
+  
   const [mapBg, setMapBg] = useState(menutoggle);
   useEffect(() => {
     setMapBg(true);
   }, [menutoggle]);
+
   const MoveToBackPage = () => {
     dispatch(toggleMenu(mapBg));
     navigate(-1);
