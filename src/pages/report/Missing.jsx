@@ -198,7 +198,7 @@ const Missing = () => {
       dispatch(__PostMissingData(formData)).then((response) => {
         navigate(`/poster/${response.payload}`);
       });
-      // reset();
+      reset();
     }
   };
   return (
@@ -230,17 +230,12 @@ const Missing = () => {
                   placeholder="입력하기"
                   {...register("animaltypes", {
                     required: true,
-                    pattern: {
-                      value: /^[ㄱ-ㅎ|가-힣]+$/,
-                      message: "한글만 2 ~ 8글자 사이로 입력",
-                    },
+                    pattern: {value: /^[ㄱ-ㅎ|가-힣]+$/, message: "한글만 2 ~ 8글자 사이로 입력",},
                   })}
                 />
                 <img
                   src={cancel}
-                  onClick={() => {
-                    onClickDeleteValue("animaltypes");
-                  }}
+                  onClick={() => {onClickDeleteValue("animaltypes") }}
                 />
                 <span>{errors?.animaltypes?.message}</span>
               </div>
@@ -258,22 +253,13 @@ const Missing = () => {
                   placeholder="입력하기"
                   {...register("animalName", {
                     required: true,
-                    pattern: {
-                      value: /^[가-힣\s]+$/,
-                      message: "한글만 2 ~ 8글자 사이로 입력 ",
-                    },
-                    maxLength: {
-                      value: 8,
-                      message: "8글자 이하이어야 합니다.",
-                    },
+                    pattern: {value: /^[가-힣\s]+$/,message: "한글만 2 ~ 8글자 사이로 입력 ",},
+                    maxLength: {value: 8,message: "8글자 이하이어야 합니다.",},
                   })}
                 />
                 <img
                   src={cancel}
-                  onClick={() => {
-                    onClickDeleteValue("animalName");
-                  }}
-                />
+                  onClick={() => {onClickDeleteValue("animalName");}}/>
                 <span>{errors?.animalName?.message}</span>
               </ReportAnimalInfoBoxColumnRow>
               <ReportAnimalInfoBoxColumnRow>
@@ -284,17 +270,12 @@ const Missing = () => {
                   {...register("animalAge", {
                     required: true,
                     pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
-                    maxLength: {
-                      value: 3,
-                      message: "숫자만 입력! 3자리수 이하로 작성",
-                    },
+                    maxLength: {value: 3,message: "숫자만 입력! 3자리수 이하로 작성",},
                   })}
                 />
                 <img
                   src={cancel}
-                  onClick={() => {
-                    onClickDeleteValue("animalAge");
-                  }}
+                  onClick={() => {onClickDeleteValue("animalAge");}}
                 />
                 <span>{errors?.animalAge?.message}</span>
               </ReportAnimalInfoBoxColumnRow>
@@ -308,17 +289,13 @@ const Missing = () => {
                   {...register("animalkg", {
                     required: true,
                     pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
-                    maxLength: {
-                      value: 4,
-                      message: "4글자 이하이어야 합니다.",
+                    maxLength: {value: 4,message: "4글자 이하이어야 합니다.",
                     },
                   })}
                 />
                 <img
                   src={cancel}
-                  onClick={() => {
-                    onClickDeleteValue("animalkg");
-                  }}
+                  onClick={() => {onClickDeleteValue("animalkg");}}
                 />
                 <span>{errors?.animalkg?.message}</span>
               </ReportAnimalInfoBoxColumnRow>
@@ -329,21 +306,13 @@ const Missing = () => {
                   placeholder="입력하기"
                   {...register("animalcolor", {
                     required: true,
-                    pattern: {
-                      value: /^[가-힣\s]+$/,
-                      message: "한글만 2 ~ 8글자 사이로 입력 ",
-                    },
-                    maxLength: {
-                      value: 8,
-                      message: "8글자 이하이어야 합니다.",
-                    },
+                    pattern: {value: /^[가-힣\s]+$/,message: "한글만 2 ~ 8글자 사이로 입력 ",},
+                    maxLength: {value: 8,message: "8글자 이하이어야 합니다.",},
                   })}
                 />
                 <img
                   src={cancel}
-                  onClick={() => {
-                    onClickDeleteValue("animalcolor");
-                  }}
+                  onClick={() => {onClickDeleteValue("animalcolor");}}
                 />
                 <span>{errors?.animalcolor?.message}</span>
               </ReportAnimalInfoBoxColumnRow>
@@ -388,21 +357,13 @@ const Missing = () => {
                 placeholder="입력하기"
                 {...register("characteristic", {
                   required: false,
-                  pattern: {
-                    value: /^[가-힣\s]+$/,
-                    message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message: "20글자 이하이어야 합니다.",
-                  },
+                  pattern: {value: /^[가-힣\s]+$/,message: "한글만 20글자 안으로 입력 띄워쓰기 X ",},
+                  maxLength: {value: 20,message: "20글자 이하이어야 합니다.",},
                 })}
               />
               <img
                 src={cancel}
-                onClick={() => {
-                  onClickDeleteValue("characteristic");
-                }}
+                onClick={() => {onClickDeleteValue("characteristic");}}
               />
               <span>{errors?.characteristic?.message}</span>
             </div>
@@ -414,22 +375,13 @@ const Missing = () => {
                 placeholder="입력하기"
                 {...register("memo", {
                   required: false,
-                  pattern: {
-                    value: /^[가-힣\s]+$/,
-                    message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message: "20글자 이하이어야 합니다.",
-                  },
+                  pattern: {value: /^[가-힣\s]+$/,message: "한글만 20글자 안으로 입력 띄워쓰기 X ",},
+                  maxLength: {value: 20,message: "20글자 이하이어야 합니다.",},
                 })}
               />
               <img
                 src={cancel}
-                onClick={() => {
-                  onClickDeleteValue("memo");
-                }}
-              />
+                onClick={() => {onClickDeleteValue("memo");}}/>
               <span>{errors?.memo?.message}</span>
             </div>
           </ReportAnimalSignificantBoxInputArea>
