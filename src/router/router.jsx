@@ -20,6 +20,8 @@ import Poster from "../pages/poster/Poster";
 import MyComment from "../pages/profile/MyComment";
 import MyPost from "../pages/profile/MyPost";
 import MyScrap from "../pages/profile/MyScrap";
+import EditCatch from "../pages/report/edit/EditCatch";
+import EditMissing from "../pages/report/edit/EditMissing";
 
 const Router = () => {
   return (
@@ -41,6 +43,8 @@ const Router = () => {
         <Route path="/petwork" element={<PetworkList />} />
         <Route path="/missingdetail/:id" element={<MissingDetail />} />
         <Route path="/sightingdetail/:id" element={<SightingDetail />} />
+        <Route path="/editcatch/:id" element={<EditCatch />} />
+        <Route path="/editmissing/:id" element={<EditMissing />} />
         <Route path="/kakaologin" element={<KakaoSignin />} />
         <Route path="/poster/:id" element={<Poster />} />
         <Route path="/profile/mycomment" element={<MyComment />} />

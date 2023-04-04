@@ -46,7 +46,6 @@ const MissingDetail = () => {
   const { missingPostDetail } = useSelector((state) => state?.petwork);
   const { missingComment, editDone } = useSelector((state) => state?.comment);
 
-  console.log(missingPostDetail);
 
   useEffect(() => {
     dispatch(__getMissingPostDetail(id));
@@ -122,12 +121,18 @@ const MissingDetail = () => {
     scrapHandler: scrapHandler,
   };
 
+  const MoveData= {
+    number: missingPostDetail.id ,
+    path: "editmissing"
+  }
+
   return (
     <Layout>
       <ScrollToTop />
       <ImageCarousel
         images={missingPostDetail.postImages}
         imageCarouselInfo={imageCarouselInfo}
+        data={MoveData}
       />
       <TitleWrapper>
         <Title titleInfo={titleInfo}></Title>
