@@ -11,11 +11,13 @@ import InputContainer from "../../components/InputContainer";
 import Send from "./components/Send";
 import Receive from "./components/Receive";
 import { instance } from "../../utils/api";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
+import Back from "../../asset/Back.svg";
 
 const ChatRoom = () => {
   const { id, nickname } = useParams();
+  const navigate = useNavigate();
   const [chatlog, setChatLog] = useState([]);
   const sender = JSON.parse(Cookies.get("UserInfo"));
 
@@ -83,6 +85,7 @@ const ChatRoom = () => {
   return (
     <Layout>
       <ChatRoomHeader>
+        <BackSvg src={Back} onClick={() => navigate("/chatlist")} />
         <HeaderTitle>{nickname}</HeaderTitle>
       </ChatRoomHeader>
       <ChatRoomBody>
@@ -116,12 +119,18 @@ const ChatRoomHeader = styled.div`
   position: sticky;
   top: 0;
   z-index: 10;
+  padding-bottom: 17px;
   background-color: ${(props) => props.theme.color.white};
+`;
+
+const BackSvg = styled.img`
+  position: absolute;
+  left: 20px;
+  cursor: pointer;
 `;
 
 const HeaderTitle = styled.span`
   ${Body_500_16}
-  padding-bottom: 17px;
 `;
 
 const ChatRoomBody = styled.div`
