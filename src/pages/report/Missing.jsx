@@ -10,9 +10,9 @@ import Location from "./components/Location";
 import imgdelete from "../../asset/imgDelete.svg";
 import close from "../../asset/Close.svg";
 import { CustomSelect } from "../../elements/CustomSelect";
+import SeleteTab from "./components/SeleteTab";
 import {
   ReportMissingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox,
-  ReportAnimalInfoCheckBox,ReportAnimalInfoCheckBoxTitle,ReportAnimalInfoCheckBoxSelete,
   ReportAnimalInfoBoxColumn,ReportAnimalInfoBoxColumnRow,ReportanimaltypesBox,ReportanimaltypesTitle,
   ReportanimaltypesSelect,ReportInput,ReportLgInput,ReportAnimalDayBox,ReportAnimalSignificantBox,
   ReportAnimalSignificantBoxTitle,ReportAnimalSignificantBoxInputArea,ReportAnimalPictureArea,
@@ -20,7 +20,7 @@ import {
   ReportAnimalPicturePreview, ReportAnimalUserInfo, PreviewImage,
 } from "./components/reportstyle";
 import {
-  NameValue, TimeValue,SeletegenderArr, seleteneuteredArr,
+  NameValue, TimeValue
 } from "./components/data";
 import { __PostMissingData, addImage } from "../../redux/modules/missingSlice";
 import { toggleMenu } from "../../redux/modules/menubarSlice";
@@ -76,23 +76,20 @@ const Missing = () => {
   };
 
   const onChangeTimeValeu = () => {};
-  const [currentGenderTab, setCurrentGenderTab] = useState(0);
-  const [currentNeuteredTab, setCurrentNeuteredTab] = useState(0);
-  const [currentGenderValue, setCurrentGenderValue] = useState("수컷");
 
   const [currentGenderEnValue, setCurrentGenderEnValue] = useState("MALE");
-  const [currentNeuteredValue, setCurrentNeuteredValue] = useState("완료");
   const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState("YES");
-  const selectMGenderHandler = (index) => {
-    setCurrentGenderTab(index);
-    setCurrentGenderValue(SeletegenderArr[index].gender);
-    setCurrentGenderEnValue(SeletegenderArr[index].value);
-  };
-  const selectNeuteredHandler = (index) => {
-    setCurrentNeuteredTab(index);
-    setCurrentNeuteredValue(seleteneuteredArr[index].neutered);
-    setCurrentNeuteredEnValue(seleteneuteredArr[index].value);
-  };
+
+  const onChangeGender = (newData) => {
+    setCurrentGenderEnValue(newData)
+  }
+  const onChangeNeutered = (newData) =>{
+    setCurrentNeuteredEnValue(newData)
+  }
+
+  // console.log("최신값성별 :",currentGenderEnValue)
+  // console.log("최신값중성화:",currentNeuteredEnValue)
+
   // 사진 로직
   // 올린 이미지 담을 관리하는 State
   const [showImages, setShowImages] = useState([]);
@@ -233,64 +230,20 @@ const Missing = () => {
                   placeholder="입력하기"
                   {...register("animaltypes", {
                     required: true,
-                    pattern: {
-                      value: /^[ㄱ-ㅎ|가-힣]+$/,
-                      message: "한글만 2 ~ 8글자 사이로 입력",
-                    },
+                    pattern: {value: /^[ㄱ-ㅎ|가-힣]+$/, message: "한글만 2 ~ 8글자 사이로 입력",},
                   })}
                 />
                 <img
                   src={cancel}
-                  onClick={() => {
-                    onClickDeleteValue("animaltypes");
-                  }}
+                  onClick={() => {onClickDeleteValue("animaltypes") }}
                 />
                 <span>{errors?.animaltypes?.message}</span>
               </div>
             </ReportanimaltypesSelect>
           </ReportanimaltypesBox>
-          <ReportAnimalInfoBox>
-            <ReportAnimalInfoCheckBox>
-              <ReportAnimalInfoCheckBoxTitle>
-                <p>성별</p>
-              </ReportAnimalInfoCheckBoxTitle>
-              <ReportAnimalInfoCheckBoxSelete>
-                {SeletegenderArr.map((el, index) => (
-                  <li
-                    key={index}
-                    value={el.value}
-                    className={
-                      index === currentGenderTab ? "submenu focused" : "submenu"
-                    }
-                    onClick={() => selectMGenderHandler(index)}
-                  >
-                    {el.gender}
-                  </li>
-                ))}
-              </ReportAnimalInfoCheckBoxSelete>
-            </ReportAnimalInfoCheckBox>
-            <ReportAnimalInfoCheckBox>
-              <ReportAnimalInfoCheckBoxTitle>
-                {" "}
-                <p>중성화</p>{" "}
-              </ReportAnimalInfoCheckBoxTitle>
-              <ReportAnimalInfoCheckBoxSelete>
-                {seleteneuteredArr.map((el, index) => (
-                  <li
-                    key={index}
-                    className={
-                      index === currentNeuteredTab
-                        ? "submenu focused"
-                        : "submenu"
-                    }
-                    onClick={() => selectNeuteredHandler(index)}
-                  >
-                    {el.neutered}
-                  </li>
-                ))}
-              </ReportAnimalInfoCheckBoxSelete>
-            </ReportAnimalInfoCheckBox>
-          </ReportAnimalInfoBox>
+
+          <SeleteTab onChangeGender={onChangeGender} onChangeNeutered={onChangeNeutered}/>
+       
           <ReportAnimalInfoBox>
             <ReportAnimalInfoBoxColumn>
               <ReportAnimalInfoBoxColumnRow>
@@ -300,22 +253,13 @@ const Missing = () => {
                   placeholder="입력하기"
                   {...register("animalName", {
                     required: true,
-                    pattern: {
-                      value: /^[가-힣\s]+$/,
-                      message: "한글만 2 ~ 8글자 사이로 입력 ",
-                    },
-                    maxLength: {
-                      value: 8,
-                      message: "8글자 이하이어야 합니다.",
-                    },
+                    pattern: {value: /^[가-힣\s]+$/,message: "한글만 2 ~ 8글자 사이로 입력 ",},
+                    maxLength: {value: 8,message: "8글자 이하이어야 합니다.",},
                   })}
                 />
                 <img
                   src={cancel}
-                  onClick={() => {
-                    onClickDeleteValue("animalName");
-                  }}
-                />
+                  onClick={() => {onClickDeleteValue("animalName");}}/>
                 <span>{errors?.animalName?.message}</span>
               </ReportAnimalInfoBoxColumnRow>
               <ReportAnimalInfoBoxColumnRow>
@@ -326,17 +270,12 @@ const Missing = () => {
                   {...register("animalAge", {
                     required: true,
                     pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
-                    maxLength: {
-                      value: 3,
-                      message: "숫자만 입력! 3자리수 이하로 작성",
-                    },
+                    maxLength: {value: 3,message: "숫자만 입력! 3자리수 이하로 작성",},
                   })}
                 />
                 <img
                   src={cancel}
-                  onClick={() => {
-                    onClickDeleteValue("animalAge");
-                  }}
+                  onClick={() => {onClickDeleteValue("animalAge");}}
                 />
                 <span>{errors?.animalAge?.message}</span>
               </ReportAnimalInfoBoxColumnRow>
@@ -350,17 +289,13 @@ const Missing = () => {
                   {...register("animalkg", {
                     required: true,
                     pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
-                    maxLength: {
-                      value: 4,
-                      message: "4글자 이하이어야 합니다.",
+                    maxLength: {value: 4,message: "4글자 이하이어야 합니다.",
                     },
                   })}
                 />
                 <img
                   src={cancel}
-                  onClick={() => {
-                    onClickDeleteValue("animalkg");
-                  }}
+                  onClick={() => {onClickDeleteValue("animalkg");}}
                 />
                 <span>{errors?.animalkg?.message}</span>
               </ReportAnimalInfoBoxColumnRow>
@@ -371,21 +306,13 @@ const Missing = () => {
                   placeholder="입력하기"
                   {...register("animalcolor", {
                     required: true,
-                    pattern: {
-                      value: /^[가-힣\s]+$/,
-                      message: "한글만 2 ~ 8글자 사이로 입력 ",
-                    },
-                    maxLength: {
-                      value: 8,
-                      message: "8글자 이하이어야 합니다.",
-                    },
+                    pattern: {value: /^[가-힣\s]+$/,message: "한글만 2 ~ 8글자 사이로 입력 ",},
+                    maxLength: {value: 8,message: "8글자 이하이어야 합니다.",},
                   })}
                 />
                 <img
                   src={cancel}
-                  onClick={() => {
-                    onClickDeleteValue("animalcolor");
-                  }}
+                  onClick={() => {onClickDeleteValue("animalcolor");}}
                 />
                 <span>{errors?.animalcolor?.message}</span>
               </ReportAnimalInfoBoxColumnRow>
@@ -430,21 +357,13 @@ const Missing = () => {
                 placeholder="입력하기"
                 {...register("characteristic", {
                   required: false,
-                  pattern: {
-                    value: /^[가-힣\s]+$/,
-                    message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message: "20글자 이하이어야 합니다.",
-                  },
+                  pattern: {value: /^[가-힣\s]+$/,message: "한글만 20글자 안으로 입력 띄워쓰기 X ",},
+                  maxLength: {value: 20,message: "20글자 이하이어야 합니다.",},
                 })}
               />
               <img
                 src={cancel}
-                onClick={() => {
-                  onClickDeleteValue("characteristic");
-                }}
+                onClick={() => {onClickDeleteValue("characteristic");}}
               />
               <span>{errors?.characteristic?.message}</span>
             </div>
@@ -456,22 +375,13 @@ const Missing = () => {
                 placeholder="입력하기"
                 {...register("memo", {
                   required: false,
-                  pattern: {
-                    value: /^[가-힣\s]+$/,
-                    message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message: "20글자 이하이어야 합니다.",
-                  },
+                  pattern: {value: /^[가-힣\s]+$/,message: "한글만 20글자 안으로 입력 띄워쓰기 X ",},
+                  maxLength: {value: 20,message: "20글자 이하이어야 합니다.",},
                 })}
               />
               <img
                 src={cancel}
-                onClick={() => {
-                  onClickDeleteValue("memo");
-                }}
-              />
+                onClick={() => {onClickDeleteValue("memo");}}/>
               <span>{errors?.memo?.message}</span>
             </div>
           </ReportAnimalSignificantBoxInputArea>

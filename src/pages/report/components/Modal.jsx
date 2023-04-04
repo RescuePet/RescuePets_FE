@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import Button from "../../../elements/Button";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 export default function Modal({ isOpen, onClose, children }) {
   const backdropVariants = {
@@ -103,9 +102,9 @@ const ModlaMainInfo = styled.div`
 
 // 마커 클릭시 보여줄 모달
 export function PostModal(props) {
-  // console.log(props.data)
+  console.log(props)
   const navigate = useNavigate();
-
+  // data.number
   return (
     <Modal isOpen={props.isOpen} onClose={props.toggle}>
       <ModalTitle>등록완료</ModalTitle>
@@ -119,14 +118,14 @@ export function PostModal(props) {
           상세보기
         </Button>
 
-        <Button
+        {/* <Button
           GOToDetailButton
           onClick={() => {
             navigate(`/poster/${props?.data?.number}`);
           }}
         >
           포스터만들기
-        </Button>
+        </Button> */}
       </ModlaMainInfo>
     </Modal>
   );

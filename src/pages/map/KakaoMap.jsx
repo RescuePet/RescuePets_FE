@@ -336,8 +336,9 @@ const KakaoMap = () => {
         <Spinner/>
       <FloatingPetwork />
     </div>
-
-    ) : (
+    ) 
+    : 
+    (
       <div
       id="myMap"
       style={{ width: "100%", height: "90vh", position: "relative" }}>

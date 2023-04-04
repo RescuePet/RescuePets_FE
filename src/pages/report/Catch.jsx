@@ -6,16 +6,15 @@ import cancel from "../../asset/delete.svg";
 import Location from "./components/Location";
 import imageCompression from "browser-image-compression";
 import { CustomSelect } from "../../elements/CustomSelect";
+import SeleteTab from "./components/SeleteTab";
 import {
-  ReportSightingContainer,ReportHeader,ReportAnimalInfoArea,ReportAnimalInfoBox, ReportAnimalInfoCheckBox,ReportAnimalInfoCheckBoxTitle,
-  ReportAnimalInfoCheckBoxSelete,ReportAnimalInfoBoxColumn,ReportAnimalInfoBoxColumnRow,ReportAnimalInfoBoxColumnColumn,ReportanimaltypesTitle,
+  ReportSightingContainer,ReportHeader,ReportAnimalInfoArea,ReportAnimalInfoBox, 
+  ReportAnimalInfoBoxColumn,ReportAnimalInfoBoxColumnRow,ReportAnimalInfoBoxColumnColumn,ReportanimaltypesTitle,
   ReportanimaltypesSelect, ReportInput,ReportLgInput, ReportAnimalDayBox, ReportAnimalSignificantBox, ReportAnimalSignificantBoxTitle,
   ReportAnimalSignificantBoxInputArea, ReportAnimalPictureArea,ReportAnimalPictureAreaTitle,ReportAnimalPictureAreaInputBox,ReportAnimalPictureInput,
   ReportAnimalPicturePreview,PreviewImage,
 } from "./components/reportstyle";
-import {
-  NameValue, TimeValue,SeletegenderArr,seleteneuteredArr,
-} from "./components/data";
+import { NameValue, TimeValue} from "./components/data";
 import { __PostCatchData } from "../../redux/modules/catchSlice";
 import { useDispatch, useSelector } from "react-redux";
 import imgdelete from "../../asset/imgDelete.svg";
@@ -45,8 +44,6 @@ const Catch = () => {
     setPostNumber(data);
   }, [catchNumber]);
 
-
-
   // 이전페이지로 이동
   const MoveToBackPage = () => {
     navigate(-1);
@@ -69,24 +66,19 @@ const Catch = () => {
   // 콘솔없애기 위한 로직
   const onChangeTimeValeu = () => {};
 
-  // TAB 로직 
-  const [currentGenderTab, setCurrentGenderTab] = useState(0);
-  const [currentNeuteredTab, setCurrentNeuteredTab] = useState(0);
-  const [currentGenderValue, setCurrentGenderValue] = useState("수컷");
   const [currentGenderEnValue, setCurrentGenderEnValue] = useState("MALE");
-  const [currentNeuteredValue, setCurrentNeuteredValue] = useState("완료");
   const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState("YES");
 
-  const selectMGenderHandler = (index) => {
-    setCurrentGenderTab(index);
-    setCurrentGenderValue(SeletegenderArr[index].gender);
-    setCurrentGenderEnValue(SeletegenderArr[index].value);
-  };
-  const selectNeuteredHandler = (index) => {
-    setCurrentNeuteredTab(index);
-    setCurrentNeuteredValue(seleteneuteredArr[index].neutered);
-    setCurrentNeuteredEnValue(seleteneuteredArr[index].value);
-  };
+  const onChangeGender = (newData) => {
+    setCurrentGenderEnValue(newData)
+  }
+  const onChangeNeutered = (newData) =>{
+    setCurrentNeuteredEnValue(newData)
+  }
+
+  // console.log("최신값성별 :",currentGenderEnValue)
+  // console.log("최신값중성화:",currentNeuteredEnValue)
+
 
   // 사진 로직
   const [showImages, setShowImages] = useState([]);
@@ -168,6 +160,9 @@ const Catch = () => {
 
   // form submit 로직
   const onSubmitSightingHanlder = (data) => {
+
+    console.log(currentGenderEnValue)
+    console.log(currentNeuteredEnValue)
     if (addressDiv?.innerHTML === "") {
       alert("지도에 위치를 표기해주세요");
     } else {
@@ -188,11 +183,9 @@ const Catch = () => {
       formData.append("content", data.memo);
       formData.append("gratuity", data.money);
       formData.append("contact", data.number);
-
       imageFormData.map((img) => {
         formData.append("postImages", img);
       });
-
       dispatch(__PostCatchData(formData));
       toggleModal();
       reset();
@@ -247,52 +240,7 @@ const Catch = () => {
               </div>
             </ReportanimaltypesSelect>
 
-            <ReportAnimalInfoBox>
-              {/* 성별 */}
-              <ReportAnimalInfoCheckBox>
-                <ReportAnimalInfoCheckBoxTitle>
-                  {" "}
-                  <p>성별</p>
-                </ReportAnimalInfoCheckBoxTitle>
-                <ReportAnimalInfoCheckBoxSelete>
-                  {SeletegenderArr.map((el, index) => (
-                    <li
-                      key={index}
-                      className={
-                        index === currentGenderTab
-                          ? "submenu focused"
-                          : "submenu"
-                      }
-                      onClick={() => selectMGenderHandler(index)}
-                    >
-                      {el.gender}
-                    </li>
-                  ))}
-                </ReportAnimalInfoCheckBoxSelete>
-              </ReportAnimalInfoCheckBox>
-
-              <ReportAnimalInfoCheckBox>
-                <ReportAnimalInfoCheckBoxTitle>
-                  {" "}
-                  <p>중성화</p>{" "}
-                </ReportAnimalInfoCheckBoxTitle>
-                <ReportAnimalInfoCheckBoxSelete>
-                  {seleteneuteredArr.map((el, index) => (
-                    <li
-                      key={index}
-                      className={
-                        index === currentNeuteredTab
-                          ? "submenu focused"
-                          : "submenu"
-                      }
-                      onClick={() => selectNeuteredHandler(index)}
-                    >
-                      {el.neutered}
-                    </li>
-                  ))}
-                </ReportAnimalInfoCheckBoxSelete>
-              </ReportAnimalInfoCheckBox>
-            </ReportAnimalInfoBox>
+                  <SeleteTab onChangeGender={onChangeGender} onChangeNeutered={onChangeNeutered}/>
 
             <ReportAnimalInfoBox>
               <ReportAnimalInfoBoxColumn>
@@ -304,10 +252,7 @@ const Catch = () => {
                     {...register("animalAge", {
                       required: true,
                       pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
-                      maxLength: {
-                        value: 3,
-                        message: "숫자만 입력! 3자리수 이하로 작성",
-                      },
+                      maxLength: {value: 3,message: "숫자만 입력! 3자리수 이하로 작성",},
                     })}
                   />
                   <img
@@ -327,22 +272,16 @@ const Catch = () => {
                     {...register("animalkg", {
                       required: false,
                       pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
-                      maxLength: {
-                        value: 3,
-                        message: "숫자만 입력! 3자리수 이하로 작성",
-                      },
+                      maxLength: {value: 3,message: "숫자만 입력! 3자리수 이하로 작성",},
                     })}
                   />
                   <img
                     src={cancel}
-                    onClick={() => {
-                      onClickDeleteValue("animalkg");
-                    }}
-                  />
+                    onClick={() => {onClickDeleteValue("animalkg")}}/>
                   <span>{errors?.animalkg?.message}</span>
                 </ReportAnimalInfoBoxColumnRow>
               </ReportAnimalInfoBoxColumn>
-              {/* 색상 */}
+        
               <ReportAnimalInfoBoxColumn>
                 <ReportAnimalInfoBoxColumnColumn>
                   <p>색상</p>
@@ -351,22 +290,13 @@ const Catch = () => {
                     placeholder="입력하기"
                     {...register("animalcolor", {
                       required: true,
-                      pattern: {
-                        value: /^[가-힣\s]+$/,
-                        message: "한글만 2 ~ 8글자 사이로 입력 ",
-                      },
-                      maxLength: {
-                        value: 8,
-                        message: "8글자 이하이어야 합니다.",
-                      },
+                      pattern: {value: /^[가-힣\s]+$/,message: "한글만 2 ~ 8글자 사이로 입력 ",},
+                      maxLength: {value: 8,message: "8글자 이하이어야 합니다.",},
                     })}
                   />
                   <img
                     src={cancel}
-                    onClick={() => {
-                      onClickDeleteValue("animalcolor");
-                    }}
-                  />
+                    onClick={() => {onClickDeleteValue("animalcolor");}}/>
                   <span>{errors?.animalcolor?.message}</span>
                 </ReportAnimalInfoBoxColumnColumn>
               </ReportAnimalInfoBoxColumn>
@@ -382,22 +312,14 @@ const Catch = () => {
             <div>
               <p>날짜</p>
               <ReportInput
-                type="date"
-                onChange={handleDateChange}
-                value={selectedDate}
-                max={currentDate}
-              />
-              {/* <img src={cancel} onClick={(() => { onClickDeleteValue('days') })} /> */}
-              {/* <span>{errors?.days?.message}</span> */}
+                type="date" onChange={handleDateChange}
+                value={selectedDate} max={currentDate} />
             </div>
-            {/* 시간대 */}
             <div>
               <p>시간대</p>
               <CustomSelect
-                data={TimeValue}
-                onChangeData={onChangeTimeData}
-                onChangeID={onChangeTimeValeu}
-              />
+                data={TimeValue} onChangeData={onChangeTimeData}
+                onChangeID={onChangeTimeValeu}/>
             </div>
           </div>
         </ReportAnimalDayBox>
@@ -414,22 +336,13 @@ const Catch = () => {
                 placeholder="입력하기"
                 {...register("characteristic", {
                   required: false,
-                  pattern: {
-                    value: /^[가-힣\s]+$/,
-                    message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message: "20글자 이하이어야 합니다.",
-                  },
+                  pattern: {value: /^[가-힣\s]+$/,message: "한글만 20글자 안으로 입력 띄워쓰기 X ",},
+                  maxLength: {value: 20,message: "20글자 이하이어야 합니다.",},
                 })}
               />
               <img
                 src={cancel}
-                onClick={() => {
-                  onClickDeleteValue("characteristic");
-                }}
-              />
+                onClick={() => {onClickDeleteValue("characteristic"); }}/>
               <span>{errors?.characteristic?.message}</span>
             </div>
             <div>
@@ -439,21 +352,13 @@ const Catch = () => {
                 placeholder="입력하기"
                 {...register("memo", {
                   required: false,
-                  pattern: {
-                    value: /^[가-힣\s]+$/,
-                    message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message: "20글자 이하이어야 합니다.",
-                  },
+                  pattern: { value: /^[가-힣\s]+$/,message: "한글만 20글자 안으로 입력 띄워쓰기 X ", },
+                  maxLength: {value: 20, message: "20글자 이하이어야 합니다.",},
                 })}
               />
               <img
                 src={cancel}
-                onClick={() => {
-                  onClickDeleteValue("memo");
-                }}/>
+                onClick={() => {onClickDeleteValue("memo")}}/>
               <span>{errors?.memo?.message}</span>
             </div>
           </ReportAnimalSignificantBoxInputArea>

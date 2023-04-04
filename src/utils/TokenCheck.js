@@ -15,9 +15,7 @@ export const TokenCheck = () => {
   useEffect(() => {
     if (!SignIN && !SignUP && !Onboarding && !getToken && !getUserInfo) {
       alert("로그인 시간이 만료되었습니다. 다시 로그인 해주세요");
-      setTimeout(function () {
-        navigate("/signin");
-      }, 1000);
+      navigate("/signin");
     }
   }, [SignIN, SignUP, getToken, navigate]);
 

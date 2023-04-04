@@ -13,7 +13,7 @@ export const seleteneuteredArr = [
 export const NameValue = [
   { id: 0, name: "강아지",  value: "DOG" },
   { id: 1, name: "고양이",  value: "CAT" },
-  { id: 2, name: "기타",   value: "ECT" },
+  { id: 2, name: "기타",   value: "ETC" },
 ];
 
 export const TimeValue = [
