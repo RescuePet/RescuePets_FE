@@ -5,9 +5,9 @@ import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-import back from "../../../asset/backwhite.svg";
 import ClippingEmpty from "../../../asset/Clippingwhite.jsx";
 import ClippingFill from "../../../asset/profile/ClippingFill";
+import Backwhite from "../../../asset/Backwhite";
 
 const ImageCarousel = ({ images, imageCarouselInfo }) => {
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ const ImageCarousel = ({ images, imageCarouselInfo }) => {
           </ImageWrapper>
         ))}
       </StyledSlider>
-      <BackButton src={back} onClick={() => navigate("/petwork")} />
+      <BackButton onClick={() => navigate("/petwork")} />
       {imageCarouselInfo.scrapState ? (
         <ScrapStateTrue onClick={imageCarouselInfo.scrapHandler} />
       ) : (
@@ -100,13 +100,16 @@ const Image = styled.img`
   backdrop-filter: blur(0.1875rem);
 `;
 
-const BackButton = styled.img`
+const BackButton = styled(Backwhite)`
   position: absolute;
   top: 2.5rem;
   left: 1.6875rem;
   width: 1.5rem;
   height: 1.5rem;
   cursor: pointer;
+  path {
+    fill: ${(props) => props.theme.color.primary_normal};
+  }
 `;
 
 const ScrapStateTrue = styled(ClippingFill)`
@@ -117,7 +120,7 @@ const ScrapStateTrue = styled(ClippingFill)`
   height: 1.5rem;
   cursor: pointer;
   path {
-    fill: ${(props) => props.theme.color.white};
+    fill: ${(props) => props.theme.color.primary_normal};
   }
 `;
 
@@ -128,6 +131,9 @@ const ScrapStateFalse = styled(ClippingEmpty)`
   width: 1.5rem;
   height: 1.5rem;
   cursor: pointer;
+  path {
+    fill: ${(props) => props.theme.color.primary_normal};
+  }
 `;
 
 const PrevTo = styled.div`

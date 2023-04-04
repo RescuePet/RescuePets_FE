@@ -13,17 +13,19 @@ import Shelter from "./components/Shelter";
 import Location from "./components/Location";
 import Title from "./components/Title";
 
-import backwhite from "../../asset/backwhite.svg";
 import location from "../../asset/location.svg";
 import calendar from "../../asset/calendar.svg";
 import specialmark from "../../asset/specialmark.svg";
 import user from "../../asset/user.svg";
+import information from "../../asset/information.svg";
 import Clippingwhite from "../../asset/Clippingwhite";
 import { FlexAttribute, PostBorderStyle } from "../../style/Mixin";
 import AdoptionInformation from "./components/AdoptionInformation";
 import Button from "../../elements/Button";
 import ClippingFill from "../../asset/profile/ClippingFill";
 import ScrollToTop from "../../elements/ScrollToTop";
+import { Spinner } from "../../components/Spinner";
+import Backwhite from "../../asset/Backwhite";
 
 const AdoptionDetail = () => {
   const { id } = useParams();
@@ -34,9 +36,12 @@ const AdoptionDetail = () => {
     dispatch(__getAdoptionDetail(id));
   }, []);
   const { adoptionDetail } = useSelector((state) => state?.adoption);
+
+  console.log("data", adoptionDetail);
+
   // 비동기처리 시 detailInfo가 없을 경우를 고려
   if (JSON.stringify(adoptionDetail) === "{}") {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   console.log(adoptionDetail);
@@ -54,7 +59,17 @@ const AdoptionDetail = () => {
     titleData.process = adoptionDetail.refinedata.process;
   }
 
-  const locationData = {
+  const rescueLocationData = {
+    type: "구조정보",
+    map: "map1",
+    address: adoptionDetail.happenPlace,
+    careNm: null,
+    careTel: null,
+  };
+
+  const shelterLocationData = {
+    type: "보호정보",
+    map: "map2",
     address: adoptionDetail.careAddr,
     careNm: adoptionDetail.careNm,
     careTel: adoptionDetail.careTel,
@@ -70,6 +85,11 @@ const AdoptionDetail = () => {
       icon: calendar,
       option: "공고기간",
       data: adoptionDetail.noticeDate,
+    },
+    {
+      icon: information,
+      option: "공고번호",
+      data: adoptionDetail.noticeNo,
     },
     {
       icon: specialmark,
@@ -110,9 +130,7 @@ const AdoptionDetail = () => {
       <ScrollToTop />
       <ImageContainer image={adoptionDetail.popfile}>
         <Image src={adoptionDetail.popfile} />
-        <BackButton onClick={() => navigate(-1)}>
-          <img src={backwhite} alt="back" />
-        </BackButton>
+        <BackButton onClick={() => navigate(-1)} />
         {adoptionDetail.isScrap ? (
           <ScrapStateTrue onClick={scrapHandler} />
         ) : (
@@ -124,7 +142,8 @@ const AdoptionDetail = () => {
       </ImageContainer>
       <div>
         <Title titleData={titleData}></Title>
-        <Location locationData={locationData}></Location>
+        <Location locationData={rescueLocationData}></Location>
+        <Location locationData={shelterLocationData}></Location>
         <ShelterContainer>
           {shelterData.map((item, index) => {
             return (
@@ -169,12 +188,15 @@ const Image = styled.img`
   backdrop-filter: blur(0.125rem);
 `;
 
-const BackButton = styled.div`
+const BackButton = styled(Backwhite)`
   position: absolute;
   top: 1.625rem;
   left: 1.25rem;
   z-index: 10;
   cursor: pointer;
+  path {
+    fill: ${(props) => props.theme.color.primary_normal};
+  }
 `;
 
 const ScrapStateFalse = styled(Clippingwhite)`
@@ -183,6 +205,9 @@ const ScrapStateFalse = styled(Clippingwhite)`
   right: 1.25rem;
   z-index: 10;
   cursor: pointer;
+  path {
+    fill: ${(props) => props.theme.color.primary_normal};
+  }
 `;
 
 const ScrapStateTrue = styled(ClippingFill)`
@@ -192,7 +217,7 @@ const ScrapStateTrue = styled(ClippingFill)`
   z-index: 10;
   cursor: pointer;
   path {
-    fill: ${(props) => props.theme.color.white};
+    fill: ${(props) => props.theme.color.primary_normal};
   }
 `;
 
@@ -211,7 +236,6 @@ const ProcessBox = styled.div`
 
 const ShelterContainer = styled.div`
   ${PostBorderStyle}
-  padding-top: 1rem;
 `;
 
 const ButtonWrapper = styled.div`
