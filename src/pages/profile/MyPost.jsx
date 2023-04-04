@@ -4,11 +4,7 @@ import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import { FlexAttribute, HeaderStyle } from "../../style/Mixin";
 import PostList from "./components/PostList";
-import {
-  addMyPostPage,
-  __getMyCatchPost,
-  __getMyMissingPost,
-} from "../../redux/modules/profileSlice";
+import { __getMyPost, addMyPostPage } from "../../redux/modules/profileSlice";
 import { useInView } from "react-intersection-observer";
 import { useNavigate } from "react-router-dom";
 
@@ -23,6 +19,8 @@ const MyPost = () => {
     (state) => state.profile
   );
 
+  console.log(entirePostPage);
+
   let payload = {
     page: entirePostPage,
     size: 5,
@@ -31,8 +29,7 @@ const MyPost = () => {
   useEffect(() => {
     if (inView) {
       dispatch(addMyPostPage());
-      dispatch(__getMyMissingPost(payload));
-      dispatch(__getMyCatchPost(payload));
+      dispatch(__getMyPost(payload));
     }
   }, [inView]);
 

@@ -47,7 +47,14 @@ const Signin = () => {
     };
     // 토
     toggleModal();
-    dispatch(__signinUser(siginInfo));
+    dispatch(__signinUser(siginInfo))
+      .then(() => {
+        console.log("성공");
+        // navigate(`/poster/${response.payload}`);
+      })
+      .catch((error) => {
+        console.log(error.error);
+      });
   };
 
   const [SignInMsg, setSignInMsg] = useState("");
@@ -67,7 +74,7 @@ const Signin = () => {
   }, [SignInMessage]);
 
   const URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_SIGN_ID}&redirect_uri=${process.env.REACT_APP_RESCUEPETS}/kakaologin`;
-  
+
   const kakaoSignUp = () => {
     window.location.href = URL;
   };

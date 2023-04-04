@@ -6,11 +6,13 @@ import { FlexAttribute } from "../../../style/Mixin";
 const CommentList = ({ item }) => {
   const navigate = useNavigate();
 
+  console.log(item);
+
   const navigateHandler = () => {
-    if (item.petPostCatchId == null) {
-      navigate(`/missingdetail/${item.petPostMissingId}`);
+    if (item.postType === "MISSING") {
+      navigate(`/missingdetail/${item.postId}`);
     } else {
-      navigate(`/sightingdetail/${item.petPostCatchId}`);
+      navigate(`/sightingdetail/${item.postId}`);
     }
   };
 
@@ -53,10 +55,6 @@ const Title = styled.span`
   margin-right: 10px;
   ${(props) => props.theme.Body_500_14};
   white-space: nowrap;
-`;
-
-const SexCd = styled.img`
-  margin-right: 10px;
 `;
 
 const Info = styled.span`

@@ -10,7 +10,7 @@ import ClippingFill from "../../../asset/profile/ClippingFill";
 import Backwhite from "../../../asset/Backwhite";
 
 const ImageCarousel = ({ images, imageCarouselInfo, data }) => {
-  console.log(data)
+  console.log(data);
   const navigate = useNavigate();
   const settings = {
     dots: true,
@@ -24,9 +24,9 @@ const ImageCarousel = ({ images, imageCarouselInfo, data }) => {
     nextArrow: <NextTo></NextTo>,
     dotsClass: "slick-dots custom-dots",
   };
-  const MoveToEditMyPost = () =>{
-    navigate(`/${data.path}/${data.number}`)
-  }
+  const MoveToEditMyPost = () => {
+    navigate(`/${data.path}/${data.number}`);
+  };
   return (
     <Container>
       <StyledSlider {...settings}>
@@ -39,13 +39,15 @@ const ImageCarousel = ({ images, imageCarouselInfo, data }) => {
           </ImageWrapper>
         ))}
       </StyledSlider>
-      <BackButton onClick={() => navigate("/petwork")} />
+      <BackButton onClick={() => navigate(-1)} />
       {imageCarouselInfo.scrapState ? (
         <ScrapStateTrue onClick={imageCarouselInfo.scrapHandler} />
       ) : (
         <>
-        <ScrapStateFalse onClick={imageCarouselInfo.scrapHandler} />
-        <button style={{ background: "#EEE"}} onClick={MoveToEditMyPost}>수정하기</button>
+          <ScrapStateFalse onClick={imageCarouselInfo.scrapHandler} />
+          <button style={{ background: "#EEE" }} onClick={MoveToEditMyPost}>
+            수정하기
+          </button>
         </>
       )}
     </Container>

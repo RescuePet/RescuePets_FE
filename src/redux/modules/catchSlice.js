@@ -6,7 +6,7 @@ export const __GetCatchData = createAsyncThunk(
   "getCatchData",
   async (arg, thunkAPI) => {
     try {
-      const response = await instance.get("/api/pets/catch/all");
+      const response = await instance.get("/api/post/all");
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       console.log(error.response);
@@ -19,8 +19,8 @@ export const __PostCatchData = createAsyncThunk(
   "postgetCatchData",
   async (payload, thunkAPI) => {
     try {
-      const response = await instance.post("/api/pets/catch/", payload);
-      console.log(response)
+      const response = await instance.post("/api/post/", payload);
+      console.log(response);
       return thunkAPI.fulfillWithValue(response?.data?.data);
     } catch (error) {
       console.log(error.response);

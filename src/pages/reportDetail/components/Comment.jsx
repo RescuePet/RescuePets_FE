@@ -4,14 +4,14 @@ import { Border_1_color, FlexAttribute } from "../../../style/Mixin";
 import { Body_400_10, Body_400_12, Body_500_14 } from "../../../style/theme";
 import profileIcon from "../../../asset/profile.svg";
 import Close from "../../../asset/Close.svg";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { __deleteMissingComment } from "../../../redux/modules/commentSlice";
+import Cookies from "js-cookie";
 
 const Comment = ({ item }) => {
   // console.log(item);
-  const { profileImage } = JSON.parse(localStorage.getItem("userInfo"));
-  console.log(profileImage);
+  const { profileImage } = JSON.parse(Cookies.get("UserInfo"));
+
   console.log(item);
   const dispatch = useDispatch();
 

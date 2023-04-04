@@ -14,7 +14,7 @@ import { useState } from "react";
 const Location = ({ locationData }) => {
   const [mapState, SetMapState] = useState(true);
   const { kakao } = window;
-
+  console.log(locationData);
   useEffect(() => {
     const mapContainer = document.getElementById(`${locationData.map}`),
       mapOption = {

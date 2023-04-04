@@ -7,7 +7,7 @@ export const __getMissingPost = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await instance.get(
-        `/api/pets/missing/?page=${payload.page}&size=${payload.size}`
+        `/api/post/list/MISSING?page=${payload.page}&size=${payload.size}`
       );
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
@@ -21,7 +21,7 @@ export const __getMissingPostDetail = createAsyncThunk(
   "getMissingPostDetail",
   async (payload, thunkAPI) => {
     try {
-      const response = await instance.get(`/api/pets/missing/${payload}`);
+      const response = await instance.get(`/api/post/${payload}`);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       throw new Error(error.response.data.message);
@@ -34,8 +34,11 @@ export const __getCatchPost = createAsyncThunk(
   "getCatchPost",
   async (payload, thunkAPI) => {
     try {
+      console.log(payload.page);
+      console.log(payload.size);
+
       const response = await instance.get(
-        `/api/pets/catch/?page=${payload.page}&size=${payload.size}`
+        `/api/post/list/CATCH/?page=${payload.page}&size=${payload.size}`
       );
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
@@ -49,7 +52,7 @@ export const __getCatchPostDetail = createAsyncThunk(
   "getCatchPostDetail",
   async (payload, thunkAPI) => {
     try {
-      const response = await instance.get(`/api/pets/catch/${payload}`);
+      const response = await instance.get(`/api/post/${payload}`);
       console.log(response.data);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
@@ -69,16 +72,12 @@ export const __postMissingScrap = createAsyncThunk(
         state: Boolean,
       };
       if (!payload.state) {
-        const response = await instance.post(
-          `/api/scrap/missing/${payload.id}`
-        );
+        const response = await instance.post(`/api/scrap/${payload.id}`);
         console.log(response.data);
         data.state = true;
         return thunkAPI.fulfillWithValue(data);
       } else {
-        const response = await instance.delete(
-          `/api/scrap/missing/${payload.id}`
-        );
+        const response = await instance.delete(`/api/scrap/${payload.id}`);
         console.log(response.data);
         data.state = false;
         return thunkAPI.fulfillWithValue(data);
@@ -101,15 +100,13 @@ export const __postCatchScrap = createAsyncThunk(
         count: Number,
       };
       if (!payload.state) {
-        const response = await instance.post(`/api/scrap/catch/${payload.id}`);
+        const response = await instance.post(`/api/scrap/${payload.id}`);
         console.log(response.data);
         data.state = true;
         data.count = 1;
         return thunkAPI.fulfillWithValue(data);
       } else {
-        const response = await instance.delete(
-          `/api/scrap/catch/${payload.id}`
-        );
+        const response = await instance.delete(`/api/scrap/${payload.id}`);
         console.log(response.data);
         data.state = false;
         data.count = -1;
@@ -207,6 +204,11 @@ export const petworkSlice = createSlice({
           state.catchPostLists[index] = updateListsItem;
         } else if (action.payload.page === "petworkDetail") {
           state.catchPostDetail.isWished = action.payload.state;
+          const updateListsItem = {
+            ...state.catchPostLists[index],
+            isWished: action.payload.state,
+          };
+          state.catchPostLists[index] = updateListsItem;
           if (state.catchPostDetail.isWished) {
             state.catchPostDetail.wishedCount =
               state.catchPostDetail.wishedCount + 1;
@@ -233,6 +235,11 @@ export const petworkSlice = createSlice({
           state.missingPostLists[index] = updateListsItem;
         } else if (action.payload.page === "petworkDetail") {
           state.missingPostDetail.isWished = action.payload.state;
+          const updateListsItem = {
+            ...state.missingPostLists[index],
+            isWished: action.payload.state,
+          };
+          state.missingPostLists[index] = updateListsItem;
           if (state.missingPostDetail.isWished) {
             state.missingPostDetail.wishedCount =
               state.missingPostDetail.wishedCount + 1;

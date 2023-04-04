@@ -20,6 +20,8 @@ const ScrapList = ({ item }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  console.log("scrap item", item);
+
   const [scrapState, setScrapState] = useState(true);
 
   const refineDataHandler = () => {
@@ -28,7 +30,7 @@ const ScrapList = ({ item }) => {
       category: null,
       URL: null,
     };
-    if (item.postType === "publicPet") {
+    if (item.postType === "petInfo") {
       refineData.kindCd = item.kindCd.split(/\[|\]/g)[2];
       refineData.category = "adoptionDetail";
       refineData.state = item.postType;
@@ -47,10 +49,6 @@ const ScrapList = ({ item }) => {
     } else if (item.sexCd === "SEX_UNKNOWN" || item.sexCd === "Q") {
       refineData.sexCd = questionmark;
     }
-    if (item.postType === "petMissing" || item.postType === "petCatch") {
-      refineData.filename = item.postImages[0].imageURL;
-      refineData.desertionNo = item.postId;
-    }
     return refineData;
   };
 
@@ -59,7 +57,7 @@ const ScrapList = ({ item }) => {
   const scrapHandler = (e, state) => {
     e.stopPropagation();
     setScrapState((prev) => !prev);
-    if (state === "publicPet") {
+    if (state === "petInfo") {
       publicScrap();
     } else if (state === "실종") {
       missingScrap();
@@ -69,9 +67,10 @@ const ScrapList = ({ item }) => {
   };
 
   const publicScrap = async () => {
+    console.log("refineData.postId", refineData.postId);
     let data = {
       page: "home",
-      desertionNo: refineData.desertionNo,
+      desertionNo: refineData.postId,
       state: scrapState,
     };
     dispatch(__postAdoptionListScrap(data));
@@ -97,7 +96,7 @@ const ScrapList = ({ item }) => {
 
   return (
     <ListContainer
-      onClick={() => navigate(`/${refineData.URL}/${refineData.desertionNo}`)}
+      onClick={() => navigate(`/${refineData.URL}/${item.postId}`)}
     >
       <Image src={refineData.filename} />
       <div>

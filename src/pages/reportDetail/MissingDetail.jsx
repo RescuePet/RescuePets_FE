@@ -36,7 +36,6 @@ import ScrollToTop from "../../elements/ScrollToTop";
 import Cookies from "js-cookie";
 import { Spinner } from "../../components/Spinner";
 
-
 const MissingDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -45,7 +44,6 @@ const MissingDetail = () => {
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
   const { missingComment, editDone } = useSelector((state) => state?.comment);
-
 
   useEffect(() => {
     dispatch(__getMissingPostDetail(id));
@@ -62,7 +60,7 @@ const MissingDetail = () => {
   }, [missingComment]);
 
   if (JSON.stringify(missingPostDetail) === "{}") {
-    return <Spinner/>;
+    return <Spinner />;
   }
 
   const refineData = petworkRefineData(missingPostDetail);
@@ -100,9 +98,7 @@ const MissingDetail = () => {
   };
 
   const chatHandler = async () => {
-    const response = await instance.post(
-      `/chat/missing-room/${missingPostDetail.id}`
-    );
+    const response = await instance.post(`/chat/room/${missingPostDetail.id}`);
     console.log("post response", response.data);
     navigate(`/chatroom/${missingPostDetail.nickname}/${response.data}`);
   };
@@ -121,10 +117,10 @@ const MissingDetail = () => {
     scrapHandler: scrapHandler,
   };
 
-  const MoveData= {
-    number: missingPostDetail.id ,
-    path: "editmissing"
-  }
+  const MoveData = {
+    number: missingPostDetail.id,
+    path: "editmissing",
+  };
 
   return (
     <Layout>

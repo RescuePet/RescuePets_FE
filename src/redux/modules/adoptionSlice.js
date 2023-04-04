@@ -33,22 +33,23 @@ export const __getAdoptionDetail = createAsyncThunk(
   }
 );
 
-// Post Scrap
+// Adoption Scrap
 export const __postAdoptionListScrap = createAsyncThunk(
   "postAdoptionScrap",
   async (payload, thunkAPI) => {
     try {
+      console.log("payload", payload);
       let data = {
         page: payload.page,
         boolean: null,
         desertionNo: payload.desertionNo,
       };
       if (!payload.state) {
-        await instance.post(`/api/scrap/scrap/${payload.desertionNo}`);
+        await instance.post(`/api/scrap/petinfo/${payload.desertionNo}`);
         data.boolean = true;
         return thunkAPI.fulfillWithValue(data);
       } else if (payload.state) {
-        await instance.delete(`/api/scrap/scrap/${payload.desertionNo}`);
+        await instance.delete(`/api/scrap/petinfo/${payload.desertionNo}`);
         data.boolean = false;
         return thunkAPI.fulfillWithValue(data);
       }
@@ -122,7 +123,7 @@ export const adoptionSlice = createSlice({
     builder
       .addCase(__postAdoptionListScrap.fulfilled, (state, action) => {
         const index = state.adoptionLists.findIndex(
-          (item) => item.desertionNo === action.payload.desertionNo
+          (item) => item.desertionNo === action.payload.desertionNo.toString()
         );
         if (action.payload.page === "home") {
           const updateListsItem = {

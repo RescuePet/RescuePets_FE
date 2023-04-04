@@ -97,9 +97,7 @@ const SightingDetail = () => {
   };
 
   const chatHandler = async () => {
-    const response = await instance.post(
-      `/chat/catch-room/${catchPostDetail.id}`
-    );
+    const response = await instance.post(`/chat/room/${catchPostDetail.id}`);
     console.log("post response", response.data);
     navigate(`/chatroom/${catchPostDetail.nickname}/${response.data}`);
   };

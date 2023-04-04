@@ -12,7 +12,7 @@ const MyComment = () => {
   const navigate = useNavigate();
   const [mycomment, setMycomment] = useState([]);
   const MycommnetAxios = async () => {
-    const response = await instance.get("api/pets/comments/member");
+    const response = await instance.get("api/comments/member");
     console.log(response);
     setMycomment(response.data.data);
   };

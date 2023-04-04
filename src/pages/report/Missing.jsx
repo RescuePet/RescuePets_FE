@@ -12,16 +12,30 @@ import close from "../../asset/Close.svg";
 import { CustomSelect } from "../../elements/CustomSelect";
 import SeleteTab from "./components/SeleteTab";
 import {
-  ReportMissingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox,
-  ReportAnimalInfoBoxColumn,ReportAnimalInfoBoxColumnRow,ReportanimaltypesBox,ReportanimaltypesTitle,
-  ReportanimaltypesSelect,ReportInput,ReportLgInput,ReportAnimalDayBox,ReportAnimalSignificantBox,
-  ReportAnimalSignificantBoxTitle,ReportAnimalSignificantBoxInputArea,ReportAnimalPictureArea,
-  ReportAnimalPictureAreaTitle, ReportAnimalPictureAreaInputBox, ReportAnimalPictureInput,
-  ReportAnimalPicturePreview, ReportAnimalUserInfo, PreviewImage,
+  ReportMissingContainer,
+  ReportHeader,
+  ReportAnimalInfoArea,
+  ReportAnimalInfoBox,
+  ReportAnimalInfoBoxColumn,
+  ReportAnimalInfoBoxColumnRow,
+  ReportanimaltypesBox,
+  ReportanimaltypesTitle,
+  ReportanimaltypesSelect,
+  ReportInput,
+  ReportLgInput,
+  ReportAnimalDayBox,
+  ReportAnimalSignificantBox,
+  ReportAnimalSignificantBoxTitle,
+  ReportAnimalSignificantBoxInputArea,
+  ReportAnimalPictureArea,
+  ReportAnimalPictureAreaTitle,
+  ReportAnimalPictureAreaInputBox,
+  ReportAnimalPictureInput,
+  ReportAnimalPicturePreview,
+  ReportAnimalUserInfo,
+  PreviewImage,
 } from "./components/reportstyle";
-import {
-  NameValue, TimeValue
-} from "./components/data";
+import { NameValue, TimeValue } from "./components/data";
 import { __PostMissingData, addImage } from "../../redux/modules/missingSlice";
 import { toggleMenu } from "../../redux/modules/menubarSlice";
 
@@ -41,7 +55,7 @@ const Missing = () => {
   };
 
   useEffect(() => {
-    console.log(MissingNumber) 
+    console.log(MissingNumber);
     setPostNumber(data);
   }, [MissingNumber]);
 
@@ -49,7 +63,7 @@ const Missing = () => {
   const menutoggle = useSelector((state) => {
     return state.menubar.toggle;
   });
-  
+
   const [mapBg, setMapBg] = useState(menutoggle);
   useEffect(() => {
     setMapBg(true);
@@ -81,11 +95,11 @@ const Missing = () => {
   const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState("YES");
 
   const onChangeGender = (newData) => {
-    setCurrentGenderEnValue(newData)
-  }
-  const onChangeNeutered = (newData) =>{
-    setCurrentNeuteredEnValue(newData)
-  }
+    setCurrentGenderEnValue(newData);
+  };
+  const onChangeNeutered = (newData) => {
+    setCurrentNeuteredEnValue(newData);
+  };
 
   // console.log("최신값성별 :",currentGenderEnValue)
   // console.log("최신값중성화:",currentNeuteredEnValue)
@@ -174,6 +188,7 @@ const Missing = () => {
       alert("지도에 위치를 표기해주세요");
     } else {
       const formData = new FormData();
+      formData.append("postType", "MISSING");
       formData.append("upkind", typeID);
       formData.append("sexCd", currentGenderEnValue);
       formData.append("neuterYn", currentNeuteredEnValue);
@@ -230,20 +245,28 @@ const Missing = () => {
                   placeholder="입력하기"
                   {...register("animaltypes", {
                     required: true,
-                    pattern: {value: /^[ㄱ-ㅎ|가-힣]+$/, message: "한글만 2 ~ 8글자 사이로 입력",},
+                    pattern: {
+                      value: /^[ㄱ-ㅎ|가-힣]+$/,
+                      message: "한글만 2 ~ 8글자 사이로 입력",
+                    },
                   })}
                 />
                 <img
                   src={cancel}
-                  onClick={() => {onClickDeleteValue("animaltypes") }}
+                  onClick={() => {
+                    onClickDeleteValue("animaltypes");
+                  }}
                 />
                 <span>{errors?.animaltypes?.message}</span>
               </div>
             </ReportanimaltypesSelect>
           </ReportanimaltypesBox>
 
-          <SeleteTab onChangeGender={onChangeGender} onChangeNeutered={onChangeNeutered}/>
-       
+          <SeleteTab
+            onChangeGender={onChangeGender}
+            onChangeNeutered={onChangeNeutered}
+          />
+
           <ReportAnimalInfoBox>
             <ReportAnimalInfoBoxColumn>
               <ReportAnimalInfoBoxColumnRow>
@@ -253,13 +276,22 @@ const Missing = () => {
                   placeholder="입력하기"
                   {...register("animalName", {
                     required: true,
-                    pattern: {value: /^[가-힣\s]+$/,message: "한글만 2 ~ 8글자 사이로 입력 ",},
-                    maxLength: {value: 8,message: "8글자 이하이어야 합니다.",},
+                    pattern: {
+                      value: /^[가-힣\s]+$/,
+                      message: "한글만 2 ~ 8글자 사이로 입력 ",
+                    },
+                    maxLength: {
+                      value: 8,
+                      message: "8글자 이하이어야 합니다.",
+                    },
                   })}
                 />
                 <img
                   src={cancel}
-                  onClick={() => {onClickDeleteValue("animalName");}}/>
+                  onClick={() => {
+                    onClickDeleteValue("animalName");
+                  }}
+                />
                 <span>{errors?.animalName?.message}</span>
               </ReportAnimalInfoBoxColumnRow>
               <ReportAnimalInfoBoxColumnRow>
@@ -270,12 +302,17 @@ const Missing = () => {
                   {...register("animalAge", {
                     required: true,
                     pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
-                    maxLength: {value: 3,message: "숫자만 입력! 3자리수 이하로 작성",},
+                    maxLength: {
+                      value: 3,
+                      message: "숫자만 입력! 3자리수 이하로 작성",
+                    },
                   })}
                 />
                 <img
                   src={cancel}
-                  onClick={() => {onClickDeleteValue("animalAge");}}
+                  onClick={() => {
+                    onClickDeleteValue("animalAge");
+                  }}
                 />
                 <span>{errors?.animalAge?.message}</span>
               </ReportAnimalInfoBoxColumnRow>
@@ -289,13 +326,17 @@ const Missing = () => {
                   {...register("animalkg", {
                     required: true,
                     pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
-                    maxLength: {value: 4,message: "4글자 이하이어야 합니다.",
+                    maxLength: {
+                      value: 4,
+                      message: "4글자 이하이어야 합니다.",
                     },
                   })}
                 />
                 <img
                   src={cancel}
-                  onClick={() => {onClickDeleteValue("animalkg");}}
+                  onClick={() => {
+                    onClickDeleteValue("animalkg");
+                  }}
                 />
                 <span>{errors?.animalkg?.message}</span>
               </ReportAnimalInfoBoxColumnRow>
@@ -306,13 +347,21 @@ const Missing = () => {
                   placeholder="입력하기"
                   {...register("animalcolor", {
                     required: true,
-                    pattern: {value: /^[가-힣\s]+$/,message: "한글만 2 ~ 8글자 사이로 입력 ",},
-                    maxLength: {value: 8,message: "8글자 이하이어야 합니다.",},
+                    pattern: {
+                      value: /^[가-힣\s]+$/,
+                      message: "한글만 2 ~ 8글자 사이로 입력 ",
+                    },
+                    maxLength: {
+                      value: 8,
+                      message: "8글자 이하이어야 합니다.",
+                    },
                   })}
                 />
                 <img
                   src={cancel}
-                  onClick={() => {onClickDeleteValue("animalcolor");}}
+                  onClick={() => {
+                    onClickDeleteValue("animalcolor");
+                  }}
                 />
                 <span>{errors?.animalcolor?.message}</span>
               </ReportAnimalInfoBoxColumnRow>
@@ -357,13 +406,21 @@ const Missing = () => {
                 placeholder="입력하기"
                 {...register("characteristic", {
                   required: false,
-                  pattern: {value: /^[가-힣\s]+$/,message: "한글만 20글자 안으로 입력 띄워쓰기 X ",},
-                  maxLength: {value: 20,message: "20글자 이하이어야 합니다.",},
+                  pattern: {
+                    value: /^[가-힣\s]+$/,
+                    message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: "20글자 이하이어야 합니다.",
+                  },
                 })}
               />
               <img
                 src={cancel}
-                onClick={() => {onClickDeleteValue("characteristic");}}
+                onClick={() => {
+                  onClickDeleteValue("characteristic");
+                }}
               />
               <span>{errors?.characteristic?.message}</span>
             </div>
@@ -375,13 +432,22 @@ const Missing = () => {
                 placeholder="입력하기"
                 {...register("memo", {
                   required: false,
-                  pattern: {value: /^[가-힣\s]+$/,message: "한글만 20글자 안으로 입력 띄워쓰기 X ",},
-                  maxLength: {value: 20,message: "20글자 이하이어야 합니다.",},
+                  pattern: {
+                    value: /^[가-힣\s]+$/,
+                    message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: "20글자 이하이어야 합니다.",
+                  },
                 })}
               />
               <img
                 src={cancel}
-                onClick={() => {onClickDeleteValue("memo");}}/>
+                onClick={() => {
+                  onClickDeleteValue("memo");
+                }}
+              />
               <span>{errors?.memo?.message}</span>
             </div>
           </ReportAnimalSignificantBoxInputArea>
@@ -392,9 +458,13 @@ const Missing = () => {
           </ReportAnimalPictureAreaTitle>
           <ReportAnimalPictureAreaInputBox>
             <input
-              type="file" accept="image/*"  style={{ display: "none" }}
-              multiple  ref={(refer) => (imageRef = refer)}
-              onChange={onChangeUploadHandler} required
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              multiple
+              ref={(refer) => (imageRef = refer)}
+              onChange={onChangeUploadHandler}
+              required
             />
             <ReportAnimalPictureInput onClick={() => imageRef.click()}>
               <h3>+</h3>
@@ -453,10 +523,13 @@ const Missing = () => {
           <div>
             <p>연락처</p>
             <ReportInput
-              type="tel" placeholder="010-xxxx-xxxx" inputMode="numeric"
-              onChange={(event) => { const value = event.target.value;
+              type="tel"
+              placeholder="010-xxxx-xxxx"
+              inputMode="numeric"
+              onChange={(event) => {
+                const value = event.target.value;
                 event.target.value = Number(
-                value.replace(/[^0-9]/g, "")
+                  value.replace(/[^0-9]/g, "")
                 ).toLocaleString();
               }}
               {...register("number", {

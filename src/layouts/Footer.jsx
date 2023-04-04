@@ -35,7 +35,7 @@ const Footer = () => {
     }
   };
 
-  console.log(location.pathname.split("/"));
+  // console.log(location.pathname.split("/"));
 
   return (
     <FooterContiner>

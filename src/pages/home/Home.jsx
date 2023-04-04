@@ -64,7 +64,10 @@ const Home = () => {
         </TitleBox>
         {adoptionLists.map((item, index) => {
           return (
-            <Post key={`post-item-${item.id}-${index}`} item={item}></Post>
+            <Post
+              key={`post-item-${item.desertionNo}-${index}`}
+              item={item}
+            ></Post>
           );
         })}
         <div ref={ref}></div>

@@ -6,7 +6,12 @@ import back from "../../asset/Back.svg";
 import eye from "../../asset/eye.svg";
 import Layout from "../../layouts/Layout";
 import { __signupUser } from "../../redux/modules/signSlice";
-import { FlexAttribute, SignSvgStyle,Border_2_color,Border_1_color } from "../../style/Mixin";
+import {
+  FlexAttribute,
+  SignSvgStyle,
+  Border_2_color,
+  Border_1_color,
+} from "../../style/Mixin";
 import Button from "../../elements/Button";
 import { CustomSelect } from "../../elements/CustomSelect";
 import { useNavigate } from "react-router-dom";
@@ -109,9 +114,9 @@ const Signup = () => {
       setSignUpMsg("⛔ 중복된 닉네임이 존재합니다.");
     } else if (SignUpmessage === "회원가입이 완료 되었습니다.") {
       setSignUpMsg("✅ 회원가입이 완료 되었습니다.");
-      // setTimeout(function () {
+      setTimeout(function () {
         navigate("/signin");
-      // }, 1000);
+      }, 1000);
     }
   }, [SignUpmessage]);
 
