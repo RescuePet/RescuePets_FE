@@ -10,9 +10,9 @@ import Location from "./components/Location";
 import imgdelete from "../../asset/imgDelete.svg";
 import close from "../../asset/Close.svg";
 import { CustomSelect } from "../../elements/CustomSelect";
+import SeleteTab from "./components/SeleteTab";
 import {
   ReportMissingContainer, ReportHeader, ReportAnimalInfoArea, ReportAnimalInfoBox,
-  ReportAnimalInfoCheckBox,ReportAnimalInfoCheckBoxTitle,ReportAnimalInfoCheckBoxSelete,
   ReportAnimalInfoBoxColumn,ReportAnimalInfoBoxColumnRow,ReportanimaltypesBox,ReportanimaltypesTitle,
   ReportanimaltypesSelect,ReportInput,ReportLgInput,ReportAnimalDayBox,ReportAnimalSignificantBox,
   ReportAnimalSignificantBoxTitle,ReportAnimalSignificantBoxInputArea,ReportAnimalPictureArea,
@@ -20,7 +20,7 @@ import {
   ReportAnimalPicturePreview, ReportAnimalUserInfo, PreviewImage,
 } from "./components/reportstyle";
 import {
-  NameValue, TimeValue,SeletegenderArr, seleteneuteredArr,
+  NameValue, TimeValue
 } from "./components/data";
 import { __PostMissingData, addImage } from "../../redux/modules/missingSlice";
 import { toggleMenu } from "../../redux/modules/menubarSlice";
@@ -76,23 +76,20 @@ const Missing = () => {
   };
 
   const onChangeTimeValeu = () => {};
-  const [currentGenderTab, setCurrentGenderTab] = useState(0);
-  const [currentNeuteredTab, setCurrentNeuteredTab] = useState(0);
-  const [currentGenderValue, setCurrentGenderValue] = useState("수컷");
 
   const [currentGenderEnValue, setCurrentGenderEnValue] = useState("MALE");
-  const [currentNeuteredValue, setCurrentNeuteredValue] = useState("완료");
   const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState("YES");
-  const selectMGenderHandler = (index) => {
-    setCurrentGenderTab(index);
-    setCurrentGenderValue(SeletegenderArr[index].gender);
-    setCurrentGenderEnValue(SeletegenderArr[index].value);
-  };
-  const selectNeuteredHandler = (index) => {
-    setCurrentNeuteredTab(index);
-    setCurrentNeuteredValue(seleteneuteredArr[index].neutered);
-    setCurrentNeuteredEnValue(seleteneuteredArr[index].value);
-  };
+
+  const onChangeGender = (newData) => {
+    setCurrentGenderEnValue(newData)
+  }
+  const onChangeNeutered = (newData) =>{
+    setCurrentNeuteredEnValue(newData)
+  }
+
+  // console.log("최신값성별 :",currentGenderEnValue)
+  // console.log("최신값중성화:",currentNeuteredEnValue)
+
   // 사진 로직
   // 올린 이미지 담을 관리하는 State
   const [showImages, setShowImages] = useState([]);
@@ -201,7 +198,7 @@ const Missing = () => {
       dispatch(__PostMissingData(formData)).then((response) => {
         navigate(`/poster/${response.payload}`);
       });
-      reset();
+      // reset();
     }
   };
   return (
@@ -249,48 +246,9 @@ const Missing = () => {
               </div>
             </ReportanimaltypesSelect>
           </ReportanimaltypesBox>
-          <ReportAnimalInfoBox>
-            <ReportAnimalInfoCheckBox>
-              <ReportAnimalInfoCheckBoxTitle>
-                <p>성별</p>
-              </ReportAnimalInfoCheckBoxTitle>
-              <ReportAnimalInfoCheckBoxSelete>
-                {SeletegenderArr.map((el, index) => (
-                  <li
-                    key={index}
-                    value={el.value}
-                    className={
-                      index === currentGenderTab ? "submenu focused" : "submenu"
-                    }
-                    onClick={() => selectMGenderHandler(index)}
-                  >
-                    {el.gender}
-                  </li>
-                ))}
-              </ReportAnimalInfoCheckBoxSelete>
-            </ReportAnimalInfoCheckBox>
-            <ReportAnimalInfoCheckBox>
-              <ReportAnimalInfoCheckBoxTitle>
-                {" "}
-                <p>중성화</p>{" "}
-              </ReportAnimalInfoCheckBoxTitle>
-              <ReportAnimalInfoCheckBoxSelete>
-                {seleteneuteredArr.map((el, index) => (
-                  <li
-                    key={index}
-                    className={
-                      index === currentNeuteredTab
-                        ? "submenu focused"
-                        : "submenu"
-                    }
-                    onClick={() => selectNeuteredHandler(index)}
-                  >
-                    {el.neutered}
-                  </li>
-                ))}
-              </ReportAnimalInfoCheckBoxSelete>
-            </ReportAnimalInfoCheckBox>
-          </ReportAnimalInfoBox>
+
+          <SeleteTab onChangeGender={onChangeGender} onChangeNeutered={onChangeNeutered}/>
+       
           <ReportAnimalInfoBox>
             <ReportAnimalInfoBoxColumn>
               <ReportAnimalInfoBoxColumnRow>
