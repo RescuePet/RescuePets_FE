@@ -63,6 +63,22 @@ export const __postCatchComment = createAsyncThunk(
   }
 );
 
+// Delete missing comment
+export const __deleteMissingComment = createAsyncThunk(
+  "deleteMissingComment",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await instance.delete(
+        `api/pets/missing/comments/${payload}`
+      );
+      console.log("delete missing comment", response.data);
+      return thunkAPI.fulfillWithValue(payload);
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
 const initialState = {
   error: false,
   missingComment: [],
@@ -108,6 +124,17 @@ export const commentSlice = createSlice({
         state.editDone = true;
       })
       .addCase(__postCatchComment.rejected, (state) => {
+        state.error = true;
+      });
+
+    builder
+      .addCase(__deleteMissingComment.fulfilled, (state, action) => {
+        state.missingComment = state.missingComment.filter(
+          (comment) => comment.id !== action.payload
+        );
+        state.editDone = true;
+      })
+      .addCase(__deleteMissingComment.rejected, (state) => {
         state.error = true;
       });
   },
