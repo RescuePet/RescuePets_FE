@@ -62,21 +62,25 @@ const Missing = () => {
   // 종류데이터
   const [type, setType] = useState(NameValue[0].name);
   const [typeID, setTypeID] = useState("DOG");
+
   const onChangeData = (newData) => {
     setType(newData);
   };
   const onChangeID = (newValue) => {
     setTypeID(newValue);
   };
+
   const [time, setTime] = useState(TimeValue[0].name);
   const onChangeTimeData = (newData) => {
     setTime(newData);
   };
+
   const onChangeTimeValeu = () => {};
   const [currentGenderTab, setCurrentGenderTab] = useState(0);
   const [currentNeuteredTab, setCurrentNeuteredTab] = useState(0);
   const [currentGenderValue, setCurrentGenderValue] = useState("수컷");
-  const [currentGenderEnValue, setCurrentGenderEnValue] = useState("DOG");
+
+  const [currentGenderEnValue, setCurrentGenderEnValue] = useState("MALE");
   const [currentNeuteredValue, setCurrentNeuteredValue] = useState("완료");
   const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState("YES");
   const selectMGenderHandler = (index) => {
@@ -480,7 +484,7 @@ const Missing = () => {
             <input
               type="file" accept="image/*"  style={{ display: "none" }}
               multiple  ref={(refer) => (imageRef = refer)}
-              onChange={onChangeUploadHandler}
+              onChange={onChangeUploadHandler} required
             />
             <ReportAnimalPictureInput onClick={() => imageRef.click()}>
               <h3>+</h3>
