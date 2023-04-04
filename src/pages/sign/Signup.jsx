@@ -130,13 +130,12 @@ const Signup = () => {
     <Layout>
       <SignContainer onSubmit={handleSubmit(onSubmitSignupHandler)}>
         <SignHeader>
-          <div onClick={() => navigate("/signin")}>
+          <BackButton onClick={() => navigate("/signin")}>
             <img src={back} alt="back" />
-          </div>
+          </BackButton>
           <div>회원가입</div>
           <div></div>
         </SignHeader>
-
         <SignIdNincknameBox>
           <p>아이디</p>
           <div>
@@ -286,6 +285,10 @@ const SignHeader = styled.div`
     height: 1.5rem;
     margin-right: 3.125rem;
   }
+`;
+
+const BackButton = styled.div`
+  cursor: pointer;
 `;
 
 const SignIdNincknameBox = styled.div`
