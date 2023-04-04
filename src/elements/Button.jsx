@@ -54,7 +54,7 @@ const BtnStyle = styled.button`
     ${(props) =>
     props.moveToDetailButton &&
     css`
-      width: 4rem;
+      width: 4.7rem;
       height: 1rem;
       ${(props) => props.theme.Body_400_12}
       ${(props) => props.theme.FlexCenter}

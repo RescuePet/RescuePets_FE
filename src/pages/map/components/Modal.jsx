@@ -213,7 +213,7 @@ export function MarkerModal(props) {
     data.upkind = "강아지";
   } else if (data?.upkind === "CAT") {
     data.upkind = "고양이";
-  }else if (data?.upkind === "ECT") {
+  }else if (data?.upkind === "ETC") {
     data.upkind = "기타";
   }
 
