@@ -33,6 +33,7 @@ import FloatingButton from "./components/FloatingButton";
 import { instance } from "../../utils/api";
 import ScrollToTop from "../../elements/ScrollToTop";
 import Cookies from "js-cookie";
+import { Spinner } from "../../components/Spinner";
 
 const SightingDetail = () => {
   const { id } = useParams();
@@ -58,7 +59,7 @@ const SightingDetail = () => {
   }, [catchComment]);
 
   if (JSON.stringify(catchPostDetail) === "{}") {
-    return <div>로딩 중</div>;
+    return <Spinner/>;
   }
 
   const refineData = petworkRefineData(catchPostDetail);

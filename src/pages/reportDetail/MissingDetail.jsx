@@ -34,6 +34,7 @@ import FloatingButton from "./components/FloatingButton";
 import { instance } from "../../utils/api";
 import ScrollToTop from "../../elements/ScrollToTop";
 import Cookies from "js-cookie";
+import { Spinner } from "../../components/Spinner";
 
 
 const MissingDetail = () => {
@@ -62,7 +63,7 @@ const MissingDetail = () => {
   }, [missingComment]);
 
   if (JSON.stringify(missingPostDetail) === "{}") {
-    return <div>로딩중...12312</div>;
+    return <Spinner/>;
   }
 
   const refineData = petworkRefineData(missingPostDetail);
