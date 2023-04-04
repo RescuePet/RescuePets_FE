@@ -35,6 +35,8 @@ const Footer = () => {
     }
   };
 
+  console.log(location.pathname.split("/"));
+
   return (
     <FooterContiner>
       <FooterEachIconContiner
@@ -61,7 +63,7 @@ const Footer = () => {
         <span>채팅</span>
       </FooterEachIconContiner>
       <FooterEachIconContiner
-        active={location.pathname === "/profile"}
+        active={location.pathname.split("/")[1] === "profile"}
         onClick={() => navigate("/profile")}
       >
         <FooterIconProfile></FooterIconProfile>
