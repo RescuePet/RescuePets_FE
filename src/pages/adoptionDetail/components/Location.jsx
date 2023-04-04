@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import sheltermarker from "../../../asset/marker/sheltermarker.png";
+import catchmarker from "../../../asset/marker/marker.png";
 import { ContentTextStyle } from "../../../style/Mixin";
 import { Body_400_14, BorderRadius } from "../../../style/theme";
 import {
@@ -8,15 +9,18 @@ import {
   FlexAttribute,
   PostBorderStyle,
 } from "../../../style/Mixin";
+import { useState } from "react";
 
 const Location = ({ locationData }) => {
+  const [mapState, SetMapState] = useState(true);
   const { kakao } = window;
 
   useEffect(() => {
-    const mapContainer = document.getElementById("map"),
+    const mapContainer = document.getElementById(`${locationData.map}`),
       mapOption = {
         center: new kakao.maps.LatLng(37, 127),
-        level: 4,
+        level: 6,
+        draggable: false,
       };
     const map = new kakao.maps.Map(mapContainer, mapOption);
     // 주소-좌표 변환 객체를 생성합니다
@@ -28,7 +32,9 @@ const Location = ({ locationData }) => {
         if (status === kakao.maps.services.Status.OK) {
           console.log("성공");
           const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-          const imageSrc = `${sheltermarker}`;
+          const imageSrc = `${
+            locationData.type === "구조정보" ? catchmarker : sheltermarker
+          }`;
           const imageSize = new kakao.maps.Size(32, 32);
           const imageOption = { offset: new kakao.maps.Point(10, 20) };
           const markerImage = new kakao.maps.MarkerImage(
@@ -42,29 +48,37 @@ const Location = ({ locationData }) => {
             position: coords,
             image: markerImage,
           });
-
           map.setCenter(coords);
+          SetMapState(true);
         } else {
-          console.log("위치를 찾을수가 없어요 ㅠㅗㅜ");
+          SetMapState(false);
         }
       }
     );
-  }, [locationData]);
+  }, []);
 
   console.log(locationData);
   return (
     <LocationContainer>
       <LocationWrapper>
-        <SemiText className="locationtitle">보호정보</SemiText>
+        <SemiText className="locationtitle">{locationData.type}</SemiText>
         <ContentTextWrapper>
-          <ContentText>{locationData.careNm}</ContentText>
+          <ContentText>
+            {locationData.careNm == null
+              ? locationData.address
+              : locationData.careNm}
+          </ContentText>
           <ContentTextBox>
-            <ContentOptionText>TEL | </ContentOptionText>
-            &nbsp;<ContentText>{locationData.careTel}</ContentText>
+            {locationData.careTel == null ? null : (
+              <>
+                <ContentOptionText>TEL | </ContentOptionText>
+                &nbsp;<ContentText>{locationData.careTel}</ContentText>
+              </>
+            )}
           </ContentTextBox>
         </ContentTextWrapper>
       </LocationWrapper>
-      <MapDiv id="map"></MapDiv>
+      {mapState ? <MapDiv id={`${locationData.map}`}></MapDiv> : <div></div>}
     </LocationContainer>
   );
 };
@@ -76,6 +90,7 @@ const SemiText = styled.span`
 const LocationContainer = styled.div`
   ${FlexAttribute("column", "", "center")}
   ${PostBorderStyle}
+  margin-bottom: 20px;
 `;
 
 const LocationWrapper = styled.div`

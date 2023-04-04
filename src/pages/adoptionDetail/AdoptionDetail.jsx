@@ -18,12 +18,14 @@ import location from "../../asset/location.svg";
 import calendar from "../../asset/calendar.svg";
 import specialmark from "../../asset/specialmark.svg";
 import user from "../../asset/user.svg";
+import information from "../../asset/information.svg";
 import Clippingwhite from "../../asset/Clippingwhite";
 import { FlexAttribute, PostBorderStyle } from "../../style/Mixin";
 import AdoptionInformation from "./components/AdoptionInformation";
 import Button from "../../elements/Button";
 import ClippingFill from "../../asset/profile/ClippingFill";
 import ScrollToTop from "../../elements/ScrollToTop";
+import { Spinner } from "../../components/Spinner";
 
 const AdoptionDetail = () => {
   const { id } = useParams();
@@ -34,9 +36,12 @@ const AdoptionDetail = () => {
     dispatch(__getAdoptionDetail(id));
   }, []);
   const { adoptionDetail } = useSelector((state) => state?.adoption);
+
+  console.log("data", adoptionDetail);
+
   // 비동기처리 시 detailInfo가 없을 경우를 고려
   if (JSON.stringify(adoptionDetail) === "{}") {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   console.log(adoptionDetail);
@@ -54,7 +59,17 @@ const AdoptionDetail = () => {
     titleData.process = adoptionDetail.refinedata.process;
   }
 
-  const locationData = {
+  const rescueLocationData = {
+    type: "구조정보",
+    map: "map1",
+    address: adoptionDetail.happenPlace,
+    careNm: null,
+    careTel: null,
+  };
+
+  const shelterLocationData = {
+    type: "보호정보",
+    map: "map2",
     address: adoptionDetail.careAddr,
     careNm: adoptionDetail.careNm,
     careTel: adoptionDetail.careTel,
@@ -70,6 +85,11 @@ const AdoptionDetail = () => {
       icon: calendar,
       option: "공고기간",
       data: adoptionDetail.noticeDate,
+    },
+    {
+      icon: information,
+      option: "공고번호",
+      data: adoptionDetail.noticeNo,
     },
     {
       icon: specialmark,
@@ -124,7 +144,8 @@ const AdoptionDetail = () => {
       </ImageContainer>
       <div>
         <Title titleData={titleData}></Title>
-        <Location locationData={locationData}></Location>
+        <Location locationData={rescueLocationData}></Location>
+        <Location locationData={shelterLocationData}></Location>
         <ShelterContainer>
           {shelterData.map((item, index) => {
             return (
@@ -211,7 +232,6 @@ const ProcessBox = styled.div`
 
 const ShelterContainer = styled.div`
   ${PostBorderStyle}
-  padding-top: 1rem;
 `;
 
 const ButtonWrapper = styled.div`
