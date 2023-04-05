@@ -23,6 +23,7 @@ import Memo from "../../asset/Memo";
 import gratuity from "../../asset/gratuity.svg";
 import petworkRefineData from "../../utils/petworkRefine";
 import { Spinner } from "../../components/Spinner";
+import { instance } from "../../utils/api";
 
 const Poster = () => {
   const containerRef = useRef(null);
@@ -32,6 +33,7 @@ const Poster = () => {
   console.log("params id", id);
 
   const [imageURLState, setImageURLState] = useState("");
+  const [poster, setPoster] = useState();
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
   const { imageURL } = useSelector((state) => state.MissingData);
@@ -48,8 +50,49 @@ const Poster = () => {
     info: refineData.information.join("/"),
   };
 
+  // html2canvas를 사용
+  const makeImageHandler = async () => {
+    try {
+      const canvas = await html2canvas(containerRef.current);
+      canvas.toBlob((blob) => {
+        console.log("blob", blob);
+        submitImage(blob);
+        setPoster(blob);
+        console.log("makeImageHandler");
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // 서버에 이미지 전송
+  const submitImage = async (image) => {
+    try {
+      const formData = new FormData();
+      formData.append("postPoster", image, "image.jpg");
+      for (let key of formData.keys()) {
+        console.log(key, ":", formData.get(key));
+      }
+      const response = await instance.post(
+        `/api/post/posters/${id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("poster response", response);
+      console.log("submitImage");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    dispatch(__getMissingPostDetail(id));
+    dispatch(__getMissingPostDetail(id)).then(() => {
+      makeImageHandler();
+    });
   }, [id]);
 
   if (JSON.stringify(missingPostDetail) === "{}") {
@@ -87,17 +130,10 @@ const Poster = () => {
   };
   ImageHandler();
 
-  // html2canvas를 사용
-  const makeImageHandler = async () => {
-    try {
-      const canvas = await html2canvas(containerRef.current);
-      canvas.toBlob((blob) => {
-        console.log(blob);
-        saveAs(blob, "image.png");
-      });
-    } catch (error) {
-      console.log(error);
-    }
+  // Save Poster
+  const savePoster = () => {
+    console.log("poster image", poster);
+    saveAs(poster, "poster.png");
   };
 
   return (
@@ -186,7 +222,7 @@ const Poster = () => {
         </PhoneNumberContainer>
       </PosterLayout>
       <ButtonWrapper>
-        <Button fillButton onClick={makeImageHandler}>
+        <Button fillButton onClick={savePoster}>
           포스터 저장하기
         </Button>
         <Button

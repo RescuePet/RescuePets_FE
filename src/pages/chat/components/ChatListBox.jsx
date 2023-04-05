@@ -61,7 +61,6 @@ const ProfileImage = styled.img`
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  margin-left: 1.25rem;
 `;
 
 const TextWrapper = styled.div`

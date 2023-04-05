@@ -35,6 +35,7 @@ import { instance } from "../../utils/api";
 import ScrollToTop from "../../elements/ScrollToTop";
 import Cookies from "js-cookie";
 import { Spinner } from "../../components/Spinner";
+import Button from "../../elements/Button";
 
 const MissingDetail = () => {
   const { id } = useParams();
@@ -44,6 +45,8 @@ const MissingDetail = () => {
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
   const { missingComment, editDone } = useSelector((state) => state?.comment);
+
+  console.log(missingPostDetail);
 
   useEffect(() => {
     dispatch(__getMissingPostDetail(id));
@@ -191,6 +194,9 @@ const MissingDetail = () => {
             </ContentTextWrapper>
           </InfoWrapper>
         )}
+        <PosterButtonWrapper>
+          <Button fillButton>포스터 저장하기</Button>
+        </PosterButtonWrapper>
       </InfoContainer>
       <PostInformation postInfo={postInfo}></PostInformation>
       <CommentContainer>
@@ -231,6 +237,11 @@ const InfoContainer = styled.div`
 
 const InfoWrapper = styled.div`
   ${FlexAttribute("row", "space-evenly")}
+`;
+
+const PosterButtonWrapper = styled.div`
+  ${FlexAttribute("row", "center")}
+  margin: 4px 0;
 `;
 
 const BodyTitleWrapper = styled.div`
