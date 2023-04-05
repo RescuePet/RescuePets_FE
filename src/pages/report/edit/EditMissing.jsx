@@ -376,7 +376,11 @@ const EditMissing = () => {
             <p>사례금(원)</p>
             <ReportInput
               type="text"
-              placeholder={missingPostDetail.gratuity}
+              placeholder={
+                missingPostDetail.gratuity == ""
+                  ? "입력하세요"
+                  : missingPostDetail.gratuity
+              }
               {...register("money", {
                 required: false, // 필수 X
                 maxLength: { value: 15, message: "15글자 이하이어야 합니다." },
@@ -401,7 +405,11 @@ const EditMissing = () => {
             <p>연락처</p>
             <ReportInput
               type="tel"
-              placeholder={missingPostDetail.contact}
+              placeholder={
+                missingPostDetail.contact == ""
+                  ? "입력하세요"
+                  : missingPostDetail.contact
+              }
               inputMode="numeric"
               onChange={(event) => {
                 const value = event.target.value;

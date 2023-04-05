@@ -94,7 +94,7 @@ const EditLocation = ({ data }) => {
         </ReportKakaomapTitleInfoBox>
         <ReportKakaomapTitleValueBox>
           {/* <p>위치</p> */}
-          <div id="address"></div>
+          <div id="address">{data.happenPlace}</div>
           <div style={{ display: "none" }}>
             <label id="addressLat"></label>
           </div>
