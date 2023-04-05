@@ -1,27 +1,36 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { FlexAttribute, InputBorder_1 } from "../style/Mixin";
 import { Body_400_12 } from "../style/theme";
-import picture from "../asset/picture.svg";
+import ChatSubmit from "../asset/ChatSubmit";
 
 const InputContainer = ({ placeholder, submitHandler }) => {
   const { register, reset, handleSubmit } = useForm();
+  const textarea = useRef();
+
+  const handleResizeHeight = () => {
+    textarea.current.style.height = "auto";
+    textarea.current.style.height = textarea.current.scrollHeight + "px";
+  };
 
   return (
     <ChatFooter>
       <ChatContainer>
-        <div>
-          <img src={picture} alt="pictureIcon" />
-        </div>
         <InputWrapper
           onSubmit={handleSubmit((register) => {
             submitHandler(register);
             reset();
           })}
         >
-          <Input placeholder={placeholder} {...register("message")} />
-          <SubmitButton>↑</SubmitButton>
+          <Input
+            placeholder={placeholder}
+            {...register("message")}
+            rows={1}
+            onChange={handleResizeHeight}
+            ref={textarea}
+          />
+          <SubmitButton />
         </InputWrapper>
       </ChatContainer>
     </ChatFooter>
@@ -31,7 +40,7 @@ const InputContainer = ({ placeholder, submitHandler }) => {
 const ChatFooter = styled.div`
   ${FlexAttribute("row", "space-around", "center")}
   width: 26.875rem;
-  height: 4.625rem;
+  height: auto;
   position: fixed;
   bottom: 0;
   padding-top: 1rem;
@@ -52,14 +61,17 @@ const ChatContainer = styled.div`
 
 const InputWrapper = styled.form`
   position: relative;
-  flex-basis: 16.4375rem;
+  height: 100%;
 `;
 
-const Input = styled.input`
-  width: 16.4375rem;
-  height: 2rem;
-  padding-left: 1.5625rem;
-  ${Body_400_12}
+const Input = styled.textarea`
+  width: 335px;
+  min-height: 30px;
+  padding: 10px 25px 5px 20px;
+  resize: none;
+  line-height: 24px;
+  overflow: hidden;
+  ${Body_400_12};
   ${InputBorder_1};
   ::placeholder {
     ${Body_400_12}
@@ -67,14 +79,11 @@ const Input = styled.input`
   }
 `;
 
-const SubmitButton = styled.button`
+const SubmitButton = styled(ChatSubmit)`
   position: absolute;
+  bottom: 6px;
   right: 0.25rem;
-  transform: translate(0, 0.25rem);
-  width: 1.5rem;
-  height: 1.5rem;
-  background-color: #eeeeee;
-  border-radius: 50%;
+  cursor: pointer;
 `;
 
 export default InputContainer;
