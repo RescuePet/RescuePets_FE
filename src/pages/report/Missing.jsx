@@ -2,18 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import Header from "./components/Header";
 import imageCompression from "browser-image-compression";
 import Layout from "../../layouts/Layout";
 import Button from "../../elements/Button";
 import cancel from "../../asset/delete.svg";
 import Location from "./components/Location";
 import imgdelete from "../../asset/imgDelete.svg";
-import close from "../../asset/Close.svg";
 import { CustomSelect } from "../../elements/CustomSelect";
 import SeleteTab from "./components/SeleteTab";
 import {
   ReportMissingContainer,
-  ReportHeader,
   ReportAnimalInfoArea,
   ReportAnimalInfoBox,
   ReportAnimalInfoBoxColumn,
@@ -69,10 +68,10 @@ const Missing = () => {
     setMapBg(true);
   }, [menutoggle]);
 
-  const MoveToBackPage = () => {
-    dispatch(toggleMenu(mapBg));
-    navigate(-1);
-  };
+  // const MoveToBackPage = () => {
+  //   dispatch(toggleMenu(mapBg));
+  //   navigate(-1);
+  // };
   // 종류데이터
   const [type, setType] = useState(NameValue[0].name);
   const [typeID, setTypeID] = useState("DOG");
@@ -219,13 +218,8 @@ const Missing = () => {
   return (
     <Layout>
       <ReportMissingContainer onSubmit={handleSubmit(onSubmitMissingHanlder)}>
-        <ReportHeader>
-          <div></div>
-          <div>실종 글 작성하기</div>
-          <div>
-            <img src={close} onClick={MoveToBackPage} />
-          </div>
-        </ReportHeader>
+        <Header>실종 글 작성하기</Header>
+
         <ReportAnimalInfoArea>
           <ReportanimaltypesBox>
             <ReportanimaltypesTitle>동물 정보 *</ReportanimaltypesTitle>

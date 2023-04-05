@@ -7,7 +7,7 @@ export const __signinUser = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await instance.post("/api/member/login", payload);
-      console.log(response.data.data)
+      // console.log(response.data.data)
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       throw new Error(error.response.data.message);

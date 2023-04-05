@@ -116,12 +116,20 @@ const SightingDetail = () => {
     scrapHandler: scrapHandler,
   };
 
+
+  const MoveData = {
+    number: catchPostDetail.id,
+    path: "editcatch",
+  };
+
+
   return (
     <Layout>
       <ScrollToTop />
       <ImageCarousel
         images={catchPostDetail?.postImages}
         imageCarouselInfo={imageCarouselInfo}
+        data={MoveData}
       />
       <TitleWrapper>
         <Title titleInfo={titleInfo}></Title>

@@ -4,6 +4,7 @@ import Layout from "../../layouts/Layout";
 import Button from "../../elements/Button";
 import cancel from "../../asset/delete.svg";
 import Location from "./components/Location";
+import Header from "./components/Header";
 import imageCompression from "browser-image-compression";
 import { CustomSelect } from "../../elements/CustomSelect";
 import SeleteTab from "./components/SeleteTab";
@@ -60,10 +61,10 @@ const Catch = () => {
     setPostNumber(data);
   }, [catchNumber]);
 
-  // 이전페이지로 이동
-  const MoveToBackPage = () => {
-    navigate(-1);
-  };
+  // // 이전페이지로 이동
+  // const MoveToBackPage = () => {
+  //   navigate(-1);
+  // };
 
   // 커스텀 셀렉트 파트부분
   const [type, setType] = useState(NameValue[0].name);
@@ -213,14 +214,7 @@ const Catch = () => {
   return (
     <Layout>
       <ReportSightingContainer onSubmit={handleSubmit(onSubmitSightingHanlder)}>
-        <ReportHeader>
-          <div></div>
-          <div>목격 글 작성하기</div>
-          <div>
-            <img src={close} onClick={MoveToBackPage} />
-          </div>
-        </ReportHeader>
-
+        <Header>목격 글 작성하기</Header>
         <ReportAnimalInfoArea>
           <ReportAnimalInfoBox>
             <ReportanimaltypesTitle>동물정보</ReportanimaltypesTitle>
