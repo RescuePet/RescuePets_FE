@@ -36,7 +36,11 @@ const Post = ({ item }) => {
       <InformationWrapper>
         <TitleBox>
           <State category={"adoptionstate"}>{item.state}</State>
-          <h2>{item.data.refinedata.kindCd}</h2>
+          <h2>
+            {item.data.refinedata.kindCd.length < 8
+              ? item.data.refinedata.kindCd
+              : item.data.refinedata.kindCd.substring(0, 8) + ".."}
+          </h2>
           <img src={item.data.refinedata.sexCd} alt="sexCd" />
           {item.isScrap ? (
             <ScrapButtonBox onClick={(e) => scrapHandler(e)}>
