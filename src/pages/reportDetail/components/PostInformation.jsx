@@ -2,13 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { FlexAttribute, PostBorderStyle } from "../../../style/Mixin";
 import ClippingFill from "../../../asset/profile/ClippingFill";
-import commentIcon from "../../../asset/comment.svg";
+import Comment from "../../../asset/Comment";
 
 const PostInformation = ({ postInfo }) => {
   return (
     <PostInfoWrapper>
       <InfoBox>
-        <img src={commentIcon} alt="postComment" />
+        <Comment />
         <span>댓글</span>
         <span>{postInfo.commentCount}</span>
       </InfoBox>

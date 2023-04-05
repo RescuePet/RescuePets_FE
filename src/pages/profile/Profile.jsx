@@ -7,10 +7,9 @@ import ProfileSetList from "./components/ProfileSetList";
 import UserInformation from "./components/UserInformation";
 import { useNavigate } from "react-router-dom";
 import profileHeader from "./../../asset/header/profileheader.png";
-import setting from "../../asset/profile/setting.svg";
+import Setting from "../../asset/profile/Setting";
 import Cookies from "js-cookie";
 import { useModalState } from "../../hooks/useModalState";
-// import { HamburgerModal } from "./components/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { __SignoutUser } from "../../redux/modules/signSlice";
 import { CheckModal } from "../../elements/Modal";
@@ -67,11 +66,7 @@ const Profile = () => {
           <img src={profileHeader} alt="proflieheader" />
         </HeaderImage>
         <HeaderHamburgermenu>
-          <img
-            src={setting}
-            onClick={MoveToSettingHandler}
-            alt="profilesetting"
-          />
+          <Setting onClick={MoveToSettingHandler} />
         </HeaderHamburgermenu>
       </ProfileHeader>
       <UserInformation />
@@ -106,17 +101,17 @@ const HeaderImage = styled.div`
 `;
 
 const HeaderHamburgermenu = styled.div`
-  cursor: pointer;
   width: 50%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: right;
 
-  > img {
+  > svg {
     width: 1.5rem;
     height: 1.5rem;
     margin-right: 20px;
+    cursor: pointer;
   }
 `;
 
@@ -125,8 +120,21 @@ const Withdrawal = styled.button`
   width: 20.9375rem;
   min-height: 4.25rem;
   ${Body_400_12}
-  color: #999999;
+  color: ${(props) => props.theme.color.text_alternative};
   text-decoration: underline;
+  :hover {
+    transform: translate(0px, -1px);
+    background-color: ${(props) => props.theme.color.line_alternative};
+    transition: 0.3s;
+    color: ${(props) => props.theme.color.status_caution};
+  }
+  :active {
+    background-color: ${(props) => props.theme.color.line_alternative};
+    color: ${(props) => props.theme.color.status_caution};
+    transform: translate(0px, 1px);
+    box-shadow: none;
+    transition: 0.3s;
+  }
 `;
 
 export default Profile;

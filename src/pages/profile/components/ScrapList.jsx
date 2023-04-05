@@ -20,8 +20,6 @@ const ScrapList = ({ item }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log("scrap item", item);
-
   const [scrapState, setScrapState] = useState(true);
 
   const refineDataHandler = () => {
@@ -67,7 +65,6 @@ const ScrapList = ({ item }) => {
   };
 
   const publicScrap = async () => {
-    console.log("refineData.postId", refineData.postId);
     let data = {
       page: "home",
       desertionNo: refineData.postId,
@@ -78,7 +75,7 @@ const ScrapList = ({ item }) => {
 
   const missingScrap = async () => {
     let data = {
-      id: refineData.desertionNo,
+      id: refineData.postId,
       page: "petworkLists",
       state: scrapState,
     };
@@ -87,7 +84,7 @@ const ScrapList = ({ item }) => {
 
   const catchScrap = async () => {
     let data = {
-      id: refineData.desertionNo,
+      id: refineData.postId,
       page: "petworkLists",
       state: scrapState,
     };
@@ -126,6 +123,18 @@ const ListContainer = styled.div`
   padding: 16px 0;
   border-bottom: 1px solid ${(props) => props.theme.color.input_border};
   cursor: pointer;
+  :hover {
+    transform: translate(0px, -1px);
+    box-shadow: 0px 1px ${(props) => props.theme.color.primary_strong};
+    transition: 0.3s;
+  }
+  :active {
+    background-color: ${(props) => props.theme.color.background_tertiary};
+    transform: translate(0px, 1px);
+    box-shadow: none;
+    border-bottom: 1px solid ${(props) => props.theme.color.primary_strong};
+    transition: 0.3s;
+  }
 `;
 
 const Image = styled.img`

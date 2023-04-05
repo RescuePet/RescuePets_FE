@@ -27,7 +27,7 @@ import petworkRefineData from "../../utils/petworkRefine";
 import location from "../../asset/location.svg";
 import time from "../../asset/time.svg";
 import informationIcon from "../../asset/information.svg";
-import memo from "../../asset/memo.svg";
+import Memo from "../../asset/Memo";
 import gratuity from "../../asset/gratuity.svg";
 import PostInformation from "./components/PostInformation";
 import FloatingButton from "./components/FloatingButton";
@@ -172,7 +172,7 @@ const MissingDetail = () => {
         {missingPostDetail.content && (
           <InfoWrapper>
             <BodyTitleWrapper>
-              <BodyTitleSvg src={memo} />
+              <Memo />
               <BodyTitleText>메모</BodyTitleText>
             </BodyTitleWrapper>
             <ContentTextWrapper>

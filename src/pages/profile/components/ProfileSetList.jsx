@@ -3,13 +3,14 @@ import styled from "styled-components";
 import { Border_1_color, FlexAttribute } from "../../../style/Mixin";
 import { Body_500_14 } from "../../../style/theme";
 
-import memo from "../../../asset/memo.svg";
-import setting from "../../../asset/profile/setting.svg";
-import headphone from "../../../asset/profile/headphone.svg";
+import Setting from "../../../asset/profile/Setting";
+import Headphone from "../../../asset/profile/Headphone";
 import Reportcatch from "../../../asset/Reportcatch";
 import ClippingFill from "../../../asset/profile/ClippingFill";
-import comment from "../../../asset/comment.svg";
+
 import { useNavigate } from "react-router-dom";
+import Memo from "../../../asset/Memo";
+import Comment from "../../../asset/Comment";
 
 const ProfileSetList = () => {
   const navigate = useNavigate();
@@ -17,12 +18,12 @@ const ProfileSetList = () => {
   return (
     <ProfileSetListsContainer>
       <ListBox onClick={() => navigate("/profile/mypost")}>
-        <img src={memo} alt="my_post" />
+        <Memo />
         <List>작성 글 목록</List>
         <ArrowSvg>&gt;</ArrowSvg>
       </ListBox>
       <ListBox onClick={() => navigate("/profile/mycomment")}>
-        <img src={comment} alt="my_post" />
+        <Comment />
         <List>댓글 목록</List>
         <ArrowSvg>&gt;</ArrowSvg>
       </ListBox>
@@ -37,12 +38,12 @@ const ProfileSetList = () => {
         <ArrowSvg>&gt;</ArrowSvg>
       </ListBox>
       <ListBox onClick={() => alert("준비중 입니다.")}>
-        <img src={setting} alt="setting" />
+        <Setting />
         <List>App 설정</List>
         <ArrowSvg>&gt;</ArrowSvg>
       </ListBox>
       <ListBox onClick={() => alert("준비 중 입니다.")}>
-        <img src={headphone} alt="service_center" />
+        <Headphone />
         <List>고객센터</List>
         <ArrowSvg>&gt;</ArrowSvg>
       </ListBox>
@@ -61,6 +62,40 @@ const ListBox = styled.div`
   height: 4.25rem;
   ${Border_1_color}
   cursor: pointer;
+  :hover {
+    transform: translate(0px, -1px);
+    transition: 0.3s;
+    border-bottom: 1px solid ${(props) => props.theme.color.primary_strong};
+    span {
+      color: ${(props) => props.theme.color.primary_strong};
+    }
+    path {
+      fill: ${(props) => props.theme.color.primary_strong};
+    }
+    path.white {
+      fill: ${(props) => props.theme.color.white};
+    }
+    div {
+      color: ${(props) => props.theme.color.primary_heavy};
+    }
+  }
+  :active {
+    background-color: ${(props) => props.theme.color.line_alternative};
+    border-bottom: 1px solid ${(props) => props.theme.color.primary_heavy};
+    transform: translate(0px, 1px);
+    box-shadow: none;
+    border-bottom: 1px solid ${(props) => props.theme.color.primary_strong};
+    transition: 0.3s;
+    path {
+      fill: ${(props) => props.theme.color.primary_heavy};
+    }
+    path.white {
+      fill: ${(props) => props.theme.color.white};
+    }
+    div {
+      color: ${(props) => props.theme.color.primary_heavy};
+    }
+  }
 `;
 
 const ReportSvg = styled(Reportcatch)`
