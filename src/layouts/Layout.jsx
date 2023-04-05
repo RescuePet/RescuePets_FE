@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FlexAttribute } from "../style/Mixin";
@@ -9,6 +9,19 @@ import backgroundImage from "../asset/webbackground/Desktop.jpg";
 const Layout = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const storedScrollPosition = localStorage.getItem("scrollPosition");
+    if (
+      storedScrollPosition &&
+      (location.pathname === "/home" || location.pathname === "/petwork")
+    ) {
+      setScrollPosition(parseInt(storedScrollPosition));
+      ref.current.scrollTop = parseInt(storedScrollPosition);
+    }
+  }, []);
 
   useEffect(() => {
     if (location.pathname === "/signup" && isLogin() === false) {
@@ -18,10 +31,22 @@ const Layout = ({ children }) => {
     }
   }, [navigate]);
 
+  const saveScrollPosition = (e) => {
+    if (location.pathname === "/home" || location.pathname === "/petwork") {
+      const newPosition = e.target.scrollTop;
+      localStorage.setItem("scrollPosition", newPosition);
+      setScrollPosition(newPosition);
+    }
+  };
+
   return (
     <>
       <WebLayout className="weblayout" imageURL={backgroundImage}>
-        <MobileLayout>
+        <MobileLayout
+          ref={ref}
+          onScroll={saveScrollPosition}
+          scrollTop={scrollPosition}
+        >
           {children}
           {location.pathname !== "/" &&
             location.pathname !== "/signin" &&

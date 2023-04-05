@@ -60,7 +60,6 @@ const Home = () => {
       <PostContainer>
         <TitleBox>
           <h2>새로운 가족을 맞이해보세요</h2>
-          <img src={refresh} alt="refresh page" />
         </TitleBox>
         {adoptionLists.map((item, index) => {
           return (

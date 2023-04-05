@@ -10,7 +10,6 @@ import ClippingFill from "../../../asset/profile/ClippingFill";
 import Backwhite from "../../../asset/Backwhite";
 
 const ImageCarousel = ({ images, imageCarouselInfo, data }) => {
-  console.log(data);
   const navigate = useNavigate();
   const settings = {
     dots: true,
