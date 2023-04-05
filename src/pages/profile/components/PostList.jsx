@@ -9,6 +9,7 @@ import Clippingwhite from "../../../asset/Clippingwhite";
 import male from "../../../asset/male.svg";
 import female from "../../../asset/female.svg";
 import questionmark from "../../../asset/questionmark.svg";
+import { Link } from "react-router-dom";
 
 const PostList = ({ item }) => {
   console.log(item);
@@ -16,9 +17,18 @@ const PostList = ({ item }) => {
   const refineDataHandler = () => {
     let neuterYn;
     let refineData = {
+      ...item,
       sexCd: null,
       info: [],
+      URL: null,
     };
+    if (item.postType === "MISSING") {
+      refineData.postType = "실종";
+      refineData.URL = "/missingdetail";
+    } else if (item.postType === "CATCH") {
+      refineData.postType = "목격";
+      refineData.URL = "/catchdetail";
+    }
     if (item.sexCd === "MALE") {
       refineData.sexCd = male;
     } else if (item.sexCd === "FEMALE") {
@@ -43,31 +53,24 @@ const PostList = ({ item }) => {
 
   console.log(refineData);
   return (
-    <ListContainer>
+    <ListContainer to={`${refineData.URL}/${refineData.id}`}>
       <Image src={item.postImages[0].imageURL} />
       <div>
         <ListTitleWrapper>
-          {/* {category === "myPost" && <State category="목격">목격</State>} */}
-
+          <State category={refineData.postType}>{refineData.postType}</State>
           <Title>{item.kindCd}</Title>
           <SexCd src={refineData.sexCd} />
           <Info>{refineData.info.join("/")}</Info>
         </ListTitleWrapper>
         <AdditionalInfoWrapper>
           <span>{item.happenDt}</span>
-          {/* <span>댓글 &nbsp; 2</span>
-          <span>북마크 &nbsp; 0</span> */}
         </AdditionalInfoWrapper>
       </div>
-      {/* <CommentInfo>
-        <span>1</span>
-      </CommentInfo>
-      <ScrapInfo></ScrapInfo> */}
     </ListContainer>
   );
 };
 
-const ListContainer = styled.div`
+const ListContainer = styled(Link)`
   ${FlexAttribute("row", "", "center")}
   width: 335px;
   padding: 16px 0;
@@ -86,14 +89,12 @@ const ListTitleWrapper = styled.div`
 `;
 
 const Title = styled.span`
-  margin-right: 10px;
+  margin-left: 5px;
   ${(props) => props.theme.Body_500_14};
   white-space: nowrap;
 `;
 
-const SexCd = styled.img`
-  margin-right: 10px;
-`;
+const SexCd = styled.img``;
 
 const Info = styled.span`
   ${(props) => props.theme.Body_400_12};
