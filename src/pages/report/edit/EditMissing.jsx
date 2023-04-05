@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { __getMissingPostDetail } from "../../../redux/modules/petworkSlice";
 import cancel from "../../../asset/delete.svg";
+import imgdelete from "../../../asset/imgDelete.svg";
+import { __PutMissingposts } from "../../../redux/modules/editpostsSlice";
 import {
   ReportMissingContainer,
   ReportAnimalInfoArea,
@@ -35,15 +37,17 @@ import {
   ReportAnimalUserInfo,
   PreviewImage,
 } from "../components/reportstyle";
+import { data } from "autoprefixer";
 
 const EditMissing = () => {
+  let imageRef;
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
 
-  console.log(missingPostDetail);
+  // console.log(missingPostDetail);
   useEffect(() => {
     dispatch(__getMissingPostDetail(id));
   }, [id]);
@@ -96,11 +100,112 @@ const EditMissing = () => {
   };
   const onChangeTimeValeu = () => {};
 
+  // 주소
+  const addressDiv = document.getElementById("address");
+  // 좌표값들
+  const addressLatDiv = document.getElementById("addressLat");
+  const addressLngDiv = document.getElementById("addressLng");
+
+  // 사진 로직
+  // 올린 이미지 담을 관리하는 State
+  const [showImages, setShowImages] = useState([]);
+  // 폼데이터로 이미지 관리하는 State
+  const [imageFormData, setImageFormData] = useState([]);
+  const onChangeUploadHandler = async (e) => {
+    e.preventDefault();
+    // 인풋에서 선택된 이미지들
+    const imageLists = e.target.files;
+    console.log(imageLists);
+    // 미리보기 담을것
+    let imageUrlLists = [...showImages];
+    // 폼데이터 담을것
+    let imageFormLists = [...imageFormData];
+    // 미리보기 로직
+    for (let i = 0; i < imageLists.length; i++) {
+      const currentImageUrl = URL.createObjectURL(imageLists[i]);
+      imageUrlLists.push(currentImageUrl);
+      imageFormLists.push(imageLists[i]);
+    }
+    if (imageUrlLists.length > 3) {
+      imageUrlLists = imageUrlLists.slice(0, 3);
+      imageFormLists = imageFormLists.slice(0, 3);
+    }
+    setShowImages(imageUrlLists);
+    setImageFormData(imageFormLists);
+  };
+
+  const onClickDeleteHandler = () => {
+    setShowImages("");
+    setImageFormData("");
+  };
+
   // 입력값에 따라 버튼 활성화
   const [isActive, setIsActive] = useState(false);
+  useEffect(() => {
+    if (
+      watch("animaltypes") !== "" &&
+      watch("animalName") !== "" &&
+      watch("animaltypes") !== "" &&
+      watch("animalAge") !== "" &&
+      watch("animalkg") !== "" &&
+      watch("address") !== "" &&
+      watch("animalcolor") !== "" &&
+      addressDiv?.innerHTML !== "" &&
+      selectedDate !== ""
+    ) {
+      //   console.log('성공')
+      setIsActive(false);
+    } else {
+      //  console.log('실패')
+      setIsActive(true);
+    }
+  }, [watch()]);
+
+  const onSubmitEditMissingHandler = (data) => {
+    if (addressDiv?.innerHTML === "") {
+      alert("지도에 위치를 표기해주세요");
+    } else {
+      const formData = new FormData();
+      formData.append("postType", "MISSING");
+      formData.append("upkind", typeID);
+      formData.append("sexCd", currentGenderEnValue);
+      formData.append("neuterYn", currentNeuteredEnValue);
+      formData.append("petName", data.animalName);
+      formData.append("kindCd", data.animaltypes);
+      formData.append("age", data.animalAge);
+      formData.append("weight", data.animalkg);
+      formData.append("colorCd", data.animalcolor);
+      formData.append("happenPlace", addressDiv.innerHTML);
+      formData.append("happenLatitude", addressLatDiv.innerHTML);
+      formData.append("happenLongitude", addressLngDiv.innerHTML);
+      formData.append("happenDt", selectedDate);
+      formData.append("happenHour", time);
+      formData.append("specialMark", data.characteristic);
+      formData.append("content", data.memo);
+      formData.append("gratuity", data.money);
+      formData.append("contact", data.number);
+      imageFormData.map((img) => {
+        formData.append("postImages", img);
+      });
+      for (let value of formData.values()) {
+        console.log(value);
+      }
+
+      const number = missingPostDetail.id;
+      dispatch(__PutMissingposts({ formData, number }));
+      // dispatch(addImage(imageFormData[0]));
+      // dispatch(__PostMissingData(formData)).then((response) => {
+      //   navigate(`/poster/${response.payload}`);
+      // });
+      // reset();
+    }
+  };
+
   return (
     <Layout>
-      <ReportMissingContainer>
+      <ReportMissingContainer
+        onSubmit={handleSubmit(onSubmitEditMissingHandler)}
+      >
         {/* 컴포넌트  */}
         <Header>내 실종글 수정 </Header>
 
@@ -151,7 +256,7 @@ const EditMissing = () => {
                 <p>이름</p>
                 <ReportInput
                   type="text"
-                  placeholder={missingPostDetail.nickname}
+                  placeholder={missingPostDetail.petName}
                   {...register("animalName", {
                     required: true,
                     pattern: {
@@ -259,6 +364,7 @@ const EditMissing = () => {
                 onChange={handleDateChange}
                 value={selectedDate}
                 max={currentDate}
+                placeholder={missingPostDetail.happenDt}
               />
             </div>
             <div>
@@ -334,7 +440,7 @@ const EditMissing = () => {
           <ReportAnimalPictureAreaTitle>
             <p>사진첨부</p>
           </ReportAnimalPictureAreaTitle>
-          {/* <ReportAnimalPictureAreaInputBox>
+          <ReportAnimalPictureAreaInputBox>
             <input
               type="file"
               accept="image/*"
@@ -369,7 +475,7 @@ const EditMissing = () => {
                 ))}
               </>
             )}
-          </ReportAnimalPictureAreaInputBox> */}
+          </ReportAnimalPictureAreaInputBox>
         </ReportAnimalPictureArea>
         <ReportAnimalUserInfo>
           <div>

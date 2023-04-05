@@ -208,6 +208,9 @@ const Missing = () => {
       imageFormData.map((img) => {
         formData.append("postImages", img);
       });
+      for (let value of formData.values()) {
+        console.log(value);
+      }
       dispatch(addImage(imageFormData[0]));
       dispatch(__PostMissingData(formData)).then((response) => {
         navigate(`/poster/${response.payload}`);
