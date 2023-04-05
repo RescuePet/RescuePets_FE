@@ -22,6 +22,7 @@ export const __getMissingPostDetail = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await instance.get(`/api/post/${payload}`);
+      console.log(response)
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       throw new Error(error.response.data.message);

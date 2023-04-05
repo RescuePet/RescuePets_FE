@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { Spinner } from "../../../components/Spinner";
 import styled from "styled-components";
 import Marker from "../../../asset/marker/marker.png";
 import questionmark from "../../../asset/questionmark.svg";
 import { Border_1_color } from "../../../style/Mixin";
-import { Spinner } from "../../../components/Spinner";
-const Location = () => {
+
+const EditLocation = ({ data }) => {
+  console.log(data);
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
-  // console.log(location.pathname)
   const { kakao } = window;
-  // 현재위치를 받아오는 로직
+
   const [long, setLong] = useState("");
   const [lati, setLati] = useState("");
+  // 위치가져오는데 실패시 보여줄 좌표
   const defaultValue = {
     lat: "37.515133",
     lng: "126.934086",
@@ -37,6 +39,7 @@ const Location = () => {
       // alert("위치 정보를 찾을수 없습니다.");
     }
   }, []);
+
   useEffect(() => {
     const mapContainer = document.getElementById("map"),
       mapOption = {
@@ -77,24 +80,21 @@ const Location = () => {
       geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
     };
   }, [long]);
+
   return (
     <ReportKakaoMapContainer>
       {isLoading === true ? <Spinner /> : null}
       <ReportKakaoMapBoxTitle>
         <ReportKakaomapTitleInfoBox>
-          {location.pathname === "/missing" ? (
-            <p>실종위치 </p>
-          ) : (
-            <p>목격위치</p>
-          )}
+          {data.postType === "MISSING" ? <p>실종위치 </p> : <p>목격위치</p>}
           <img id="img" src={questionmark} />
           <div className="tooltip">
-            지도상에서 클릭하여 위치 마커 를 표시해주세요
+            지도를 클릭하여 위치를 마커로 표시해주세요
           </div>
         </ReportKakaomapTitleInfoBox>
         <ReportKakaomapTitleValueBox>
           {/* <p>위치</p> */}
-          <div id="address"></div>
+          <div id="address">{data.happenPlace}</div>
           <div style={{ display: "none" }}>
             <label id="addressLat"></label>
           </div>
@@ -107,7 +107,9 @@ const Location = () => {
     </ReportKakaoMapContainer>
   );
 };
-export default Location;
+
+export default EditLocation;
+
 const ReportKakaoMapContainer = styled.div`
   position: relative;
   width: 20.9375rem;
@@ -189,7 +191,7 @@ const ReportKakaomapTitleValueBox = styled.div`
   }
 `;
 const ReportKakaoMapBoxMap = styled.div`
-  z-index: 15;
+  z-index: 10;
   width: 100%;
   height: 10rem;
   ${(props) => props.theme.FlexCenter}
