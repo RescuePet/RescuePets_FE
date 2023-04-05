@@ -40,7 +40,10 @@ const Footer = () => {
   return (
     <FooterContiner>
       <FooterEachIconContiner
-        active={location.pathname === "/home"}
+        active={
+          location.pathname.split("/")[1] === "home" ||
+          location.pathname.split("/")[1] === "adoptiondetail"
+        }
         onClick={() => navigate("/home")}
       >
         <FooterIconHome></FooterIconHome>
