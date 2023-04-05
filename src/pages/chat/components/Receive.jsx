@@ -3,18 +3,23 @@ import styled from "styled-components";
 import { FlexAttribute } from "../../../style/Mixin";
 import { Body_400_10, Body_400_14 } from "../../../style/theme";
 
-const Receive = ({ message }) => {
+const Receive = ({ message, receiver, receiverImage }) => {
+  console.log("receiverImage", receiverImage);
   return (
     <ReceiveBox>
-      <ReceiveMessage>
-        <ReceiveSpan>{message}</ReceiveSpan>
-        {/* <ReceiveTimeSpan>오후 06:15</ReceiveTimeSpan> */}
-      </ReceiveMessage>
+      <ReceiverImage src={receiverImage} />
+      <ReceiveText>
+        <Receiver>{receiver}</Receiver>
+        <ReceiveMessage>
+          <ReceiveSpan>{message}</ReceiveSpan>
+          {/* <ReceiveTimeSpan>오후 06:15</ReceiveTimeSpan> */}
+        </ReceiveMessage>
+      </ReceiveText>
     </ReceiveBox>
   );
 };
 const ReceiveBox = styled.div`
-  ${FlexAttribute("column", "center", "flex-start")}
+  ${FlexAttribute("row", "flex-start", "")}
   margin: 0rem 1.25rem 0 1.625rem;
   :first-child {
     margin-top: 1rem;
@@ -22,6 +27,17 @@ const ReceiveBox = styled.div`
   :last-child {
     margin-bottom: 1.125rem;
   }
+`;
+
+const ReceiverImage = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+
+const ReceiveText = styled.div`
+  margin-left: 8px;
 `;
 
 const ReceiveMessage = styled.div`
@@ -37,7 +53,7 @@ const ReceiveMessage = styled.div`
     content: "";
     position: absolute;
     left: 0;
-    top: 35%;
+    top: 12px;
     width: 0;
     height: 0;
     border: 0.6875rem solid transparent;
@@ -47,6 +63,13 @@ const ReceiveMessage = styled.div`
     margin-top: -0.1563rem;
     margin-left: -0.3125rem;
   }
+`;
+
+const Receiver = styled.span`
+  display: inline-block;
+  margin-bottom: 2px;
+  ${(props) => props.theme.Body_400_12};
+  line-height: 18px;
 `;
 
 const ReceiveSpan = styled.span`

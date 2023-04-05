@@ -74,6 +74,19 @@ const PostContainer = styled.div`
   border: 0.0625rem solid ${(props) => props.theme.color.text_disable};
   border-radius: 0.25rem;
   cursor: pointer;
+  :hover {
+    border: 0.0625rem solid ${(props) => props.theme.color.primary_normal};
+    box-shadow: 0px 1px ${(props) => props.theme.color.primary_normal};
+    transform: translate(0px, -1px);
+    transition: 0.3s;
+  }
+  :active {
+    border: 0.0625rem solid ${(props) => props.theme.color.primary_heavy};
+    transform: translate(0px, 1px);
+    background-color: ${(props) => props.theme.color.line_alternative};
+    box-shadow: none;
+    transition: 0.3s;
+  }
 `;
 
 const ThunbnailWrapper = styled.div`

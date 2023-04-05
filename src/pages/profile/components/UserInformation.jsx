@@ -49,15 +49,21 @@ const UserInformation = () => {
       <UserEmail>{userInfo.email}</UserEmail>
       <UserActivityWrapper>
         <CountBox to="/profile/mypost">
-          <CountSpan>{myData.postCount}</CountSpan>
+          <CountSpan>
+            {myData.postCount != null ? myData.postCount : 0}
+          </CountSpan>
           <TitleSpan>작성 글</TitleSpan>
         </CountBox>
         <CountBox to="/profile/mycomment">
-          <CountSpan>{myData.commentCount}</CountSpan>
+          <CountSpan>
+            {myData.commentCount != null ? myData.commentCount : 0}
+          </CountSpan>
           <TitleSpan>댓글</TitleSpan>
         </CountBox>
         <CountBox to="/profile/myscrap">
-          <CountSpan>{myData.scrapCount}</CountSpan>
+          <CountSpan>
+            {myData.scrapCount != null ? myData.scrapCount : 0}
+          </CountSpan>
           <TitleSpan>스크랩</TitleSpan>
         </CountBox>
       </UserActivityWrapper>

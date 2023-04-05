@@ -241,11 +241,13 @@ const TitleWrapper = styled.div`
 `;
 
 const QRCodeWrapper = styled.div`
-  padding: 1.25rem;
-  border-radius: 0.625rem;
+  padding: 0.625rem;
+  margin: 0.625rem;
+  border-radius: 0.25rem;
   position: absolute;
   right: 0;
   bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
 `;
 
 const LocationWrapper = styled.div`
@@ -274,6 +276,7 @@ const BodyTitleText = styled.span`
   font-size: 0.875rem;
   line-height: 1.5rem;
   color: #999999;
+  white-space: nowrap;
 `;
 
 const ContentTextWrapper = styled.div`
