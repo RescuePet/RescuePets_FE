@@ -251,6 +251,7 @@ const BodyTitleText = styled.span`
   font-size: 0.875rem;
   line-height: 1.5rem;
   color: #999999;
+  white-space: nowrap;
 `;
 
 const ContentTextWrapper = styled.div`

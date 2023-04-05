@@ -14,9 +14,10 @@ const ChatListBox = ({ item }) => {
   let refineData = {
     state: "",
   };
-  if (item.postName === "missing-room") {
+  console.log(item);
+  if (item.postName === "MISSING") {
     refineData.state = "실종";
-  } else if (item.postName === "catch-room") {
+  } else if (item.postName === "CATCH") {
     refineData.state = "목격";
   }
   console.log(item);
@@ -37,8 +38,8 @@ const ChatListBox = ({ item }) => {
           <Contents>{item.lastChat}</Contents>
         </TextWrapper>
         <InfoWrapper>
-          {/* <Time>오전 09:39</Time>
-          <MessageCount>1</MessageCount> */}
+          <Time>{item.time}</Time>
+          {/* <MessageCount>1</MessageCount> */}
         </InfoWrapper>
       </ClickDiv>
     </ChatRoomListContainer>
