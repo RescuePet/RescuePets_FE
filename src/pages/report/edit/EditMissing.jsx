@@ -281,7 +281,7 @@ const EditMissing = () => {
               <p>특징</p>
               <ReportLgInput
                 type="text"
-                placeholder="입력하기"
+                placeholder={missingPostDetail.specialMark}
                 {...register("characteristic", {
                   required: false,
                   pattern: {
@@ -307,7 +307,7 @@ const EditMissing = () => {
               <p>메모</p>
               <ReportLgInput
                 type="text"
-                placeholder="입력하기"
+                placeholder={missingPostDetail.content}
                 {...register("memo", {
                   required: false,
                   pattern: {
@@ -376,7 +376,7 @@ const EditMissing = () => {
             <p>사례금(원)</p>
             <ReportInput
               type="text"
-              placeholder="입력하기"
+              placeholder={missingPostDetail.gratuity}
               {...register("money", {
                 required: false, // 필수 X
                 maxLength: { value: 15, message: "15글자 이하이어야 합니다." },
@@ -401,7 +401,7 @@ const EditMissing = () => {
             <p>연락처</p>
             <ReportInput
               type="tel"
-              placeholder="010-xxxx-xxxx"
+              placeholder={missingPostDetail.contact}
               inputMode="numeric"
               onChange={(event) => {
                 const value = event.target.value;
