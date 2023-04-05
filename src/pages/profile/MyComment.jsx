@@ -1,24 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import { FlexAttribute, HeaderStyle } from "../../style/Mixin";
-import { instance } from "../../utils/api";
 import CommentList from "./components/CommentList";
 
 import close from "../../asset/Close.svg";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { __getMyComment } from "../../redux/modules/profileSlice";
 
 const MyComment = () => {
   const navigate = useNavigate();
-  const [mycomment, setMycomment] = useState([]);
-  const MycommnetAxios = async () => {
-    const response = await instance.get("api/comments/member");
-    console.log(response);
-    setMycomment(response.data.data);
+  const dispatch = useDispatch();
+
+  const { myCommentList, myCommentPage } = useSelector(
+    (state) => state.profile
+  );
+
+  console.log(myCommentList);
+
+  const payload = {
+    page: myCommentPage,
+    size: 15,
   };
 
   useEffect(() => {
-    MycommnetAxios();
+    dispatch(__getMyComment(payload));
   }, []);
 
   return (
@@ -31,12 +38,12 @@ const MyComment = () => {
         <PostInfoWrapper>
           <div>
             <EntireTitle>총 댓글</EntireTitle>
-            <EntireCount>{mycomment.length}</EntireCount>
+            <EntireCount>{myCommentList.length}</EntireCount>
           </div>
         </PostInfoWrapper>
       </PostInfoContainer>
       <ListContainer>
-        {mycomment.map((item) => {
+        {myCommentList.map((item) => {
           return (
             <CommentList
               key={`comment-item-${item.id}`}

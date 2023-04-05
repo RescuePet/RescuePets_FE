@@ -2,18 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import State from "../../../elements/State";
 import { FlexAttribute } from "../../../style/Mixin";
-import { color } from "../../../style/theme";
 
-import ClippingFill from "../../../asset/profile/ClippingFill";
-import Clippingwhite from "../../../asset/Clippingwhite";
 import male from "../../../asset/male.svg";
 import female from "../../../asset/female.svg";
 import questionmark from "../../../asset/questionmark.svg";
 import { Link } from "react-router-dom";
 
 const PostList = ({ item }) => {
-  console.log(item);
-
   const refineDataHandler = () => {
     let neuterYn;
     let refineData = {
@@ -74,7 +69,19 @@ const ListContainer = styled(Link)`
   ${FlexAttribute("row", "", "center")}
   width: 335px;
   padding: 16px 0;
-  border-bottom: 1px solid ${(props) => props.theme.color.input_border}; ;
+  border-bottom: 1px solid ${(props) => props.theme.color.input_border};
+  :hover {
+    transform: translate(0px, -1px);
+    box-shadow: 0px 1px ${(props) => props.theme.color.primary_strong};
+    transition: 0.3s;
+  }
+  :active {
+    background-color: ${(props) => props.theme.color.background_tertiary};
+    transform: translate(0px, 1px);
+    box-shadow: none;
+    border-bottom: 1px solid ${(props) => props.theme.color.primary_strong};
+    transition: 0.3s;
+  }
 `;
 
 const Image = styled.img`

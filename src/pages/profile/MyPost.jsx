@@ -15,15 +15,11 @@ const MyPost = () => {
   const navigate = useNavigate();
   const [ref, inView] = useInView();
 
-  const { entirePostList, entirePostPage } = useSelector(
-    (state) => state.profile
-  );
-
-  console.log(entirePostPage);
+  const { myPostList, myPostPage } = useSelector((state) => state.profile);
 
   let payload = {
-    page: entirePostPage,
-    size: 5,
+    page: myPostPage,
+    size: 15,
   };
 
   useEffect(() => {
@@ -43,12 +39,12 @@ const MyPost = () => {
         <PostInfoWrapper>
           <div>
             <EntireTitle>총 작성 글</EntireTitle>
-            <EntireCount>{entirePostList.length}</EntireCount>
+            <EntireCount>{myPostList.length}</EntireCount>
           </div>
         </PostInfoWrapper>
       </PostInfoContainer>
       <ListContainer>
-        {entirePostList.map((item) => {
+        {myPostList.map((item) => {
           return (
             <PostList key={`my-post-item-${item.id}`} item={item}></PostList>
           );

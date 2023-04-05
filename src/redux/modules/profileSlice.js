@@ -7,9 +7,28 @@ export const __getMyPost = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await instance.get(
-        `api/post/member/?page=${payload.page}&size=${payload.size}`
+        `api/post/member/?page=${Number(payload.page)}&size=${Number(
+          payload.size
+        )}`
       );
-      console.log("__getMyPost", response);
+      console.log("__getMyPost", response.data.data);
+      return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
+// Get My Comment
+export const __getMyComment = createAsyncThunk(
+  "getMyComment",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await instance.get(
+        `api/comments/member?page=${payload.page}&size=${payload.size}`
+      );
+      console.log("__getMyComment", response);
+      console.log("Array", response.data.data);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       throw new Error(error.response.data.message);
@@ -36,8 +55,12 @@ export const __getMyScrap = createAsyncThunk(
 const initialState = {
   loading: false,
   error: false,
-  entirePostList: [],
-  entirePostPage: 1,
+  myPostList: [],
+  myPostPage: 1,
+  myCommentList: [],
+  myCommentPage: 1,
+  myScrapList: [],
+  myScrapPage: 1,
 };
 
 export const profileSlice = createSlice({
@@ -55,9 +78,36 @@ export const profileSlice = createSlice({
       })
       .addCase(__getMyPost.fulfilled, (state, action) => {
         state.loading = false;
-        state.entirePostList = [...state.entirePostList, ...action.payload];
+        state.myPostPage = state.myPostPage + 1;
+        state.myPostList = [...state.myPostList, ...action.payload];
       })
       .addCase(__getMyPost.rejected, (state) => {
+        state.error = true;
+      });
+
+    builder
+      .addCase(__getMyComment.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(__getMyComment.fulfilled, (state, action) => {
+        state.loading = false;
+        state.myCommentPage = state.myCommentPage + 1;
+        state.myCommentList = [...state.myCommentList, ...action.payload];
+      })
+      .addCase(__getMyComment.rejected, (state) => {
+        state.error = true;
+      });
+
+    builder
+      .addCase(__getMyScrap.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(__getMyScrap.fulfilled, (state, action) => {
+        state.loading = false;
+        state.myScrapPage = state.myScrapPage + 1;
+        state.myScrapList = [...state.myScrapList, ...action.payload];
+      })
+      .addCase(__getMyScrap.rejected, (state) => {
         state.error = true;
       });
   },
