@@ -54,12 +54,14 @@ const Poster = () => {
   const makeImageHandler = async () => {
     try {
       const canvas = await html2canvas(containerRef.current);
-      canvas.toBlob((blob) => {
+      const posterBlob = canvas.toBlob((blob) => {
         console.log("blob", blob);
         submitImage(blob);
         setPoster(blob);
         console.log("makeImageHandler");
+        return blob;
       });
+      setPoster(posterBlob);
     } catch (error) {
       console.log(error);
     }
@@ -69,19 +71,11 @@ const Poster = () => {
   const submitImage = async (image) => {
     try {
       const formData = new FormData();
-      formData.append("postPoster", image, "image.jpg");
+      formData.append("postPoster", image);
       for (let key of formData.keys()) {
         console.log(key, ":", formData.get(key));
       }
-      const response = await instance.post(
-        `/api/post/posters/${id}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await instance.post(`/api/post/posters/${id}`, formData);
       console.log("poster response", response);
       console.log("submitImage");
     } catch (error) {
@@ -131,9 +125,15 @@ const Poster = () => {
   ImageHandler();
 
   // Save Poster
-  const savePoster = () => {
-    console.log("poster image", poster);
-    saveAs(poster, "poster.png");
+  const savePoster = async () => {
+    try {
+      const canvas = await html2canvas(containerRef.current);
+      canvas.toBlob((blob) => {
+        saveAs(blob);
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
