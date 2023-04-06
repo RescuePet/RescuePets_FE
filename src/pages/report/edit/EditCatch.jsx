@@ -222,8 +222,12 @@ const EditCatch = () => {
                   {...register("animaltypes", {
                     required: true,
                     pattern: {
-                      value: /^[ㄱ-ㅎ|가-힣]+$/,
-                      message: "한글만 2 ~ 8글자 사이로 입력",
+                      value: /^[가-힣\s]+$/,
+                      message: "한글만 2 ~ 15글자 사이로 입력",
+                    },
+                    maxLength: {
+                      value: 15,
+                      message: "15글자 이하이어야 합니다.",
                     },
                   })}
                 />

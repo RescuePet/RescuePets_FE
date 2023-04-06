@@ -237,8 +237,12 @@ const Catch = () => {
                   {...register("animaltypes", {
                     required: true,
                     pattern: {
-                      value: /^[ㄱ-ㅎ|가-힣]+$/,
-                      message: "한글만 2 ~ 8글자 사이로 입력",
+                      value: /^[가-힣\s]+$/,
+                      message: "한글만 2 ~ 15글자 사이로 입력",
+                    },
+                    maxLength: {
+                      value: 15,
+                      message: "15글자 이하이어야 합니다.",
                     },
                   })}
                 />
@@ -336,9 +340,7 @@ const Catch = () => {
             </ReportAnimalInfoBox>
           </ReportAnimalInfoBox>
         </ReportAnimalInfoArea>
-
         <Location />
-
         <ReportAnimalDayBox>
           <p>목격일시 *</p>
           <div>
@@ -361,7 +363,6 @@ const Catch = () => {
             </div>
           </div>
         </ReportAnimalDayBox>
-
         <ReportAnimalSignificantBox>
           <ReportAnimalSignificantBoxTitle>
             <p> 특이사항 </p>
@@ -419,7 +420,6 @@ const Catch = () => {
             </div>
           </ReportAnimalSignificantBoxInputArea>
         </ReportAnimalSignificantBox>
-
         <ReportAnimalPictureArea>
           <ReportAnimalPictureAreaTitle>
             <p>사진첨부</p>
@@ -463,7 +463,6 @@ const Catch = () => {
             )}
           </ReportAnimalPictureAreaInputBox>
         </ReportAnimalPictureArea>
-
         {isActive === true ? (
           <Button type="submit" disable assistiveFillButton>
             작성 완료
@@ -473,7 +472,6 @@ const Catch = () => {
             작성 완료
           </Button>
         )}
-
         {postNumber == "" ? null : (
           <PostModal
             isOpen={loginModal}
