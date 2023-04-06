@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import {
@@ -35,7 +35,6 @@ import { instance } from "../../utils/api";
 import ScrollToTop from "../../elements/ScrollToTop";
 import Cookies from "js-cookie";
 import { Spinner } from "../../components/Spinner";
-import Button from "../../elements/Button";
 
 const MissingDetail = () => {
   const { id } = useParams();
@@ -82,11 +81,6 @@ const MissingDetail = () => {
     happenLongitude: missingPostDetail.happenLongitude,
   };
 
-  const postInfo = {
-    commentCount: missingComment.length,
-    scrapCount: missingPostDetail.wishedCount,
-  };
-
   const submitHandler = async (content) => {
     let data = {
       id: id,
@@ -117,6 +111,12 @@ const MissingDetail = () => {
 
   const imageCarouselInfo = {
     scrapState: missingPostDetail.isWished,
+    scrapHandler: scrapHandler,
+  };
+
+  const postInfo = {
+    commentCount: missingComment.length,
+    scrapCount: missingPostDetail.wishedCount,
     scrapHandler: scrapHandler,
   };
 
@@ -194,9 +194,6 @@ const MissingDetail = () => {
             </ContentTextWrapper>
           </InfoWrapper>
         )}
-        <PosterButtonWrapper>
-          <Button fillButton>포스터 저장하기</Button>
-        </PosterButtonWrapper>
       </InfoContainer>
       <PostInformation postInfo={postInfo}></PostInformation>
       <CommentContainer>
@@ -237,11 +234,6 @@ const InfoContainer = styled.div`
 
 const InfoWrapper = styled.div`
   ${FlexAttribute("row", "space-evenly")}
-`;
-
-const PosterButtonWrapper = styled.div`
-  ${FlexAttribute("row", "center")}
-  margin: 4px 0;
 `;
 
 const BodyTitleWrapper = styled.div`

@@ -51,7 +51,10 @@ const Footer = () => {
       </FooterEachIconContiner>
       <FooterEachIconContiner
         active={
-          location.pathname === "/map" || location.pathname === "/petwork"
+          location.pathname.split("/")[1] === "map" ||
+          location.pathname.split("/")[1] === "petwork" ||
+          location.pathname.split("/")[1] === "missingdetail" ||
+          location.pathname.split("/")[1] === "sightingdetail"
         }
         onClick={() => navigate("/map")}
       >
@@ -115,7 +118,7 @@ const FooterContiner = styled.div`
   position: fixed;
   bottom: 0;
   background-color: ${(props) => props.theme.color.white};
-  z-index: 10;
+  z-index: 100;
   @media screen and (max-width: 26.9375rem) {
     width: 100%;
     position: fixed;
