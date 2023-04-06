@@ -34,7 +34,7 @@ import {
   ReportAnimalPictureAreaInputBox,
   ReportAnimalPictureInput,
   ReportAnimalPicturePreview,
-  ReportAnimalUserInfo,
+  ReportAnimalInfoBoxColumnColumn,
   PreviewImage,
 } from "../components/reportstyle";
 const EditCatch = () => {
@@ -200,7 +200,7 @@ const EditCatch = () => {
     <Layout>
       <ReportMissingContainer onSubmit={handleSubmit(onSubmitEditCatchHandler)}>
         {/* 컴포넌트  */}
-        <Header>내 실종글 수정 </Header>
+        <Header>내 목격 글 수정 </Header>
 
         <ReportAnimalInfoArea>
           <ReportanimaltypesBox>
@@ -237,41 +237,14 @@ const EditCatch = () => {
               </div>
             </ReportanimaltypesSelect>
           </ReportanimaltypesBox>
-
           <SeleteTab
             onChangeGender={onChangeGender}
             onChangeNeutered={onChangeNeutered}
           />
-
           <ReportAnimalInfoBox>
             <ReportAnimalInfoBoxColumn>
               <ReportAnimalInfoBoxColumnRow>
-                <p>이름</p>
-                <ReportInput
-                  type="text"
-                  placeholder={missingPostDetail.nickname}
-                  {...register("animalName", {
-                    required: true,
-                    pattern: {
-                      value: /^[가-힣\s]+$/,
-                      message: "한글만 2 ~ 8글자 사이로 입력 ",
-                    },
-                    maxLength: {
-                      value: 8,
-                      message: "8글자 이하이어야 합니다.",
-                    },
-                  })}
-                />
-                <img
-                  src={cancel}
-                  onClick={() => {
-                    onClickDeleteValue("animalName");
-                  }}
-                />
-                <span>{errors?.animalName?.message}</span>
-              </ReportAnimalInfoBoxColumnRow>
-              <ReportAnimalInfoBoxColumnRow>
-                <p>나이(살)</p>
+                <p>추정나이(살)</p>
                 <ReportInput
                   type="text"
                   placeholder={missingPostDetail.age}
@@ -292,19 +265,18 @@ const EditCatch = () => {
                 />
                 <span>{errors?.animalAge?.message}</span>
               </ReportAnimalInfoBoxColumnRow>
-            </ReportAnimalInfoBoxColumn>
-            <ReportAnimalInfoBoxColumn>
+
               <ReportAnimalInfoBoxColumnRow>
-                <p>체중(Kg)</p>
+                <p>추정체중(Kg)</p>
                 <ReportInput
                   type="text"
                   placeholder={missingPostDetail.weight}
                   {...register("animalkg", {
-                    required: true,
+                    required: false,
                     pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
                     maxLength: {
-                      value: 4,
-                      message: "4글자 이하이어야 합니다.",
+                      value: 3,
+                      message: "숫자만 입력! 3자리수 이하로 작성",
                     },
                   })}
                 />
@@ -316,9 +288,12 @@ const EditCatch = () => {
                 />
                 <span>{errors?.animalkg?.message}</span>
               </ReportAnimalInfoBoxColumnRow>
-              <ReportAnimalInfoBoxColumnRow>
+            </ReportAnimalInfoBoxColumn>
+
+            <ReportAnimalInfoBoxColumn>
+              <ReportAnimalInfoBoxColumnColumn>
                 <p>색상</p>
-                <ReportInput
+                <ReportLgInput
                   type="text"
                   placeholder={missingPostDetail.colorCd}
                   {...register("animalcolor", {
@@ -340,9 +315,9 @@ const EditCatch = () => {
                   }}
                 />
                 <span>{errors?.animalcolor?.message}</span>
-              </ReportAnimalInfoBoxColumnRow>
+              </ReportAnimalInfoBoxColumnColumn>
             </ReportAnimalInfoBoxColumn>
-          </ReportAnimalInfoBox>
+          </ReportAnimalInfoBox>{" "}
         </ReportAnimalInfoArea>
 
         <EditLocation data={missingPostDetail} />

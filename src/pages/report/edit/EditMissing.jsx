@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../../layouts/Layout";
 import Button from "../../../elements/Button";
+import { CheckModal } from "../../../elements/Modal";
 import Header from "../components/Header";
 import SeleteTab from "../components/SeleteTab";
 import EditLocation from "./EditLocation";
@@ -10,6 +11,7 @@ import { NameValue, TimeValue } from "./../components/data";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
+import { useModalState } from "../../../hooks/useModalState";
 import { __getMissingPostDetail } from "../../../redux/modules/petworkSlice";
 import cancel from "../../../asset/delete.svg";
 import imgdelete from "../../../asset/imgDelete.svg";
@@ -44,6 +46,7 @@ const EditMissing = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loginModal, toggleModal] = useModalState(false);
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
 
@@ -161,6 +164,9 @@ const EditMissing = () => {
     }
   }, [watch()]);
 
+  // 통신결과에따라 보여줄 로딩창
+  const [editMsg, setEditMsg] = useState("");
+
   const onSubmitEditMissingHandler = (data) => {
     if (addressDiv?.innerHTML === "") {
       alert("지도에 위치를 표기해주세요");
@@ -190,14 +196,22 @@ const EditMissing = () => {
       for (let value of formData.values()) {
         console.log(value);
       }
-
+      toggleModal();
       const number = missingPostDetail.id;
-      dispatch(__PutMissingposts({ formData, number }));
-      // dispatch(addImage(imageFormData[0]));
-      // dispatch(__PostMissingData(formData)).then((response) => {
-      //   navigate(`/poster/${response.payload}`);
-      // });
-      // reset();
+      dispatch(__PutMissingposts({ formData, number })).then((response) => {
+        if (response.type === "putmissingposts/fulfilled") {
+          console.log("성공");
+          // 바로 이동시키기
+          setEditMsg("수정 성공!");
+          setTimeout(function () {
+            navigate(`/missingdetail/${missingPostDetail.id}`);
+          }, 1000);
+          // navigate(`missingdetail/${missingPostDetail.id}`)
+        } else {
+          console.log("실패");
+          setEditMsg("수정 실패..ㅠ");
+        }
+      });
     }
   };
 
@@ -229,8 +243,12 @@ const EditMissing = () => {
                   {...register("animaltypes", {
                     required: true,
                     pattern: {
-                      value: /^[ㄱ-ㅎ|가-힣]+$/,
-                      message: "한글만 2 ~ 8글자 사이로 입력",
+                      value: /^[가-힣\s]+$/,
+                      message: "한글만 2 ~ 15글자 사이로 입력",
+                    },
+                    maxLength: {
+                      value: 15,
+                      message: "15글자 이하이어야 합니다.",
                     },
                   })}
                 />
@@ -550,11 +568,18 @@ const EditMissing = () => {
             작성 완료
           </Button>
         )}
+        {editMsg == "" ? null : (
+          <CheckModal
+            isOpen={loginModal}
+            toggle={toggleModal}
+            onClose={toggleModal}
+          >
+            {editMsg}
+          </CheckModal>
+        )}
       </ReportMissingContainer>
     </Layout>
   );
 };
 
 export default EditMissing;
-
-const HeaderSIZe = styled.div``;

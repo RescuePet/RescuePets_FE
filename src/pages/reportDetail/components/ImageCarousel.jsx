@@ -40,14 +40,14 @@ const ImageCarousel = ({ images, imageCarouselInfo, data }) => {
         ))}
       </StyledSlider>
       <BackButton onClick={() => navigate(-1)} />
+      <button style={{ background: "#EEE" }} onClick={MoveToEditMyPost}>
+        수정하기
+      </button>
       {imageCarouselInfo.scrapState ? (
         <ScrapStateTrue onClick={imageCarouselInfo.scrapHandler} />
       ) : (
         <>
           <ScrapStateFalse onClick={imageCarouselInfo.scrapHandler} />
-          <button style={{ background: "#EEE" }} onClick={MoveToEditMyPost}>
-            수정하기
-          </button>
         </>
       )}
     </Container>

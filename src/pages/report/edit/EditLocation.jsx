@@ -7,7 +7,7 @@ import questionmark from "../../../asset/questionmark.svg";
 import { Border_1_color } from "../../../style/Mixin";
 
 const EditLocation = ({ data }) => {
-  console.log(data);
+  // console.log(data);
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
   const { kakao } = window;

@@ -18,13 +18,18 @@ const Signin = () => {
   const navigate = useNavigate();
   const [loginModal, toggleModal, setIsOpen] = useModalState(false);
   const {
-    register,handleSubmit,formState: { errors },
-    reset, resetField, watch, } = useForm({ mode: "onChange" });
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    resetField,
+    watch,
+  } = useForm({ mode: "onChange" });
   // 삭제로직
   const onClickDeleteValue = (data) => {
     resetField(data);
   };
-  
+
   // 입력값에 따라 버튼 활성화
   const [isActive, setIsActive] = useState(false);
   const watchAll = Object.values(watch());
@@ -39,7 +44,6 @@ const Signin = () => {
 
   const [SignInMsg, setSignInMsg] = useState("");
 
-
   const onSubmitSigninHanler = (data) => {
     const siginInfo = {
       email: data.email,
@@ -47,24 +51,21 @@ const Signin = () => {
     };
     // 토
     toggleModal();
-    dispatch(__signinUser(siginInfo))
-    .then((response) => {
+    dispatch(__signinUser(siginInfo)).then((response) => {
       console.log(response);
-      if(response.type === 'signinUser/rejected'){
-        console.log('실패')
+      if (response.type === "signinUser/rejected") {
+        console.log("실패");
         setSignInMsg(`⛔  ${response.error.message}`);
-      }else if(response.type ==="signinUser/fulfilled"){
-        console.log('성공')
+      } else if (response.type === "signinUser/fulfilled") {
+        console.log("성공");
         setSignInMsg(`✅  ${response.payload.message}`);
         setTimeout(function () {
           navigate("/home");
         }, 1000);
       }
-    })
-  
+    });
   };
 
- 
   // const SignInMessage = useSelector((state) => {
   //   return state?.users?.Signin;
   // });
@@ -152,7 +153,6 @@ const Signin = () => {
             isOpen={loginModal}
             toggle={toggleModal}
             onClose={toggleModal}
-            setIsOpen={setIsOpen}
           >
             {SignInMsg}
           </CheckModal>

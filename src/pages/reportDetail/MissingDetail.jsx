@@ -58,7 +58,7 @@ const MissingDetail = () => {
       dispatch(toggleEditDone(false));
     };
   }, [missingComment]);
-  console.log(missingPostDetail);
+
   if (JSON.stringify(missingPostDetail) === "{}") {
     return <Spinner />;
   }
