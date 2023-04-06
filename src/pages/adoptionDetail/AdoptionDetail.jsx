@@ -6,6 +6,7 @@ import {
   __getAdoptionDetail,
   __postAdoptionInquiry,
   __postAdoptionListScrap,
+  resetAdoptionDetail,
 } from "../../redux/modules/adoptionSlice";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
@@ -38,17 +39,23 @@ const AdoptionDetail = () => {
 
   useEffect(() => {
     dispatch(__getAdoptionDetail(id));
+    return () => {
+      dispatch(resetAdoptionDetail());
+    };
   }, []);
+
   const { adoptionDetail } = useSelector((state) => state?.adoption);
 
   console.log("data", adoptionDetail);
 
   // 비동기처리 시 detailInfo가 없을 경우를 고려
   if (JSON.stringify(adoptionDetail) === "{}") {
-    return <Spinner />;
+    return (
+      <Layout>
+        <Spinner />
+      </Layout>
+    );
   }
-
-  console.log(adoptionDetail);
 
   let titleData = {
     process: adoptionDetail.processState,
