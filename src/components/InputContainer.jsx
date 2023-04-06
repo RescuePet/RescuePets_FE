@@ -8,10 +8,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Close from "../asset/Close.svg";
 import { toggleCommentInput } from "../redux/modules/petworkSlice";
+import { useLocation } from "react-router-dom";
 
 const InputContainer = ({ placeholder, submitHandler }) => {
   const { register, reset, handleSubmit, watch } = useForm();
   const dispatch = useDispatch();
+  const location = useLocation();
   const { CommentInputState } = useSelector((state) => state.petwork);
 
   const message = watch("message", "");
@@ -59,14 +61,16 @@ const InputContainer = ({ placeholder, submitHandler }) => {
             <ChatSubmit />
           </SubmitButton>
         </InputWrapper>
-        <CloseBox
-          onClick={() => {
-            reset();
-            dispatch(toggleCommentInput());
-          }}
-        >
-          <CloseImg src={Close} alt="close" />
-        </CloseBox>
+        {location.pathname.split("/")[1] !== "chatroom" && (
+          <CloseBox
+            onClick={() => {
+              reset();
+              dispatch(toggleCommentInput());
+            }}
+          >
+            <CloseImg src={Close} alt="close" />
+          </CloseBox>
+        )}
       </ChatContainer>
     </ChatFooter>
   );

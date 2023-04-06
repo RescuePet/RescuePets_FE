@@ -32,7 +32,10 @@ const BtnStyle = styled.button`
     (props.fillButton || props.propName === "fillButton") &&
     css`
       ${(props) => props.theme.Body_700_14}
-      color: ${(props) => props.theme.color.white};
+      color: ${(props) =>
+        props.report
+          ? props.theme.color.status_caution
+          : props.theme.color.white};
       background: ${(props) => props.theme.color.primary_normal};
     `}
     ${(props) =>
@@ -64,6 +67,14 @@ const BtnStyle = styled.button`
         cursor: pointer;
         transition: 0.2s ease;
       }
+    `}
+    ${(props) =>
+    props.OptionClose &&
+    css`
+      width: 93%;
+      margin-bottom: 32px;
+      background-color: ${(props) => props.theme.color.text_disable};
+      border-radius: 20px;
     `}
     /* &:hover {
     cursor: pointer;

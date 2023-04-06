@@ -31,6 +31,7 @@ import ClippingFill from "../../asset/profile/ClippingFill";
 import ScrollToTop from "../../elements/ScrollToTop";
 import Backwhite from "../../asset/Backwhite";
 import { Loading } from "../../components/Loading";
+import ReportModal from "../../components/ReportModal";
 
 const AdoptionDetail = () => {
   const { id } = useParams();
@@ -38,7 +39,7 @@ const AdoptionDetail = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(__getAdoptionDetail(id));
+    // dispatch(__getAdoptionDetail(id));
     return () => {
       dispatch(resetAdoptionDetail());
     };
@@ -52,7 +53,7 @@ const AdoptionDetail = () => {
   if (JSON.stringify(adoptionDetail) === "{}") {
     return (
       <Layout>
-        <Loading />
+        <ReportModal />
       </Layout>
     );
   }
