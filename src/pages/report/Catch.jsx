@@ -92,6 +92,10 @@ const Catch = () => {
   const onChangeNeutered = (newData) => {
     setCurrentNeuteredEnValue(newData);
   };
+  const tabValue = {
+    GenderNum: null,
+    neuterYn: null,
+  };
 
   // console.log("최신값성별 :",currentGenderEnValue)
   // console.log("최신값중성화:",currentNeuteredEnValue)
@@ -259,6 +263,7 @@ const Catch = () => {
             <SeleteTab
               onChangeGender={onChangeGender}
               onChangeNeutered={onChangeNeutered}
+              tabValue={tabValue}
             />
 
             <ReportAnimalInfoBox>

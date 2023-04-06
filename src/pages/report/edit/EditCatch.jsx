@@ -93,6 +93,11 @@ const EditCatch = () => {
     setCurrentNeuteredEnValue(newData);
   };
 
+  const tabValue = {
+    GenderNum: missingPostDetail.sexCd,
+    neuterYn: missingPostDetail.neuterYn,
+  };
+
   const [selectedDate, setSelectedDate] = useState("");
   const currentDate = new Date().toISOString().split("T")[0];
   const handleDateChange = (e) => {
@@ -165,53 +170,91 @@ const EditCatch = () => {
   const [editMsg, setEditMsg] = useState("");
 
   const onSubmitEditCatchHandler = (data) => {
-    console.log(currentGenderEnValue);
-    console.log(currentNeuteredEnValue);
-    if (addressDiv?.innerHTML === "") {
-      alert("지도에 위치를 표기해주세요");
-    } else {
-      const formData = new FormData();
-      formData.append("postType", "CATCH");
-      formData.append("upkind", typeID);
-      formData.append("sexCd", currentGenderEnValue);
-      formData.append("neuterYn", currentNeuteredEnValue);
-      formData.append("kindCd", data.animaltypes);
-      formData.append("age", data.animalAge);
-      formData.append("weight", data.animalkg);
-      formData.append("colorCd", data.animalcolor);
-      formData.append("happenPlace", addressDiv.innerHTML);
-      formData.append("happenLatitude", addressLatDiv.innerHTML);
-      formData.append("happenLongitude", addressLngDiv.innerHTML);
-      formData.append("happenDt", selectedDate);
-      formData.append("happenHour", time);
-      formData.append("specialMark", data.characteristic);
-      formData.append("content", data.memo);
-      formData.append("gratuity", data.money);
-      formData.append("contact", data.number);
-      imageFormData.map((img) => {
-        formData.append("postImages", img);
-      });
-      // for (let value of formData.values()) {
-      //   console.log(value);
-      // }
-
-      toggleModal();
-      const number = missingPostDetail.id;
-      dispatch(__PutCatchposts({ formData, number })).then((response) => {
-        console.log(response);
-        if (response.type === "putcatchposts/fulfilled") {
-          console.log("성공");
-          // 바로 이동시키기
-          setEditMsg("수정 성공!");
-          setTimeout(function () {
-            navigate(`/sightingdetail/${missingPostDetail.id}`);
-          }, 1000);
-        } else {
-          console.log("실패");
-          setEditMsg("수정 실패..ㅠ");
-        }
-      });
+    const formData = new FormData();
+    formData.append("postType", "CATCH");
+    formData.append("upkind", typeID);
+    formData.append("sexCd", currentGenderEnValue);
+    formData.append("neuterYn", currentNeuteredEnValue);
+    {
+      data.animalName == ""
+        ? formData.append("petName", missingPostDetail.petName)
+        : formData.append("petName", data.animalName);
     }
+    {
+      data.animaltypes == ""
+        ? formData.append("kindCd", missingPostDetail.kindCd)
+        : formData.append("kindCd", data.animaltypes);
+    }
+    {
+      data.animalAge == ""
+        ? formData.append("age", missingPostDetail.age)
+        : formData.append("age", data.animalAge);
+    }
+    {
+      data.animalkg == ""
+        ? formData.append("weight", missingPostDetail.weight)
+        : formData.append("weight", data.animalkg);
+    }
+    {
+      data.animalcolor == ""
+        ? formData.append("colorCd", missingPostDetail.colorCd)
+        : formData.append("colorCd", data.animalcolor);
+    }
+    {
+      addressDiv.innerHTML == ""
+        ? formData.append("happenPlace", missingPostDetail.happenPlace)
+        : formData.append("happenPlace", addressDiv.innerHTML);
+    }
+    {
+      addressLatDiv.innerHTML == ""
+        ? formData.append("happenLatitude", missingPostDetail.happenLatitude)
+        : formData.append("happenLatitude", addressLatDiv.innerHTML);
+    }
+    {
+      addressLngDiv.innerHTML == ""
+        ? formData.append("happenLongitude", missingPostDetail.happenLongitude)
+        : formData.append("happenLongitude", addressLngDiv.innerHTML);
+    }
+    {
+      selectedDate == ""
+        ? formData.append("happenDt", missingPostDetail.happenDt)
+        : formData.append("happenDt", selectedDate);
+    }
+    formData.append("happenHour", time);
+    {
+      data.characteristic == ""
+        ? formData.append("specialMark", missingPostDetail.characteristic)
+        : formData.append("specialMark", data.characteristic);
+    }
+    {
+      data.memo == ""
+        ? formData.append("content", missingPostDetail.memo)
+        : formData.append("content", data.memo);
+    }
+    imageFormData.map((img) => {
+      formData.append("postImages", img);
+    });
+
+    for (let value of formData.values()) {
+      console.log(value);
+    }
+
+    toggleModal();
+    const number = missingPostDetail.id;
+    dispatch(__PutCatchposts({ formData, number })).then((response) => {
+      console.log(response);
+      if (response.type === "putcatchposts/fulfilled") {
+        console.log("성공");
+        // 바로 이동시키기
+        setEditMsg("수정 성공!");
+        setTimeout(function () {
+          navigate(`/sightingdetail/${missingPostDetail.id}`);
+        }, 1000);
+      } else {
+        console.log("실패");
+        setEditMsg("수정 실패..ㅠ");
+      }
+    });
   };
 
   return (
@@ -262,6 +305,7 @@ const EditCatch = () => {
           <SeleteTab
             onChangeGender={onChangeGender}
             onChangeNeutered={onChangeNeutered}
+            tabValue={tabValue}
           />
           <ReportAnimalInfoBox>
             <ReportAnimalInfoBoxColumn>
