@@ -29,8 +29,8 @@ import AdoptionInformation from "./components/AdoptionInformation";
 import Button from "../../elements/Button";
 import ClippingFill from "../../asset/profile/ClippingFill";
 import ScrollToTop from "../../elements/ScrollToTop";
-import { Spinner } from "../../components/Spinner";
 import Backwhite from "../../asset/Backwhite";
+import { Loading } from "../../components/Loading";
 
 const AdoptionDetail = () => {
   const { id } = useParams();
@@ -52,7 +52,7 @@ const AdoptionDetail = () => {
   if (JSON.stringify(adoptionDetail) === "{}") {
     return (
       <Layout>
-        <Spinner />
+        <Loading />
       </Layout>
     );
   }

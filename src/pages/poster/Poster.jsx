@@ -22,8 +22,8 @@ import informationIcon from "../../asset/information.svg";
 import Memo from "../../asset/Memo";
 import gratuity from "../../asset/gratuity.svg";
 import petworkRefineData from "../../utils/petworkRefine";
-import { Spinner } from "../../components/Spinner";
 import { instance } from "../../utils/api";
+import { Loading } from "../../components/Loading";
 
 const Poster = () => {
   const containerRef = useRef(null);
@@ -90,7 +90,11 @@ const Poster = () => {
   }, [id]);
 
   if (JSON.stringify(missingPostDetail) === "{}") {
-    return <Spinner />;
+    return (
+      <Layout>
+        <Loading />
+      </Layout>
+    );
   }
 
   // imageurl : missingPostDetail.

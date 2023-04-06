@@ -34,7 +34,7 @@ import FloatingButton from "./components/FloatingButton";
 import { instance } from "../../utils/api";
 import ScrollToTop from "../../elements/ScrollToTop";
 import Cookies from "js-cookie";
-import { Spinner } from "../../components/Spinner";
+import { Loading } from "../../components/Loading";
 
 const MissingDetail = () => {
   const { id } = useParams();
@@ -60,9 +60,15 @@ const MissingDetail = () => {
       dispatch(toggleEditDone(false));
     };
   }, [missingComment]);
+
   console.log(missingPostDetail);
+
   if (JSON.stringify(missingPostDetail) === "{}") {
-    return <Spinner />;
+    return (
+      <Layout>
+        <Loading />
+      </Layout>
+    );
   }
 
   const refineData = petworkRefineData(missingPostDetail);

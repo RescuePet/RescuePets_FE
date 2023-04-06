@@ -32,8 +32,8 @@ import FloatingButton from "./components/FloatingButton";
 import { instance } from "../../utils/api";
 import ScrollToTop from "../../elements/ScrollToTop";
 import Cookies from "js-cookie";
-import { Spinner } from "../../components/Spinner";
 import Memo from "../../asset/Memo";
+import { Loading } from "../../components/Loading";
 
 const SightingDetail = () => {
   const { id } = useParams();
@@ -59,7 +59,11 @@ const SightingDetail = () => {
   }, [catchComment]);
 
   if (JSON.stringify(catchPostDetail) === "{}") {
-    return <Spinner />;
+    return (
+      <Layout>
+        <Loading />
+      </Layout>
+    );
   }
 
   const refineData = petworkRefineData(catchPostDetail);
@@ -116,12 +120,10 @@ const SightingDetail = () => {
     scrapHandler: scrapHandler,
   };
 
-
   const MoveData = {
     number: catchPostDetail.id,
     path: "editcatch",
   };
-
 
   return (
     <Layout>
