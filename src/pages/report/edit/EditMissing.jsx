@@ -238,6 +238,7 @@ const EditMissing = () => {
                 <p>품종</p>
                 <ReportInput
                   type="text"
+                  // value={missingPostDetail.kindCd}
                   placeholder={missingPostDetail.kindCd}
                   {...register("animaltypes", {
                     required: true,
@@ -534,19 +535,14 @@ const EditMissing = () => {
                   : missingPostDetail.contact
               }
               inputMode="numeric"
-              onChange={(event) => {
-                const value = event.target.value;
-                event.target.value = Number(
-                  value.replace(/[^0-9]/g, "")
-                ).toLocaleString();
-              }}
               {...register("number", {
                 required: false, // 필수 X
                 pattern: {
-                  value: /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/,
-                  message: "하이픈(-)을 넣어주세요 ",
+                  value: /^[0-9]{2,3}[0-9]{3,4}[0-9]{4}$/,
+                  message: "하이픈 없이 입력해주세요",
                 },
-                maxLength: { value: 16, message: "12글자 이하이어야 합니다." },
+                minLength: { value: 11, message: "11글자 이상이어야 합니다." },
+                maxLength: { value: 12, message: "12글자 미만이어야 합니다." },
               })}
             />
             <img

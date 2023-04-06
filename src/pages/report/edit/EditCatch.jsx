@@ -206,14 +206,11 @@ const EditCatch = () => {
           setTimeout(function () {
             navigate(`/sightingdetail/${missingPostDetail.id}`);
           }, 1000);
-          // navigate(`missingdetail/${missingPostDetail.id}`)
         } else {
           console.log("실패");
           setEditMsg("수정 실패..ㅠ");
         }
       });
-      // toggleModal();
-      // reset();
     }
   };
 
@@ -379,7 +376,11 @@ const EditCatch = () => {
               <p>특징</p>
               <ReportLgInput
                 type="text"
-                placeholder={missingPostDetail.specialMark}
+                placeholder={
+                  missingPostDetail.specialMark == ""
+                    ? "입력하세요"
+                    : missingPostDetail.specialMark
+                }
                 {...register("characteristic", {
                   required: false,
                   pattern: {
@@ -405,7 +406,11 @@ const EditCatch = () => {
               <p>메모</p>
               <ReportLgInput
                 type="text"
-                placeholder={missingPostDetail.content}
+                placeholder={
+                  missingPostDetail.content == ""
+                    ? "입력하세요"
+                    : missingPostDetail.content
+                }
                 {...register("memo", {
                   required: false,
                   pattern: {
