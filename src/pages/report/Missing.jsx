@@ -473,7 +473,7 @@ const Missing = () => {
             {showImages.length === 0 ? (
               <ReportAnimalPicturePreview>
                 <div>
-                  {" "}
+                
                   <img src={imgdelete} />
                 </div>
               </ReportAnimalPicturePreview>
@@ -553,7 +553,7 @@ const Missing = () => {
         </ReportAnimalUserInfo>
         {isActive === true ? (
           <Button type="submit" disable assistiveFillButton>
-            작성 완료
+            작성 하기
           </Button>
         ) : (
           <Button type="submit" fillButton>

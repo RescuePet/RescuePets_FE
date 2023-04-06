@@ -83,7 +83,7 @@ const EditLocation = ({ data }) => {
 
   return (
     <ReportKakaoMapContainer>
-      {isLoading === true ? <Spinner /> : null}
+      {/* {isLoading === true ? <Spinner /> : null} */}
       <ReportKakaoMapBoxTitle>
         <ReportKakaomapTitleInfoBox>
           {data.postType === "MISSING" ? <p>실종위치 </p> : <p>목격위치</p>}

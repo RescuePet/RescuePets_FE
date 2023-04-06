@@ -79,7 +79,7 @@ const Location = () => {
   }, [long]);
   return (
     <ReportKakaoMapContainer>
-      {isLoading === true ? <Spinner /> : null}
+      {/* {isLoading === true ? <Spinner /> : null} */}
       <ReportKakaoMapBoxTitle>
         <ReportKakaomapTitleInfoBox>
           {location.pathname === "/missing" ? (

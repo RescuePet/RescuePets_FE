@@ -40,9 +40,6 @@ const ImageCarousel = ({ images, imageCarouselInfo, data }) => {
         ))}
       </StyledSlider>
       <BackButton onClick={() => navigate(-1)} />
-      <button style={{ background: "#EEE" }} onClick={MoveToEditMyPost}>
-        수정하기
-      </button>
       {imageCarouselInfo.scrapState ? (
         <ScrapStateTrue onClick={imageCarouselInfo.scrapHandler} />
       ) : (
@@ -50,6 +47,7 @@ const ImageCarousel = ({ images, imageCarouselInfo, data }) => {
           <ScrapStateFalse onClick={imageCarouselInfo.scrapHandler} />
         </>
       )}
+      <EditButton onClick={MoveToEditMyPost} />
     </Container>
   );
 };
@@ -135,6 +133,18 @@ const ScrapStateTrue = styled(ClippingFill)`
 const ScrapStateFalse = styled(ClippingEmpty)`
   position: absolute;
   top: 2.5rem;
+  right: 1.6875rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  cursor: pointer;
+  path {
+    fill: ${(props) => props.theme.color.primary_normal};
+  }
+`;
+// 수정
+const EditButton = styled(ClippingEmpty)`
+  position: absolute;
+  top: 5rem;
   right: 1.6875rem;
   width: 1.5rem;
   height: 1.5rem;
