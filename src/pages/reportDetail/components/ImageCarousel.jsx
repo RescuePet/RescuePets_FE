@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import ClippingEmpty from "../../../asset/Clippingwhite.jsx";
 import ClippingFill from "../../../asset/profile/ClippingFill";
 import Backwhite from "../../../asset/Backwhite";
+import { ButtonBackgroundStyle } from "../../../style/Mixin.jsx";
 
 const ImageCarousel = ({ images, imageCarouselInfo, data }) => {
   const navigate = useNavigate();
@@ -114,6 +115,7 @@ const BackButton = styled(Backwhite)`
   width: 1.5rem;
   height: 1.5rem;
   cursor: pointer;
+  ${ButtonBackgroundStyle}
   path {
     fill: ${(props) => props.theme.color.primary_normal};
   }
@@ -126,6 +128,7 @@ const ScrapStateTrue = styled(ClippingFill)`
   width: 1.5rem;
   height: 1.5rem;
   cursor: pointer;
+  ${ButtonBackgroundStyle}
   path {
     fill: ${(props) => props.theme.color.primary_normal};
   }
@@ -138,6 +141,7 @@ const ScrapStateFalse = styled(ClippingEmpty)`
   width: 1.5rem;
   height: 1.5rem;
   cursor: pointer;
+  ${ButtonBackgroundStyle}
   path {
     fill: ${(props) => props.theme.color.primary_normal};
   }

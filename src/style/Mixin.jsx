@@ -105,3 +105,8 @@ export const FloatingButtonStyle = css`
   right: 0px;
   margin-right: calc(50% - 10.75rem);
 `;
+
+export const ButtonBackgroundStyle = css`
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+`;
