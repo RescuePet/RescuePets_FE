@@ -18,13 +18,15 @@ import { useDispatch, useSelector } from "react-redux";
 import Option from "../../components/Option";
 import Meatballs from "../../asset/Meatballs";
 import { toggleOption } from "../../redux/modules/menubarSlice";
+import ReportModal from "../../components/ReportModal";
+import { toggleReport } from "../../redux/modules/menubarSlice";
 
 const ChatRoom = () => {
   const { id, nickname } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { optionState } = useSelector((state) => state.menubar);
+  const { optionState, reportState } = useSelector((state) => state.menubar);
 
   const [chatlog, setChatLog] = useState([]);
   const sender = JSON.parse(Cookies.get("UserInfo"));
@@ -105,10 +107,20 @@ const ChatRoom = () => {
     }
   };
 
+  const OpenReportHandler = () => {
+    dispatch(toggleReport());
+    dispatch(toggleOption());
+  };
+
   const ChatRoomMeatData = [
     { option: "채팅방 나가기", color: "normal", handler: leaveChatHandler },
-    { option: "신고하기", color: "report" },
+    { option: "신고하기", color: "report", handler: OpenReportHandler },
   ];
+
+  const reportModalData = {
+    type: "member",
+    nickname: nickname,
+  };
 
   return (
     <Layout>
@@ -141,6 +153,7 @@ const ChatRoom = () => {
         submitHandler={submitHandler}
       ></InputContainer>
       {optionState && <Option setting={ChatRoomMeatData} />}
+      {reportState && <ReportModal setting={reportModalData} />}
     </Layout>
   );
 };

@@ -39,7 +39,7 @@ const AdoptionDetail = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // dispatch(__getAdoptionDetail(id));
+    dispatch(__getAdoptionDetail(id));
     return () => {
       dispatch(resetAdoptionDetail());
     };
@@ -53,7 +53,7 @@ const AdoptionDetail = () => {
   if (JSON.stringify(adoptionDetail) === "{}") {
     return (
       <Layout>
-        <ReportModal />
+        <Loading />
       </Layout>
     );
   }

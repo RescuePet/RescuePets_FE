@@ -25,17 +25,15 @@ const BtnStyle = styled.button`
     (props.emptyButton || props.propName === "emptyButton") &&
     css`
       ${(props) => props.theme.Body_700_14}
-      color: ${(props) => props.theme.color.black};
+      color: ${(props) =>
+        props.normal ? props.theme.color.text_normal : props.theme.color.black};
       border: 1px solid ${(props) => props.theme.color.primary_normal};
     `}
     ${(props) =>
     (props.fillButton || props.propName === "fillButton") &&
     css`
       ${(props) => props.theme.Body_700_14}
-      color: ${(props) =>
-        props.report
-          ? props.theme.color.status_caution
-          : props.theme.color.white};
+      color: ${(props) => props.theme.color.white};
       background: ${(props) => props.theme.color.primary_normal};
     `}
     ${(props) =>
