@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import Layout from "../../../layouts/Layout";
 import Button from "../../../elements/Button";
 import { CheckModal } from "../../../elements/Modal";

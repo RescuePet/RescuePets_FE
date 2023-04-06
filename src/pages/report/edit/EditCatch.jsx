@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import Layout from "../../../layouts/Layout";
 import Button from "../../../elements/Button";
+import { CheckModal } from "../../../elements/Modal";
 import Header from "../components/Header";
 import SeleteTab from "../components/SeleteTab";
 import EditLocation from "./EditLocation";
@@ -10,6 +10,7 @@ import { NameValue, TimeValue } from "./../components/data";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
+import { useModalState } from "../../../hooks/useModalState";
 import { __getMissingPostDetail } from "../../../redux/modules/petworkSlice";
 import cancel from "../../../asset/delete.svg";
 import imgdelete from "../../../asset/imgDelete.svg";
@@ -42,6 +43,7 @@ const EditCatch = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loginModal, toggleModal] = useModalState(false);
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
 
@@ -159,6 +161,9 @@ const EditCatch = () => {
     }
   }, [watch()]);
 
+  // 통신결과에따라 보여줄 로딩창
+  const [editMsg, setEditMsg] = useState("");
+
   const onSubmitEditCatchHandler = (data) => {
     console.log(currentGenderEnValue);
     console.log(currentNeuteredEnValue);
@@ -186,11 +191,27 @@ const EditCatch = () => {
       imageFormData.map((img) => {
         formData.append("postImages", img);
       });
-      for (let value of formData.values()) {
-        console.log(value);
-      }
+      // for (let value of formData.values()) {
+      //   console.log(value);
+      // }
+
+      toggleModal();
       const number = missingPostDetail.id;
-      dispatch(__PutCatchposts({ formData, number }));
+      dispatch(__PutCatchposts({ formData, number })).then((response) => {
+        console.log(response);
+        if (response.type === "putcatchposts/fulfilled") {
+          console.log("성공");
+          // 바로 이동시키기
+          setEditMsg("수정 성공!");
+          setTimeout(function () {
+            navigate(`/sightingdetail/${missingPostDetail.id}`);
+          }, 1000);
+          // navigate(`missingdetail/${missingPostDetail.id}`)
+        } else {
+          console.log("실패");
+          setEditMsg("수정 실패..ㅠ");
+        }
+      });
       // toggleModal();
       // reset();
     }
@@ -458,6 +479,16 @@ const EditCatch = () => {
           <Button type="submit" fillButton>
             작성 완료
           </Button>
+        )}
+
+        {editMsg == "" ? null : (
+          <CheckModal
+            isOpen={loginModal}
+            toggle={toggleModal}
+            onClose={toggleModal}
+          >
+            {editMsg}
+          </CheckModal>
         )}
       </ReportMissingContainer>
     </Layout>
