@@ -61,8 +61,6 @@ const MissingDetail = () => {
     };
   }, [missingComment]);
 
-  console.log(missingPostDetail);
-
   if (JSON.stringify(missingPostDetail) === "{}") {
     return (
       <Layout>

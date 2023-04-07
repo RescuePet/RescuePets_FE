@@ -153,7 +153,6 @@ const Signin = () => {
             isOpen={loginModal}
             toggle={toggleModal}
             onClose={toggleModal}
-            setIsOpen={setIsOpen}
           >
             {SignInMsg}
           </CheckModal>

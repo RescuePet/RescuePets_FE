@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import Layout from "../../../layouts/Layout";
 import Button from "../../../elements/Button";
+import { CheckModal } from "../../../elements/Modal";
 import Header from "../components/Header";
 import SeleteTab from "../components/SeleteTab";
 import EditLocation from "./EditLocation";
@@ -10,6 +10,7 @@ import { NameValue, TimeValue } from "./../components/data";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
+import { useModalState } from "../../../hooks/useModalState";
 import { __getMissingPostDetail } from "../../../redux/modules/petworkSlice";
 import cancel from "../../../asset/delete.svg";
 import imgdelete from "../../../asset/imgDelete.svg";
@@ -44,6 +45,7 @@ const EditMissing = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loginModal, toggleModal] = useModalState(false);
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
 
@@ -98,6 +100,12 @@ const EditMissing = () => {
   const handleDateChange = (e) => {
     setSelectedDate(e.target.value);
   };
+
+  const tabValue = {
+    GenderNum: missingPostDetail.sexCd,
+    neuterYn: missingPostDetail.neuterYn,
+  };
+
   const onChangeTimeValeu = () => {};
 
   // 주소
@@ -161,46 +169,109 @@ const EditMissing = () => {
     }
   }, [watch()]);
 
-  const onSubmitEditMissingHandler = (data) => {
-    if (addressDiv?.innerHTML === "") {
-      alert("지도에 위치를 표기해주세요");
-    } else {
-      const formData = new FormData();
-      formData.append("postType", "MISSING");
-      formData.append("upkind", typeID);
-      formData.append("sexCd", currentGenderEnValue);
-      formData.append("neuterYn", currentNeuteredEnValue);
-      formData.append("petName", data.animalName);
-      formData.append("kindCd", data.animaltypes);
-      formData.append("age", data.animalAge);
-      formData.append("weight", data.animalkg);
-      formData.append("colorCd", data.animalcolor);
-      formData.append("happenPlace", addressDiv.innerHTML);
-      formData.append("happenLatitude", addressLatDiv.innerHTML);
-      formData.append("happenLongitude", addressLngDiv.innerHTML);
-      formData.append("happenDt", selectedDate);
-      formData.append("happenHour", time);
-      formData.append("specialMark", data.characteristic);
-      formData.append("content", data.memo);
-      formData.append("gratuity", data.money);
-      formData.append("contact", data.number);
-      imageFormData.map((img) => {
-        formData.append("postImages", img);
-      });
-      for (let value of formData.values()) {
-        console.log(value);
-      }
+  // 통신결과에따라 보여줄 로딩창
+  const [editMsg, setEditMsg] = useState("");
 
-      const number = missingPostDetail.id;
-      dispatch(__PutMissingposts({ formData, number }));
-      // dispatch(addImage(imageFormData[0]));
-      // dispatch(__PostMissingData(formData)).then((response) => {
-      //   navigate(`/poster/${response.payload}`);
-      // });
-      // reset();
+  const onSubmitEditMissingHandler = (data) => {
+    const formData = new FormData();
+    formData.append("postType", "MISSING");
+    formData.append("upkind", typeID);
+    formData.append("sexCd", currentGenderEnValue);
+    formData.append("neuterYn", currentNeuteredEnValue);
+    {
+      data.animalName == ""
+        ? formData.append("petName", missingPostDetail.petName)
+        : formData.append("petName", data.animalName);
     }
+    {
+      data.animaltypes == ""
+        ? formData.append("kindCd", missingPostDetail.kindCd)
+        : formData.append("kindCd", data.animaltypes);
+    }
+    {
+      data.animalAge == ""
+        ? formData.append("age", missingPostDetail.age)
+        : formData.append("age", data.animalAge);
+    }
+    {
+      data.animalkg == ""
+        ? formData.append("weight", missingPostDetail.weight)
+        : formData.append("weight", data.animalkg);
+    }
+    {
+      data.animalcolor == ""
+        ? formData.append("colorCd", missingPostDetail.colorCd)
+        : formData.append("colorCd", data.animalcolor);
+    }
+    {
+      addressDiv.innerHTML == ""
+        ? formData.append("happenPlace", missingPostDetail.happenPlace)
+        : formData.append("happenPlace", addressDiv.innerHTML);
+    }
+    {
+      addressLatDiv.innerHTML == ""
+        ? formData.append("happenLatitude", missingPostDetail.happenLatitude)
+        : formData.append("happenLatitude", addressLatDiv.innerHTML);
+    }
+    {
+      addressLngDiv.innerHTML == ""
+        ? formData.append("happenLongitude", missingPostDetail.happenLongitude)
+        : formData.append("happenLongitude", addressLngDiv.innerHTML);
+    }
+    {
+      selectedDate == ""
+        ? formData.append("happenDt", missingPostDetail.happenDt)
+        : formData.append("happenDt", selectedDate);
+    }
+    formData.append("happenHour", time);
+    {
+      data.characteristic == ""
+        ? formData.append("specialMark", missingPostDetail.characteristic)
+        : formData.append("specialMark", data.characteristic);
+    }
+    {
+      data.memo == ""
+        ? formData.append("content", missingPostDetail.memo)
+        : formData.append("content", data.memo);
+    }
+    {
+      data.money == ""
+        ? formData.append("gratuity", missingPostDetail.money)
+        : formData.append("gratuity", data.money);
+    }
+    {
+      data.number == ""
+        ? formData.append("contact", missingPostDetail.number)
+        : formData.append("contact", data.number);
+    }
+
+    imageFormData.map((img) => {
+      formData.append("postImages", img);
+    });
+
+    for (let value of formData.values()) {
+      console.log(value);
+    }
+
+    toggleModal();
+    const number = missingPostDetail.id;
+    dispatch(__PutMissingposts({ formData, number })).then((response) => {
+      if (response.type === "putmissingposts/fulfilled") {
+        console.log("성공");
+        // 바로 이동시키기
+        setEditMsg("수정 성공!");
+        setTimeout(function () {
+          navigate(`/missingdetail/${missingPostDetail.id}`);
+        }, 1000);
+      } else {
+        console.log("실패");
+        setEditMsg("수정 실패..ㅠ");
+      }
+    });
   };
 
+  const SelecteKind = missingPostDetail.upkind;
+  const selecteHour = missingPostDetail.happenHour;
   return (
     <Layout>
       <ReportMissingContainer
@@ -219,18 +290,24 @@ const EditMissing = () => {
                   data={NameValue}
                   onChangeData={onChangeData}
                   onChangeID={onChangeID}
+                  selectedValue={SelecteKind}
                 />
               </div>
               <div>
                 <p>품종</p>
                 <ReportInput
                   type="text"
+                  // value={missingPostDetail.kindCd}
                   placeholder={missingPostDetail.kindCd}
                   {...register("animaltypes", {
-                    required: true,
+                    // required: true,
                     pattern: {
-                      value: /^[ㄱ-ㅎ|가-힣]+$/,
-                      message: "한글만 2 ~ 8글자 사이로 입력",
+                      value: /^[가-힣\s]+$/,
+                      message: "한글만 2 ~ 15글자 사이로 입력",
+                    },
+                    maxLength: {
+                      value: 15,
+                      message: "15글자 이하이어야 합니다.",
                     },
                   })}
                 />
@@ -248,6 +325,7 @@ const EditMissing = () => {
           <SeleteTab
             onChangeGender={onChangeGender}
             onChangeNeutered={onChangeNeutered}
+            tabValue={tabValue}
           />
 
           <ReportAnimalInfoBox>
@@ -258,7 +336,7 @@ const EditMissing = () => {
                   type="text"
                   placeholder={missingPostDetail.petName}
                   {...register("animalName", {
-                    required: true,
+                    // required: true,
                     pattern: {
                       value: /^[가-힣\s]+$/,
                       message: "한글만 2 ~ 8글자 사이로 입력 ",
@@ -283,7 +361,7 @@ const EditMissing = () => {
                   type="text"
                   placeholder={missingPostDetail.age}
                   {...register("animalAge", {
-                    required: true,
+                    // required: true,
                     pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
                     maxLength: {
                       value: 3,
@@ -307,7 +385,7 @@ const EditMissing = () => {
                   type="text"
                   placeholder={missingPostDetail.weight}
                   {...register("animalkg", {
-                    required: true,
+                    // required: true,
                     pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
                     maxLength: {
                       value: 4,
@@ -329,7 +407,7 @@ const EditMissing = () => {
                   type="text"
                   placeholder={missingPostDetail.colorCd}
                   {...register("animalcolor", {
-                    required: true,
+                    // required: true,
                     pattern: {
                       value: /^[가-힣\s]+$/,
                       message: "한글만 2 ~ 8글자 사이로 입력 ",
@@ -373,6 +451,7 @@ const EditMissing = () => {
                 data={TimeValue}
                 onChangeData={onChangeTimeData}
                 onChangeID={onChangeTimeValeu}
+                selectedValue={selecteHour}
               />
             </div>
           </div>
@@ -448,11 +527,18 @@ const EditMissing = () => {
               multiple
               ref={(refer) => (imageRef = refer)}
               onChange={onChangeUploadHandler}
-              required
             />
             <ReportAnimalPictureInput onClick={() => imageRef.click()}>
               <h3>+</h3>
             </ReportAnimalPictureInput>
+            {/* 기존이미지 넣기  */}
+            {/* {missingPostDetail.postImages !== "" ? (
+              <img
+                src={missingPostDetail.postImages[0].imageURL}
+                style={{ width: "2rem", height: "2rem" }}
+              />
+            ) : null} */}
+
             {showImages.length === 0 ? (
               <ReportAnimalPicturePreview>
                 <div>
@@ -517,19 +603,14 @@ const EditMissing = () => {
                   : missingPostDetail.contact
               }
               inputMode="numeric"
-              onChange={(event) => {
-                const value = event.target.value;
-                event.target.value = Number(
-                  value.replace(/[^0-9]/g, "")
-                ).toLocaleString();
-              }}
               {...register("number", {
                 required: false, // 필수 X
                 pattern: {
-                  value: /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/,
-                  message: "하이픈(-)을 넣어주세요 ",
+                  value: /^[0-9]{2,3}[0-9]{3,4}[0-9]{4}$/,
+                  message: "하이픈 없이 입력해주세요",
                 },
-                maxLength: { value: 16, message: "12글자 이하이어야 합니다." },
+                minLength: { value: 11, message: "11글자 이상이어야 합니다." },
+                maxLength: { value: 12, message: "12글자 미만이어야 합니다." },
               })}
             />
             <img
@@ -550,11 +631,18 @@ const EditMissing = () => {
             작성 완료
           </Button>
         )}
+        {editMsg == "" ? null : (
+          <CheckModal
+            isOpen={loginModal}
+            toggle={toggleModal}
+            onClose={toggleModal}
+          >
+            {editMsg}
+          </CheckModal>
+        )}
       </ReportMissingContainer>
     </Layout>
   );
 };
 
 export default EditMissing;
-
-const HeaderSIZe = styled.div``;

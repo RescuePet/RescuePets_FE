@@ -1,9 +1,78 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Border_1_color } from "../style/Mixin";
 
-export const CustomSelect = ({ data, onChangeData, onChangeID }) => {
+export const CustomSelect = ({
+  data,
+  onChangeData,
+  onChangeID,
+  selectedValue,
+}) => {
+  console.log(selectedValue);
   const [currentValue, setCurrentValue] = useState(data[0].name);
+
+  useEffect(() => {
+    if (selectedValue == "DOG") {
+      setCurrentValue(data[0].name);
+    } else if (selectedValue == "CAT") {
+      setCurrentValue(data[1].name);
+    } else if (selectedValue == "ETC") {
+      setCurrentValue(data[2].name);
+    }
+    if (selectedValue === "12:00") {
+      setCurrentValue(data[0].name);
+    } else if (selectedValue === "13:00") {
+      setCurrentValue(data[1].name);
+    } else if (selectedValue === "14:00") {
+      setCurrentValue(data[2].name);
+    } else if (selectedValue === "15:00") {
+      setCurrentValue(data[3].name);
+    } else if (selectedValue === "16:00") {
+      setCurrentValue(data[4].name);
+    } else if (selectedValue === "17:00") {
+      setCurrentValue(data[5].name);
+    } else if (selectedValue === "18:00") {
+      setCurrentValue(data[6].name);
+    } else if (selectedValue === "19:00") {
+      setCurrentValue(data[7].name);
+    } else if (selectedValue === "20:00") {
+      setCurrentValue(data[8].name);
+    } else if (selectedValue === "21:00") {
+      setCurrentValue(data[9].name);
+    } else if (selectedValue === "22:00") {
+      setCurrentValue(data[10].name);
+    } else if (selectedValue === "23:00") {
+      setCurrentValue(data[11].name);
+    } else if (selectedValue === "24:00") {
+      setCurrentValue(data[12].name);
+    } else if (selectedValue === "01:00") {
+      setCurrentValue(data[13].name);
+    } else if (selectedValue === "02:00") {
+      setCurrentValue(data[14].name);
+    } else if (selectedValue === "03:00") {
+      setCurrentValue(data[15].name);
+    } else if (selectedValue === "04:00") {
+      setCurrentValue(data[16].name);
+    } else if (selectedValue === "05:00") {
+      setCurrentValue(data[17].name);
+    } else if (selectedValue === "06:00") {
+      setCurrentValue(data[18].name);
+    } else if (selectedValue === "07:00") {
+      setCurrentValue(data[19].name);
+    } else if (selectedValue === "08:00") {
+      setCurrentValue(data[20].name);
+    } else if (selectedValue === "09:00") {
+      setCurrentValue(data[21].name);
+    } else if (selectedValue === "10:00") {
+      setCurrentValue(data[22].name);
+    } else if (selectedValue === "11:00") {
+      setCurrentValue(data[23].name);
+    }
+
+    // for(let i=0; i<data.length; i++ ){
+
+    // }
+  }, []);
   // console.log(currentValue) //이 값을 상위컴포넌트로 보내야 한다
   const [showOptions, setShowOptions] = useState(false);
 
