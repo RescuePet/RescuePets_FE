@@ -59,7 +59,6 @@ const Catch = () => {
     setPostNumber(data);
   }, [catchNumber]);
 
-
   // 커스텀 셀렉트 파트부분
   const [type, setType] = useState(NameValue[0].name);
   const [typeID, setTypeID] = useState("DOG");

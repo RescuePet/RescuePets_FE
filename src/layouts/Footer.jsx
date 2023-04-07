@@ -35,8 +35,6 @@ const Footer = () => {
     }
   };
 
-  // console.log(location.pathname.split("/"));
-
   return (
     <FooterContiner>
       <FooterEachIconContiner
@@ -113,7 +111,8 @@ export default Footer;
 const FooterContiner = styled.div`
   ${FlexAttribute("row", "space-around", "center")}
   width: 26.875rem;
-  height: 4.625rem;
+  height: 10vh;
+  /* height: 4.625rem; */
   border-top: 0.0625rem solid ${(props) => props.theme.color.text_disable};
   position: fixed;
   bottom: 0;
@@ -121,6 +120,7 @@ const FooterContiner = styled.div`
   z-index: 100;
   @media screen and (max-width: 26.9375rem) {
     width: 100%;
+    height: 4.725rem;
     position: fixed;
     bottom: 0;
   }
@@ -137,8 +137,8 @@ const Navigation = styled.div`
 `;
 
 const FooterMenuList = styled.div`
-  width: 155px;
-  height: 44px;
+  width: 9.6875rem;
+  height: 2.75rem;
   z-index: 1000;
   margin-top: 0.625rem;
   border-radius: 0.25rem;
