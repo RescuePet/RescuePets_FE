@@ -51,6 +51,7 @@ const ActiveButton = styled.button`
   ${Button_700_16}
   background-color: transparent;
   color: ${(props) => props.theme.color.black};
+  border-radius: 4px 4px 0 0;
   ${(props) =>
     props.active
       ? css`
@@ -60,6 +61,15 @@ const ActiveButton = styled.button`
       : css`
           border-bottom: 0.125rem solid transparent;
         `}
+  :hover {
+    background-color: ${(props) => props.theme.color.line_alternative};
+    transition: 0.3s;
+    border-bottom: 0.125rem solid
+      ${(props) => props.theme.color.primary_altemative};
+  }
+  :active {
+    border-bottom: 0.125rem solid ${(props) => props.theme.color.primary_heavy};
+  }
 `;
 
 export default Category;

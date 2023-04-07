@@ -19,9 +19,11 @@ import { saveAs } from "file-saver";
 import location from "../../asset/location.svg";
 import time from "../../asset/time.svg";
 import informationIcon from "../../asset/information.svg";
-import memo from "../../asset/memo.svg";
+import Memo from "../../asset/Memo";
 import gratuity from "../../asset/gratuity.svg";
 import petworkRefineData from "../../utils/petworkRefine";
+import { Spinner } from "../../components/Spinner";
+import { instance } from "../../utils/api";
 
 const Poster = () => {
   const containerRef = useRef(null);
@@ -31,6 +33,7 @@ const Poster = () => {
   console.log("params id", id);
 
   const [imageURLState, setImageURLState] = useState("");
+  const [poster, setPoster] = useState();
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
   const { imageURL } = useSelector((state) => state.MissingData);
@@ -47,12 +50,53 @@ const Poster = () => {
     info: refineData.information.join("/"),
   };
 
+  // html2canvas를 사용
+  const makeImageHandler = async () => {
+    try {
+      const canvas = await html2canvas(containerRef.current);
+      canvas.toBlob((blob) => {
+        console.log("blob", blob);
+        submitImage(blob);
+        setPoster(blob);
+        console.log("makeImageHandler");
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // 서버에 이미지 전송
+  const submitImage = async (image) => {
+    try {
+      const formData = new FormData();
+      formData.append("postPoster", image, "image.jpg");
+      for (let key of formData.keys()) {
+        console.log(key, ":", formData.get(key));
+      }
+      const response = await instance.post(
+        `/api/post/posters/${id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("poster response", response);
+      console.log("submitImage");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    dispatch(__getMissingPostDetail(id));
+    dispatch(__getMissingPostDetail(id)).then(() => {
+      makeImageHandler();
+    });
   }, [id]);
 
   if (JSON.stringify(missingPostDetail) === "{}") {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   // imageurl : missingPostDetail.
@@ -86,17 +130,10 @@ const Poster = () => {
   };
   ImageHandler();
 
-  // html2canvas를 사용
-  const makeImageHandler = async () => {
-    try {
-      const canvas = await html2canvas(containerRef.current);
-      canvas.toBlob((blob) => {
-        console.log(blob);
-        saveAs(blob, "image.png");
-      });
-    } catch (error) {
-      console.log(error);
-    }
+  // Save Poster
+  const savePoster = () => {
+    console.log("poster image", poster);
+    saveAs(poster, "poster.png");
   };
 
   return (
@@ -157,7 +194,7 @@ const Poster = () => {
           {missingPostDetail.content && (
             <InfoWrapper>
               <BodyTitleWrapper>
-                <BodyTitleSvg src={memo} />
+                <Memo />
                 <BodyTitleText>메모</BodyTitleText>
               </BodyTitleWrapper>
               <ContentTextWrapper>
@@ -185,7 +222,7 @@ const Poster = () => {
         </PhoneNumberContainer>
       </PosterLayout>
       <ButtonWrapper>
-        <Button fillButton onClick={makeImageHandler}>
+        <Button fillButton onClick={savePoster}>
           포스터 저장하기
         </Button>
         <Button
@@ -241,11 +278,13 @@ const TitleWrapper = styled.div`
 `;
 
 const QRCodeWrapper = styled.div`
-  padding: 1.25rem;
-  border-radius: 0.625rem;
+  padding: 0.625rem;
+  margin: 0.625rem;
+  border-radius: 0.25rem;
   position: absolute;
   right: 0;
   bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
 `;
 
 const LocationWrapper = styled.div`
@@ -274,6 +313,7 @@ const BodyTitleText = styled.span`
   font-size: 0.875rem;
   line-height: 1.5rem;
   color: #999999;
+  white-space: nowrap;
 `;
 
 const ContentTextWrapper = styled.div`

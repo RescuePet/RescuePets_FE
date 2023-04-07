@@ -76,6 +76,18 @@ const ListCard = styled.div`
   border-radius: 0.25rem;
   overflow: hidden;
   cursor: pointer;
+  :hover {
+    border: 0.0625rem solid ${(props) => props.theme.color.primary_normal};
+    box-shadow: 0px 1px ${(props) => props.theme.color.primary_normal};
+    transform: translate(0px, -1px);
+    transition: 0.3s;
+  }
+  :active {
+    border: 0.0625rem solid ${(props) => props.theme.color.primary_heavy};
+    transform: translate(0px, 1px);
+    box-shadow: none;
+    transition: 0.3s;
+  }
 `;
 
 const CardImgWrapper = styled.div`
@@ -123,6 +135,9 @@ const ScrapStateFalse = styled(ClippingEmpty)`
 
 const CardInfoContainer = styled.div`
   padding: 0.625rem 1.0625rem 1rem 1.0625rem;
+  :active {
+    background-color: ${(props) => props.theme.color.line_alternative};
+  }
 `;
 
 const CardTitleWrapper = styled.div`

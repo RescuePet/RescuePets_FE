@@ -38,7 +38,7 @@ const SendMessage = styled.div`
     content: "";
     position: absolute;
     right: 0;
-    top: 35%;
+    top: 12px;
     width: 0;
     height: 0;
     border: 8px solid transparent;

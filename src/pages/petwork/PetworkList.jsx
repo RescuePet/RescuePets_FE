@@ -13,7 +13,7 @@ import {
   __getMissingPost,
 } from "../../redux/modules/petworkSlice";
 import { useInView } from "react-intersection-observer";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import petworkHeader from "../../asset/header/petworkheader.png";
 import refresh from "../../asset/refresh.svg";
 import FloatingButton from "./components/FloatingButton";
@@ -55,7 +55,6 @@ const PetworkList = () => {
       <Category></Category>
       <ListTitleWrapper>
         <ListTitle>{petwork.category}</ListTitle>
-        <RefreshButton src={refresh}></RefreshButton>
       </ListTitleWrapper>
       <ListCardContainer>
         {petwork.category === "우리집 반려동물을 찾아주세요"

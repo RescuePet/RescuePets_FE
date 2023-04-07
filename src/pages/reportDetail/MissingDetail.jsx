@@ -27,7 +27,7 @@ import petworkRefineData from "../../utils/petworkRefine";
 import location from "../../asset/location.svg";
 import time from "../../asset/time.svg";
 import informationIcon from "../../asset/information.svg";
-import memo from "../../asset/memo.svg";
+import Memo from "../../asset/Memo";
 import gratuity from "../../asset/gratuity.svg";
 import PostInformation from "./components/PostInformation";
 import FloatingButton from "./components/FloatingButton";
@@ -35,6 +35,7 @@ import { instance } from "../../utils/api";
 import ScrollToTop from "../../elements/ScrollToTop";
 import Cookies from "js-cookie";
 import { Spinner } from "../../components/Spinner";
+import Button from "../../elements/Button";
 
 const MissingDetail = () => {
   const { id } = useParams();
@@ -44,6 +45,8 @@ const MissingDetail = () => {
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
   const { missingComment, editDone } = useSelector((state) => state?.comment);
+
+  console.log(missingPostDetail);
 
   useEffect(() => {
     dispatch(__getMissingPostDetail(id));
@@ -172,7 +175,7 @@ const MissingDetail = () => {
         {missingPostDetail.content && (
           <InfoWrapper>
             <BodyTitleWrapper>
-              <BodyTitleSvg src={memo} />
+              <Memo />
               <BodyTitleText>메모</BodyTitleText>
             </BodyTitleWrapper>
             <ContentTextWrapper>
@@ -191,6 +194,9 @@ const MissingDetail = () => {
             </ContentTextWrapper>
           </InfoWrapper>
         )}
+        <PosterButtonWrapper>
+          <Button fillButton>포스터 저장하기</Button>
+        </PosterButtonWrapper>
       </InfoContainer>
       <PostInformation postInfo={postInfo}></PostInformation>
       <CommentContainer>
@@ -233,6 +239,11 @@ const InfoWrapper = styled.div`
   ${FlexAttribute("row", "space-evenly")}
 `;
 
+const PosterButtonWrapper = styled.div`
+  ${FlexAttribute("row", "center")}
+  margin: 4px 0;
+`;
+
 const BodyTitleWrapper = styled.div`
   ${FlexAttribute("row", "center")}
   width: 5rem;
@@ -251,6 +262,7 @@ const BodyTitleText = styled.span`
   font-size: 0.875rem;
   line-height: 1.5rem;
   color: #999999;
+  white-space: nowrap;
 `;
 
 const ContentTextWrapper = styled.div`

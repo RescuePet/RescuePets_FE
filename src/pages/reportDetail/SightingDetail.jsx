@@ -27,13 +27,13 @@ import petworkRefineData from "../../utils/petworkRefine";
 import location from "../../asset/location.svg";
 import time from "../../asset/time.svg";
 import informationIcon from "../../asset/information.svg";
-import memo from "../../asset/memo.svg";
 import PostInformation from "./components/PostInformation";
 import FloatingButton from "./components/FloatingButton";
 import { instance } from "../../utils/api";
 import ScrollToTop from "../../elements/ScrollToTop";
 import Cookies from "js-cookie";
 import { Spinner } from "../../components/Spinner";
+import Memo from "../../asset/Memo";
 
 const SightingDetail = () => {
   const { id } = useParams();
@@ -174,7 +174,7 @@ const SightingDetail = () => {
         </InfoWrapper>
         <InfoWrapper>
           <BotyTitleWrapper>
-            <BodyTitleSvg src={memo} />
+            <Memo />
             <BodyTitleText>메모</BodyTitleText>
           </BotyTitleWrapper>
           <ContentTextWrapper>
@@ -246,6 +246,7 @@ const BodyTitleText = styled.span`
   font-size: 0.875rem;
   line-height: 1.5rem;
   color: #999999;
+  white-space: nowrap;
 `;
 
 const ContentTextWrapper = styled.div`
