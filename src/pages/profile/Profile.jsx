@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import { FlexAttribute, HeaderStyle } from "../../style/Mixin";
@@ -10,7 +10,7 @@ import profileHeader from "./../../asset/header/profileheader.png";
 import Setting from "../../asset/profile/Setting";
 import Cookies from "js-cookie";
 import { useModalState } from "../../hooks/useModalState";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { __SignoutUser } from "../../redux/modules/signSlice";
 import { CheckModal } from "../../elements/Modal";
 
@@ -23,39 +23,26 @@ const Profile = () => {
     navigate("/editinfo");
   };
 
-  // // useEffect(() => {
-  // //   if (menubar === true) {
-  // //     toggleModal()
-  // //   }
-  // // }, [menubar])
-  // // console.log(menubar)
-
   const [Msg, setMsg] = useState("");
 
   const onClickLogoutHandler = () => {
-    dispatch(__SignoutUser());
     toggleModal();
+    dispatch(__SignoutUser()).then((response) => {
+      if (response.payload === "LOGOUT_SUCCESS") {
+        setMsg("✅ 로그아웃 성공");
+        setTimeout(() => {
+          Cookies.remove("Token");
+          Cookies.remove("Refresh");
+          Cookies.remove("UserInfo");
+          console.log("로그아웃성공");
+          setMsg("");
+          navigate("/signin");
+        }, 1000);
+      } else {
+        setMsg("로그아웃 실패!");
+      }
+    });
   };
-
-  const SignoutMsg = useSelector((state) => {
-    return state.users?.Signoutmessage;
-  });
-
-  useEffect(() => {
-    if (SignoutMsg === "LOGOUT_SUCCESS") {
-      setMsg("✅ 로그아웃 성공");
-      setTimeout(() => {
-        Cookies.remove("Token");
-        Cookies.remove("Refresh");
-        Cookies.remove("UserInfo");
-        console.log("로그아웃성공");
-        setMsg("");
-        navigate("/signin");
-      }, 1000);
-    } else {
-      setMsg("서버오류");
-    }
-  }, [SignoutMsg]);
 
   // 로그
   return (

@@ -85,6 +85,7 @@ const EditCatch = () => {
   // 탭 로직
   const [currentGenderEnValue, setCurrentGenderEnValue] = useState("MALE");
   const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState("YES");
+  const [currentNinkNameEnValue, setCurrentNinkNameEnValue] = useState("true");
 
   const onChangeGender = (newData) => {
     setCurrentGenderEnValue(newData);
@@ -92,10 +93,14 @@ const EditCatch = () => {
   const onChangeNeutered = (newData) => {
     setCurrentNeuteredEnValue(newData);
   };
+  const onChangeNickname = (newData) => {
+    setCurrentNinkNameEnValue(newData);
+  };
 
   const tabValue = {
     GenderNum: missingPostDetail.sexCd,
     neuterYn: missingPostDetail.neuterYn,
+    ninkCheck: missingPostDetail.openNickname,
   };
 
   const [selectedDate, setSelectedDate] = useState("");
@@ -223,21 +228,23 @@ const EditCatch = () => {
     formData.append("happenHour", time);
     {
       data.characteristic == ""
-        ? formData.append("specialMark", missingPostDetail.characteristic)
+        ? formData.append("specialMark", missingPostDetail.specialMark)
         : formData.append("specialMark", data.characteristic);
     }
     {
       data.memo == ""
-        ? formData.append("content", missingPostDetail.memo)
+        ? formData.append("content", missingPostDetail.content)
         : formData.append("content", data.memo);
     }
+    formData.append("openNickname", currentNinkNameEnValue);
+
     imageFormData.map((img) => {
       formData.append("postImages", img);
     });
 
-    for (let value of formData.values()) {
-      console.log(value);
-    }
+    // for (let value of formData.values()) {
+    //   console.log(value);
+    // }
 
     toggleModal();
     const number = missingPostDetail.id;
@@ -255,17 +262,13 @@ const EditCatch = () => {
         setEditMsg("수정 실패..ㅠ");
       }
     });
-  };          
+  };
 
   const SelecteKind = missingPostDetail.upkind;
   const selecteHour = missingPostDetail.happenHour;
-  
-    
   return (
     <Layout>
-      <ReportMissingContainer
-        onSubmit={handleSubmit(onSubmitEditCatchHandler)}
-      >
+      <ReportMissingContainer onSubmit={handleSubmit(onSubmitEditCatchHandler)}>
         {/* 컴포넌트  */}
         <Header>내 목격 글 수정 </Header>
 
@@ -288,7 +291,6 @@ const EditCatch = () => {
                   type="text"
                   placeholder={missingPostDetail.kindCd}
                   {...register("animaltypes", {
-                    required: true,
                     pattern: {
                       value: /^[가-힣\s]+$/,
                       message: "한글만 2 ~ 15글자 사이로 입력",
@@ -312,6 +314,7 @@ const EditCatch = () => {
           <SeleteTab
             onChangeGender={onChangeGender}
             onChangeNeutered={onChangeNeutered}
+            onChangeNickname={onChangeNickname}
             tabValue={tabValue}
           />
 
@@ -323,7 +326,6 @@ const EditCatch = () => {
                   type="text"
                   placeholder={missingPostDetail.age}
                   {...register("animalAge", {
-                    required: true,
                     pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
                     maxLength: {
                       value: 3,
@@ -346,7 +348,6 @@ const EditCatch = () => {
                   type="text"
                   placeholder={missingPostDetail.weight}
                   {...register("animalkg", {
-                    required: false,
                     pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
                     maxLength: {
                       value: 3,
@@ -371,7 +372,6 @@ const EditCatch = () => {
                   type="text"
                   placeholder={missingPostDetail.colorCd}
                   {...register("animalcolor", {
-                    required: true,
                     pattern: {
                       value: /^[가-힣\s]+$/,
                       message: "한글만 2 ~ 8글자 사이로 입력 ",
@@ -435,7 +435,6 @@ const EditCatch = () => {
                     : missingPostDetail.specialMark
                 }
                 {...register("characteristic", {
-                  required: false,
                   pattern: {
                     value: /^[가-힣\s]+$/,
                     message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
@@ -465,7 +464,6 @@ const EditCatch = () => {
                     : missingPostDetail.content
                 }
                 {...register("memo", {
-                  required: false,
                   pattern: {
                     value: /^[가-힣\s]+$/,
                     message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
@@ -529,15 +527,9 @@ const EditCatch = () => {
           </ReportAnimalPictureAreaInputBox>
         </ReportAnimalPictureArea>
 
-        {isActive === true ? (
-          <Button type="submit" disable assistiveFillButton>
-            작성 완료
-          </Button>
-        ) : (
-          <Button type="submit" fillButton>
-            작성 완료
-          </Button>
-        )}
+        <Button type="submit" fillButton>
+          작성 완료
+        </Button>
 
         {editMsg == "" ? null : (
           <CheckModal

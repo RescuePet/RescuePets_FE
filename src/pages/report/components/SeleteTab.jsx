@@ -9,36 +9,60 @@ import {
 import { SeletegenderArr, seleteneuteredArr, openNickname } from "./data";
 
 const SeleteTab = ({
+  tabValue,
   onChangeGender,
   onChangeNeutered,
   onChangeNickname,
-  tabValue,
 }) => {
-  // console.log(tabValue);
-  console.log(openNickname);
+  console.log(tabValue);
+  // console.log(openNickname);
 
   const [currentGenderTab, setCurrentGenderTab] = useState(2);
   const [currentNeuteredTab, setCurrentNeuteredTab] = useState(2);
   const [currentNicknameTab, setCurrentNicknameTab] = useState(0);
 
+  // Edit 일때 값이 캐싱 되는 현상
   useEffect(() => {
-    if (tabValue?.GenderNum == "MALE") {
+    if (tabValue?.GenderNum === 'MALE') {
       setCurrentGenderTab(0);
-    } else if (tabValue?.GenderNum == "FEMALE") {
+      console.log("MALE");
+    } else if (tabValue?.GenderNum === 'FEMALE') {
       setCurrentGenderTab(1);
-    } else if (tabValue?.GenderNum == "UNKNOWN") {
+      console.log("FEMALE");
+    } else if (tabValue?.GenderNum === 'UNKNOWN') {
       setCurrentGenderTab(2);
+      console.log("UNKNOWN");
     } else if (tabValue?.GenderNum == "") {
       setCurrentGenderTab(0);
+      console.log("NOTHING");
     }
-    if (tabValue?.neuterYn == "YES") {
+    if (tabValue?.neuterYn === 'YES') {
       setCurrentNeuteredTab(0);
-    } else if (tabValue?.neuterYn == "NO") {
+      console.log("YES");
+    } else if (tabValue?.neuterYn === 'NO') {
       setCurrentNeuteredTab(1);
-    } else if (tabValue?.neuterYn == "UNKNOWN") {
+      console.log("NO");
+    } else if (tabValue?.neuterYn === 'UNKNOWN') {
       setCurrentNeuteredTab(2);
+      console.log("UNKNOWN");
     } else if (tabValue?.neuterYn == "") {
       setCurrentNeuteredTab(0);
+      console.log("NOTHING");
+    }
+    if (tabValue?.ninkCheck === true) {
+      setCurrentNicknameTab(0);
+      console.log("true");
+    } else if (tabValue?.ninkCheck === false) {
+      setCurrentNicknameTab(1);
+      console.log("false");
+    } else if (tabValue?.ninkCheck == "") {
+      setCurrentNicknameTab(0);
+      console.log("NOTHING");
+    } else {
+      console.log("에러");
+      // setCurrentGenderTab(2);
+      // setCurrentNeuteredTab(1);
+      // setCurrentNicknameTab(0);
     }
   }, []);
 

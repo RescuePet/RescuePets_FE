@@ -90,10 +90,7 @@ const Catch = () => {
     setCurrentNinkNameEnValue(newData);
   };
 
-  const tabValue = {
-    GenderNum: null,
-    neuterYn: null,
-  };
+  const tabValue = null;
 
   // 사진 로직
   const [showImages, setShowImages] = useState([]);

@@ -49,7 +49,7 @@ const EditMissing = () => {
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
 
-  // console.log(missingPostDetail);
+  console.log(missingPostDetail);
   useEffect(() => {
     dispatch(__getMissingPostDetail(id));
   }, [id]);
@@ -87,12 +87,16 @@ const EditMissing = () => {
   // 탭 로직
   const [currentGenderEnValue, setCurrentGenderEnValue] = useState("MALE");
   const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState("YES");
+  const [currentNinkNameEnValue, setCurrentNinkNameEnValue] = useState("true");
 
   const onChangeGender = (newData) => {
     setCurrentGenderEnValue(newData);
   };
   const onChangeNeutered = (newData) => {
     setCurrentNeuteredEnValue(newData);
+  };
+  const onChangeNickname = (newData) => {
+    setCurrentNinkNameEnValue(newData);
   };
 
   const [selectedDate, setSelectedDate] = useState("");
@@ -104,6 +108,7 @@ const EditMissing = () => {
   const tabValue = {
     GenderNum: missingPostDetail.sexCd,
     neuterYn: missingPostDetail.neuterYn,
+    ninkCheck: missingPostDetail.openNickname,
   };
 
   const onChangeTimeValeu = () => {};
@@ -226,32 +231,33 @@ const EditMissing = () => {
     formData.append("happenHour", time);
     {
       data.characteristic == ""
-        ? formData.append("specialMark", missingPostDetail.characteristic)
+        ? formData.append("specialMark", missingPostDetail.specialMark)
         : formData.append("specialMark", data.characteristic);
     }
     {
       data.memo == ""
-        ? formData.append("content", missingPostDetail.memo)
+        ? formData.append("content", missingPostDetail.content)
         : formData.append("content", data.memo);
     }
     {
       data.money == ""
-        ? formData.append("gratuity", missingPostDetail.money)
+        ? formData.append("gratuity", missingPostDetail.gratuity)
         : formData.append("gratuity", data.money);
     }
     {
       data.number == ""
-        ? formData.append("contact", missingPostDetail.number)
+        ? formData.append("contact", missingPostDetail.contact)
         : formData.append("contact", data.number);
     }
+    formData.append("openNickname", currentNinkNameEnValue);
 
     imageFormData.map((img) => {
       formData.append("postImages", img);
     });
 
-    for (let value of formData.values()) {
-      console.log(value);
-    }
+    // for (let value of formData.values()) {
+    //   console.log(value);
+    // }
 
     toggleModal();
     const number = missingPostDetail.id;
@@ -325,6 +331,7 @@ const EditMissing = () => {
           <SeleteTab
             onChangeGender={onChangeGender}
             onChangeNeutered={onChangeNeutered}
+            onChangeNickname={onChangeNickname}
             tabValue={tabValue}
           />
 
@@ -622,15 +629,11 @@ const EditMissing = () => {
             <span>{errors?.number?.message}</span>
           </div>
         </ReportAnimalUserInfo>
-        {isActive === true ? (
-          <Button type="submit" disable assistiveFillButton>
-            작성 완료
-          </Button>
-        ) : (
-          <Button type="submit" fillButton>
-            작성 완료
-          </Button>
-        )}
+
+        <Button type="submit" fillButton>
+          작성 완료
+        </Button>
+
         {editMsg == "" ? null : (
           <CheckModal
             isOpen={loginModal}

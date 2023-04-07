@@ -105,10 +105,7 @@ const Missing = () => {
     setCurrentNinkNameEnValue(newData);
   };
 
-  const tabValue = {
-    GenderNum: null,
-    neuterYn: null,
-  };
+  const tabValue = null;
   // console.log("최신값성별 :",currentGenderEnValue)
   // console.log("최신값중성화:",currentNeuteredEnValue)
 
