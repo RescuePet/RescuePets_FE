@@ -31,6 +31,7 @@ import ClippingFill from "../../asset/profile/ClippingFill";
 import ScrollToTop from "../../elements/ScrollToTop";
 import Backwhite from "../../asset/Backwhite";
 import { Loading } from "../../components/Loading";
+import ReportModal from "../../components/ReportModal";
 
 const AdoptionDetail = () => {
   const { id } = useParams();

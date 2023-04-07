@@ -44,7 +44,7 @@ const Signin = () => {
 
   const [SignInMsg, setSignInMsg] = useState("");
 
-  const onSubmitSigninHanler = (data) => {
+  const onSubmitSigninHandler = (data) => {
     const siginInfo = {
       email: data.email,
       password: data.password,
@@ -87,7 +87,7 @@ const Signin = () => {
   };
   return (
     <Layout>
-      <SignContainer onSubmit={handleSubmit(onSubmitSigninHanler)}>
+      <SignContainer onSubmit={handleSubmit(onSubmitSigninHandler)}>
         <SignHeader>
           <span>로그인</span>
         </SignHeader>

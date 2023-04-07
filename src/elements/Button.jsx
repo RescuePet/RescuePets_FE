@@ -25,7 +25,8 @@ const BtnStyle = styled.button`
     (props.emptyButton || props.propName === "emptyButton") &&
     css`
       ${(props) => props.theme.Body_700_14}
-      color: ${(props) => props.theme.color.black};
+      color: ${(props) =>
+        props.normal ? props.theme.color.text_normal : props.theme.color.black};
       border: 1px solid ${(props) => props.theme.color.primary_normal};
     `}
     ${(props) =>
@@ -64,6 +65,14 @@ const BtnStyle = styled.button`
         cursor: pointer;
         transition: 0.2s ease;
       }
+    `}
+    ${(props) =>
+    props.OptionClose &&
+    css`
+      width: 93%;
+      margin-bottom: 32px;
+      background-color: ${(props) => props.theme.color.text_disable};
+      border-radius: 20px;
     `}
     /* &:hover {
     cursor: pointer;

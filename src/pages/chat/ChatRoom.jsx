@@ -14,10 +14,20 @@ import { instance } from "../../utils/api";
 import { useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import Back from "../../asset/Back.svg";
+import { useDispatch, useSelector } from "react-redux";
+import Option from "../../components/Option";
+import Meatballs from "../../asset/Meatballs";
+import { toggleOption } from "../../redux/modules/menubarSlice";
+import ReportModal from "../../components/ReportModal";
+import { toggleReport } from "../../redux/modules/menubarSlice";
 
 const ChatRoom = () => {
   const { id, nickname } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { optionState, reportState } = useSelector((state) => state.menubar);
+
   const [chatlog, setChatLog] = useState([]);
   const sender = JSON.parse(Cookies.get("UserInfo"));
 
@@ -87,11 +97,37 @@ const ChatRoom = () => {
     window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
   }, []);
 
+  const leaveChatHandler = async () => {
+    try {
+      const response = await instance.delete(`/chat/room/exit/${id}`);
+      navigate("/chatlist");
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const OpenReportHandler = () => {
+    dispatch(toggleReport());
+    dispatch(toggleOption());
+  };
+
+  const ChatRoomMeatData = [
+    { option: "채팅방 나가기", color: "normal", handler: leaveChatHandler },
+    { option: "신고하기", color: "report", handler: OpenReportHandler },
+  ];
+
+  const reportModalData = {
+    type: "member",
+    nickname: nickname,
+  };
+
   return (
     <Layout>
       <ChatRoomHeader>
         <BackSvg src={Back} onClick={() => navigate("/chatlist")} />
         <HeaderTitle>{nickname}</HeaderTitle>
+        <OptionChat onClick={() => dispatch(toggleOption())} />
       </ChatRoomHeader>
       <ChatRoomBody>
         {chatlog.length !== 0 &&
@@ -116,6 +152,8 @@ const ChatRoom = () => {
         placeholder="메세지를 입력해주세요."
         submitHandler={submitHandler}
       ></InputContainer>
+      {optionState && <Option setting={ChatRoomMeatData} />}
+      {reportState && <ReportModal setting={reportModalData} />}
     </Layout>
   );
 };
@@ -126,18 +164,24 @@ const ChatRoomHeader = styled.div`
   position: sticky;
   top: 0;
   z-index: 10;
-  padding-bottom: 17px;
+  padding-bottom: 1.0625rem;
   background-color: ${(props) => props.theme.color.white};
 `;
 
 const BackSvg = styled.img`
   position: absolute;
-  left: 20px;
+  left: 1.25rem;
   cursor: pointer;
 `;
 
 const HeaderTitle = styled.span`
   ${Body_500_16}
+`;
+
+const OptionChat = styled(Meatballs)`
+  position: absolute;
+  right: 1.25rem;
+  cursor: pointer;
 `;
 
 const ChatRoomBody = styled.div`
