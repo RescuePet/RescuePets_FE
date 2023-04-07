@@ -537,7 +537,7 @@ const Missing = () => {
             <p>연락처</p>
             <ReportInput
               type="tel"
-              placeholder="010-xxxx-xxxx"
+              placeholder="010xxxxxxxx"
               inputMode="numeric"
               {...register("number", {
                 required: false, // 필수 X
