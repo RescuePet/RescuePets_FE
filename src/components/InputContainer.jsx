@@ -50,14 +50,7 @@ const InputContainer = ({ placeholder, submitHandler }) => {
             id="message-textarea"
             {...register("message")}
           />
-          <SubmitButton
-            onClick={() =>
-              handleSubmit((register) => {
-                submitHandler(register);
-                reset();
-              })()
-            }
-          >
+          <SubmitButton>
             <ChatSubmit />
           </SubmitButton>
         </InputWrapper>

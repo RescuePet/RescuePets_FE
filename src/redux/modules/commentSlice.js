@@ -1,12 +1,15 @@
 import { instance } from "../../utils/api";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// Get missing post comment
-export const __getMissingComment = createAsyncThunk(
-  "getMissingComment",
+// Get post Comment
+export const __getComment = createAsyncThunk(
+  "getComment",
   async (payload, thunkAPI) => {
     try {
-      const response = await instance.get(`/api/comments/${payload}`);
+      const response = await instance.get(
+        `/api/comments/${payload.postId}/?page=${payload.page}&size=5`
+      );
+      console.log("get comment", response.data);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       throw new Error(error.response.data.message);
@@ -14,54 +17,27 @@ export const __getMissingComment = createAsyncThunk(
   }
 );
 
-// Post missing comment
-export const __postMissingComment = createAsyncThunk(
-  "postMissingComment",
-  async (payload, thunkAPI) => {
-    try {
-      const response = await instance.post(`/api/comments/${payload.id}`, {
-        content: payload.content,
-      });
-      console.log("post missing comment", response.data);
-      return thunkAPI.fulfillWithValue(response.data.data);
-    } catch (error) {
-      throw new Error(error.response.data.message);
-    }
-  }
-);
-
-// Get catch post comment
-export const __getCatchComment = createAsyncThunk(
-  "getCatchComment",
-  async (payload, thunkAPI) => {
-    try {
-      const response = await instance.get(`/api/comments/${payload}`);
-      return thunkAPI.fulfillWithValue(response.data.data);
-    } catch (error) {
-      throw new Error(error.response.data.message);
-    }
-  }
-);
-
-// Post catch comment
-export const __postCatchComment = createAsyncThunk(
-  "postCatchComment",
+// Post comment
+export const __postComment = createAsyncThunk(
+  "postComment",
   async (payload, thunkAPI) => {
     try {
       const response = await instance.post(`/api/comments/${payload.id}`, {
         content: payload.content,
       });
-      console.log("post catch comment", response.data);
+      console.log("post comment", response.data);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
-      throw new Error(error.response.data.message);
+      console.log("error", error);
+
+      return thunkAPI.rejectWithValue(error.response.data.message);
     }
   }
 );
 
-// Delete missing comment
-export const __deleteMissingComment = createAsyncThunk(
-  "deleteMissingComment",
+// Delete post comment
+export const __deleteComment = createAsyncThunk(
+  "deleteComment",
   async (payload, thunkAPI) => {
     try {
       const response = await instance.delete(`/api/comments/${payload}`);
@@ -75,64 +51,57 @@ export const __deleteMissingComment = createAsyncThunk(
 
 const initialState = {
   error: false,
-  missingComment: [],
-  catchComment: [],
-  editDone: false,
+  errorMessage: "",
+  commentList: [],
+  isLast: false,
+  scrollState: false,
 };
 
 export const commentSlice = createSlice({
   name: "comment",
   initialState,
   reducers: {
-    toggleEditDone: (state, action) => {
-      state.editDone = action.payload;
+    resetCommentList: (state) => {
+      state.commentList = [];
+    },
+    resetError: (state) => {
+      state.error = false;
+    },
+    toggleScroll: (state) => {
+      state.scrollState = !state.scrollState;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(__getMissingComment.fulfilled, (state, action) => {
-        state.missingComment = action.payload;
+      .addCase(__getComment.fulfilled, (state, action) => {
+        state.commentList = [...state.commentList, ...action.payload.dtoList];
+        state.isLast = action.payload.isLast;
       })
-      .addCase(__getMissingComment.rejected, (state) => {
+      .addCase(__getComment.rejected, (state) => {
         state.error = true;
       });
 
     builder
-      .addCase(__postMissingComment.fulfilled, (state) => {
-        state.editDone = true;
+      .addCase(__postComment.fulfilled, (state, action) => {
+        state.commentList = [action.payload, ...state.commentList];
       })
-      .addCase(__postMissingComment.rejected, (state) => {
+      .addCase(__postComment.rejected, (state, action) => {
         state.error = true;
+        state.errorMessage = action.payload;
       });
 
     builder
-      .addCase(__getCatchComment.fulfilled, (state, action) => {
-        state.catchComment = action.payload;
-      })
-      .addCase(__getCatchComment.rejected, (state) => {
-        state.error = true;
-      });
-
-    builder
-      .addCase(__postCatchComment.fulfilled, (state) => {
-        state.editDone = true;
-      })
-      .addCase(__postCatchComment.rejected, (state) => {
-        state.error = true;
-      });
-
-    builder
-      .addCase(__deleteMissingComment.fulfilled, (state, action) => {
-        state.missingComment = state.missingComment.filter(
+      .addCase(__deleteComment.fulfilled, (state, action) => {
+        state.commentList = state.commentList.filter(
           (comment) => comment.id !== action.payload
         );
-        state.editDone = true;
       })
-      .addCase(__deleteMissingComment.rejected, (state) => {
+      .addCase(__deleteComment.rejected, (state) => {
         state.error = true;
       });
   },
 });
 
-export const { toggleEditDone } = commentSlice.actions;
+export const { resetCommentList, resetError, toggleScroll } =
+  commentSlice.actions;
 export default commentSlice.reducer;

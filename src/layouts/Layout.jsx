@@ -5,11 +5,15 @@ import { FlexAttribute } from "../style/Mixin";
 import Footer from "./Footer";
 import isLogin from "../utils/isLogin";
 import backgroundImage from "../asset/webbackground/Desktop.jpg";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleScroll } from "../redux/modules/commentSlice";
 
 const Layout = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [scrollPosition, setScrollPosition] = useState(0);
+  const { scrollState } = useSelector((state) => state.comment);
+  const dispatch = useDispatch();
   const ref = useRef(null);
 
   useEffect(() => {
@@ -30,6 +34,18 @@ const Layout = ({ children }) => {
       navigate("/signin");
     }
   }, [navigate]);
+
+  useEffect(() => {
+    if (scrollState) {
+      setTimeout(() => {
+        ref.current.scrollTo({
+          top: ref.current.scrollHeight,
+          behavior: "smooth",
+        });
+        dispatch(toggleScroll());
+      }, 300);
+    }
+  }, [scrollState]);
 
   const saveScrollPosition = (e) => {
     if (location.pathname === "/home" || location.pathname === "/petwork") {

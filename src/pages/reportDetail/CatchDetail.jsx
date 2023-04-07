@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import {
@@ -18,9 +18,11 @@ import {
   __postCatchScrap,
 } from "../../redux/modules/petworkSlice";
 import {
-  toggleEditDone,
-  __getCatchComment,
-  __postCatchComment,
+  __getComment,
+  __postComment,
+  resetCommentList,
+  resetError,
+  toggleScroll,
 } from "../../redux/modules/commentSlice";
 import Comment from "./components/Comment";
 import petworkRefineData from "../../utils/petworkRefine";
@@ -28,6 +30,7 @@ import petworkRefineData from "../../utils/petworkRefine";
 import location from "../../asset/location.svg";
 import time from "../../asset/time.svg";
 import informationIcon from "../../asset/information.svg";
+import refresh from "../../asset/refresh.svg";
 import PostInformation from "./components/PostInformation";
 import FloatingButton from "./components/FloatingButton";
 import { instance } from "../../utils/api";
@@ -44,24 +47,29 @@ const SightingDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userName = JSON.parse(Cookies.get("UserInfo"));
+  const commentRef = useRef(null);
+
+  const [commentPage, setCommentPage] = useState(1);
 
   const { catchPostDetail } = useSelector((state) => state.petwork);
-  const { catchComment, editDone } = useSelector((state) => state?.comment);
+  const { commentList, isLast, error, errorMessage } = useSelector(
+    (state) => state?.comment
+  );
   const { optionState, reportState } = useSelector((state) => state.menubar);
+
+  const commentPayload = {
+    postId: id,
+    page: commentPage,
+  };
 
   useEffect(() => {
     dispatch(__getCatchPostDetail(id));
-    dispatch(__getCatchComment(id));
-  }, [id]);
-
-  useEffect(() => {
-    if (editDone) {
-      window.scrollTo(0, document.body.scrollHeight);
-    }
+    dispatch(__getComment(commentPayload));
+    setCommentPage(2);
     return () => {
-      dispatch(toggleEditDone(false));
+      dispatch(resetCommentList());
     };
-  }, [catchComment]);
+  }, [id]);
 
   if (JSON.stringify(catchPostDetail) === "{}") {
     return (
@@ -69,6 +77,11 @@ const SightingDetail = () => {
         <Loading />
       </Layout>
     );
+  }
+
+  if (error) {
+    alert(errorMessage);
+    dispatch(resetError());
   }
 
   const refineData = petworkRefineData(catchPostDetail);
@@ -88,7 +101,7 @@ const SightingDetail = () => {
   };
 
   const postInfo = {
-    commentCount: catchComment.length,
+    commentCount: catchPostDetail.commentCount,
     scrapCount: catchPostDetail.wishedCount,
   };
 
@@ -98,17 +111,19 @@ const SightingDetail = () => {
       content: content.message,
     };
     if (content.message === "") {
+      alert("댓글을 입력해주세요.");
       return;
     }
-    dispatch(__postCatchComment(data)).then(() => {
-      dispatch(__getCatchComment(id));
-    });
+    dispatch(__postComment(data));
   };
 
   const chatHandler = async () => {
-    const response = await instance.post(`/chat/room/${catchPostDetail.id}`);
-    console.log("post response", response.data);
-    navigate(`/chatroom/${catchPostDetail.nickname}/${response.data}`);
+    try {
+      const response = await instance.post(`/chat/room/${catchPostDetail.id}`);
+      navigate(`/chatroom/${catchPostDetail.nickname}/${response.data}`);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const scrapHandler = () => {
@@ -118,6 +133,12 @@ const SightingDetail = () => {
       id: catchPostDetail.id,
     };
     dispatch(__postCatchScrap(payload));
+  };
+
+  const refreshCommentHandler = () => {
+    setCommentPage((prev) => prev + 1);
+    dispatch(__getComment(commentPayload));
+    dispatch(toggleScroll());
   };
 
   const imageCarouselInfo = {
@@ -174,7 +195,7 @@ const SightingDetail = () => {
   };
 
   return (
-    <Layout>
+    <CatchLayout>
       <ScrollToTop />
       <ImageCarousel
         images={catchPostDetail?.postImages}
@@ -239,11 +260,18 @@ const SightingDetail = () => {
       <PostInformation postInfo={postInfo}></PostInformation>
       <CommentContainer>
         <CommentListWrapper>
-          {catchComment?.map((item) => {
+          <div ref={commentRef}></div>
+          {commentList?.map((item) => {
             return (
               <Comment key={`catch-comment-${item.id}`} item={item}></Comment>
             );
           })}
+          {isLast ? null : (
+            <FetchComment onClick={refreshCommentHandler}>
+              <img src={refresh} alt="commentrefresh" />
+              <span>댓글 불러오기</span>
+            </FetchComment>
+          )}
         </CommentListWrapper>
       </CommentContainer>
       <InputContainer
@@ -267,9 +295,13 @@ const SightingDetail = () => {
         />
       )}
       {reportState && <ReportModal setting={reportSetting} />}
-    </Layout>
+    </CatchLayout>
   );
 };
+
+const CatchLayout = styled(Layout)`
+  overflow-y: scroll;
+`;
 
 const TitleWrapper = styled.div`
   ${FlexAttribute("row", "center", "center")}
@@ -342,6 +374,17 @@ const CommentContainer = styled.div`
 
 const CommentListWrapper = styled.div`
   ${FlexAttribute("column")}
+`;
+
+const FetchComment = styled.div`
+  ${FlexAttribute("row", "center", "center")}
+  width: 100%;
+  height: 50px;
+  cursor: pointer;
+  span {
+    margin-left: 4px;
+    ${(props) => props.theme.Body_500_16};
+  }
 `;
 
 export default SightingDetail;

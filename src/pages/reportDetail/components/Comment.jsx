@@ -5,7 +5,7 @@ import { Body_400_10, Body_400_12, Body_500_14 } from "../../../style/theme";
 import profileIcon from "../../../asset/profile.svg";
 import Close from "../../../asset/Close.svg";
 import { useDispatch } from "react-redux";
-import { __deleteMissingComment } from "../../../redux/modules/commentSlice";
+import { __deleteComment } from "../../../redux/modules/commentSlice";
 import Cookies from "js-cookie";
 
 const Comment = ({ item }) => {
@@ -16,7 +16,7 @@ const Comment = ({ item }) => {
   const dispatch = useDispatch();
 
   const handleDeleteComment = () => {
-    dispatch(__deleteMissingComment(item.id));
+    dispatch(__deleteComment(item.id));
   };
   console.log(item.id);
 
