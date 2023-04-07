@@ -7,8 +7,9 @@ import { useDispatch } from "react-redux";
 import { toggleReport } from "../redux/modules/menubarSlice";
 import { useForm } from "react-hook-form";
 import { CustomSelect } from "../elements/CustomSelect";
+import ModalPortal from "../elements/ModalPortal";
 
-const ReportModal = ({ setting }) => {
+const ReportModal = ({ setting, reportCloseHandler }) => {
   const reportOption = [
     { id: 0, name: "부적절한단어", value: "부적절한단어" },
     { id: 1, name: "거짓정보", value: "거짓정보" },
@@ -50,11 +51,11 @@ const ReportModal = ({ setting }) => {
     }
   };
 
-  const submitCommentReport = async () => {
+  const submitCommentReport = async (payload) => {
     const data = {
-      content: null,
+      content: payload.reason,
       postId: null,
-      commentId: null,
+      commentId: setting.commentId,
       reportCode: typeID,
     };
     try {
@@ -106,44 +107,62 @@ const ReportModal = ({ setting }) => {
       submitMemberReport(payload);
       dispatch(toggleReport());
       reset();
+    } else if (setting.type === "comment") {
+      console.log("댓글 신고");
+      submitCommentReport(payload);
+      reportCloseHandler();
+      reset();
     }
   };
 
   return (
     <>
-      <ReportBackground></ReportBackground>
-      <ReportContainer>
-        <ReportWrapper>
-          <ReportTitle>
-            <span>신고하기</span>
-          </ReportTitle>
-          <ReportContents onSubmit={handleSubmit(submitHandler)}>
-            <SelectWrapper>
-              <SelectTitle>신고 사유</SelectTitle>
-              <CustomSelect
-                data={reportOption}
-                onChangeData={onChangeData}
-                onChangeID={onChangeID}
-              />
-            </SelectWrapper>
-            <ContentsWrapper>
-              <ContentsTitle>상세내용</ContentsTitle>
-              <Contents
-                placeholder="상세내용을 작성해주세요."
-                {...register("reason")}
-              />
-            </ContentsWrapper>
-          </ReportContents>
-          <ButtonWrapper>
-            <Button emptyButton normal onClick={() => dispatch(toggleReport())}>
-              닫기
-            </Button>
-            <Button fillButton onClick={handleSubmit(submitHandler)}>
-              신고하기
-            </Button>
-          </ButtonWrapper>
-        </ReportWrapper>
-      </ReportContainer>
+      <ModalPortal>
+        <ReportBackground></ReportBackground>
+        <ReportContainer>
+          <ReportWrapper>
+            <ReportTitle>
+              <span>신고하기</span>
+            </ReportTitle>
+            <ReportContents onSubmit={handleSubmit(submitHandler)}>
+              <SelectWrapper>
+                <SelectTitle>신고 사유</SelectTitle>
+                <CustomSelect
+                  data={reportOption}
+                  onChangeData={onChangeData}
+                  onChangeID={onChangeID}
+                />
+              </SelectWrapper>
+              <ContentsWrapper>
+                <ContentsTitle>상세내용</ContentsTitle>
+                <Contents
+                  placeholder="상세내용을 작성해주세요."
+                  {...register("reason")}
+                />
+              </ContentsWrapper>
+            </ReportContents>
+            <ButtonWrapper>
+              {reportCloseHandler ? (
+                <Button emptyButton normal onClick={reportCloseHandler}>
+                  닫기
+                </Button>
+              ) : (
+                <Button
+                  emptyButton
+                  normal
+                  onClick={() => dispatch(toggleReport())}
+                >
+                  닫기
+                </Button>
+              )}
+
+              <Button fillButton onClick={handleSubmit(submitHandler)}>
+                신고하기
+              </Button>
+            </ButtonWrapper>
+          </ReportWrapper>
+        </ReportContainer>
+      </ModalPortal>
     </>
   );
 };
@@ -158,6 +177,8 @@ const ReportBackground = styled.div`
 const ReportContainer = styled.div`
   position: fixed;
   ${FlexAttribute("column", "center", "center")};
+  bottom: 0;
+  right: calc(50% - 215px);
   height: 100%;
   width: 430px;
   z-index: 600;

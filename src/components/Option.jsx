@@ -4,33 +4,43 @@ import styled, { css } from "styled-components";
 import { FlexAttribute } from "../style/Mixin";
 import { useDispatch } from "react-redux";
 import { toggleOption } from "../redux/modules/menubarSlice";
+import ModalPortal from "../elements/ModalPortal";
 
-const Option = ({ setting }) => {
+const Option = ({ setting, commentCloseHandler }) => {
   const dispatch = useDispatch();
   const closeHandler = () => {
     dispatch(toggleOption());
   };
+
   return (
     <>
-      <OptionBackground></OptionBackground>
-      <OptionContainer>
-        <OptionWrapper>
-          {setting.map((item, index) => {
-            return (
-              <OptionSelect
-                key={`Meatball-option-${index}`}
-                color={item.color}
-                onClick={item.handler}
-              >
-                <span>{item.option}</span>
-              </OptionSelect>
-            );
-          })}
-        </OptionWrapper>
-        <Button OptionClose onClick={closeHandler}>
-          닫기
-        </Button>
-      </OptionContainer>
+      <ModalPortal>
+        <OptionBackground></OptionBackground>
+        <OptionContainer>
+          <OptionWrapper>
+            {setting.map((item, index) => {
+              return (
+                <OptionSelect
+                  key={`Meatball-option-${index}`}
+                  color={item.color}
+                  onClick={item.handler}
+                >
+                  <span>{item.option}</span>
+                </OptionSelect>
+              );
+            })}
+          </OptionWrapper>
+          {commentCloseHandler ? (
+            <Button OptionClose onClick={commentCloseHandler}>
+              닫기
+            </Button>
+          ) : (
+            <Button OptionClose onClick={closeHandler}>
+              닫기
+            </Button>
+          )}
+        </OptionContainer>
+      </ModalPortal>
     </>
   );
 };
@@ -45,6 +55,8 @@ const OptionBackground = styled.div`
 const OptionContainer = styled.div`
   position: fixed;
   ${FlexAttribute("column", "flex-end", "center")};
+  bottom: 0;
+  right: calc(50% - 215px);
   height: 100%;
   width: 430px;
   z-index: 600;

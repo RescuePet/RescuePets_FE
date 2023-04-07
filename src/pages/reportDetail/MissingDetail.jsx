@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import {
@@ -16,6 +16,7 @@ import {
   __deletePost,
   __getMissingPostDetail,
   __postMissingScrap,
+  addCommentCount,
 } from "../../redux/modules/petworkSlice";
 import Comment from "./components/Comment";
 import {
@@ -115,6 +116,7 @@ const MissingDetail = () => {
         behavior: "smooth",
         block: "center",
       });
+      dispatch(addCommentCount());
     }
   };
 
