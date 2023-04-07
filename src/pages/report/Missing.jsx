@@ -232,7 +232,7 @@ const Missing = () => {
             <ReportanimaltypesTitle>동물 정보 *</ReportanimaltypesTitle>
             <ReportanimaltypesSelect>
               <div>
-                <p>종류</p>
+                <p>종류*</p>
                 <CustomSelect
                   data={NameValue}
                   onChangeData={onChangeData}
@@ -240,7 +240,7 @@ const Missing = () => {
                 />
               </div>
               <div>
-                <p>품종</p>
+                <p>품종*</p>
                 <ReportInput
                   type="text"
                   placeholder="입력하기"
@@ -276,7 +276,7 @@ const Missing = () => {
           <ReportAnimalInfoBox>
             <ReportAnimalInfoBoxColumn>
               <ReportAnimalInfoBoxColumnRow>
-                <p>이름</p>
+                <p>이름*</p>
                 <ReportInput
                   type="text"
                   placeholder="입력하기"
@@ -301,7 +301,7 @@ const Missing = () => {
                 <span>{errors?.animalName?.message}</span>
               </ReportAnimalInfoBoxColumnRow>
               <ReportAnimalInfoBoxColumnRow>
-                <p>나이(살)</p>
+                <p>나이(살)*</p>
                 <ReportInput
                   type="text"
                   placeholder="입력하기"
@@ -325,7 +325,7 @@ const Missing = () => {
             </ReportAnimalInfoBoxColumn>
             <ReportAnimalInfoBoxColumn>
               <ReportAnimalInfoBoxColumnRow>
-                <p>체중(Kg)</p>
+                <p>체중(Kg)*</p>
                 <ReportInput
                   type="text"
                   placeholder="입력하기"
@@ -347,7 +347,7 @@ const Missing = () => {
                 <span>{errors?.animalkg?.message}</span>
               </ReportAnimalInfoBoxColumnRow>
               <ReportAnimalInfoBoxColumnRow>
-                <p>색상</p>
+                <p>색상*</p>
                 <ReportInput
                   type="text"
                   placeholder="입력하기"
@@ -381,7 +381,7 @@ const Missing = () => {
           <p>실종일시 *</p>
           <div>
             <div>
-              <p>날짜</p>
+              <p>날짜*</p>
               <ReportInput
                 type="date"
                 onChange={handleDateChange}
@@ -390,7 +390,7 @@ const Missing = () => {
               />
             </div>
             <div>
-              <p>시간대</p>
+              <p>시간대*</p>
               <CustomSelect
                 data={TimeValue}
                 onChangeData={onChangeTimeData}
@@ -460,7 +460,7 @@ const Missing = () => {
         </ReportAnimalSignificantBox>
         <ReportAnimalPictureArea>
           <ReportAnimalPictureAreaTitle>
-            <p>사진첨부</p>
+            <p>사진첨부*</p>
           </ReportAnimalPictureAreaTitle>
           <ReportAnimalPictureAreaInputBox>
             <input

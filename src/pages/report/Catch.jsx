@@ -35,7 +35,6 @@ import { NameValue, TimeValue } from "./components/data";
 import { __PostCatchData } from "../../redux/modules/catchSlice";
 import { useDispatch, useSelector } from "react-redux";
 import imgdelete from "../../asset/imgDelete.svg";
-import close from "../../asset/Close.svg";
 import { useNavigate } from "react-router-dom";
 import { PostModal } from "./components/Modal";
 import { useModalState } from "../../hooks/useModalState";
@@ -43,7 +42,6 @@ import { useModalState } from "../../hooks/useModalState";
 const Catch = () => {
   let imageRef;
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [loginModal, toggleModal] = useModalState(false);
   const [postNumber, setPostNumber] = useState("");
 
@@ -61,10 +59,6 @@ const Catch = () => {
     setPostNumber(data);
   }, [catchNumber]);
 
-  // // 이전페이지로 이동
-  // const MoveToBackPage = () => {
-  //   navigate(-1);
-  // };
 
   // 커스텀 셀렉트 파트부분
   const [type, setType] = useState(NameValue[0].name);
@@ -225,7 +219,7 @@ const Catch = () => {
             {/* 동물정보 종류, 품종 */}
             <ReportanimaltypesSelect>
               <div>
-                <p>종류</p>
+                <p>종류*</p>
                 <CustomSelect
                   data={NameValue}
                   onChangeData={onChangeData}
@@ -234,7 +228,7 @@ const Catch = () => {
               </div>
 
               <div>
-                <p>품종</p>
+                <p>품종*</p>
                 <ReportInput
                   type="text"
                   placeholder="입력하기"
@@ -269,7 +263,7 @@ const Catch = () => {
             <ReportAnimalInfoBox>
               <ReportAnimalInfoBoxColumn>
                 <ReportAnimalInfoBoxColumnRow>
-                  <p>추정나이(살)</p>
+                  <p>추정나이(살)*</p>
                   <ReportInput
                     type="text"
                     placeholder="입력하기"
@@ -292,7 +286,7 @@ const Catch = () => {
                 </ReportAnimalInfoBoxColumnRow>
 
                 <ReportAnimalInfoBoxColumnRow>
-                  <p>추정체중(Kg)</p>
+                  <p>추정체중(Kg)*</p>
                   <ReportInput
                     type="text"
                     placeholder="입력하기"
@@ -317,7 +311,7 @@ const Catch = () => {
 
               <ReportAnimalInfoBoxColumn>
                 <ReportAnimalInfoBoxColumnColumn>
-                  <p>색상</p>
+                  <p>색상*</p>
                   <ReportLgInput
                     type="text"
                     placeholder="입력하기"
@@ -350,7 +344,7 @@ const Catch = () => {
           <p>목격일시 *</p>
           <div>
             <div>
-              <p>날짜</p>
+              <p>날짜*</p>
               <ReportInput
                 type="date"
                 onChange={handleDateChange}
@@ -359,7 +353,7 @@ const Catch = () => {
               />
             </div>
             <div>
-              <p>시간대</p>
+              <p>시간대*</p>
               <CustomSelect
                 data={TimeValue}
                 onChangeData={onChangeTimeData}
@@ -427,7 +421,7 @@ const Catch = () => {
         </ReportAnimalSignificantBox>
         <ReportAnimalPictureArea>
           <ReportAnimalPictureAreaTitle>
-            <p>사진첨부</p>
+            <p>사진첨부*</p>
           </ReportAnimalPictureAreaTitle>
 
           <ReportAnimalPictureAreaInputBox>
