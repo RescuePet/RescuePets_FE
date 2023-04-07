@@ -79,6 +79,7 @@ const ChatRoom = () => {
     fetchData();
     return () => {
       stompDisconnect();
+      getChatLog(id);
     };
   }, []);
 
