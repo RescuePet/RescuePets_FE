@@ -40,8 +40,9 @@ const CategoryWrapper = styled.div`
   height: 3rem;
   position: sticky;
   top: 0;
-  z-index: 10;
-  background-color: ${(props) => props.theme.color.white}; ;
+  z-index: 12;
+  background-color: transparent;
+  backdrop-filter: blur(10px);
 `;
 
 const ActiveButton = styled.button`
@@ -66,6 +67,7 @@ const ActiveButton = styled.button`
     transition: 0.3s;
     border-bottom: 0.125rem solid
       ${(props) => props.theme.color.primary_altemative};
+    backdrop-filter: blur(10px);
   }
   :active {
     border-bottom: 0.125rem solid ${(props) => props.theme.color.primary_heavy};

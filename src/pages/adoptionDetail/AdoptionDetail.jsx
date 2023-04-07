@@ -6,6 +6,7 @@ import {
   __getAdoptionDetail,
   __postAdoptionInquiry,
   __postAdoptionListScrap,
+  resetAdoptionDetail,
 } from "../../redux/modules/adoptionSlice";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
@@ -19,13 +20,17 @@ import specialmark from "../../asset/specialmark.svg";
 import user from "../../asset/user.svg";
 import information from "../../asset/information.svg";
 import Clippingwhite from "../../asset/Clippingwhite";
-import { FlexAttribute, PostBorderStyle } from "../../style/Mixin";
+import {
+  ButtonBackgroundStyle,
+  FlexAttribute,
+  PostBorderStyle,
+} from "../../style/Mixin";
 import AdoptionInformation from "./components/AdoptionInformation";
 import Button from "../../elements/Button";
 import ClippingFill from "../../asset/profile/ClippingFill";
 import ScrollToTop from "../../elements/ScrollToTop";
-import { Spinner } from "../../components/Spinner";
 import Backwhite from "../../asset/Backwhite";
+import { Loading } from "../../components/Loading";
 
 const AdoptionDetail = () => {
   const { id } = useParams();
@@ -34,17 +39,23 @@ const AdoptionDetail = () => {
 
   useEffect(() => {
     dispatch(__getAdoptionDetail(id));
+    return () => {
+      dispatch(resetAdoptionDetail());
+    };
   }, []);
+
   const { adoptionDetail } = useSelector((state) => state?.adoption);
 
   console.log("data", adoptionDetail);
 
   // 비동기처리 시 detailInfo가 없을 경우를 고려
   if (JSON.stringify(adoptionDetail) === "{}") {
-    return <Spinner />;
+    return (
+      <Layout>
+        <Loading />
+      </Layout>
+    );
   }
-
-  console.log(adoptionDetail);
 
   let titleData = {
     process: adoptionDetail.processState,
@@ -194,6 +205,7 @@ const BackButton = styled(Backwhite)`
   left: 1.25rem;
   z-index: 10;
   cursor: pointer;
+  ${ButtonBackgroundStyle}
   path {
     fill: ${(props) => props.theme.color.primary_normal};
   }
@@ -205,6 +217,7 @@ const ScrapStateFalse = styled(Clippingwhite)`
   right: 1.25rem;
   z-index: 10;
   cursor: pointer;
+  ${ButtonBackgroundStyle}
   path {
     fill: ${(props) => props.theme.color.primary_normal};
   }
@@ -216,6 +229,7 @@ const ScrapStateTrue = styled(ClippingFill)`
   right: 1.25rem;
   z-index: 10;
   cursor: pointer;
+  ${ButtonBackgroundStyle}
   path {
     fill: ${(props) => props.theme.color.primary_normal};
   }

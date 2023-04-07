@@ -89,6 +89,9 @@ export const adoptionSlice = createSlice({
     addAdoptionPage: (state) => {
       state.adoptionPage = state.adoptionPage + 1;
     },
+    resetAdoptionDetail: (state) => {
+      state.adoptionDetail = {};
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -170,5 +173,5 @@ export const adoptionSlice = createSlice({
   },
 });
 
-export const { addAdoptionPage } = adoptionSlice.actions;
+export const { addAdoptionPage, resetAdoptionDetail } = adoptionSlice.actions;
 export default adoptionSlice.reducer;

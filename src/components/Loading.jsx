@@ -4,15 +4,21 @@ import spinnerImg from "../asset/Spinner/spinner.png";
 
 export const Loading = () => {
   return (
-    <LoadingInRound>
-      <LoadingInRound2>
-        <LoadingInRound3>
-          <LoadingInRound4 src={spinnerImg} />
-        </LoadingInRound3>
-      </LoadingInRound2>
-    </LoadingInRound>
+    <LoadingContainer>
+      <LoadingInRound>
+        <LoadingInRound2>
+          <LoadingInRound3>
+            <LoadingInRound4 src={spinnerImg} />
+          </LoadingInRound3>
+        </LoadingInRound2>
+      </LoadingInRound>
+    </LoadingContainer>
   );
 };
+
+const LoadingContainer = styled.div`
+  margin: auto;
+`;
 
 const imgAni = keyframes`
 0% {opacity: 0}

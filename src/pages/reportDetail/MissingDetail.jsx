@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import {
@@ -34,8 +34,7 @@ import FloatingButton from "./components/FloatingButton";
 import { instance } from "../../utils/api";
 import ScrollToTop from "../../elements/ScrollToTop";
 import Cookies from "js-cookie";
-import { Spinner } from "../../components/Spinner";
-import Button from "../../elements/Button";
+import { Loading } from "../../components/Loading";
 
 const MissingDetail = () => {
   const { id } = useParams();
@@ -63,7 +62,11 @@ const MissingDetail = () => {
   }, [missingComment]);
 
   if (JSON.stringify(missingPostDetail) === "{}") {
-    return <Spinner />;
+    return (
+      <Layout>
+        <Loading />
+      </Layout>
+    );
   }
 
   const refineData = petworkRefineData(missingPostDetail);
@@ -80,11 +83,6 @@ const MissingDetail = () => {
     state: "실종 위치",
     happenLatitude: missingPostDetail.happenLatitude,
     happenLongitude: missingPostDetail.happenLongitude,
-  };
-
-  const postInfo = {
-    commentCount: missingComment.length,
-    scrapCount: missingPostDetail.wishedCount,
   };
 
   const submitHandler = async (content) => {
@@ -117,6 +115,12 @@ const MissingDetail = () => {
 
   const imageCarouselInfo = {
     scrapState: missingPostDetail.isWished,
+    scrapHandler: scrapHandler,
+  };
+
+  const postInfo = {
+    commentCount: missingComment.length,
+    scrapCount: missingPostDetail.wishedCount,
     scrapHandler: scrapHandler,
   };
 
@@ -194,9 +198,6 @@ const MissingDetail = () => {
             </ContentTextWrapper>
           </InfoWrapper>
         )}
-        <PosterButtonWrapper>
-          <Button fillButton>포스터 저장하기</Button>
-        </PosterButtonWrapper>
       </InfoContainer>
       <PostInformation postInfo={postInfo}></PostInformation>
       <CommentContainer>
@@ -237,11 +238,6 @@ const InfoContainer = styled.div`
 
 const InfoWrapper = styled.div`
   ${FlexAttribute("row", "space-evenly")}
-`;
-
-const PosterButtonWrapper = styled.div`
-  ${FlexAttribute("row", "center")}
-  margin: 4px 0;
 `;
 
 const BodyTitleWrapper = styled.div`

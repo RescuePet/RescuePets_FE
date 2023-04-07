@@ -22,7 +22,6 @@ export const __getMissingPostDetail = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await instance.get(`/api/post/${payload}`);
-      // console.log(response)
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       throw new Error(error.response.data.message);
@@ -123,6 +122,7 @@ const initialState = {
   error: false,
   loading: false,
   category: "우리집 반려동물을 찾아주세요",
+  CommentInputState: false,
   missingPage: 1,
   catchPage: 1,
   missingPostLists: [],
@@ -139,6 +139,12 @@ export const petworkSlice = createSlice({
   reducers: {
     toggleCategory: (state, action) => {
       state.category = action.payload;
+    },
+    toggleCommentInput: (state) => {
+      state.CommentInputState = !state.CommentInputState;
+    },
+    resetCommentInput: (state) => {
+      state.CommentInputState = false;
     },
     addMissingPage: (state) => {
       state.missingPage = state.missingPage + 1;
@@ -256,6 +262,11 @@ export const petworkSlice = createSlice({
   },
 });
 
-export const { toggleCategory, addMissingPage, addCatchPage } =
-  petworkSlice.actions;
+export const {
+  toggleCategory,
+  toggleCommentInput,
+  addMissingPage,
+  addCatchPage,
+  resetCommentInput,
+} = petworkSlice.actions;
 export default petworkSlice.reducer;
