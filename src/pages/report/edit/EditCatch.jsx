@@ -257,6 +257,9 @@ const EditCatch = () => {
     });
   };
 
+  const SelecteKind = missingPostDetail.upkind;
+  const selecteHour = missingPostDetail.happenHour;
+
   return (
     <Layout>
       <ReportMissingContainer onSubmit={handleSubmit(onSubmitEditCatchHandler)}>
@@ -273,6 +276,7 @@ const EditCatch = () => {
                   data={NameValue}
                   onChangeData={onChangeData}
                   onChangeID={onChangeID}
+                  selectedValue={SelecteKind}
                 />
               </div>
               <div>
@@ -406,6 +410,7 @@ const EditCatch = () => {
                 data={TimeValue}
                 onChangeData={onChangeTimeData}
                 onChangeID={onChangeTimeValeu}
+                selectedValue={selecteHour}
               />
             </div>
           </div>

@@ -49,7 +49,7 @@ const EditMissing = () => {
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
 
-  console.log(missingPostDetail);
+  // console.log(missingPostDetail);
   useEffect(() => {
     dispatch(__getMissingPostDetail(id));
   }, [id]);
@@ -173,107 +173,105 @@ const EditMissing = () => {
   const [editMsg, setEditMsg] = useState("");
 
   const onSubmitEditMissingHandler = (data) => {
-      const formData = new FormData();
-      formData.append("postType", "MISSING");
-      formData.append("upkind", typeID);
-      formData.append("sexCd", currentGenderEnValue);
-      formData.append("neuterYn", currentNeuteredEnValue);
-      {
-        data.animalName == ""
-          ? formData.append("petName", missingPostDetail.petName)
-          : formData.append("petName", data.animalName);
-      }
-      {
-        data.animaltypes == ""
-          ? formData.append("kindCd", missingPostDetail.kindCd)
-          : formData.append("kindCd", data.animaltypes);
-      }
-      {
-        data.animalAge == ""
-          ? formData.append("age", missingPostDetail.age)
-          : formData.append("age", data.animalAge);
-      }
-      {
-        data.animalkg == ""
-          ? formData.append("weight", missingPostDetail.weight)
-          : formData.append("weight", data.animalkg);
-      }
-      {
-        data.animalcolor == ""
-          ? formData.append("colorCd", missingPostDetail.colorCd)
-          : formData.append("colorCd", data.animalcolor);
-      }
-      {
-        addressDiv.innerHTML == ""
-          ? formData.append("happenPlace", missingPostDetail.happenPlace)
-          : formData.append("happenPlace", addressDiv.innerHTML);
-      }
-      {
-        addressLatDiv.innerHTML == ""
-          ? formData.append("happenLatitude", missingPostDetail.happenLatitude)
-          : formData.append("happenLatitude", addressLatDiv.innerHTML);
-      }
-      {
-        addressLngDiv.innerHTML == ""
-          ? formData.append(
-              "happenLongitude",
-              missingPostDetail.happenLongitude
-            )
-          : formData.append("happenLongitude", addressLngDiv.innerHTML);
-      }
-      {
-        selectedDate == ""
-          ? formData.append("happenDt", missingPostDetail.happenDt)
-          : formData.append("happenDt", selectedDate);
-      }
-      formData.append("happenHour", time);
-      {
-        data.characteristic == ""
-          ? formData.append("specialMark", missingPostDetail.characteristic)
-          : formData.append("specialMark", data.characteristic);
-      }
-      {
-        data.memo == ""
-          ? formData.append("content", missingPostDetail.memo)
-          : formData.append("content", data.memo);
-      }
-      {
-        data.money == ""
-          ? formData.append("gratuity", missingPostDetail.money)
-          : formData.append("gratuity", data.money);
-      }
-      {
-        data.number == ""
-          ? formData.append("contact", missingPostDetail.number)
-          : formData.append("contact", data.number);
-      }
+    const formData = new FormData();
+    formData.append("postType", "MISSING");
+    formData.append("upkind", typeID);
+    formData.append("sexCd", currentGenderEnValue);
+    formData.append("neuterYn", currentNeuteredEnValue);
+    {
+      data.animalName == ""
+        ? formData.append("petName", missingPostDetail.petName)
+        : formData.append("petName", data.animalName);
+    }
+    {
+      data.animaltypes == ""
+        ? formData.append("kindCd", missingPostDetail.kindCd)
+        : formData.append("kindCd", data.animaltypes);
+    }
+    {
+      data.animalAge == ""
+        ? formData.append("age", missingPostDetail.age)
+        : formData.append("age", data.animalAge);
+    }
+    {
+      data.animalkg == ""
+        ? formData.append("weight", missingPostDetail.weight)
+        : formData.append("weight", data.animalkg);
+    }
+    {
+      data.animalcolor == ""
+        ? formData.append("colorCd", missingPostDetail.colorCd)
+        : formData.append("colorCd", data.animalcolor);
+    }
+    {
+      addressDiv.innerHTML == ""
+        ? formData.append("happenPlace", missingPostDetail.happenPlace)
+        : formData.append("happenPlace", addressDiv.innerHTML);
+    }
+    {
+      addressLatDiv.innerHTML == ""
+        ? formData.append("happenLatitude", missingPostDetail.happenLatitude)
+        : formData.append("happenLatitude", addressLatDiv.innerHTML);
+    }
+    {
+      addressLngDiv.innerHTML == ""
+        ? formData.append("happenLongitude", missingPostDetail.happenLongitude)
+        : formData.append("happenLongitude", addressLngDiv.innerHTML);
+    }
+    {
+      selectedDate == ""
+        ? formData.append("happenDt", missingPostDetail.happenDt)
+        : formData.append("happenDt", selectedDate);
+    }
+    formData.append("happenHour", time);
+    {
+      data.characteristic == ""
+        ? formData.append("specialMark", missingPostDetail.characteristic)
+        : formData.append("specialMark", data.characteristic);
+    }
+    {
+      data.memo == ""
+        ? formData.append("content", missingPostDetail.memo)
+        : formData.append("content", data.memo);
+    }
+    {
+      data.money == ""
+        ? formData.append("gratuity", missingPostDetail.money)
+        : formData.append("gratuity", data.money);
+    }
+    {
+      data.number == ""
+        ? formData.append("contact", missingPostDetail.number)
+        : formData.append("contact", data.number);
+    }
 
-      imageFormData.map((img) => {
-        formData.append("postImages", img);
-      });
+    imageFormData.map((img) => {
+      formData.append("postImages", img);
+    });
 
-      for (let value of formData.values()) {
-        console.log(value);
+    for (let value of formData.values()) {
+      console.log(value);
+    }
+
+    toggleModal();
+    const number = missingPostDetail.id;
+    dispatch(__PutMissingposts({ formData, number })).then((response) => {
+      if (response.type === "putmissingposts/fulfilled") {
+        console.log("성공");
+        // 바로 이동시키기
+        setEditMsg("수정 성공!");
+        setTimeout(function () {
+          navigate(`/missingdetail/${missingPostDetail.id}`);
+        }, 1000);
+      } else {
+        console.log("실패");
+        setEditMsg("수정 실패..ㅠ");
       }
-
-      toggleModal();
-      const number = missingPostDetail.id;
-      dispatch(__PutMissingposts({ formData, number })).then((response) => {
-        if (response.type === "putmissingposts/fulfilled") {
-          console.log("성공");
-          // 바로 이동시키기
-          setEditMsg("수정 성공!");
-          setTimeout(function () {
-            navigate(`/missingdetail/${missingPostDetail.id}`);
-          }, 1000);
-        } else {
-          console.log("실패");
-          setEditMsg("수정 실패..ㅠ");
-        }
-      });
-    
+    });
   };
 
+  const SelecteKind = missingPostDetail.upkind;
+  const selecteHour = missingPostDetail.happenHour;
   return (
     <Layout>
       <ReportMissingContainer
@@ -292,6 +290,7 @@ const EditMissing = () => {
                   data={NameValue}
                   onChangeData={onChangeData}
                   onChangeID={onChangeID}
+                  selectedValue={SelecteKind}
                 />
               </div>
               <div>
@@ -452,6 +451,7 @@ const EditMissing = () => {
                 data={TimeValue}
                 onChangeData={onChangeTimeData}
                 onChangeID={onChangeTimeValeu}
+                selectedValue={selecteHour}
               />
             </div>
           </div>
@@ -531,6 +531,14 @@ const EditMissing = () => {
             <ReportAnimalPictureInput onClick={() => imageRef.click()}>
               <h3>+</h3>
             </ReportAnimalPictureInput>
+            {/* 기존이미지 넣기  */}
+            {/* {missingPostDetail.postImages !== "" ? (
+              <img
+                src={missingPostDetail.postImages[0].imageURL}
+                style={{ width: "2rem", height: "2rem" }}
+              />
+            ) : null} */}
+
             {showImages.length === 0 ? (
               <ReportAnimalPicturePreview>
                 <div>

@@ -8,7 +8,7 @@ import {
 import { SeletegenderArr, seleteneuteredArr } from "./data";
 
 const SeleteTab = ({ onChangeGender, onChangeNeutered, tabValue }) => {
-  console.log(tabValue);
+  // console.log(tabValue);
 
   const [currentGenderTab, setCurrentGenderTab] = useState(2);
   const [currentNeuteredTab, setCurrentNeuteredTab] = useState(2);
