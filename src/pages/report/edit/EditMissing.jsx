@@ -69,7 +69,7 @@ const EditMissing = () => {
 
   // 종류데이터
   const [type, setType] = useState(NameValue[0].name);
-  const [typeID, setTypeID] = useState("DOG");
+  const [typeID, setTypeID] = useState(missingPostDetail.upkind);
 
   // 셀렉트도직
   const onChangeData = (newData) => {
@@ -78,16 +78,22 @@ const EditMissing = () => {
   const onChangeID = (newValue) => {
     setTypeID(newValue);
   };
-
-  const [time, setTime] = useState(TimeValue[0].name);
+  // 눈에 보여줄 값
+  const [time, setTime] = useState(missingPostDetail.happenHour);
   const onChangeTimeData = (newData) => {
     setTime(newData);
   };
 
   // 탭 로직
-  const [currentGenderEnValue, setCurrentGenderEnValue] = useState("MALE");
-  const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState("YES");
-  const [currentNinkNameEnValue, setCurrentNinkNameEnValue] = useState("true");
+  const [currentGenderEnValue, setCurrentGenderEnValue] = useState(
+    missingPostDetail.sexCd
+  );
+  const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState(
+    missingPostDetail.neuterYn
+  );
+  const [currentNinkNameEnValue, setCurrentNinkNameEnValue] = useState(
+    missingPostDetail.openNickname
+  );
 
   const onChangeGender = (newData) => {
     setCurrentGenderEnValue(newData);
@@ -99,16 +105,16 @@ const EditMissing = () => {
     setCurrentNinkNameEnValue(newData);
   };
 
-  const [selectedDate, setSelectedDate] = useState("");
-  const currentDate = new Date().toISOString().split("T")[0];
-  const handleDateChange = (e) => {
-    setSelectedDate(e.target.value);
-  };
-
   const tabValue = {
     GenderNum: missingPostDetail.sexCd,
     neuterYn: missingPostDetail.neuterYn,
     ninkCheck: missingPostDetail.openNickname,
+  };
+
+  const [selectedDate, setSelectedDate] = useState(missingPostDetail.upkind);
+  const currentDate = new Date().toISOString().split("T")[0];
+  const handleDateChange = (e) => {
+    setSelectedDate(e.target.value);
   };
 
   const onChangeTimeValeu = () => {};
@@ -118,7 +124,6 @@ const EditMissing = () => {
   // 좌표값들
   const addressLatDiv = document.getElementById("addressLat");
   const addressLngDiv = document.getElementById("addressLng");
-
   // 사진 로직
   // 올린 이미지 담을 관리하는 State
   const [showImages, setShowImages] = useState([]);
@@ -152,37 +157,20 @@ const EditMissing = () => {
     setImageFormData("");
   };
 
-  // 입력값에 따라 버튼 활성화
-  const [isActive, setIsActive] = useState(false);
-  useEffect(() => {
-    if (
-      watch("animaltypes") !== "" &&
-      watch("animalName") !== "" &&
-      watch("animaltypes") !== "" &&
-      watch("animalAge") !== "" &&
-      watch("animalkg") !== "" &&
-      watch("address") !== "" &&
-      watch("animalcolor") !== "" &&
-      addressDiv?.innerHTML !== "" &&
-      selectedDate !== ""
-    ) {
-      //   console.log('성공')
-      setIsActive(false);
-    } else {
-      //  console.log('실패')
-      setIsActive(true);
-    }
-  }, [watch()]);
-
   // 통신결과에따라 보여줄 로딩창
   const [editMsg, setEditMsg] = useState("");
 
   const onSubmitEditMissingHandler = (data) => {
     const formData = new FormData();
     formData.append("postType", "MISSING");
+    // 셀릭트 값을 건딜지않았다면 처리 로직 구현
+
     formData.append("upkind", typeID);
+
     formData.append("sexCd", currentGenderEnValue);
     formData.append("neuterYn", currentNeuteredEnValue);
+    formData.append("openNickname", currentNinkNameEnValue);
+
     {
       data.animalName == ""
         ? formData.append("petName", missingPostDetail.petName)
@@ -228,6 +216,7 @@ const EditMissing = () => {
         ? formData.append("happenDt", missingPostDetail.happenDt)
         : formData.append("happenDt", selectedDate);
     }
+
     formData.append("happenHour", time);
     {
       data.characteristic == ""
@@ -249,15 +238,14 @@ const EditMissing = () => {
         ? formData.append("contact", missingPostDetail.contact)
         : formData.append("contact", data.number);
     }
-    formData.append("openNickname", currentNinkNameEnValue);
 
     imageFormData.map((img) => {
       formData.append("postImages", img);
     });
 
-    // for (let value of formData.values()) {
-    //   console.log(value);
-    // }
+    for (let value of formData.values()) {
+      console.log(value);
+    }
 
     toggleModal();
     const number = missingPostDetail.id;

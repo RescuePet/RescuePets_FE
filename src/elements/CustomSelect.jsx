@@ -8,7 +8,7 @@ export const CustomSelect = ({
   onChangeID,
   selectedValue,
 }) => {
-  console.log(selectedValue);
+  // console.log(selectedValue);
   const [currentValue, setCurrentValue] = useState(data[0].name);
 
   useEffect(() => {
