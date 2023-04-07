@@ -10,6 +10,12 @@ export const seleteneuteredArr = [
   { neutered: "모름", value: "UNKNOWN" },
 ];
 
+export const openNickname = [
+  { boolean: "공개", value: "true" },
+  { boolean: "비공개", value: "false" },
+]
+
+
 export const NameValue = [
   { id: 0, name: "강아지",  value: "DOG" },
   { id: 1, name: "고양이",  value: "CAT" },
@@ -42,3 +48,4 @@ export const TimeValue = [
   { id: 22, name: "10:00", value: "10시" },
   { id: 23, name: "11:00", value: "11시" },
 ];
+

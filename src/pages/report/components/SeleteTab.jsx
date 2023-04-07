@@ -4,14 +4,22 @@ import {
   ReportAnimalInfoCheckBox,
   ReportAnimalInfoCheckBoxTitle,
   ReportAnimalInfoCheckBoxSelete,
+  ReportAnimalTabBox,
 } from "./reportstyle";
-import { SeletegenderArr, seleteneuteredArr } from "./data";
+import { SeletegenderArr, seleteneuteredArr, openNickname } from "./data";
 
-const SeleteTab = ({ onChangeGender, onChangeNeutered, tabValue }) => {
+const SeleteTab = ({
+  onChangeGender,
+  onChangeNeutered,
+  onChangeNickname,
+  tabValue,
+}) => {
   // console.log(tabValue);
+  console.log(openNickname);
 
   const [currentGenderTab, setCurrentGenderTab] = useState(2);
   const [currentNeuteredTab, setCurrentNeuteredTab] = useState(2);
+  const [currentNicknameTab, setCurrentNicknameTab] = useState(0);
 
   useEffect(() => {
     if (tabValue?.GenderNum == "MALE") {
@@ -43,9 +51,15 @@ const SeleteTab = ({ onChangeGender, onChangeNeutered, tabValue }) => {
     setCurrentNeuteredTab(index);
     onChangeNeutered(seleteneuteredArr[index].value);
   };
+
+  const selectNicknameHandler = (index) => {
+    setCurrentNicknameTab(index);
+    onChangeNickname(openNickname[index].value);
+  };
+
   return (
     <>
-      <ReportAnimalInfoBox>
+      <ReportAnimalTabBox>
         <ReportAnimalInfoCheckBox>
           <ReportAnimalInfoCheckBoxTitle>
             <p>성별</p>
@@ -83,7 +97,26 @@ const SeleteTab = ({ onChangeGender, onChangeNeutered, tabValue }) => {
             ))}
           </ReportAnimalInfoCheckBoxSelete>
         </ReportAnimalInfoCheckBox>
-      </ReportAnimalInfoBox>
+
+        <ReportAnimalInfoCheckBox>
+          <ReportAnimalInfoCheckBoxTitle>
+            <p>닉네임 공개</p>
+          </ReportAnimalInfoCheckBoxTitle>
+          <ReportAnimalInfoCheckBoxSelete>
+            {openNickname.map((el, index) => (
+              <li
+                key={index}
+                className={
+                  index === currentNicknameTab ? "submenu focused" : "submenu"
+                }
+                onClick={() => selectNicknameHandler(index)}
+              >
+                {el.boolean}
+              </li>
+            ))}
+          </ReportAnimalInfoCheckBoxSelete>
+        </ReportAnimalInfoCheckBox>
+      </ReportAnimalTabBox>
     </>
   );
 };

@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
+import styled from "styled-components";
+import Header from "./components/Header";
 import { FloatingPetwork } from "./components/FloatingPetwork";
 import missingmarker from "../../asset/marker/missingmarker.png";
 import catchmarker from "../../asset/marker/catchmarker.png";
@@ -322,27 +324,30 @@ const KakaoMap = () => {
 
   // console.log("값지워야함",newCatchData)
   return isLoading === true ? (
-    <div
-      id="myMap"
-      style={{ width: "100%", height: "90vh", position: "relative" }}
-    >
+    <MyMap id="myMap">
       <Spinner />
       <FloatingPetwork />
-    </div>
+    </MyMap>
   ) : (
-    <div
-      id="myMap"
-      style={{ width: "100%", height: "90vh", position: "relative" }}
-    >
-      <MarkerModal
-        isOpen={loginModal}
-        toggle={toggleModal}
-        onClose={toggleModal}
-        data={newCatchData}
-      ></MarkerModal>
-      <FloatingPetwork />
-    </div>
+    <>
+      <Header />
+      <MyMap id="myMap">
+        <MarkerModal
+          isOpen={loginModal}
+          toggle={toggleModal}
+          onClose={toggleModal}
+          data={newCatchData}
+        ></MarkerModal>
+        <FloatingPetwork />
+      </MyMap>
+    </>
   );
 };
 
 export default KakaoMap;
+
+const MyMap = styled.div`
+  position: relative;
+  width: 100%;
+  height: 90vh;
+`;

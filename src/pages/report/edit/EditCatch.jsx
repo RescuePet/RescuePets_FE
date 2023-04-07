@@ -255,14 +255,17 @@ const EditCatch = () => {
         setEditMsg("수정 실패..ㅠ");
       }
     });
-  };
+  };          
 
   const SelecteKind = missingPostDetail.upkind;
   const selecteHour = missingPostDetail.happenHour;
-
+  
+    
   return (
     <Layout>
-      <ReportMissingContainer onSubmit={handleSubmit(onSubmitEditCatchHandler)}>
+      <ReportMissingContainer
+        onSubmit={handleSubmit(onSubmitEditCatchHandler)}
+      >
         {/* 컴포넌트  */}
         <Header>내 목격 글 수정 </Header>
 
@@ -311,6 +314,7 @@ const EditCatch = () => {
             onChangeNeutered={onChangeNeutered}
             tabValue={tabValue}
           />
+
           <ReportAnimalInfoBox>
             <ReportAnimalInfoBoxColumn>
               <ReportAnimalInfoBoxColumnRow>
@@ -387,7 +391,7 @@ const EditCatch = () => {
                 <span>{errors?.animalcolor?.message}</span>
               </ReportAnimalInfoBoxColumnColumn>
             </ReportAnimalInfoBoxColumn>
-          </ReportAnimalInfoBox>{" "}
+          </ReportAnimalInfoBox>
         </ReportAnimalInfoArea>
 
         <EditLocation data={missingPostDetail} />

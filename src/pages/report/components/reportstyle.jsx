@@ -14,7 +14,7 @@ export const ReportMissingContainer = styled.form`
 export const ReportSightingContainer = styled.form`
   width: 100%;
   height: 72rem;
-  padding-top: 30px;
+  /* padding-top: 30px; */
   ${FlexAttribute("column", "", "center")}
   gap: .625rem 0;
 `;
@@ -33,7 +33,7 @@ export const ReportHeader = styled.div`
     width: 33.3%;
     ${(props) => props.theme.FlexCenter}
     ${(props) => props.theme.Title_700_18}
-    >img{
+    >img {
       cursor: pointer;
     }
   }
@@ -41,8 +41,13 @@ export const ReportHeader = styled.div`
 
 export const ReportAnimalInfoArea = styled.div`
   width: 20.9375rem;
-  height: 23rem;
+  height: 28.125rem;
   margin: 0 auto;
+`;
+
+export const ReportAnimalTabBox = styled.div`
+  width: 100%;
+  height: 12.5rem;
 `;
 
 export const ReportAnimalInfoBox = styled.div`
@@ -63,6 +68,7 @@ export const ReportanimaltypesSelect = styled.div`
   width: 20.9375rem;
   height: 3.75rem;
   display: flex;
+
   > div {
     position: relative;
     width: 50%;
@@ -86,9 +92,10 @@ export const ReportanimaltypesSelect = styled.div`
 
 export const ReportAnimalInfoCheckBox = styled.div`
   width: 100%;
-  height: 50%;
+  height: 33.3%;
   ${(props) => props.theme.FlexColumn}
 `;
+
 export const ReportAnimalInfoCheckBoxTitle = styled.div`
   width: 100%;
   height: 20%;

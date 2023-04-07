@@ -9,8 +9,8 @@ import imageCompression from "browser-image-compression";
 import { CustomSelect } from "../../elements/CustomSelect";
 import SeleteTab from "./components/SeleteTab";
 import {
-  ReportSightingContainer,
-  ReportHeader,
+  ReportMissingContainer,
+  ReportanimaltypesBox,
   ReportAnimalInfoArea,
   ReportAnimalInfoBox,
   ReportAnimalInfoBoxColumn,
@@ -59,7 +59,6 @@ const Catch = () => {
     setPostNumber(data);
   }, [catchNumber]);
 
-
   // 커스텀 셀렉트 파트부분
   const [type, setType] = useState(NameValue[0].name);
   const [typeID, setTypeID] = useState("DOG");
@@ -79,6 +78,7 @@ const Catch = () => {
 
   const [currentGenderEnValue, setCurrentGenderEnValue] = useState("MALE");
   const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState("YES");
+  const [currentNinkNameEnValue, setCurrentNinkNameEnValue] = useState("true");
 
   const onChangeGender = (newData) => {
     setCurrentGenderEnValue(newData);
@@ -86,13 +86,14 @@ const Catch = () => {
   const onChangeNeutered = (newData) => {
     setCurrentNeuteredEnValue(newData);
   };
+  const onChangeNickname = (newData) => {
+    setCurrentNinkNameEnValue(newData);
+  };
+
   const tabValue = {
     GenderNum: null,
     neuterYn: null,
   };
-
-  // console.log("최신값성별 :",currentGenderEnValue)
-  // console.log("최신값중성화:",currentNeuteredEnValue)
 
   // 사진 로직
   const [showImages, setShowImages] = useState([]);
@@ -198,25 +199,29 @@ const Catch = () => {
       formData.append("happenHour", time);
       formData.append("specialMark", data.characteristic);
       formData.append("content", data.memo);
-      formData.append("gratuity", data.money);
-      formData.append("contact", data.number);
+      // formData.append("gratuity", data.money);
+      // formData.append("contact", data.number);
+      formData.append("openNickname", currentNinkNameEnValue);
       imageFormData.map((img) => {
         formData.append("postImages", img);
       });
+      // for (let value of formData.values()) {
+      //   console.log(value);
+      // }
       dispatch(__PostCatchData(formData));
       toggleModal();
-      reset();
+      // reset();
     }
   };
 
   return (
     <Layout>
-      <ReportSightingContainer onSubmit={handleSubmit(onSubmitSightingHanlder)}>
+      <ReportMissingContainer onSubmit={handleSubmit(onSubmitSightingHanlder)}>
         <Header>목격 글 작성하기</Header>
+
         <ReportAnimalInfoArea>
-          <ReportAnimalInfoBox>
+          <ReportanimaltypesBox>
             <ReportanimaltypesTitle>동물정보</ReportanimaltypesTitle>
-            {/* 동물정보 종류, 품종 */}
             <ReportanimaltypesSelect>
               <div>
                 <p>종류*</p>
@@ -226,7 +231,6 @@ const Catch = () => {
                   onChangeID={onChangeID}
                 />
               </div>
-
               <div>
                 <p>품종*</p>
                 <ReportInput
@@ -253,92 +257,94 @@ const Catch = () => {
                 <span>{errors?.animaltypes?.message}</span>
               </div>
             </ReportanimaltypesSelect>
+          </ReportanimaltypesBox>
 
-            <SeleteTab
-              onChangeGender={onChangeGender}
-              onChangeNeutered={onChangeNeutered}
-              tabValue={tabValue}
-            />
+          <SeleteTab
+            onChangeGender={onChangeGender}
+            onChangeNeutered={onChangeNeutered}
+            onChangeNickname={onChangeNickname}
+            tabValue={tabValue}
+          />
 
-            <ReportAnimalInfoBox>
-              <ReportAnimalInfoBoxColumn>
-                <ReportAnimalInfoBoxColumnRow>
-                  <p>추정나이(살)*</p>
-                  <ReportInput
-                    type="text"
-                    placeholder="입력하기"
-                    {...register("animalAge", {
-                      required: true,
-                      pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
-                      maxLength: {
-                        value: 3,
-                        message: "숫자만 입력! 3자리수 이하로 작성",
-                      },
-                    })}
-                  />
-                  <img
-                    src={cancel}
-                    onClick={() => {
-                      onClickDeleteValue("animalAge");
-                    }}
-                  />
-                  <span>{errors?.animalAge?.message}</span>
-                </ReportAnimalInfoBoxColumnRow>
+          <ReportAnimalInfoBox>
+            <ReportAnimalInfoBoxColumn>
+              <ReportAnimalInfoBoxColumnRow>
+                <p>추정나이(살)*</p>
+                <ReportInput
+                  type="text"
+                  placeholder="입력하기"
+                  {...register("animalAge", {
+                    required: true,
+                    pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
+                    maxLength: {
+                      value: 3,
+                      message: "숫자만 입력! 3자리수 이하로 작성",
+                    },
+                  })}
+                />
+                <img
+                  src={cancel}
+                  onClick={() => {
+                    onClickDeleteValue("animalAge");
+                  }}
+                />
+                <span>{errors?.animalAge?.message}</span>
+              </ReportAnimalInfoBoxColumnRow>
 
-                <ReportAnimalInfoBoxColumnRow>
-                  <p>추정체중(Kg)*</p>
-                  <ReportInput
-                    type="text"
-                    placeholder="입력하기"
-                    {...register("animalkg", {
-                      required: false,
-                      pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
-                      maxLength: {
-                        value: 3,
-                        message: "숫자만 입력! 3자리수 이하로 작성",
-                      },
-                    })}
-                  />
-                  <img
-                    src={cancel}
-                    onClick={() => {
-                      onClickDeleteValue("animalkg");
-                    }}
-                  />
-                  <span>{errors?.animalkg?.message}</span>
-                </ReportAnimalInfoBoxColumnRow>
-              </ReportAnimalInfoBoxColumn>
+              <ReportAnimalInfoBoxColumnRow>
+                <p>추정체중(Kg)*</p>
+                <ReportInput
+                  type="text"
+                  placeholder="입력하기"
+                  {...register("animalkg", {
+                    required: false,
+                    pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
+                    maxLength: {
+                      value: 3,
+                      message: "숫자만 입력! 3자리수 이하로 작성",
+                    },
+                  })}
+                />
+                <img
+                  src={cancel}
+                  onClick={() => {
+                    onClickDeleteValue("animalkg");
+                  }}
+                />
+                <span>{errors?.animalkg?.message}</span>
+              </ReportAnimalInfoBoxColumnRow>
+            </ReportAnimalInfoBoxColumn>
 
-              <ReportAnimalInfoBoxColumn>
-                <ReportAnimalInfoBoxColumnColumn>
-                  <p>색상*</p>
-                  <ReportLgInput
-                    type="text"
-                    placeholder="입력하기"
-                    {...register("animalcolor", {
-                      required: true,
-                      pattern: {
-                        value: /^[가-힣\s]+$/,
-                        message: "한글만 2 ~ 8글자 사이로 입력 ",
-                      },
-                      maxLength: {
-                        value: 8,
-                        message: "8글자 이하이어야 합니다.",
-                      },
-                    })}
-                  />
-                  <img
-                    src={cancel}
-                    onClick={() => {
-                      onClickDeleteValue("animalcolor");
-                    }}
-                  />
-                  <span>{errors?.animalcolor?.message}</span>
-                </ReportAnimalInfoBoxColumnColumn>
-              </ReportAnimalInfoBoxColumn>
-            </ReportAnimalInfoBox>
+            <ReportAnimalInfoBoxColumn>
+              <ReportAnimalInfoBoxColumnColumn>
+                <p>색상*</p>
+                <ReportLgInput
+                  type="text"
+                  placeholder="입력하기"
+                  {...register("animalcolor", {
+                    required: true,
+                    pattern: {
+                      value: /^[가-힣\s]+$/,
+                      message: "한글만 2 ~ 8글자 사이로 입력 ",
+                    },
+                    maxLength: {
+                      value: 8,
+                      message: "8글자 이하이어야 합니다.",
+                    },
+                  })}
+                />
+                <img
+                  src={cancel}
+                  onClick={() => {
+                    onClickDeleteValue("animalcolor");
+                  }}
+                />
+                <span>{errors?.animalcolor?.message}</span>
+              </ReportAnimalInfoBoxColumnColumn>
+            </ReportAnimalInfoBoxColumn>
           </ReportAnimalInfoBox>
         </ReportAnimalInfoArea>
+
         <Location />
         <ReportAnimalDayBox>
           <p>목격일시 *</p>
@@ -362,6 +368,7 @@ const Catch = () => {
             </div>
           </div>
         </ReportAnimalDayBox>
+
         <ReportAnimalSignificantBox>
           <ReportAnimalSignificantBoxTitle>
             <p> 특이사항 </p>
@@ -419,11 +426,11 @@ const Catch = () => {
             </div>
           </ReportAnimalSignificantBoxInputArea>
         </ReportAnimalSignificantBox>
+
         <ReportAnimalPictureArea>
           <ReportAnimalPictureAreaTitle>
-            <p>사진첨부*</p>
+            <p>사진첨부</p>
           </ReportAnimalPictureAreaTitle>
-
           <ReportAnimalPictureAreaInputBox>
             <input
               type="file"
@@ -437,12 +444,11 @@ const Catch = () => {
             <ReportAnimalPictureInput onClick={() => imageRef.click()}>
               <h3>+</h3>
             </ReportAnimalPictureInput>
-            {showImages === "" ? (
+            {showImages.length === 0 ? (
               <ReportAnimalPicturePreview>
                 <div>
                   <img src={imgdelete} />
                 </div>
-                프리뷰2
               </ReportAnimalPicturePreview>
             ) : (
               <>
@@ -451,7 +457,7 @@ const Catch = () => {
                     <PreviewImage src={image} alt={`${image}-${index}`} />
                     <div
                       onClick={() => {
-                        onClickDeleteHandler();
+                        onClickDeleteHandler(index);
                       }}
                     >
                       <img src={imgdelete} />
@@ -462,6 +468,7 @@ const Catch = () => {
             )}
           </ReportAnimalPictureAreaInputBox>
         </ReportAnimalPictureArea>
+
         {isActive === true ? (
           <Button type="submit" disable assistiveFillButton>
             작성 완료
@@ -479,7 +486,7 @@ const Catch = () => {
             data={postNumber}
           ></PostModal>
         )}
-      </ReportSightingContainer>
+      </ReportMissingContainer>
     </Layout>
   );
 };
