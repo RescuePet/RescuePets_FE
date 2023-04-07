@@ -167,6 +167,12 @@ const SightingDetail = () => {
     },
   ];
 
+  const reportSetting = {
+    type: "post",
+    nickname: catchPostDetail.nickname,
+    postId: id,
+  };
+
   return (
     <Layout>
       <ScrollToTop />
@@ -260,7 +266,7 @@ const SightingDetail = () => {
           }
         />
       )}
-      {reportState && <ReportModal />}
+      {reportState && <ReportModal setting={reportSetting} />}
     </Layout>
   );
 };

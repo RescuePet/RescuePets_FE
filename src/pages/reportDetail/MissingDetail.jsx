@@ -171,6 +171,12 @@ const MissingDetail = () => {
     },
   ];
 
+  const reportSetting = {
+    type: "post",
+    nickname: missingPostDetail.nickname,
+    postId: id,
+  };
+
   return (
     <Layout>
       <ScrollToTop />
@@ -271,7 +277,7 @@ const MissingDetail = () => {
           }
         />
       )}
-      {reportState && <ReportModal />}
+      {reportState && <ReportModal setting={reportSetting} />}
     </Layout>
   );
 };

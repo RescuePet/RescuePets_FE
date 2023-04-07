@@ -10,19 +10,16 @@ import { CustomSelect } from "../elements/CustomSelect";
 
 const ReportModal = ({ setting }) => {
   const reportOption = [
-    { id: 0, name: "부적절한 단어", value: "부적절한 단어" },
+    { id: 0, name: "부적절한단어", value: "부적절한단어" },
     { id: 1, name: "거짓정보", value: "거짓정보" },
     { id: 2, name: "신체노출", value: "신체노출" },
     { id: 3, name: "기타", value: "기타" },
   ];
 
   const [type, setType] = useState(reportOption[0].name);
-  const [typeID, setTypeID] = useState("부적절한 단어");
+  const [typeID, setTypeID] = useState("부적절한단어");
   const { register, handleSubmit, reset } = useForm();
   const dispatch = useDispatch();
-
-  console.log("type", type);
-  console.log("typeID", typeID);
 
   const onChangeData = (newData) => {
     setType(newData);
@@ -32,19 +29,24 @@ const ReportModal = ({ setting }) => {
     setTypeID(newData);
   };
 
-  const submitPostReport = async () => {
+  const submitPostReport = async (payload) => {
     const data = {
-      content: null,
-      postId: null,
+      content: payload.reason,
+      postId: Number(setting.postId),
       commentId: 0,
       reportCode: typeID,
     };
     try {
       console.log("request data", data);
-      const response = await instance.post(`/api/report/member`, data);
+      const response = await instance.post(`/api/report/post`, data);
       console.log(response);
+      if (response.status === 200) {
+        alert("신고가 완료되었습니다.");
+      }
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 409) {
+        alert("이미 신고하였습니다.");
+      }
     }
   };
 
@@ -56,11 +58,15 @@ const ReportModal = ({ setting }) => {
       reportCode: typeID,
     };
     try {
-      console.log("request data", data);
-      const response = await instance.post(`/api/report/member`, data);
-      console.log(response);
+      const response = await instance.post(`/api/report/comment`, data);
+      console.log("response", response);
+      if (response.status === 200) {
+        alert("신고가 완료되었습니다.");
+      }
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 409) {
+        alert("이미 신고하였습니다.");
+      }
     }
   };
 
@@ -75,14 +81,30 @@ const ReportModal = ({ setting }) => {
       console.log("request data", data);
       const response = await instance.post(`/api/report/member`, data);
       console.log(response);
+      if (response.status === 200) {
+        alert("신고가 완료되었습니다.");
+      }
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 409) {
+        alert("이미 신고하였습니다.");
+      }
     }
   };
 
   const submitHandler = (payload) => {
-    if (setting.type === "member") {
+    console.log(payload.reason);
+    if (payload.reason === "") {
+      alert("내용을 작성해주세요");
+      return;
+    }
+    if (setting.type === "post") {
+      console.log("게시물 신고");
+      submitPostReport(payload);
+      dispatch(toggleReport());
+      reset();
+    } else if (setting.type === "member") {
       submitMemberReport(payload);
+      dispatch(toggleReport());
       reset();
     }
   };

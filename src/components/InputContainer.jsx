@@ -80,6 +80,7 @@ const ChatFooter = styled.div`
   ${FlexAttribute("row", "space-around", "center")}
   width: 26.875rem;
   height: auto;
+  min-height: 76px;
   position: fixed;
   bottom: 0;
   padding-top: 1rem;
