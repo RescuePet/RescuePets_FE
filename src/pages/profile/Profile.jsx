@@ -62,7 +62,6 @@ const Profile = () => {
     <Layout>
       <ProfileHeader>
         <HeaderImage>
-          {" "}
           <img src={profileHeader} alt="proflieheader" />
         </HeaderImage>
         <HeaderHamburgermenu>

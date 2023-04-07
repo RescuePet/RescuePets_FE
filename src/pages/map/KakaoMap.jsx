@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
+import Header from "./components/Header";
 import { FloatingPetwork } from "./components/FloatingPetwork";
 import missingmarker from "../../asset/marker/missingmarker.png";
 import catchmarker from "../../asset/marker/catchmarker.png";
@@ -328,15 +329,18 @@ const KakaoMap = () => {
       <FloatingPetwork />
     </MyMap>
   ) : (
-    <MyMap id="myMap">
-      <MarkerModal
-        isOpen={loginModal}
-        toggle={toggleModal}
-        onClose={toggleModal}
-        data={newCatchData}
-      ></MarkerModal>
-      <FloatingPetwork />
-    </MyMap>
+    <>
+      <Header />
+      <MyMap id="myMap">
+        <MarkerModal
+          isOpen={loginModal}
+          toggle={toggleModal}
+          onClose={toggleModal}
+          data={newCatchData}
+        ></MarkerModal>
+        <FloatingPetwork />
+      </MyMap>
+    </>
   );
 };
 
