@@ -74,12 +74,12 @@ export const AlertMessageCountStyle = css`
   padding-top: 2.4px;
   width: 1rem;
   height: 1rem;
-  background-color: black;
+  background-color: ${(props) => props.theme.color.primary_normal};
   font-weight: 500;
   font-size: 0.625rem;
   line-height: 0.75rem;
   text-align: center;
-  color: white;
+  color: ${(props) => props.theme.color.white};
 `;
 
 export const FooterStyle = css`

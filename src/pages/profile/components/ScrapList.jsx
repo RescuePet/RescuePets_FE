@@ -38,7 +38,7 @@ const ScrapList = ({ item }) => {
       refineData.URL = "missingdetail";
     } else if (item.state === "목격") {
       refineData.category = item.state;
-      refineData.URL = "sightingdetail";
+      refineData.URL = "catchdetail";
     }
     if (item.sexCd === "SEX_MALE" || item.sexCd === "M") {
       refineData.sexCd = male;

@@ -1,6 +1,22 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { instance } from "../../utils/api";
 
+// Post missing
+export const __PostMissingData = createAsyncThunk(
+  "postMissingData",
+  async (payload, thunkAPI) => {
+    console.log(payload);
+    try {
+      const response = await instance.post("/api/post/", payload);
+      console.log(response);
+      console.log(response.data.data.id);
+      return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+);
+
 // Get missing post
 export const __getMissingPost = createAsyncThunk(
   "getMissingPost",
@@ -24,6 +40,21 @@ export const __getMissingPostDetail = createAsyncThunk(
       const response = await instance.get(`/api/post/${payload}`);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
+// Post catch
+export const __PostCatchData = createAsyncThunk(
+  "postgetCatchData",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await instance.post("/api/post/", payload);
+      console.log(response);
+      return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      console.log(error.response);
       throw new Error(error.response.data.message);
     }
   }
@@ -118,7 +149,22 @@ export const __postCatchScrap = createAsyncThunk(
   }
 );
 
+// Delete Post
+export const __deletePost = createAsyncThunk(
+  "deletePost",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await instance.delete(`/api/post/${payload.id}`);
+      console.log(response);
+      return thunkAPI.fulfillWithValue(payload);
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
 const initialState = {
+  postId: 0,
   error: false,
   loading: false,
   category: "우리집 반려동물을 찾아주세요",
@@ -154,6 +200,24 @@ export const petworkSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(__PostMissingData.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(__PostMissingData.fulfilled, (state, action) => {
+      state.loading = false;
+      state.postId = action.payload.id;
+      state.error = null;
+      state.missingPostLists = [
+        { ...action.payload },
+        ...state.missingPostLists,
+      ];
+    });
+    builder.addCase(__PostMissingData.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
+
     builder
       .addCase(__getMissingPost.fulfilled, (state, action) => {
         if (action.payload.length === 0) {
@@ -177,6 +241,20 @@ export const petworkSlice = createSlice({
       .addCase(__getMissingPostDetail.rejected, (state) => {
         state.error = true;
       });
+
+    builder.addCase(__PostCatchData.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(__PostCatchData.fulfilled, (state, action) => {
+      state.loading = false;
+      state.postId = action.payload.id;
+      state.error = null;
+    });
+    builder.addCase(__PostCatchData.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
 
     builder
       .addCase(__getCatchPost.fulfilled, (state, action) => {
@@ -257,6 +335,31 @@ export const petworkSlice = createSlice({
         }
       })
       .addCase(__postMissingScrap.rejected, (state) => {
+        state.error = true;
+      });
+
+    builder
+      .addCase(__deletePost.fulfilled, (state, action) => {
+        console.log("action payload", action.payload);
+        if (action.payload.type === "missing") {
+          console.log("missing 실행");
+
+          const index = state.missingPostLists.findIndex((item) => {
+            console.log("item id", item.id);
+            console.log("action.payload.id", action.payload.id);
+            return item.id === Number(action.payload.id);
+          });
+          console.log("delete index", index);
+          state.missingPostLists.splice(index, 1);
+        } else if (action.payload.type === "catch") {
+          const index = state.catchPostLists.findIndex(
+            (item) => item.id === Number(action.payload.id)
+          );
+          console.log("delete index", index);
+          state.catchPostLists.splice(index, 1);
+        }
+      })
+      .addCase(__deletePost.rejected, (state) => {
         state.error = true;
       });
   },

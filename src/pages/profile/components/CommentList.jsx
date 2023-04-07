@@ -13,7 +13,7 @@ const CommentList = ({ item }) => {
     if (item.postType === "MISSING") {
       navigate(`/missingdetail/${item.postId}`);
     } else {
-      navigate(`/sightingdetail/${item.postId}`);
+      navigate(`/catchdetail/${item.postId}`);
     }
   };
 

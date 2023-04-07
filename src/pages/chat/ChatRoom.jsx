@@ -134,7 +134,11 @@ const ChatRoom = () => {
           chatlog.map((item, index) => {
             if (item.sender === sender.nickname) {
               return (
-                <Send key={`send-item-${index}`} message={item.message}></Send>
+                <Send
+                  key={`send-item-${index}`}
+                  message={item.message}
+                  chatTime={item.chatTime}
+                ></Send>
               );
             } else {
               return (
@@ -143,6 +147,7 @@ const ChatRoom = () => {
                   message={item.message}
                   receiver={item.sender}
                   receiverImage={item.profileImage}
+                  chatTime={item.chatTime}
                 ></Receive>
               );
             }

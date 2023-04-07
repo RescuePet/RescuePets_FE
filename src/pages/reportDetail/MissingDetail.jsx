@@ -13,6 +13,7 @@ import Location from "./components/Location";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  __deletePost,
   __getMissingPostDetail,
   __postMissingScrap,
 } from "../../redux/modules/petworkSlice";
@@ -35,6 +36,9 @@ import { instance } from "../../utils/api";
 import ScrollToTop from "../../elements/ScrollToTop";
 import Cookies from "js-cookie";
 import { Loading } from "../../components/Loading";
+import { toggleOption, toggleReport } from "../../redux/modules/menubarSlice";
+import Option from "../../components/Option";
+import ReportModal from "../../components/ReportModal";
 
 const MissingDetail = () => {
   const { id } = useParams();
@@ -44,6 +48,7 @@ const MissingDetail = () => {
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
   const { missingComment, editDone } = useSelector((state) => state?.comment);
+  const { optionState, reportState } = useSelector((state) => state.menubar);
 
   console.log(missingPostDetail);
 
@@ -127,7 +132,44 @@ const MissingDetail = () => {
   const MoveData = {
     number: missingPostDetail.id,
     path: "editmissing",
+    handler: () => dispatch(toggleOption()),
   };
+
+  const optionMySetting = [
+    {
+      option: "게시물 수정하기",
+      color: "normal",
+      handler: () => {
+        dispatch(toggleOption());
+        navigate(`/editmissing/${id}`);
+      },
+    },
+    {
+      option: "게시물 삭제하기",
+      color: "report",
+      handler: () => {
+        const payload = {
+          id: id,
+          type: "missing",
+        };
+        dispatch(__deletePost(payload)).then(() => {
+          dispatch(toggleOption());
+          navigate("/petwork");
+        });
+      },
+    },
+  ];
+
+  const optionOtherSetting = [
+    {
+      option: "게시물 신고하기",
+      color: "report",
+      handler: () => {
+        dispatch(toggleOption());
+        dispatch(toggleReport());
+      },
+    },
+  ];
 
   return (
     <Layout>
@@ -220,6 +262,16 @@ const MissingDetail = () => {
         placeholder="댓글을 입력해주세요."
         submitHandler={submitHandler}
       ></InputContainer>
+      {optionState && (
+        <Option
+          setting={
+            missingPostDetail.nickname === userName.nickname
+              ? optionMySetting
+              : optionOtherSetting
+          }
+        />
+      )}
+      {reportState && <ReportModal />}
     </Layout>
   );
 };

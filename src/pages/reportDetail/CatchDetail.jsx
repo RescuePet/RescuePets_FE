@@ -13,6 +13,7 @@ import Location from "./components/Location";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  __deletePost,
   __getCatchPostDetail,
   __postCatchScrap,
 } from "../../redux/modules/petworkSlice";
@@ -34,15 +35,19 @@ import ScrollToTop from "../../elements/ScrollToTop";
 import Cookies from "js-cookie";
 import Memo from "../../asset/Memo";
 import { Loading } from "../../components/Loading";
+import { toggleOption, toggleReport } from "../../redux/modules/menubarSlice";
+import ReportModal from "../../components/ReportModal";
+import Option from "../../components/Option";
 
 const SightingDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userName = JSON.parse(Cookies.get("UserInfo"));
 
   const { catchPostDetail } = useSelector((state) => state.petwork);
   const { catchComment, editDone } = useSelector((state) => state?.comment);
-  const userName = JSON.parse(Cookies.get("UserInfo"));
+  const { optionState, reportState } = useSelector((state) => state.menubar);
 
   useEffect(() => {
     dispatch(__getCatchPostDetail(id));
@@ -123,7 +128,44 @@ const SightingDetail = () => {
   const MoveData = {
     number: catchPostDetail.id,
     path: "editcatch",
+    handler: () => dispatch(toggleOption()),
   };
+
+  const optionMySetting = [
+    {
+      option: "게시물 수정하기",
+      color: "normal",
+      handler: () => {
+        dispatch(toggleOption());
+        navigate(`/editcatch/${id}`);
+      },
+    },
+    {
+      option: "게시물 삭제하기",
+      color: "report",
+      handler: () => {
+        const payload = {
+          id: id,
+          type: "catch",
+        };
+        dispatch(__deletePost(payload)).then(() => {
+          dispatch(toggleOption());
+          navigate("/petwork");
+        });
+      },
+    },
+  ];
+
+  const optionOtherSetting = [
+    {
+      option: "게시물 신고하기",
+      color: "report",
+      handler: () => {
+        dispatch(toggleOption());
+        dispatch(toggleReport());
+      },
+    },
+  ];
 
   return (
     <Layout>
@@ -209,6 +251,16 @@ const SightingDetail = () => {
           }}
         ></FloatingButton>
       )}
+      {optionState && (
+        <Option
+          setting={
+            catchPostDetail.nickname === userName.nickname
+              ? optionMySetting
+              : optionOtherSetting
+          }
+        />
+      )}
+      {reportState && <ReportModal />}
     </Layout>
   );
 };

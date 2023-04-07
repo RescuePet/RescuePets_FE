@@ -72,7 +72,7 @@ const PetworkList = () => {
                 <Card
                   key={`catch-post-${index}`}
                   item={item}
-                  page="sightingdetail"
+                  page="catchdetail"
                 ></Card>
               );
             })}

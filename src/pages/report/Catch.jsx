@@ -32,7 +32,7 @@ import {
   PreviewImage,
 } from "./components/reportstyle";
 import { NameValue, TimeValue } from "./components/data";
-import { __PostCatchData } from "../../redux/modules/catchSlice";
+import { __PostCatchData } from "../../redux/modules/petworkSlice";
 import { useDispatch, useSelector } from "react-redux";
 import imgdelete from "../../asset/imgDelete.svg";
 import { useNavigate } from "react-router-dom";
@@ -45,19 +45,19 @@ const Catch = () => {
   const [loginModal, toggleModal] = useModalState(false);
   const [postNumber, setPostNumber] = useState("");
 
-  const catchNumber = useSelector((state) => {
-    return state.catchData;
+  const { postId } = useSelector((state) => {
+    return state.petwork;
   });
 
   const data = {
-    number: catchNumber?.data,
-    name: "sightingdetail",
+    number: postId,
+    name: "catchdetail",
   };
 
   useEffect(() => {
-    console.log(catchNumber); // console.log(catchNumber.data[0].id)
+    console.log(postId); // console.log(catchNumber.data[0].id)
     setPostNumber(data);
-  }, [catchNumber]);
+  }, [postId]);
 
   // 커스텀 셀렉트 파트부분
   const [type, setType] = useState(NameValue[0].name);

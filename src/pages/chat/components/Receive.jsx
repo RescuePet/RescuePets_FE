@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { FlexAttribute } from "../../../style/Mixin";
 import { Body_400_10, Body_400_14 } from "../../../style/theme";
 
-const Receive = ({ message, receiver, receiverImage }) => {
+const Receive = ({ message, receiver, receiverImage, chatTime }) => {
   console.log("receiverImage", receiverImage);
   return (
     <ReceiveBox>
@@ -12,7 +12,7 @@ const Receive = ({ message, receiver, receiverImage }) => {
         <Receiver>{receiver}</Receiver>
         <ReceiveMessage>
           <ReceiveSpan>{message}</ReceiveSpan>
-          {/* <ReceiveTimeSpan>오후 06:15</ReceiveTimeSpan> */}
+          <ReceiveTimeSpan>{chatTime}</ReceiveTimeSpan>
         </ReceiveMessage>
       </ReceiveText>
     </ReceiveBox>
@@ -73,15 +73,15 @@ const Receiver = styled.span`
 `;
 
 const ReceiveSpan = styled.span`
-  ${Body_400_14}
+  ${Body_400_14};
   color: ${(props) => props.theme.color.white};
 `;
 
 const ReceiveTimeSpan = styled.span`
   position: absolute;
-  right: -2.8125rem;
+  right: -31px;
   bottom: 0.0625rem;
-  ${Body_400_10}
-  color:#CCCCCC;
+  ${Body_400_10};
+  color: #cccccc;
 `;
 export default Receive;

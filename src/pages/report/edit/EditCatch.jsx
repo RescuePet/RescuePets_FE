@@ -248,7 +248,7 @@ const EditCatch = () => {
         // 바로 이동시키기
         setEditMsg("수정 성공!");
         setTimeout(function () {
-          navigate(`/sightingdetail/${missingPostDetail.id}`);
+          navigate(`/catchdetail/${missingPostDetail.id}`);
         }, 1000);
       } else {
         console.log("실패");

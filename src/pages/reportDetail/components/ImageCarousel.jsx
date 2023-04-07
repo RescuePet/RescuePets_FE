@@ -9,6 +9,7 @@ import ClippingEmpty from "../../../asset/Clippingwhite.jsx";
 import ClippingFill from "../../../asset/profile/ClippingFill";
 import Backwhite from "../../../asset/Backwhite";
 import { ButtonBackgroundStyle } from "../../../style/Mixin.jsx";
+import Hamburger from "../../../asset/Hamburger.jsx";
 
 const ImageCarousel = ({ images, imageCarouselInfo, data }) => {
   const navigate = useNavigate();
@@ -23,9 +24,6 @@ const ImageCarousel = ({ images, imageCarouselInfo, data }) => {
     prevArrow: <PrevTo></PrevTo>,
     nextArrow: <NextTo></NextTo>,
     dotsClass: "slick-dots custom-dots",
-  };
-  const MoveToEditMyPost = () => {
-    navigate(`/${data.path}/${data.number}`);
   };
   return (
     <Container>
@@ -43,11 +41,9 @@ const ImageCarousel = ({ images, imageCarouselInfo, data }) => {
       {imageCarouselInfo.scrapState ? (
         <ScrapStateTrue onClick={imageCarouselInfo.scrapHandler} />
       ) : (
-        <>
-          <ScrapStateFalse onClick={imageCarouselInfo.scrapHandler} />
-        </>
+        <ScrapStateFalse onClick={imageCarouselInfo.scrapHandler} />
       )}
-      <EditButton onClick={MoveToEditMyPost} />
+      <EditButton onClick={data.handler} />
     </Container>
   );
 };
@@ -122,7 +118,7 @@ const BackButton = styled(Backwhite)`
 const ScrapStateTrue = styled(ClippingFill)`
   position: absolute;
   top: 2.5rem;
-  right: 1.6875rem;
+  right: 1.25rem;
   width: 1.5rem;
   height: 1.5rem;
   cursor: pointer;
@@ -135,7 +131,7 @@ const ScrapStateTrue = styled(ClippingFill)`
 const ScrapStateFalse = styled(ClippingEmpty)`
   position: absolute;
   top: 2.5rem;
-  right: 1.6875rem;
+  right: 1.25rem;
   width: 1.5rem;
   height: 1.5rem;
   cursor: pointer;
@@ -145,13 +141,14 @@ const ScrapStateFalse = styled(ClippingEmpty)`
   }
 `;
 // 수정
-const EditButton = styled(ClippingEmpty)`
+const EditButton = styled(Hamburger)`
   position: absolute;
-  top: 5rem;
-  right: 1.6875rem;
+  top: 2.5rem;
+  right: 3.4375rem;
   width: 1.5rem;
   height: 1.5rem;
   cursor: pointer;
+  ${ButtonBackgroundStyle}
   path {
     fill: ${(props) => props.theme.color.primary_normal};
   }
