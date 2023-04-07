@@ -35,7 +35,8 @@ import {
   PreviewImage,
 } from "./components/reportstyle";
 import { NameValue, TimeValue } from "./components/data";
-import { __PostMissingData, addImage } from "../../redux/modules/missingSlice";
+import { addImage } from "../../redux/modules/missingSlice";
+import { __PostMissingData } from "../../redux/modules/petworkSlice";
 import { toggleMenu } from "../../redux/modules/menubarSlice";
 
 const Missing = () => {
@@ -44,19 +45,19 @@ const Missing = () => {
   const navigate = useNavigate();
   const [postNumber, setPostNumber] = useState("");
 
-  const MissingNumber = useSelector((state) => {
-    return state.MissingData;
+  const { postId } = useSelector((state) => {
+    return state.petwork;
   });
 
   const data = {
-    number: MissingNumber?.data,
+    number: postId,
     name: "missingdetail",
   };
 
   useEffect(() => {
-    console.log(MissingNumber);
+    console.log("data.number", data.number);
     setPostNumber(data);
-  }, [MissingNumber]);
+  }, [postId]);
 
   // 리덕스에 저장되어있는 메뉴바 토글상태를 가지고 오고
   const menutoggle = useSelector((state) => {
@@ -217,7 +218,7 @@ const Missing = () => {
       }
       dispatch(addImage(imageFormData[0]));
       dispatch(__PostMissingData(formData)).then((response) => {
-        navigate(`/poster/${response.payload}`);
+        navigate(`/poster/${response.payload.id}`);
       });
       reset();
     }

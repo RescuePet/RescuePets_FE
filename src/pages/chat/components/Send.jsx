@@ -3,12 +3,12 @@ import styled from "styled-components";
 import { FlexAttribute } from "../../../style/Mixin";
 import { Body_400_10, Body_400_14 } from "../../../style/theme";
 
-const Send = ({ message }) => {
+const Send = ({ message, chatTime }) => {
   return (
     <SendBox>
       <SendMessage>
         <ContentText>{message}</ContentText>
-        {/* <SendTimeSpan>오후 06:15</SendTimeSpan> */}
+        <SendTimeSpan>{chatTime}</SendTimeSpan>
       </SendMessage>
     </SendBox>
   );
@@ -57,7 +57,7 @@ const ContentText = styled.span`
 
 const SendTimeSpan = styled.span`
   position: absolute;
-  left: -45px;
+  left: -31px;
   bottom: 1px;
   ${Body_400_10}
   color:#CCCCCC;

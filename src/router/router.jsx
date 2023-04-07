@@ -12,7 +12,7 @@ import Home from "../pages/home/Home";
 import Missing from "../pages/report/Missing";
 import PetworkList from "../pages/petwork/PetworkList";
 import MissingDetail from "../pages/reportDetail/MissingDetail";
-import SightingDetail from "../pages/reportDetail/SightingDetail";
+import CatchDetail from "../pages/reportDetail/CatchDetail";
 import Catch from "../pages/report/Catch";
 import KakaoSignin from "../pages/sign/KakaoSignin";
 import Editinfo from "../pages/profile/Editinfo";
@@ -42,7 +42,7 @@ const Router = () => {
         <Route path="/testreport" element={<ReportPosting />} />
         <Route path="/petwork" element={<PetworkList />} />
         <Route path="/missingdetail/:id" element={<MissingDetail />} />
-        <Route path="/sightingdetail/:id" element={<SightingDetail />} />
+        <Route path="/catchdetail/:id" element={<CatchDetail />} />
         <Route path="/editcatch/:id" element={<EditCatch />} />
         <Route path="/editmissing/:id" element={<EditMissing />} />
         <Route path="/kakaologin" element={<KakaoSignin />} />

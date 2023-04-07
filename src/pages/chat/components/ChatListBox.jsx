@@ -34,13 +34,13 @@ const ChatListBox = ({ item }) => {
               {refineData.state}
             </PostState>
             <PostKindCd>{item.roomName}</PostKindCd>
+            <Time>{item.time}</Time>
+            {item.unreadChat === 0 ? null : (
+              <MessageCount>{item.unreadChat}</MessageCount>
+            )}
           </TitleWrapper>
           <Contents>{item.lastChat}</Contents>
         </TextWrapper>
-        <InfoWrapper>
-          <Time>{item.time}</Time>
-          {/* <MessageCount>1</MessageCount> */}
-        </InfoWrapper>
       </ClickDiv>
     </ChatRoomListContainer>
   );
@@ -53,19 +53,22 @@ const ChatRoomListContainer = styled.div`
 `;
 
 const ClickDiv = styled(Link)`
-  ${FlexAttribute("row", "space-evenly", "center")}
+  position: relative;
+  ${FlexAttribute("row", "", "center")}
   cursor: pointer;
 `;
 
 const ProfileImage = styled.img`
   width: 2.5rem;
   height: 2.5rem;
+  margin-left: 16px;
   border-radius: 50%;
 `;
 
 const TextWrapper = styled.div`
   ${FlexAttribute("column")}
-  flex-basis: 13.5625rem;
+  flex-basis: 230px;
+  margin-left: 20px;
 `;
 
 const TitleWrapper = styled.div`
@@ -117,16 +120,16 @@ const Contents = styled.span`
   color: #666666;
 `;
 
-const InfoWrapper = styled.div`
-  ${FlexAttribute("column", "", "flex-end")}
-  flex-basis: 2.875rem;
-`;
-
 const Time = styled.span`
+  position: absolute;
+  right: 16px;
   ${Body_300_10}
 `;
 
 const MessageCount = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 24px;
   ${AlertMessageCountStyle}
 `;
 

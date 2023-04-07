@@ -35,7 +35,7 @@ const Card = ({ item, page }) => {
     if (page === "missingdetail") {
       console.log(page);
       dispatch(__postMissingScrap(payload));
-    } else if (page === "sightingdetail") {
+    } else if (page === "catchdetail") {
       console.log(page);
       dispatch(__postCatchScrap(payload));
     }
