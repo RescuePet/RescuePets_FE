@@ -7,7 +7,7 @@ import questionmark from "../../../asset/questionmark.svg";
 import { Border_1_color } from "../../../style/Mixin";
 
 const EditLocation = ({ data }) => {
-  console.log(data);
+  // console.log(data);
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
   const { kakao } = window;
@@ -83,7 +83,7 @@ const EditLocation = ({ data }) => {
 
   return (
     <ReportKakaoMapContainer>
-      {isLoading === true ? <Spinner /> : null}
+      {/* {isLoading === true ? <Spinner /> : null} */}
       <ReportKakaoMapBoxTitle>
         <ReportKakaomapTitleInfoBox>
           {data.postType === "MISSING" ? <p>실종위치 </p> : <p>목격위치</p>}
