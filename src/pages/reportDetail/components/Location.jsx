@@ -6,37 +6,44 @@ import Marker from "../../../asset/marker/marker.png";
 
 const Location = ({ locationInfo }) => {
   const { kakao } = window;
-  console.log(locationInfo);
+  // console.log(locationInfo);
 
   useEffect(() => {
-    const staticMapContainer = document.getElementById("staticMap") 
+    const staticMapContainer = document.getElementById("staticMap");
     const staticMapOption = {
-        center: new kakao.maps.LatLng(locationInfo.happenLatitude,locationInfo.happenLongitude), 
-        level: 5, 
-        draggable: false, 
-        // marker: markerImage 
-      };
+      center: new kakao.maps.LatLng(
+        locationInfo.happenLatitude,
+        locationInfo.happenLongitude
+      ),
+      level: 5,
+      draggable: false,
+      // marker: markerImage
+    };
     const map = new kakao.maps.Map(staticMapContainer, staticMapOption);
-      // 커스텀 오버레이가 표시될 위치입니다 
+    // 커스텀 오버레이가 표시될 위치입니다
 
-
-    const imageSrc = `${Marker}`; 
+    const imageSrc = `${Marker}`;
     const imageSize = new kakao.maps.Size(16, 20);
     const imageOption = { offset: new kakao.maps.Point(10, 20) };
 
-    const position = new kakao.maps.LatLng(locationInfo.happenLatitude, locationInfo.happenLongitude);  
-    const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+    const position = new kakao.maps.LatLng(
+      locationInfo.happenLatitude,
+      locationInfo.happenLongitude
+    );
+    const markerImage = new kakao.maps.MarkerImage(
+      imageSrc,
+      imageSize,
+      imageOption
+    );
 
     const marker = new kakao.maps.Marker({
-    position: position,
-    image: markerImage 
+      position: position,
+      image: markerImage,
     });
 
     marker.setMap(map);
- 
-  // map.setDraggable(draggable);    
 
-
+    // map.setDraggable(draggable);
   }, [locationInfo]);
 
   return (

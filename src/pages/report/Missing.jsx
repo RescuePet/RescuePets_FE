@@ -100,6 +100,10 @@ const Missing = () => {
     setCurrentNeuteredEnValue(newData);
   };
 
+  const tabValue = {
+    GenderNum: null,
+    neuterYn: null,
+  };
   // console.log("최신값성별 :",currentGenderEnValue)
   // console.log("최신값중성화:",currentNeuteredEnValue)
 
@@ -243,8 +247,12 @@ const Missing = () => {
                   {...register("animaltypes", {
                     required: true,
                     pattern: {
-                      value: /^[ㄱ-ㅎ|가-힣]+$/,
-                      message: "한글만 2 ~ 8글자 사이로 입력",
+                      value: /^[가-힣\s]+$/,
+                      message: "한글만 2 ~ 15글자 사이로 입력",
+                    },
+                    maxLength: {
+                      value: 15,
+                      message: "15글자 이하이어야 합니다.",
                     },
                   })}
                 />
@@ -262,6 +270,7 @@ const Missing = () => {
           <SeleteTab
             onChangeGender={onChangeGender}
             onChangeNeutered={onChangeNeutered}
+            tabValue={tabValue}
           />
 
           <ReportAnimalInfoBox>
@@ -405,11 +414,11 @@ const Missing = () => {
                   required: false,
                   pattern: {
                     value: /^[가-힣\s]+$/,
-                    message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
+                    message: "한글만 50글자 안으로 입력 띄워쓰기 X ",
                   },
                   maxLength: {
-                    value: 20,
-                    message: "20글자 이하이어야 합니다.",
+                    value: 50,
+                    message: "50글자 이하이어야 합니다.",
                   },
                 })}
               />
@@ -469,7 +478,6 @@ const Missing = () => {
             {showImages.length === 0 ? (
               <ReportAnimalPicturePreview>
                 <div>
-                  {" "}
                   <img src={imgdelete} />
                 </div>
               </ReportAnimalPicturePreview>
@@ -504,6 +512,7 @@ const Missing = () => {
               inputMode="numeric"
               onChange={(event) => {
                 const value = event.target.value;
+                console.log(value);
                 event.target.value = Number(
                   value.replace(/[^0-9]/g, "")
                 ).toLocaleString();
@@ -523,19 +532,14 @@ const Missing = () => {
               type="tel"
               placeholder="010-xxxx-xxxx"
               inputMode="numeric"
-              onChange={(event) => {
-                const value = event.target.value;
-                event.target.value = Number(
-                  value.replace(/[^0-9]/g, "")
-                ).toLocaleString();
-              }}
               {...register("number", {
                 required: false, // 필수 X
                 pattern: {
-                  value: /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/,
-                  message: "하이픈(-)을 넣어주세요 ",
+                  value: /^[0-9]{2,3}[0-9]{3,4}[0-9]{4}$/,
+                  message: "하이픈 없이 입력해주세요",
                 },
-                maxLength: { value: 16, message: "12글자 이하이어야 합니다." },
+                minLength: { value: 11, message: "11글자 이상이어야 합니다." },
+                maxLength: { value: 12, message: "12글자 미만이어야 합니다." },
               })}
             />
             <img
@@ -549,7 +553,7 @@ const Missing = () => {
         </ReportAnimalUserInfo>
         {isActive === true ? (
           <Button type="submit" disable assistiveFillButton>
-            작성 완료
+            작성 하기
           </Button>
         ) : (
           <Button type="submit" fillButton>

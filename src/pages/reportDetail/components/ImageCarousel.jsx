@@ -45,11 +45,9 @@ const ImageCarousel = ({ images, imageCarouselInfo, data }) => {
       ) : (
         <>
           <ScrapStateFalse onClick={imageCarouselInfo.scrapHandler} />
-          <button style={{ background: "#EEE" }} onClick={MoveToEditMyPost}>
-            수정하기
-          </button>
         </>
       )}
+      <EditButton onClick={MoveToEditMyPost} />
     </Container>
   );
 };
@@ -142,6 +140,18 @@ const ScrapStateFalse = styled(ClippingEmpty)`
   height: 1.5rem;
   cursor: pointer;
   ${ButtonBackgroundStyle}
+  path {
+    fill: ${(props) => props.theme.color.primary_normal};
+  }
+`;
+// 수정
+const EditButton = styled(ClippingEmpty)`
+  position: absolute;
+  top: 5rem;
+  right: 1.6875rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  cursor: pointer;
   path {
     fill: ${(props) => props.theme.color.primary_normal};
   }
