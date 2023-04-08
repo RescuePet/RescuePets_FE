@@ -85,7 +85,7 @@ const Comment = ({ item }) => {
               ? optionMySetting
               : optionOtherSetting
           }
-          commentCloseHandler={commentCloseHandler}
+          mapCloseHandler={commentCloseHandler}
         />
       )}
       {commentReport && (

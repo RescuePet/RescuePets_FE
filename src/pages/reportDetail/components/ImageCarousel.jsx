@@ -37,7 +37,7 @@ const ImageCarousel = ({ images, imageCarouselInfo, data }) => {
           </ImageWrapper>
         ))}
       </StyledSlider>
-      <BackButton onClick={() => navigate("/petwork")} />
+      <BackButton onClick={() => navigate(-1)} />
       {imageCarouselInfo.scrapState ? (
         <ScrapStateTrue onClick={imageCarouselInfo.scrapHandler} />
       ) : (

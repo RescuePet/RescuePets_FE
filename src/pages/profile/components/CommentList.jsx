@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FlexAttribute } from "../../../style/Mixin";
 import State from "../../../elements/State";
+import Meatballs from "../../../asset/Meatballs";
+import Option from "../../../components/Option";
+import { useDispatch } from "react-redux";
+import { __deleteComment } from "../../../redux/modules/commentSlice";
+import { deleteMyComment } from "../../../redux/modules/profileSlice";
 
 const CommentList = ({ item }) => {
   const navigate = useNavigate();
-
-  console.log(item);
+  const dispatch = useDispatch();
+  const [commentOption, setCommentOption] = useState(false);
 
   const navigateHandler = () => {
     if (item.postType === "MISSING") {
@@ -27,25 +32,60 @@ const CommentList = ({ item }) => {
     refineData.postType = "목격";
   }
 
+  const myCommentHandler = (e) => {
+    e.stopPropagation();
+    setCommentOption(!commentOption);
+  };
+
+  const optionSetting = [
+    {
+      option: "댓글 삭제하기",
+      color: "report",
+      handler: () => {
+        dispatch(deleteMyComment(item.id));
+        dispatch(__deleteComment(item.id));
+      },
+      type: "comment",
+    },
+  ];
+
+  const closeMyCommentHandler = () => {
+    setCommentOption(!commentOption);
+  };
+
   return (
-    <ListContainer onClick={navigateHandler}>
-      <Image src={item.postImageURL} />
-      <div>
-        <ListTitleWrapper>
-          <Title>{item.content}</Title>
-          <Info>{item.userNickName}</Info>
-        </ListTitleWrapper>
-        <AdditionalInfoWrapper>
-          <State category={refineData.postType}>{refineData.postType}</State>
-          <span>{item.modifiedAt.substring(0, 10)}</span>
-        </AdditionalInfoWrapper>
-      </div>
-    </ListContainer>
+    <>
+      <ListContainer onClick={navigateHandler}>
+        <Image src={item.postImageURL} />
+        <div>
+          <ListTitleWrapper>
+            <Title>
+              {item.content.length <= 15
+                ? item.content
+                : item.content.substring(0, 15) + ".."}
+            </Title>
+            <Info>{item.userNickName}</Info>
+          </ListTitleWrapper>
+          <AdditionalInfoWrapper>
+            <State category={refineData.postType}>{refineData.postType}</State>
+            <span>{item.modifiedAt.substring(0, 10)}</span>
+          </AdditionalInfoWrapper>
+        </div>
+        <CommentMeatballs onClick={myCommentHandler} />
+      </ListContainer>
+      {commentOption && (
+        <Option
+          setting={optionSetting}
+          mapCloseHandler={closeMyCommentHandler}
+        />
+      )}
+    </>
   );
 };
 
 const ListContainer = styled.div`
   ${FlexAttribute("row", "", "center")}
+  position: relative;
   width: 335px;
   padding: 16px 0;
   border-bottom: 1px solid ${(props) => props.theme.color.input_border};
@@ -97,6 +137,13 @@ const AdditionalInfoWrapper = styled.div`
       color: ${(props) => props.theme.color.text_assistive};
     }
   }
+`;
+
+const CommentMeatballs = styled(Meatballs)`
+  position: absolute;
+  right: 4px;
+  cursor: pointer;
+  z-index: 10;
 `;
 
 export default CommentList;

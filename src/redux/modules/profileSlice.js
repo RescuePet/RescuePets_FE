@@ -70,6 +70,11 @@ export const profileSlice = createSlice({
     addMyPostPage: (state) => {
       state.entirePostPage = state.entirePostPage + 1;
     },
+    deleteMyComment: (state, action) => {
+      state.myCommentList = state.myCommentList.filter(
+        (item) => item.id !== action.payload
+      );
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -116,5 +121,6 @@ export const profileSlice = createSlice({
   },
 });
 
-export const { addMyPostPage, resetMyScrapPage } = profileSlice.actions;
+export const { addMyPostPage, resetMyScrapPage, deleteMyComment } =
+  profileSlice.actions;
 export default profileSlice.reducer;

@@ -93,11 +93,6 @@ const EntireCount = styled.span`
   color: ${(props) => props.theme.color.primary_normal};
 `;
 
-const EditButton = styled.button`
-  ${(props) => props.theme.Body_400_12};
-  color: ${(props) => props.theme.color.text_alternative};
-`;
-
 const PostInfoWrapper = styled.div`
   ${FlexAttribute("row", "space-between", "center")}
   margin: 8px 20px;
