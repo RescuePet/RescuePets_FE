@@ -211,7 +211,7 @@ const Missing = () => {
       formData.append("content", data.memo);
       formData.append("gratuity", data.money);
       formData.append("contact", data.number);
-      formData.append("openNickname", currentNinkNameEnValue);
+      // formData.append("openNickname", currentNinkNameEnValue);
       imageFormData.map((img) => {
         formData.append("postImages", img);
       });

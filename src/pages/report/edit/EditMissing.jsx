@@ -38,7 +38,6 @@ import {
   ReportAnimalUserInfo,
   PreviewImage,
 } from "../components/reportstyle";
-import { data } from "autoprefixer";
 
 const EditMissing = () => {
   let imageRef;
@@ -169,7 +168,7 @@ const EditMissing = () => {
 
     formData.append("sexCd", currentGenderEnValue);
     formData.append("neuterYn", currentNeuteredEnValue);
-    formData.append("openNickname", currentNinkNameEnValue);
+    // formData.append("openNickname", currentNinkNameEnValue);
 
     {
       data.animalName == ""
@@ -254,6 +253,10 @@ const EditMissing = () => {
         console.log("성공");
         // 바로 이동시키기
         setEditMsg("수정 성공!");
+        reset("");
+        setCurrentGenderEnValue("");
+        setCurrentNeuteredEnValue("");
+        setCurrentNinkNameEnValue("");
         setTimeout(function () {
           navigate(`/missingdetail/${missingPostDetail.id}`);
         }, 1000);
@@ -269,6 +272,7 @@ const EditMissing = () => {
   return (
     <Layout>
       <ReportMissingContainer
+        style={{ height: "87.375rem" }}
         onSubmit={handleSubmit(onSubmitEditMissingHandler)}
       >
         {/* 컴포넌트  */}
@@ -526,13 +530,6 @@ const EditMissing = () => {
             <ReportAnimalPictureInput onClick={() => imageRef.click()}>
               <h3>+</h3>
             </ReportAnimalPictureInput>
-            {/* 기존이미지 넣기  */}
-            {/* {missingPostDetail.postImages !== "" ? (
-              <img
-                src={missingPostDetail.postImages[0].imageURL}
-                style={{ width: "2rem", height: "2rem" }}
-              />
-            ) : null} */}
 
             {showImages.length === 0 ? (
               <ReportAnimalPicturePreview>
@@ -558,6 +555,29 @@ const EditMissing = () => {
             )}
           </ReportAnimalPictureAreaInputBox>
         </ReportAnimalPictureArea>
+
+        <ReportAnimalPictureArea>
+          <ReportAnimalPictureAreaTitle>
+            <p>기존이미지</p>
+          </ReportAnimalPictureAreaTitle>
+          <ReportAnimalPictureAreaInputBox>
+            {missingPostDetail?.postImages?.length === 0 ? (
+              <ReportAnimalPicturePreview></ReportAnimalPicturePreview>
+            ) : (
+              <>
+                {missingPostDetail?.postImages?.map((image, index) => (
+                  <ReportAnimalPicturePreview key={index}>
+                    <PreviewImage
+                      src={image.imageURL}
+                      alt={`${image.imageURL}-${index}`}
+                    />
+                  </ReportAnimalPicturePreview>
+                ))}
+              </>
+            )}
+          </ReportAnimalPictureAreaInputBox>
+        </ReportAnimalPictureArea>
+
         <ReportAnimalUserInfo>
           <div>
             <p>사례금(원)</p>
@@ -619,7 +639,7 @@ const EditMissing = () => {
         </ReportAnimalUserInfo>
 
         <Button type="submit" fillButton>
-          작성 완료
+          수정 하기
         </Button>
 
         {editMsg == "" ? null : (

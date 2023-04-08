@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {  
+import {
   ReportAnimalInfoCheckBox,
   ReportAnimalInfoCheckBoxTitle,
   ReportAnimalInfoCheckBoxSelete,
@@ -22,36 +22,36 @@ const SeleteTab = ({
 
   // Edit 일때 값이 캐싱 되는 현상
   useEffect(() => {
-    if (tabValue?.GenderNum === 'MALE') {
+    if (tabValue?.GenderNum === "MALE") {
       setCurrentGenderTab(0);
       console.log("MALE");
-    } else if (tabValue?.GenderNum === 'FEMALE') {
+    } else if (tabValue?.GenderNum === "FEMALE") {
       setCurrentGenderTab(1);
       console.log("FEMALE");
-    } else if (tabValue?.GenderNum === 'UNKNOWN') {
+    } else if (tabValue?.GenderNum === "UNKNOWN") {
       setCurrentGenderTab(2);
       console.log("UNKNOWN");
     } else if (tabValue?.GenderNum == "") {
       setCurrentGenderTab(0);
       console.log("NOTHING");
     }
-    if (tabValue?.neuterYn === 'YES') {
+    if (tabValue?.neuterYn === "YES") {
       setCurrentNeuteredTab(0);
       console.log("YES");
-    } else if (tabValue?.neuterYn === 'NO') {
+    } else if (tabValue?.neuterYn === "NO") {
       setCurrentNeuteredTab(1);
       console.log("NO");
-    } else if (tabValue?.neuterYn === 'UNKNOWN') {
+    } else if (tabValue?.neuterYn === "UNKNOWN") {
       setCurrentNeuteredTab(2);
       console.log("UNKNOWN");
     } else if (tabValue?.neuterYn == "") {
       setCurrentNeuteredTab(0);
       console.log("NOTHING");
     }
-    if (tabValue?.ninkCheck === true) {
+    if (tabValue?.ninkCheck == true) {
       setCurrentNicknameTab(0);
       console.log("true");
-    } else if (tabValue?.ninkCheck === false) {
+    } else if (tabValue?.ninkCheck == false) {
       setCurrentNicknameTab(1);
       console.log("false");
     } else if (tabValue?.ninkCheck == "") {

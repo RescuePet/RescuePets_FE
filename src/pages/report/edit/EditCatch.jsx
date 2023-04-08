@@ -165,7 +165,7 @@ const EditCatch = () => {
     formData.append("upkind", typeID);
     formData.append("sexCd", currentGenderEnValue);
     formData.append("neuterYn", currentNeuteredEnValue);
-    formData.append("openNickname", currentNinkNameEnValue);
+    // formData.append("openNickname", currentNinkNameEnValue);
     {
       data.animalName == ""
         ? formData.append("petName", missingPostDetail.petName)
@@ -234,16 +234,16 @@ const EditCatch = () => {
     toggleModal();
     const number = missingPostDetail.id;
     dispatch(__PutCatchposts({ formData, number })).then((response) => {
-      console.log(response);
       if (response.type === "putcatchposts/fulfilled") {
-        console.log("성공");
-        // 바로 이동시키기
         setEditMsg("수정 성공!");
+        reset("");
+        setCurrentGenderEnValue("");
+        setCurrentNeuteredEnValue("");
+        setCurrentNinkNameEnValue("");
         setTimeout(function () {
           navigate(`/catchdetail/${missingPostDetail.id}`);
         }, 1000);
       } else {
-        console.log("실패");
         setEditMsg("수정 실패..ㅠ");
       }
     });
@@ -517,13 +517,8 @@ const EditCatch = () => {
             <p>기존이미지</p>
           </ReportAnimalPictureAreaTitle>
           <ReportAnimalPictureAreaInputBox>
-            {/* imageURL */}
             {missingPostDetail?.postImages?.length === 0 ? (
-              <ReportAnimalPicturePreview>
-                {/* <div>
-                  <img src={imgdelete} />
-                </div> */}
-              </ReportAnimalPicturePreview>
+              <ReportAnimalPicturePreview></ReportAnimalPicturePreview>
             ) : (
               <>
                 {missingPostDetail?.postImages?.map((image, index) => (
@@ -532,9 +527,6 @@ const EditCatch = () => {
                       src={image.imageURL}
                       alt={`${image.imageURL}-${index}`}
                     />
-                    {/* <div>
-                      <img src={imgdelete} />
-                    </div> */}
                   </ReportAnimalPicturePreview>
                 ))}
               </>
@@ -543,7 +535,7 @@ const EditCatch = () => {
         </ReportAnimalPictureArea>
 
         <Button type="submit" fillButton>
-          작성 완료
+          수정 하기
         </Button>
 
         {editMsg == "" ? null : (
