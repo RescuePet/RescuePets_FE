@@ -36,7 +36,9 @@ const ChatListBox = ({ item }) => {
             <PostKindCd>{item.roomName}</PostKindCd>
             <Time>{item.time}</Time>
             {item.unreadChat === 0 ? null : (
-              <MessageCount>{item.unreadChat}</MessageCount>
+              <MessageCount alertCss={item.unreadChat >= 100 && true}>
+                {item.unreadChat >= 100 ? "99+" : item.unreadChat}
+              </MessageCount>
             )}
           </TitleWrapper>
           <Contents>{item.lastChat}</Contents>
@@ -129,8 +131,19 @@ const Time = styled.span`
 const MessageCount = styled.div`
   position: absolute;
   top: 20px;
-  right: 24px;
+  left: calc(100% - 35px);
   ${AlertMessageCountStyle}
+  ${(props) =>
+    props.alertCss &&
+    css`
+      content: "99+";
+      width: auto;
+      margin-top: 0.25rem;
+      padding: 2.4px 3.4px;
+      border-radius: 30px;
+      top: 20px;
+      left: calc(100% - 40px);
+    `};
 `;
 
 export default ChatListBox;
