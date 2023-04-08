@@ -242,16 +242,14 @@ const EditMissing = () => {
       formData.append("postImages", img);
     });
 
-    for (let value of formData.values()) {
-      console.log(value);
-    }
+    // for (let value of formData.values()) {
+    //   console.log(value);
+    // }
 
     toggleModal();
     const number = missingPostDetail.id;
     dispatch(__PutMissingposts({ formData, number })).then((response) => {
       if (response.type === "putmissingposts/fulfilled") {
-        console.log("성공");
-        // 바로 이동시키기
         setEditMsg("수정 성공!");
         reset("");
         setCurrentGenderEnValue("");
@@ -261,7 +259,6 @@ const EditMissing = () => {
           navigate(`/missingdetail/${missingPostDetail.id}`);
         }, 1000);
       } else {
-        console.log("실패");
         setEditMsg("수정 실패..ㅠ");
       }
     });
@@ -275,7 +272,6 @@ const EditMissing = () => {
         style={{ height: "87.375rem" }}
         onSubmit={handleSubmit(onSubmitEditMissingHandler)}
       >
-        {/* 컴포넌트  */}
         <Header>내 실종글 수정 </Header>
 
         <ReportAnimalInfoArea>
@@ -295,10 +291,8 @@ const EditMissing = () => {
                 <p>품종</p>
                 <ReportInput
                   type="text"
-                  // value={missingPostDetail.kindCd}
                   placeholder={missingPostDetail.kindCd}
                   {...register("animaltypes", {
-                    // required: true,
                     pattern: {
                       value: /^[가-힣\s]+$/,
                       message: "한글만 2 ~ 15글자 사이로 입력",
@@ -335,7 +329,6 @@ const EditMissing = () => {
                   type="text"
                   placeholder={missingPostDetail.petName}
                   {...register("animalName", {
-                    // required: true,
                     pattern: {
                       value: /^[가-힣\s]+$/,
                       message: "한글만 2 ~ 8글자 사이로 입력 ",
@@ -360,7 +353,6 @@ const EditMissing = () => {
                   type="text"
                   placeholder={missingPostDetail.age}
                   {...register("animalAge", {
-                    // required: true,
                     pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
                     maxLength: {
                       value: 3,
@@ -384,7 +376,6 @@ const EditMissing = () => {
                   type="text"
                   placeholder={missingPostDetail.weight}
                   {...register("animalkg", {
-                    // required: true,
                     pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
                     maxLength: {
                       value: 4,
@@ -406,7 +397,6 @@ const EditMissing = () => {
                   type="text"
                   placeholder={missingPostDetail.colorCd}
                   {...register("animalcolor", {
-                    // required: true,
                     pattern: {
                       value: /^[가-힣\s]+$/,
                       message: "한글만 2 ~ 8글자 사이로 입력 ",
@@ -455,7 +445,7 @@ const EditMissing = () => {
             </div>
           </div>
         </ReportAnimalDayBox>
-        {/* 특이사항  */}
+
         <ReportAnimalSignificantBox>
           <ReportAnimalSignificantBoxTitle>
             <p> 특이사항 </p>
@@ -486,7 +476,7 @@ const EditMissing = () => {
               />
               <span>{errors?.characteristic?.message}</span>
             </div>
-            {/* 메모 */}
+
             <div>
               <p>메모</p>
               <ReportLgInput

@@ -187,9 +187,7 @@ const Missing = () => {
 
   // POST
   const onSubmitMissingHanlder = (data) => {
-    console.log(data);
     if (addressDiv?.innerHTML === "" && selectedDate == "") {
-      console.log("d");
       toggleModal();
       setMissingMsg("지도상에 위치와 날짜를 선택해주세요.");
     } else {
