@@ -9,6 +9,7 @@ import Option from "../../../components/Option";
 import ReportModal from "../../../components/ReportModal";
 import { __deleteComment } from "../../../redux/modules/commentSlice";
 import Meatballs from "../../../asset/Meatballs";
+import { removeCommentCount } from "../../../redux/modules/petworkSlice";
 
 const Comment = ({ item }) => {
   const dispatch = useDispatch();
@@ -24,7 +25,10 @@ const Comment = ({ item }) => {
     {
       option: "댓글 삭제하기",
       color: "report",
-      handler: () => dispatch(__deleteComment(item.id)),
+      handler: () => {
+        dispatch(removeCommentCount());
+        dispatch(__deleteComment(item.id));
+      },
       type: "comment",
     },
   ];

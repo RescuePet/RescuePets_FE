@@ -204,6 +204,12 @@ export const petworkSlice = createSlice({
       state.catchPostDetail.commentCount =
         state.catchPostDetail.commentCount + 1;
     },
+    removeCommentCount: (state) => {
+      state.missingPostDetail.commentCount =
+        state.missingPostDetail.commentCount - 1;
+      state.catchPostDetail.commentCount =
+        state.catchPostDetail.commentCount - 1;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(__PostMissingData.pending, (state) => {
@@ -378,5 +384,6 @@ export const {
   addCatchPage,
   resetCommentInput,
   addCommentCount,
+  removeCommentCount,
 } = petworkSlice.actions;
 export default petworkSlice.reducer;
