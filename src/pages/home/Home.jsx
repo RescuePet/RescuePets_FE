@@ -12,12 +12,15 @@ import {
   addAdoptionPage,
   __getAdoptionList,
 } from "../../redux/modules/adoptionSlice";
-import refresh from "../../asset/refresh.svg";
+
+import Search from "../../asset/search";
 import profile from "../../asset/profile.svg";
-import search from "../../asset/search.svg";
 import Cookies from "js-cookie";
 import isLogin from "../../utils/isLogin";
 import { useNavigate } from "react-router-dom";
+import useToggle from "../../hooks/useToggle";
+import SearchSetting from "../../components/search/SearchSetting";
+import SearchCategory from "../../components/search/SearchCategory";
 
 const Home = () => {
   const images = [carouselImage1, carouselImage2];
@@ -25,6 +28,8 @@ const Home = () => {
   const navigate = useNavigate();
   const [ref, inView] = useInView();
   const [userInfo, setUserInfo] = useState({});
+  const [searchSetState, toggleSearchSetState] = useState(false);
+  const [searchState, toggleSearchState] = useToggle(false);
 
   let { adoptionPage, adoptionLists } = useSelector((state) => state.adoption);
   const payloadSettings = {
@@ -46,29 +51,50 @@ const Home = () => {
     }
   }, [inView]);
 
+  const handleSearchState = (boolean) => {
+    toggleSearchSetState(boolean);
+  };
+
   return (
     <Layout>
       <Header>
-        <img
-          src={userInfo.profileImage == null ? profile : userInfo.profileImage}
-          alt="profile"
-        />
-        <span>안녕하세요! {userInfo.nickname}님</span>
-        {/* <img src={search} alt="search" /> */}
+        {searchState ? (
+          <SearchCategory
+            toggleSearchState={toggleSearchState}
+            handleSearchState={handleSearchState}
+          />
+        ) : (
+          <>
+            <img
+              src={
+                userInfo.profileImage == null ? profile : userInfo.profileImage
+              }
+              alt="profile"
+            />
+            <HeaderSpan>안녕하세요! {userInfo.nickname}님</HeaderSpan>
+            <SearchIcon width={30} height={30} onClick={toggleSearchState} />
+          </>
+        )}
       </Header>
-      <Carousel images={images} />
+      {!searchSetState && <Carousel images={images} />}
+      {searchSetState && <SearchSetting />}
       <PostContainer>
         <TitleBox>
-          <h2>새로운 가족을 맞이해보세요</h2>
+          {searchSetState ? (
+            <h2>검색 내용</h2>
+          ) : (
+            <h2>새로운 가족을 맞이해보세요</h2>
+          )}
         </TitleBox>
-        {adoptionLists.map((item, index) => {
-          return (
-            <Post
-              key={`post-item-${item.desertionNo}-${index}`}
-              item={item}
-            ></Post>
-          );
-        })}
+        {!searchSetState &&
+          adoptionLists.map((item, index) => {
+            return (
+              <Post
+                key={`post-item-${item.desertionNo}-${index}`}
+                item={item}
+              ></Post>
+            );
+          })}
         <div ref={ref}></div>
       </PostContainer>
     </Layout>
@@ -76,24 +102,29 @@ const Home = () => {
 };
 
 const Header = styled.div`
-  ${FlexAttribute("row", "", "center")}
+  ${FlexAttribute("row", "center", "center")}
   margin: 0 auto;
-  width: 20.9375rem;
+  width: 100%;
   height: 5rem;
   padding-top: 2.5rem;
   padding-bottom: 0.5625rem;
   font-size: 1.125rem;
   font-weight: 700;
-  span {
-    flex-basis: 15rem;
-    margin-left: 0.625rem;
-    white-space: nowrap;
-  }
   img {
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 50%;
   }
+`;
+
+const HeaderSpan = styled.span`
+  flex-basis: 15rem;
+  margin-left: 0.625rem;
+  white-space: nowrap;
+`;
+
+const SearchIcon = styled(Search)`
+  cursor: pointer;
 `;
 
 const PostContainer = styled.div`
