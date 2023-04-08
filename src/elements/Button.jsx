@@ -74,6 +74,12 @@ const BtnStyle = styled.button`
       background-color: ${(props) => props.theme.color.text_disable};
       border-radius: 20px;
     `}
+    ${(props) =>
+    props.Kakao &&
+    css`
+      background-color: ${(props) => props.theme.color.kakao};
+      color: ${(props) => props.theme.color.kakao_text};
+    `}
     /* &:hover {
     cursor: pointer;
     transition: 0.2s ease;

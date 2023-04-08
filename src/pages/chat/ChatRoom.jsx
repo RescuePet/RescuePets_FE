@@ -199,7 +199,8 @@ const OptionChat = styled(Meatballs)`
 
 const ChatRoomBody = styled.div`
   width: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
 `;
 
 export default ChatRoom;
