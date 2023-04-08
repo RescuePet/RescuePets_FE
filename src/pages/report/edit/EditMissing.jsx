@@ -38,7 +38,6 @@ import {
   ReportAnimalUserInfo,
   PreviewImage,
 } from "../components/reportstyle";
-import { data } from "autoprefixer";
 
 const EditMissing = () => {
   let imageRef;
@@ -49,7 +48,7 @@ const EditMissing = () => {
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
 
-  // console.log(missingPostDetail);
+  console.log(missingPostDetail);
   useEffect(() => {
     dispatch(__getMissingPostDetail(id));
   }, [id]);
@@ -69,7 +68,7 @@ const EditMissing = () => {
 
   // 종류데이터
   const [type, setType] = useState(NameValue[0].name);
-  const [typeID, setTypeID] = useState("DOG");
+  const [typeID, setTypeID] = useState(missingPostDetail.upkind);
 
   // 셀렉트도직
   const onChangeData = (newData) => {
@@ -78,15 +77,22 @@ const EditMissing = () => {
   const onChangeID = (newValue) => {
     setTypeID(newValue);
   };
-
-  const [time, setTime] = useState(TimeValue[0].name);
+  // 눈에 보여줄 값
+  const [time, setTime] = useState(missingPostDetail.happenHour);
   const onChangeTimeData = (newData) => {
     setTime(newData);
   };
 
   // 탭 로직
-  const [currentGenderEnValue, setCurrentGenderEnValue] = useState("MALE");
-  const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState("YES");
+  const [currentGenderEnValue, setCurrentGenderEnValue] = useState(
+    missingPostDetail.sexCd
+  );
+  const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState(
+    missingPostDetail.neuterYn
+  );
+  const [currentNinkNameEnValue, setCurrentNinkNameEnValue] = useState(
+    missingPostDetail.openNickname
+  );
 
   const onChangeGender = (newData) => {
     setCurrentGenderEnValue(newData);
@@ -94,16 +100,20 @@ const EditMissing = () => {
   const onChangeNeutered = (newData) => {
     setCurrentNeuteredEnValue(newData);
   };
-
-  const [selectedDate, setSelectedDate] = useState("");
-  const currentDate = new Date().toISOString().split("T")[0];
-  const handleDateChange = (e) => {
-    setSelectedDate(e.target.value);
+  const onChangeNickname = (newData) => {
+    setCurrentNinkNameEnValue(newData);
   };
 
   const tabValue = {
     GenderNum: missingPostDetail.sexCd,
     neuterYn: missingPostDetail.neuterYn,
+    ninkCheck: missingPostDetail.openNickname,
+  };
+
+  const [selectedDate, setSelectedDate] = useState(missingPostDetail.upkind);
+  const currentDate = new Date().toISOString().split("T")[0];
+  const handleDateChange = (e) => {
+    setSelectedDate(e.target.value);
   };
 
   const onChangeTimeValeu = () => {};
@@ -113,7 +123,6 @@ const EditMissing = () => {
   // 좌표값들
   const addressLatDiv = document.getElementById("addressLat");
   const addressLngDiv = document.getElementById("addressLng");
-
   // 사진 로직
   // 올린 이미지 담을 관리하는 State
   const [showImages, setShowImages] = useState([]);
@@ -147,37 +156,20 @@ const EditMissing = () => {
     setImageFormData("");
   };
 
-  // 입력값에 따라 버튼 활성화
-  const [isActive, setIsActive] = useState(false);
-  useEffect(() => {
-    if (
-      watch("animaltypes") !== "" &&
-      watch("animalName") !== "" &&
-      watch("animaltypes") !== "" &&
-      watch("animalAge") !== "" &&
-      watch("animalkg") !== "" &&
-      watch("address") !== "" &&
-      watch("animalcolor") !== "" &&
-      addressDiv?.innerHTML !== "" &&
-      selectedDate !== ""
-    ) {
-      //   console.log('성공')
-      setIsActive(false);
-    } else {
-      //  console.log('실패')
-      setIsActive(true);
-    }
-  }, [watch()]);
-
   // 통신결과에따라 보여줄 로딩창
   const [editMsg, setEditMsg] = useState("");
 
   const onSubmitEditMissingHandler = (data) => {
     const formData = new FormData();
     formData.append("postType", "MISSING");
+    // 셀릭트 값을 건딜지않았다면 처리 로직 구현
+
     formData.append("upkind", typeID);
+
     formData.append("sexCd", currentGenderEnValue);
     formData.append("neuterYn", currentNeuteredEnValue);
+    // formData.append("openNickname", currentNinkNameEnValue);
+
     {
       data.animalName == ""
         ? formData.append("petName", missingPostDetail.petName)
@@ -223,25 +215,26 @@ const EditMissing = () => {
         ? formData.append("happenDt", missingPostDetail.happenDt)
         : formData.append("happenDt", selectedDate);
     }
+
     formData.append("happenHour", time);
     {
       data.characteristic == ""
-        ? formData.append("specialMark", missingPostDetail.characteristic)
+        ? formData.append("specialMark", missingPostDetail.specialMark)
         : formData.append("specialMark", data.characteristic);
     }
     {
       data.memo == ""
-        ? formData.append("content", missingPostDetail.memo)
+        ? formData.append("content", missingPostDetail.content)
         : formData.append("content", data.memo);
     }
     {
       data.money == ""
-        ? formData.append("gratuity", missingPostDetail.money)
+        ? formData.append("gratuity", missingPostDetail.gratuity)
         : formData.append("gratuity", data.money);
     }
     {
       data.number == ""
-        ? formData.append("contact", missingPostDetail.number)
+        ? formData.append("contact", missingPostDetail.contact)
         : formData.append("contact", data.number);
     }
 
@@ -260,6 +253,10 @@ const EditMissing = () => {
         console.log("성공");
         // 바로 이동시키기
         setEditMsg("수정 성공!");
+        reset("");
+        setCurrentGenderEnValue("");
+        setCurrentNeuteredEnValue("");
+        setCurrentNinkNameEnValue("");
         setTimeout(function () {
           navigate(`/missingdetail/${missingPostDetail.id}`);
         }, 1000);
@@ -275,6 +272,7 @@ const EditMissing = () => {
   return (
     <Layout>
       <ReportMissingContainer
+        style={{ height: "87.375rem" }}
         onSubmit={handleSubmit(onSubmitEditMissingHandler)}
       >
         {/* 컴포넌트  */}
@@ -325,6 +323,7 @@ const EditMissing = () => {
           <SeleteTab
             onChangeGender={onChangeGender}
             onChangeNeutered={onChangeNeutered}
+            onChangeNickname={onChangeNickname}
             tabValue={tabValue}
           />
 
@@ -531,13 +530,6 @@ const EditMissing = () => {
             <ReportAnimalPictureInput onClick={() => imageRef.click()}>
               <h3>+</h3>
             </ReportAnimalPictureInput>
-            {/* 기존이미지 넣기  */}
-            {/* {missingPostDetail.postImages !== "" ? (
-              <img
-                src={missingPostDetail.postImages[0].imageURL}
-                style={{ width: "2rem", height: "2rem" }}
-              />
-            ) : null} */}
 
             {showImages.length === 0 ? (
               <ReportAnimalPicturePreview>
@@ -563,6 +555,29 @@ const EditMissing = () => {
             )}
           </ReportAnimalPictureAreaInputBox>
         </ReportAnimalPictureArea>
+
+        <ReportAnimalPictureArea>
+          <ReportAnimalPictureAreaTitle>
+            <p>기존이미지</p>
+          </ReportAnimalPictureAreaTitle>
+          <ReportAnimalPictureAreaInputBox>
+            {missingPostDetail?.postImages?.length === 0 ? (
+              <ReportAnimalPicturePreview></ReportAnimalPicturePreview>
+            ) : (
+              <>
+                {missingPostDetail?.postImages?.map((image, index) => (
+                  <ReportAnimalPicturePreview key={index}>
+                    <PreviewImage
+                      src={image.imageURL}
+                      alt={`${image.imageURL}-${index}`}
+                    />
+                  </ReportAnimalPicturePreview>
+                ))}
+              </>
+            )}
+          </ReportAnimalPictureAreaInputBox>
+        </ReportAnimalPictureArea>
+
         <ReportAnimalUserInfo>
           <div>
             <p>사례금(원)</p>
@@ -622,15 +637,11 @@ const EditMissing = () => {
             <span>{errors?.number?.message}</span>
           </div>
         </ReportAnimalUserInfo>
-        {isActive === true ? (
-          <Button type="submit" disable assistiveFillButton>
-            작성 완료
-          </Button>
-        ) : (
-          <Button type="submit" fillButton>
-            작성 완료
-          </Button>
-        )}
+
+        <Button type="submit" fillButton>
+          수정 하기
+        </Button>
+
         {editMsg == "" ? null : (
           <CheckModal
             isOpen={loginModal}

@@ -20,7 +20,7 @@ import {
 import ClippingFill from "../../../asset/profile/ClippingFill";
 
 const Card = ({ item, page }) => {
-  console.log(item);
+  // console.log(item);
   const refineData = petworkRefineData(item);
   const navigate = useNavigate();
   const dispatch = useDispatch();

@@ -105,10 +105,7 @@ const Missing = () => {
     setCurrentNinkNameEnValue(newData);
   };
 
-  const tabValue = {
-    GenderNum: null,
-    neuterYn: null,
-  };
+  const tabValue = null;
   // console.log("최신값성별 :",currentGenderEnValue)
   // console.log("최신값중성화:",currentNeuteredEnValue)
 
@@ -214,7 +211,7 @@ const Missing = () => {
       formData.append("content", data.memo);
       formData.append("gratuity", data.money);
       formData.append("contact", data.number);
-      formData.append("openNickname", currentNinkNameEnValue);
+      // formData.append("openNickname", currentNinkNameEnValue);
       imageFormData.map((img) => {
         formData.append("postImages", img);
       });

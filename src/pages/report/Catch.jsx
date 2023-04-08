@@ -90,10 +90,7 @@ const Catch = () => {
     setCurrentNinkNameEnValue(newData);
   };
 
-  const tabValue = {
-    GenderNum: null,
-    neuterYn: null,
-  };
+  const tabValue = null;
 
   // 사진 로직
   const [showImages, setShowImages] = useState([]);
@@ -199,9 +196,8 @@ const Catch = () => {
       formData.append("happenHour", time);
       formData.append("specialMark", data.characteristic);
       formData.append("content", data.memo);
-      // formData.append("gratuity", data.money);
-      // formData.append("contact", data.number);
-      formData.append("openNickname", currentNinkNameEnValue);
+
+      // formData.append("openNickname", currentNinkNameEnValue);
       imageFormData.map((img) => {
         formData.append("postImages", img);
       });

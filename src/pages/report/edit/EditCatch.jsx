@@ -48,6 +48,7 @@ const EditCatch = () => {
   const { missingPostDetail } = useSelector((state) => state?.petwork);
 
   console.log(missingPostDetail);
+  console.log(missingPostDetail?.postImages?.length);
   useEffect(() => {
     dispatch(__getMissingPostDetail(id));
   }, [id]);
@@ -67,7 +68,7 @@ const EditCatch = () => {
 
   // 종류데이터
   const [type, setType] = useState(NameValue[0].name);
-  const [typeID, setTypeID] = useState("DOG");
+  const [typeID, setTypeID] = useState(missingPostDetail.upkind);
 
   // 셀렉트도직
   const onChangeData = (newData) => {
@@ -77,14 +78,21 @@ const EditCatch = () => {
     setTypeID(newValue);
   };
 
-  const [time, setTime] = useState(TimeValue[0].name);
+  const [time, setTime] = useState(missingPostDetail.happenHour);
   const onChangeTimeData = (newData) => {
     setTime(newData);
   };
 
   // 탭 로직
-  const [currentGenderEnValue, setCurrentGenderEnValue] = useState("MALE");
-  const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState("YES");
+  const [currentGenderEnValue, setCurrentGenderEnValue] = useState(
+    missingPostDetail.sexCd
+  );
+  const [currentNeuteredEnValue, setCurrentNeuteredEnValue] = useState(
+    missingPostDetail.neuterYn
+  );
+  const [currentNinkNameEnValue, setCurrentNinkNameEnValue] = useState(
+    missingPostDetail.openNickname
+  );
 
   const onChangeGender = (newData) => {
     setCurrentGenderEnValue(newData);
@@ -92,10 +100,14 @@ const EditCatch = () => {
   const onChangeNeutered = (newData) => {
     setCurrentNeuteredEnValue(newData);
   };
+  const onChangeNickname = (newData) => {
+    setCurrentNinkNameEnValue(newData);
+  };
 
   const tabValue = {
     GenderNum: missingPostDetail.sexCd,
     neuterYn: missingPostDetail.neuterYn,
+    ninkCheck: missingPostDetail.openNickname,
   };
 
   const [selectedDate, setSelectedDate] = useState("");
@@ -105,6 +117,11 @@ const EditCatch = () => {
   };
   const onChangeTimeValeu = () => {};
 
+  // 주소
+  const addressDiv = document.getElementById("address");
+  // 좌표값들
+  const addressLatDiv = document.getElementById("addressLat");
+  const addressLngDiv = document.getElementById("addressLng");
   // 사진 로직
   // 올린 이미지 담을 관리하는 State
   const [showImages, setShowImages] = useState([]);
@@ -138,43 +155,17 @@ const EditCatch = () => {
     setImageFormData("");
   };
 
-  // 주소
-  const addressDiv = document.getElementById("address");
-  // 좌표값들
-  const addressLatDiv = document.getElementById("addressLat");
-  const addressLngDiv = document.getElementById("addressLng");
-
-  // 입력값에 따라 버튼 활성화
-  const [isActive, setIsActive] = useState(false);
-  useEffect(() => {
-    if (
-      watch("animaltypes") !== "" &&
-      watch("animalName") !== "" &&
-      watch("animaltypes") !== "" &&
-      watch("animalAge") !== "" &&
-      watch("animalkg") !== "" &&
-      watch("address") !== "" &&
-      watch("animalcolor") !== "" &&
-      addressDiv?.innerHTML !== "" &&
-      selectedDate !== ""
-    ) {
-      //   console.log('성공')
-      setIsActive(false);
-    } else {
-      //  console.log('실패')
-      setIsActive(true);
-    }
-  }, [watch()]);
-
   // 통신결과에따라 보여줄 로딩창
   const [editMsg, setEditMsg] = useState("");
 
   const onSubmitEditCatchHandler = (data) => {
+    console.log("시작");
     const formData = new FormData();
     formData.append("postType", "CATCH");
     formData.append("upkind", typeID);
     formData.append("sexCd", currentGenderEnValue);
     formData.append("neuterYn", currentNeuteredEnValue);
+    // formData.append("openNickname", currentNinkNameEnValue);
     {
       data.animalName == ""
         ? formData.append("petName", missingPostDetail.petName)
@@ -223,14 +214,15 @@ const EditCatch = () => {
     formData.append("happenHour", time);
     {
       data.characteristic == ""
-        ? formData.append("specialMark", missingPostDetail.characteristic)
+        ? formData.append("specialMark", missingPostDetail.specialMark)
         : formData.append("specialMark", data.characteristic);
     }
     {
       data.memo == ""
-        ? formData.append("content", missingPostDetail.memo)
+        ? formData.append("content", missingPostDetail.content)
         : formData.append("content", data.memo);
     }
+
     imageFormData.map((img) => {
       formData.append("postImages", img);
     });
@@ -242,30 +234,26 @@ const EditCatch = () => {
     toggleModal();
     const number = missingPostDetail.id;
     dispatch(__PutCatchposts({ formData, number })).then((response) => {
-      console.log(response);
       if (response.type === "putcatchposts/fulfilled") {
-        console.log("성공");
-        // 바로 이동시키기
         setEditMsg("수정 성공!");
+        reset("");
+        setCurrentGenderEnValue("");
+        setCurrentNeuteredEnValue("");
+        setCurrentNinkNameEnValue("");
         setTimeout(function () {
           navigate(`/catchdetail/${missingPostDetail.id}`);
         }, 1000);
       } else {
-        console.log("실패");
         setEditMsg("수정 실패..ㅠ");
       }
     });
-  };          
+  };
 
   const SelecteKind = missingPostDetail.upkind;
   const selecteHour = missingPostDetail.happenHour;
-  
-    
   return (
     <Layout>
-      <ReportMissingContainer
-        onSubmit={handleSubmit(onSubmitEditCatchHandler)}
-      >
+      <ReportMissingContainer onSubmit={handleSubmit(onSubmitEditCatchHandler)}>
         {/* 컴포넌트  */}
         <Header>내 목격 글 수정 </Header>
 
@@ -288,7 +276,6 @@ const EditCatch = () => {
                   type="text"
                   placeholder={missingPostDetail.kindCd}
                   {...register("animaltypes", {
-                    required: true,
                     pattern: {
                       value: /^[가-힣\s]+$/,
                       message: "한글만 2 ~ 15글자 사이로 입력",
@@ -312,6 +299,7 @@ const EditCatch = () => {
           <SeleteTab
             onChangeGender={onChangeGender}
             onChangeNeutered={onChangeNeutered}
+            onChangeNickname={onChangeNickname}
             tabValue={tabValue}
           />
 
@@ -323,7 +311,6 @@ const EditCatch = () => {
                   type="text"
                   placeholder={missingPostDetail.age}
                   {...register("animalAge", {
-                    required: true,
                     pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
                     maxLength: {
                       value: 3,
@@ -346,7 +333,6 @@ const EditCatch = () => {
                   type="text"
                   placeholder={missingPostDetail.weight}
                   {...register("animalkg", {
-                    required: false,
                     pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
                     maxLength: {
                       value: 3,
@@ -371,7 +357,6 @@ const EditCatch = () => {
                   type="text"
                   placeholder={missingPostDetail.colorCd}
                   {...register("animalcolor", {
-                    required: true,
                     pattern: {
                       value: /^[가-힣\s]+$/,
                       message: "한글만 2 ~ 8글자 사이로 입력 ",
@@ -435,7 +420,6 @@ const EditCatch = () => {
                     : missingPostDetail.specialMark
                 }
                 {...register("characteristic", {
-                  required: false,
                   pattern: {
                     value: /^[가-힣\s]+$/,
                     message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
@@ -465,7 +449,6 @@ const EditCatch = () => {
                     : missingPostDetail.content
                 }
                 {...register("memo", {
-                  required: false,
                   pattern: {
                     value: /^[가-힣\s]+$/,
                     message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
@@ -529,15 +512,31 @@ const EditCatch = () => {
           </ReportAnimalPictureAreaInputBox>
         </ReportAnimalPictureArea>
 
-        {isActive === true ? (
-          <Button type="submit" disable assistiveFillButton>
-            작성 완료
-          </Button>
-        ) : (
-          <Button type="submit" fillButton>
-            작성 완료
-          </Button>
-        )}
+        <ReportAnimalPictureArea>
+          <ReportAnimalPictureAreaTitle>
+            <p>기존이미지</p>
+          </ReportAnimalPictureAreaTitle>
+          <ReportAnimalPictureAreaInputBox>
+            {missingPostDetail?.postImages?.length === 0 ? (
+              <ReportAnimalPicturePreview></ReportAnimalPicturePreview>
+            ) : (
+              <>
+                {missingPostDetail?.postImages?.map((image, index) => (
+                  <ReportAnimalPicturePreview key={index}>
+                    <PreviewImage
+                      src={image.imageURL}
+                      alt={`${image.imageURL}-${index}`}
+                    />
+                  </ReportAnimalPicturePreview>
+                ))}
+              </>
+            )}
+          </ReportAnimalPictureAreaInputBox>
+        </ReportAnimalPictureArea>
+
+        <Button type="submit" fillButton>
+          수정 하기
+        </Button>
 
         {editMsg == "" ? null : (
           <CheckModal
