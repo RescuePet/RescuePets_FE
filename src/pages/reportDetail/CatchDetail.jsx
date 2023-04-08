@@ -41,6 +41,8 @@ import { Loading } from "../../components/Loading";
 import { toggleOption, toggleReport } from "../../redux/modules/menubarSlice";
 import ReportModal from "../../components/ReportModal";
 import Option from "../../components/Option";
+import { useModalState } from "../../hooks/useModalState";
+import { CheckModal } from "../../elements/Modal";
 
 const SightingDetail = () => {
   const { id } = useParams();
@@ -48,6 +50,9 @@ const SightingDetail = () => {
   const navigate = useNavigate();
   const userName = JSON.parse(Cookies.get("UserInfo"));
   const commentRef = useRef(null);
+
+  const [loginModal, toggleModal] = useModalState(false);
+  const [commentMsg, setCommentMsg] = useState("");
 
   const [commentPage, setCommentPage] = useState(1);
 
@@ -80,7 +85,10 @@ const SightingDetail = () => {
   }
 
   if (error) {
-    alert(errorMessage);
+    toggleModal();
+    setCommentMsg(errorMessage);
+
+    // alert(errorMessage);
     dispatch(resetError());
   }
 
@@ -111,7 +119,9 @@ const SightingDetail = () => {
       content: content.message,
     };
     if (content.message === "") {
-      alert("댓글을 입력해주세요.");
+      toggleModal();
+      setCommentMsg("댓글을 입력해주세요.");
+      // alert("댓글을 입력해주세요.");
       return;
     }
     dispatch(__postComment(data));
@@ -197,6 +207,15 @@ const SightingDetail = () => {
   return (
     <CatchLayout>
       <ScrollToTop />
+      {commentMsg == "" ? null : (
+        <CheckModal
+          isOpen={loginModal}
+          toggle={toggleModal}
+          onClose={toggleModal}
+        >
+          {commentMsg}
+        </CheckModal>
+      )}
       <ImageCarousel
         images={catchPostDetail?.postImages}
         imageCarouselInfo={imageCarouselInfo}

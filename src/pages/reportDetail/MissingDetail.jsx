@@ -43,6 +43,8 @@ import { Loading } from "../../components/Loading";
 import { toggleOption, toggleReport } from "../../redux/modules/menubarSlice";
 import Option from "../../components/Option";
 import ReportModal from "../../components/ReportModal";
+import { useModalState } from "../../hooks/useModalState";
+import { CheckModal } from "../../elements/Modal";
 
 const MissingDetail = () => {
   const { id } = useParams();
@@ -50,6 +52,9 @@ const MissingDetail = () => {
   const navigate = useNavigate();
   const userName = JSON.parse(Cookies.get("UserInfo"));
   const commentRef = useRef(null);
+
+  const [loginModal, toggleModal] = useModalState(false);
+  const [commentMsg, setCommentMsg] = useState("");
 
   const [commentPage, setCommentPage] = useState(1);
 
@@ -82,7 +87,9 @@ const MissingDetail = () => {
   }
 
   if (error) {
-    alert(errorMessage);
+    toggleModal();
+    setCommentMsg(errorMessage);
+    // alert(errorMessage);
     dispatch(resetError());
   }
 
@@ -108,7 +115,9 @@ const MissingDetail = () => {
       content: content.message,
     };
     if (content.message === "") {
-      alert("댓글을 입력해주세요.");
+      toggleModal();
+      setCommentMsg("댓글을 입력해주세요.");
+      // alert("댓글을 입력해주세요.");
       return;
     } else {
       dispatch(__postComment(data));
@@ -208,6 +217,15 @@ const MissingDetail = () => {
   return (
     <Layout>
       <ScrollToTop />
+      {commentMsg == "" ? null : (
+        <CheckModal
+          isOpen={loginModal}
+          toggle={toggleModal}
+          onClose={toggleModal}
+        >
+          {commentMsg}
+        </CheckModal>
+      )}
       <ImageCarousel
         images={missingPostDetail.postImages}
         imageCarouselInfo={imageCarouselInfo}
@@ -315,6 +333,7 @@ const MissingDetail = () => {
           }
         />
       )}
+
       {reportState && <ReportModal setting={reportSetting} />}
     </Layout>
   );
