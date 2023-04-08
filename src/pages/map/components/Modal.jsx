@@ -19,7 +19,6 @@ export default function Modal({ isOpen, onClose, children }) {
     hidden: { opacity: 0, y: "-100%", transition: { duration: 0.1 } },
   };
 
-
   return (
     <AnimatePresence>
       {isOpen && (
@@ -98,7 +97,7 @@ export const ModalTitleinfo = styled.div`
   width: 70%;
   height: 100%;
   ${(props) => props.theme.Body_400_14}
-       h1 {
+  h1 {
     border: 0.0625rem solid #d6459c;
     color: #d6459c;
     width: 2.5rem;
@@ -203,6 +202,7 @@ export function MarkerModal(props) {
   const navigate = useNavigate();
 
   const data = props?.data;
+  console.log(data);
   const Stringkm = String(data?.km);
 
   const Arraykm = Stringkm.split("");
@@ -213,7 +213,7 @@ export function MarkerModal(props) {
     data.upkind = "강아지";
   } else if (data?.upkind === "CAT") {
     data.upkind = "고양이";
-  }else if (data?.upkind === "ETC") {
+  } else if (data?.upkind === "ETC") {
     data.upkind = "기타";
   }
 
@@ -266,11 +266,16 @@ export function MarkerModal(props) {
             )}
 
             <h4>
-              <Button moveToDetailButton type="button"
+              <Button
+                moveToDetailButton
+                type="button"
                 onClick={() => {
-                props.onClose();
-                navigate(`/${data.name}/${data.id}`);
-                   }}>상세보기</Button>
+                  props.onClose();
+                  navigate(`/${data.name}/${data.id}`);
+                }}
+              >
+                상세보기
+              </Button>
             </h4>
           </ModlaMiddleInfoBox>
           <ModlaImgInfoBox>

@@ -6,11 +6,14 @@ import Button from "../elements/Button";
 
 const NotFound = () => {
   const navigate = useNavigate();
+  const MoveToHome = navigate("/home");
   return (
     <Layout>
-      NotFound
+      NotFound21231
       <NotFoundContainer>
-        <Button fillButton>되돌아가기</Button>
+        <Button fillButton onClick={MoveToHome}>
+          되돌아가기
+        </Button>
       </NotFoundContainer>
     </Layout>
   );
