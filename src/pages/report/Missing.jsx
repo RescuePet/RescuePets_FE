@@ -38,12 +38,17 @@ import { NameValue, TimeValue } from "./components/data";
 import { addImage } from "../../redux/modules/missingSlice";
 import { __PostMissingData } from "../../redux/modules/petworkSlice";
 import { toggleMenu } from "../../redux/modules/menubarSlice";
+import { useModalState } from "../../hooks/useModalState";
+import { CheckModal } from "../../elements/Modal";
 
 const Missing = () => {
   let imageRef;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [postNumber, setPostNumber] = useState("");
+
+  const [loginModal, toggleModal] = useModalState(false);
+  const [missingMsg, setMissingMsg] = useState("");
 
   const { postId } = useSelector((state) => {
     return state.petwork;
@@ -69,10 +74,6 @@ const Missing = () => {
     setMapBg(true);
   }, [menutoggle]);
 
-  // const MoveToBackPage = () => {
-  //   dispatch(toggleMenu(mapBg));
-  //   navigate(-1);
-  // };
   // 종류데이터
   const [type, setType] = useState(NameValue[0].name);
   const [typeID, setTypeID] = useState("DOG");
@@ -106,10 +107,7 @@ const Missing = () => {
   };
 
   const tabValue = null;
-  // console.log("최신값성별 :",currentGenderEnValue)
-  // console.log("최신값중성화:",currentNeuteredEnValue)
 
-  // 사진 로직
   // 올린 이미지 담을 관리하는 State
   const [showImages, setShowImages] = useState([]);
   // 폼데이터로 이미지 관리하는 State
@@ -161,7 +159,7 @@ const Missing = () => {
     resetField(data);
   };
   const [selectedDate, setSelectedDate] = useState("");
-  // console.log(selectedDate)
+  console.log(selectedDate);
   // 현재 날짜를 가져옵니다.
   const currentDate = new Date().toISOString().split("T")[0];
   const handleDateChange = (e) => {
@@ -189,8 +187,11 @@ const Missing = () => {
 
   // POST
   const onSubmitMissingHanlder = (data) => {
-    if (addressDiv?.innerHTML === "") {
-      alert("지도에 위치를 표기해주세요");
+    console.log(data);
+    if (addressDiv?.innerHTML === "" && selectedDate == "") {
+      console.log("d");
+      toggleModal();
+      setMissingMsg("지도상에 위치와 날짜를 선택해주세요.");
     } else {
       const formData = new FormData();
       formData.append("postType", "MISSING");
@@ -215,9 +216,9 @@ const Missing = () => {
       imageFormData.map((img) => {
         formData.append("postImages", img);
       });
-      for (let value of formData.values()) {
-        console.log(value);
-      }
+      // for (let value of formData.values()) {
+      //   console.log(value);
+      // }
       dispatch(addImage(imageFormData[0]));
       dispatch(__PostMissingData(formData)).then((response) => {
         navigate(`/poster/${response.payload.id}`);
@@ -228,6 +229,15 @@ const Missing = () => {
   return (
     <Layout>
       <ReportMissingContainer onSubmit={handleSubmit(onSubmitMissingHanlder)}>
+        {missingMsg == "" ? null : (
+          <CheckModal
+            isOpen={loginModal}
+            toggle={toggleModal}
+            onClose={toggleModal}
+          >
+            {missingMsg}
+          </CheckModal>
+        )}
         <Header>실종 글 작성하기</Header>
 
         <ReportAnimalInfoArea>

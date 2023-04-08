@@ -36,14 +36,18 @@ import { __PostCatchData } from "../../redux/modules/petworkSlice";
 import { useDispatch, useSelector } from "react-redux";
 import imgdelete from "../../asset/imgDelete.svg";
 import { useNavigate } from "react-router-dom";
-import { PostModal } from "./components/Modal";
+// import { PostModal } from "./components/Modal";
 import { useModalState } from "../../hooks/useModalState";
+import { CheckModal } from "../../elements/Modal";
 
 const Catch = () => {
   let imageRef;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [loginModal, toggleModal] = useModalState(false);
   const [postNumber, setPostNumber] = useState("");
+
+  const [catchMsg, setCatchMsg] = useState("");
 
   const { postId } = useSelector((state) => {
     return state.petwork;
@@ -177,8 +181,9 @@ const Catch = () => {
   const onSubmitSightingHanlder = (data) => {
     console.log(currentGenderEnValue);
     console.log(currentNeuteredEnValue);
-    if (addressDiv?.innerHTML === "") {
-      alert("지도에 위치를 표기해주세요");
+    if (addressDiv?.innerHTML === "" && selectedDate == "") {
+      toggleModal();
+      setCatchMsg("지도상에 위치와 날짜를 선택해주세요.");
     } else {
       const formData = new FormData();
       formData.append("postType", "CATCH");
@@ -204,17 +209,35 @@ const Catch = () => {
       // for (let value of formData.values()) {
       //   console.log(value);
       // }
-      dispatch(__PostCatchData(formData));
-      toggleModal();
-      // reset();
+      dispatch(__PostCatchData(formData)).then((response) => {
+        console.log(response);
+        if (response.type == "postgetCatchData/fulfilled") {
+          toggleModal();
+          setCatchMsg("등록 성공 ");
+          setTimeout(function () {
+            navigate(`/catchdetail/${response.payload.id}`);
+          }, 1000);
+        } else {
+          setCatchMsg("서버 오류.. ");
+        }
+      });
+      reset();
     }
   };
 
   return (
     <Layout>
       <ReportMissingContainer onSubmit={handleSubmit(onSubmitSightingHanlder)}>
+        {catchMsg == "" ? null : (
+          <CheckModal
+            isOpen={loginModal}
+            toggle={toggleModal}
+            onClose={toggleModal}
+          >
+            {catchMsg}
+          </CheckModal>
+        )}
         <Header>목격 글 작성하기</Header>
-
         <ReportAnimalInfoArea>
           <ReportanimaltypesBox>
             <ReportanimaltypesTitle>동물정보</ReportanimaltypesTitle>
@@ -340,7 +363,6 @@ const Catch = () => {
             </ReportAnimalInfoBoxColumn>
           </ReportAnimalInfoBox>
         </ReportAnimalInfoArea>
-
         <Location />
         <ReportAnimalDayBox>
           <p>목격일시 *</p>
@@ -364,7 +386,6 @@ const Catch = () => {
             </div>
           </div>
         </ReportAnimalDayBox>
-
         <ReportAnimalSignificantBox>
           <ReportAnimalSignificantBoxTitle>
             <p> 특이사항 </p>
@@ -422,7 +443,6 @@ const Catch = () => {
             </div>
           </ReportAnimalSignificantBoxInputArea>
         </ReportAnimalSignificantBox>
-
         <ReportAnimalPictureArea>
           <ReportAnimalPictureAreaTitle>
             <p>사진첨부</p>
@@ -464,7 +484,6 @@ const Catch = () => {
             )}
           </ReportAnimalPictureAreaInputBox>
         </ReportAnimalPictureArea>
-
         {isActive === true ? (
           <Button type="submit" disable assistiveFillButton>
             작성 완료
@@ -473,14 +492,6 @@ const Catch = () => {
           <Button type="submit" fillButton>
             작성 완료
           </Button>
-        )}
-        {postNumber == "" ? null : (
-          <PostModal
-            isOpen={loginModal}
-            toggle={toggleModal}
-            onClose={toggleModal}
-            data={postNumber}
-          ></PostModal>
         )}
       </ReportMissingContainer>
     </Layout>
