@@ -7,22 +7,20 @@ import { useDispatch } from "react-redux";
 import { toggleReport } from "../redux/modules/menubarSlice";
 import { useForm } from "react-hook-form";
 import { CustomSelect } from "../elements/CustomSelect";
+import ModalPortal from "../elements/ModalPortal";
 
-const ReportModal = ({ setting }) => {
+const ReportModal = ({ setting, reportCloseHandler }) => {
   const reportOption = [
-    { id: 0, name: "부적절한 단어", value: "부적절한 단어" },
+    { id: 0, name: "부적절한단어", value: "부적절한단어" },
     { id: 1, name: "거짓정보", value: "거짓정보" },
     { id: 2, name: "신체노출", value: "신체노출" },
     { id: 3, name: "기타", value: "기타" },
   ];
 
   const [type, setType] = useState(reportOption[0].name);
-  const [typeID, setTypeID] = useState("부적절한 단어");
+  const [typeID, setTypeID] = useState("부적절한단어");
   const { register, handleSubmit, reset } = useForm();
   const dispatch = useDispatch();
-
-  console.log("type", type);
-  console.log("typeID", typeID);
 
   const onChangeData = (newData) => {
     setType(newData);
@@ -32,35 +30,44 @@ const ReportModal = ({ setting }) => {
     setTypeID(newData);
   };
 
-  const submitPostReport = async () => {
+  const submitPostReport = async (payload) => {
     const data = {
-      content: null,
-      postId: null,
+      content: payload.reason,
+      postId: Number(setting.postId),
       commentId: 0,
       reportCode: typeID,
     };
     try {
       console.log("request data", data);
-      const response = await instance.post(`/api/report/member`, data);
+      const response = await instance.post(`/api/report/post`, data);
       console.log(response);
+      if (response.status === 200) {
+        alert("신고가 완료되었습니다.");
+      }
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 409) {
+        alert("이미 신고하였습니다.");
+      }
     }
   };
 
-  const submitCommentReport = async () => {
+  const submitCommentReport = async (payload) => {
     const data = {
-      content: null,
+      content: payload.reason,
       postId: null,
-      commentId: null,
+      commentId: setting.commentId,
       reportCode: typeID,
     };
     try {
-      console.log("request data", data);
-      const response = await instance.post(`/api/report/member`, data);
-      console.log(response);
+      const response = await instance.post(`/api/report/comment`, data);
+      console.log("response", response);
+      if (response.status === 200) {
+        alert("신고가 완료되었습니다.");
+      }
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 409) {
+        alert("이미 신고하였습니다.");
+      }
     }
   };
 
@@ -75,53 +82,87 @@ const ReportModal = ({ setting }) => {
       console.log("request data", data);
       const response = await instance.post(`/api/report/member`, data);
       console.log(response);
+      if (response.status === 200) {
+        alert("신고가 완료되었습니다.");
+      }
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 409) {
+        alert("이미 신고하였습니다.");
+      }
     }
   };
 
   const submitHandler = (payload) => {
-    if (setting.type === "member") {
+    console.log(payload.reason);
+    if (payload.reason === "") {
+      alert("내용을 작성해주세요");
+      return;
+    }
+    if (setting.type === "post") {
+      console.log("게시물 신고");
+      submitPostReport(payload);
+      dispatch(toggleReport());
+      reset();
+    } else if (setting.type === "member") {
       submitMemberReport(payload);
+      dispatch(toggleReport());
+      reset();
+    } else if (setting.type === "comment") {
+      console.log("댓글 신고");
+      submitCommentReport(payload);
+      reportCloseHandler();
       reset();
     }
   };
 
   return (
     <>
-      <ReportBackground></ReportBackground>
-      <ReportContainer>
-        <ReportWrapper>
-          <ReportTitle>
-            <span>신고하기</span>
-          </ReportTitle>
-          <ReportContents onSubmit={handleSubmit(submitHandler)}>
-            <SelectWrapper>
-              <SelectTitle>신고 사유</SelectTitle>
-              <CustomSelect
-                data={reportOption}
-                onChangeData={onChangeData}
-                onChangeID={onChangeID}
-              />
-            </SelectWrapper>
-            <ContentsWrapper>
-              <ContentsTitle>상세내용</ContentsTitle>
-              <Contents
-                placeholder="상세내용을 작성해주세요."
-                {...register("reason")}
-              />
-            </ContentsWrapper>
-          </ReportContents>
-          <ButtonWrapper>
-            <Button emptyButton normal onClick={() => dispatch(toggleReport())}>
-              닫기
-            </Button>
-            <Button fillButton onClick={handleSubmit(submitHandler)}>
-              신고하기
-            </Button>
-          </ButtonWrapper>
-        </ReportWrapper>
-      </ReportContainer>
+      <ModalPortal>
+        <ReportBackground></ReportBackground>
+        <ReportContainer>
+          <ReportWrapper>
+            <ReportTitle>
+              <span>신고하기</span>
+            </ReportTitle>
+            <ReportContents onSubmit={handleSubmit(submitHandler)}>
+              <SelectWrapper>
+                <SelectTitle>신고 사유</SelectTitle>
+                <CustomSelect
+                  data={reportOption}
+                  onChangeData={onChangeData}
+                  onChangeID={onChangeID}
+                />
+              </SelectWrapper>
+              <ContentsWrapper>
+                <ContentsTitle>상세내용</ContentsTitle>
+                <Contents
+                  placeholder="상세내용을 작성해주세요."
+                  {...register("reason")}
+                />
+              </ContentsWrapper>
+            </ReportContents>
+            <ButtonWrapper>
+              {reportCloseHandler ? (
+                <Button emptyButton normal onClick={reportCloseHandler}>
+                  닫기
+                </Button>
+              ) : (
+                <Button
+                  emptyButton
+                  normal
+                  onClick={() => dispatch(toggleReport())}
+                >
+                  닫기
+                </Button>
+              )}
+
+              <Button fillButton onClick={handleSubmit(submitHandler)}>
+                신고하기
+              </Button>
+            </ButtonWrapper>
+          </ReportWrapper>
+        </ReportContainer>
+      </ModalPortal>
     </>
   );
 };
@@ -136,6 +177,8 @@ const ReportBackground = styled.div`
 const ReportContainer = styled.div`
   position: fixed;
   ${FlexAttribute("column", "center", "center")};
+  bottom: 0;
+  right: calc(50% - 215px);
   height: 100%;
   width: 430px;
   z-index: 600;

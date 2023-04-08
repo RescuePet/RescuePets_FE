@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
@@ -79,8 +79,15 @@ const ChatRoom = () => {
     fetchData();
     return () => {
       stompDisconnect();
+      getChatLog(id);
     };
   }, []);
+
+  const messagesRef = useRef(null); // 메시지 엘리먼트를 저장
+
+  useEffect(() => {
+    messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+  }, [chatlog]);
 
   // client undefined 였는데, useCallback을 사용하니 정상 작동
   const submitHandler = useCallback((register) => {
@@ -94,7 +101,6 @@ const ChatRoom = () => {
       message: message,
     };
     client.send(`/pub/${id}`, {}, JSON.stringify(sendSettings));
-    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
   }, []);
 
   const leaveChatHandler = async () => {
@@ -129,7 +135,7 @@ const ChatRoom = () => {
         <HeaderTitle>{nickname}</HeaderTitle>
         <OptionChat onClick={() => dispatch(toggleOption())} />
       </ChatRoomHeader>
-      <ChatRoomBody>
+      <ChatRoomBody ref={messagesRef}>
         {chatlog.length !== 0 &&
           chatlog.map((item, index) => {
             if (item.sender === sender.nickname) {
@@ -191,6 +197,7 @@ const OptionChat = styled(Meatballs)`
 
 const ChatRoomBody = styled.div`
   width: 100%;
+  overflow: scroll;
 `;
 
 export default ChatRoom;

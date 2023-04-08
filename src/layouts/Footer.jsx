@@ -111,7 +111,7 @@ export default Footer;
 const FooterContiner = styled.div`
   ${FlexAttribute("row", "space-around", "center")}
   width: 26.875rem;
-  height: 10vh;
+  height: 76px;
   /* height: 4.625rem; */
   border-top: 0.0625rem solid ${(props) => props.theme.color.text_disable};
   position: fixed;

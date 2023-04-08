@@ -1,46 +1,96 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Border_1_color, FlexAttribute } from "../../../style/Mixin";
 import { Body_400_10, Body_400_12, Body_500_14 } from "../../../style/theme";
 import profileIcon from "../../../asset/profile.svg";
-import Close from "../../../asset/Close.svg";
 import { useDispatch } from "react-redux";
-import { __deleteMissingComment } from "../../../redux/modules/commentSlice";
 import Cookies from "js-cookie";
+import Option from "../../../components/Option";
+import ReportModal from "../../../components/ReportModal";
+import { __deleteComment } from "../../../redux/modules/commentSlice";
+import Meatballs from "../../../asset/Meatballs";
 
 const Comment = ({ item }) => {
-  // console.log(item);
-  const { profileImage } = JSON.parse(Cookies.get("UserInfo"));
-
-  console.log(item);
   const dispatch = useDispatch();
 
-  const handleDeleteComment = () => {
-    dispatch(__deleteMissingComment(item.id));
-  };
-  console.log(item.id);
+  const [commentOption, setCommentOption] = useState(false);
+  const [commentReport, setCommentReport] = useState(false);
+  const { nickname } = JSON.parse(Cookies.get("UserInfo"));
 
-  // const showDeleteButton = item.Id;
-  // console.log(showDeleteButton);
+  console.log(nickname);
+  console.log(item);
+
+  const optionMySetting = [
+    {
+      option: "댓글 삭제하기",
+      color: "report",
+      handler: () => dispatch(__deleteComment(item.id)),
+      type: "comment",
+    },
+  ];
+
+  const optionOtherSetting = [
+    {
+      option: "댓글 신고하기",
+      color: "report",
+      handler: () => {
+        setCommentReport(!commentReport);
+        setCommentOption(!commentOption);
+      },
+      type: "comment",
+    },
+  ];
+
+  const commentCloseHandler = () => {
+    setCommentOption(!commentOption);
+  };
+
+  const reportCloseHandler = () => {
+    setCommentReport(!commentReport);
+  };
+
+  const reportSetting = {
+    type: "comment",
+    nickname: item.userNickName,
+    postId: 0,
+    commentId: item.id,
+  };
 
   return (
-    <CommentBox>
-      <UserInfo>
-        <UserImg
-          src={item.profileImage !== null ? item.profileImage : profileIcon}
+    <>
+      <CommentBox>
+        <UserInfo>
+          <UserImg
+            src={item.profileImage !== null ? item.profileImage : profileIcon}
+          />
+          <UserBox>
+            <UserName>{item.userNickName}</UserName>
+            <CommentTime>
+              {item.modifiedAt.substring(0, 10)}&nbsp;
+              {item.modifiedAt.substring(11, 16)}
+            </CommentTime>
+          </UserBox>
+          <CommentMeatBalls onClick={() => setCommentOption((prev) => !prev)} />
+        </UserInfo>
+        <CommentText>{item.content}</CommentText>
+      </CommentBox>
+      {commentOption && (
+        <Option
+          setting={
+            nickname === item.userNickName
+              ? optionMySetting
+              : optionOtherSetting
+          }
+          commentCloseHandler={commentCloseHandler}
         />
-        <UserBox>
-          <UserName>{item.userNickName}</UserName>
-          {/* <CommentTime>43분전</CommentTime> */}
-        </UserBox>
-      </UserInfo>
-      {/* {showDeleteButton && ( */}
-      <DeleteButton onClick={handleDeleteComment}>
-        <img src={Close} alt="delete" />
-      </DeleteButton>
-      {/* )} */}
-      <CommentText>{item.content}</CommentText>
-    </CommentBox>
+      )}
+      {commentReport && (
+        <ReportModal
+          setting={reportSetting}
+          reportCloseHandler={reportCloseHandler}
+        />
+      )}
+    </>
   );
 };
 
@@ -62,6 +112,7 @@ const UserImg = styled.img`
 `;
 
 const UserInfo = styled.div`
+  position: relative;
   ${FlexAttribute("row")}
 `;
 
@@ -69,6 +120,13 @@ const UserBox = styled.div`
   margin-left: 1rem;
   margin-bottom: 0.5rem;
   ${FlexAttribute("column")}
+`;
+
+const CommentMeatBalls = styled(Meatballs)`
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
 `;
 
 const UserName = styled.span`

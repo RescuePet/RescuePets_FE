@@ -50,14 +50,7 @@ const InputContainer = ({ placeholder, submitHandler }) => {
             id="message-textarea"
             {...register("message")}
           />
-          <SubmitButton
-            onClick={() =>
-              handleSubmit((register) => {
-                submitHandler(register);
-                reset();
-              })()
-            }
-          >
+          <SubmitButton>
             <ChatSubmit />
           </SubmitButton>
         </InputWrapper>
@@ -80,6 +73,7 @@ const ChatFooter = styled.div`
   ${FlexAttribute("row", "space-around", "center")}
   width: 26.875rem;
   height: auto;
+  min-height: 76px;
   position: fixed;
   bottom: 0;
   padding-top: 1rem;

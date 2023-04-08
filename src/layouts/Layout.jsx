@@ -4,12 +4,20 @@ import styled from "styled-components";
 import { FlexAttribute } from "../style/Mixin";
 import Footer from "./Footer";
 import isLogin from "../utils/isLogin";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleScroll } from "../redux/modules/commentSlice";
+
 import backgroundImage from "../asset/webbackground/Desktop.jpg";
+import PopDog from "../asset/webbackground/PopDog.png";
+import Logo from "../asset/webbackground/Logo.png";
+import { upAndDown } from "../style/Animation";
 
 const Layout = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [scrollPosition, setScrollPosition] = useState(0);
+  const { scrollState } = useSelector((state) => state.comment);
+  const dispatch = useDispatch();
   const ref = useRef(null);
 
   useEffect(() => {
@@ -30,6 +38,18 @@ const Layout = ({ children }) => {
       navigate("/signin");
     }
   }, [navigate]);
+
+  useEffect(() => {
+    if (scrollState) {
+      setTimeout(() => {
+        ref.current.scrollTo({
+          top: ref.current.scrollHeight,
+          behavior: "smooth",
+        });
+        dispatch(toggleScroll());
+      }, 300);
+    }
+  }, [scrollState]);
 
   const saveScrollPosition = (e) => {
     if (location.pathname === "/home" || location.pathname === "/petwork") {
@@ -57,12 +77,15 @@ const Layout = ({ children }) => {
             location.pathname.split("/")[1] !== "editmissing" &&
             location.pathname.split("/")[1] !== "chatroom" && <Footer></Footer>}
         </MobileLayout>
+        <LogoImage src={Logo} />
+        <DogImage src={PopDog} />
       </WebLayout>
     </>
   );
 };
 
 const WebLayout = styled.div`
+  position: relative;
   width: 100%;
   height: 100%;
   background-image: url(${(props) => props.imageURL});
@@ -94,6 +117,22 @@ const MobileLayout = styled.div`
     padding-bottom: 4.75rem;
     background-color: ${(props) => props.theme.color.white};
   }
+`;
+
+const LogoImage = styled.img`
+  position: absolute;
+  top: 5vh;
+  right: calc(50% + 305px);
+  width: 325px;
+`;
+
+const DogImage = styled.img`
+  position: absolute;
+  top: 50vh;
+  width: 250px;
+  transform: translate(-17%, -20%);
+  left: calc(50% - 500px);
+  animation: ${upAndDown} 2.3s infinite;
 `;
 
 export default Layout;

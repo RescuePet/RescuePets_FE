@@ -8,10 +8,12 @@ import close from "../../asset/Close.svg";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { __getMyComment } from "../../redux/modules/profileSlice";
+import { useInView } from "react-intersection-observer";
 
 const MyComment = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [ref, inView] = useInView();
 
   const { myCommentList, myCommentPage } = useSelector(
     (state) => state.profile
@@ -25,8 +27,10 @@ const MyComment = () => {
   };
 
   useEffect(() => {
-    dispatch(__getMyComment(payload));
-  }, []);
+    if (inView) {
+      dispatch(__getMyComment(payload));
+    }
+  }, [inView]);
 
   return (
     <Layout>
@@ -51,6 +55,7 @@ const MyComment = () => {
             ></CommentList>
           );
         })}
+        <div ref={ref}></div>
       </ListContainer>
     </Layout>
   );

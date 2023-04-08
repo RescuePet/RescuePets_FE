@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import {
@@ -16,12 +16,15 @@ import {
   __deletePost,
   __getMissingPostDetail,
   __postMissingScrap,
+  addCommentCount,
 } from "../../redux/modules/petworkSlice";
 import Comment from "./components/Comment";
 import {
-  toggleEditDone,
-  __getMissingComment,
-  __postMissingComment,
+  __getComment,
+  __postComment,
+  resetCommentList,
+  resetError,
+  toggleScroll,
 } from "../../redux/modules/commentSlice";
 import petworkRefineData from "../../utils/petworkRefine";
 
@@ -30,6 +33,7 @@ import time from "../../asset/time.svg";
 import informationIcon from "../../asset/information.svg";
 import Memo from "../../asset/Memo";
 import gratuity from "../../asset/gratuity.svg";
+import refresh from "../../asset/refresh.svg";
 import PostInformation from "./components/PostInformation";
 import FloatingButton from "./components/FloatingButton";
 import { instance } from "../../utils/api";
@@ -45,26 +49,29 @@ const MissingDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userName = JSON.parse(Cookies.get("UserInfo"));
+  const commentRef = useRef(null);
+
+  const [commentPage, setCommentPage] = useState(1);
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
-  const { missingComment, editDone } = useSelector((state) => state?.comment);
+  const { commentList, isLast, error, errorMessage } = useSelector(
+    (state) => state?.comment
+  );
   const { optionState, reportState } = useSelector((state) => state.menubar);
 
-  console.log(missingPostDetail);
+  const commentPayload = {
+    postId: id,
+    page: commentPage,
+  };
 
   useEffect(() => {
     dispatch(__getMissingPostDetail(id));
-    dispatch(__getMissingComment(id));
-  }, [id]);
-
-  useEffect(() => {
-    if (editDone) {
-      window.scrollTo(0, document.body.scrollHeight);
-    }
+    dispatch(__getComment(commentPayload));
+    setCommentPage(2);
     return () => {
-      dispatch(toggleEditDone(false));
+      dispatch(resetCommentList());
     };
-  }, [missingComment]);
+  }, [id]);
 
   if (JSON.stringify(missingPostDetail) === "{}") {
     return (
@@ -72,6 +79,11 @@ const MissingDetail = () => {
         <Loading />
       </Layout>
     );
+  }
+
+  if (error) {
+    alert(errorMessage);
+    dispatch(resetError());
   }
 
   const refineData = petworkRefineData(missingPostDetail);
@@ -96,17 +108,27 @@ const MissingDetail = () => {
       content: content.message,
     };
     if (content.message === "") {
+      alert("댓글을 입력해주세요.");
       return;
+    } else {
+      dispatch(__postComment(data));
+      commentRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+      dispatch(addCommentCount());
     }
-    dispatch(__postMissingComment(data)).then(() => {
-      dispatch(__getMissingComment(id));
-    });
   };
 
   const chatHandler = async () => {
-    const response = await instance.post(`/chat/room/${missingPostDetail.id}`);
-    console.log("post response", response.data);
-    navigate(`/chatroom/${missingPostDetail.nickname}/${response.data}`);
+    try {
+      const response = await instance.post(
+        `/chat/room/${missingPostDetail.id}`
+      );
+      navigate(`/chatroom/${missingPostDetail.nickname}/${response.data}`);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const scrapHandler = () => {
@@ -118,13 +140,19 @@ const MissingDetail = () => {
     dispatch(__postMissingScrap(payload));
   };
 
+  const refreshCommentHandler = () => {
+    setCommentPage((prev) => prev + 1);
+    dispatch(__getComment(commentPayload));
+    dispatch(toggleScroll());
+  };
+
   const imageCarouselInfo = {
     scrapState: missingPostDetail.isWished,
     scrapHandler: scrapHandler,
   };
 
   const postInfo = {
-    commentCount: missingComment.length,
+    commentCount: missingPostDetail.commentCount,
     scrapCount: missingPostDetail.wishedCount,
     scrapHandler: scrapHandler,
   };
@@ -170,6 +198,12 @@ const MissingDetail = () => {
       },
     },
   ];
+
+  const reportSetting = {
+    type: "post",
+    nickname: missingPostDetail.nickname,
+    postId: id,
+  };
 
   return (
     <Layout>
@@ -244,11 +278,21 @@ const MissingDetail = () => {
       <PostInformation postInfo={postInfo}></PostInformation>
       <CommentContainer>
         <CommentListWrapper>
-          {missingComment?.map((item) => {
+          <div ref={commentRef}></div>
+          {commentList.map((item, index) => {
             return (
-              <Comment key={`missing-comment-${item.id}`} item={item}></Comment>
+              <Comment
+                key={`missing-comment-${item.id}-${index}`}
+                item={item}
+              ></Comment>
             );
           })}
+          {isLast ? null : (
+            <FetchComment onClick={refreshCommentHandler}>
+              <img src={refresh} alt="commentrefresh" />
+              <span>댓글 불러오기</span>
+            </FetchComment>
+          )}
         </CommentListWrapper>
       </CommentContainer>
       {userName.nickname !== missingPostDetail.nickname && (
@@ -271,7 +315,7 @@ const MissingDetail = () => {
           }
         />
       )}
-      {reportState && <ReportModal />}
+      {reportState && <ReportModal setting={reportSetting} />}
     </Layout>
   );
 };
@@ -346,6 +390,17 @@ const CommentContainer = styled.div`
 
 const CommentListWrapper = styled.div`
   ${FlexAttribute("column")}
+`;
+
+const FetchComment = styled.div`
+  ${FlexAttribute("row", "center", "center")}
+  width: 100%;
+  height: 50px;
+  cursor: pointer;
+  span {
+    margin-left: 4px;
+    ${(props) => props.theme.Body_500_16};
+  }
 `;
 
 export default MissingDetail;
