@@ -43,6 +43,7 @@ import { Loading } from "../../components/Loading";
 import { toggleOption, toggleReport } from "../../redux/modules/menubarSlice";
 import Option from "../../components/Option";
 import ReportModal from "../../components/ReportModal";
+import { addMyComment } from "../../redux/modules/profileSlice";
 
 const MissingDetail = () => {
   const { id } = useParams();
@@ -111,7 +112,9 @@ const MissingDetail = () => {
       alert("댓글을 입력해주세요.");
       return;
     } else {
-      dispatch(__postComment(data));
+      dispatch(__postComment(data))
+        .then((response) => dispatch(addMyComment(response.payload)))
+        .catch((error) => console.log(error));
       commentRef.current.scrollIntoView({
         behavior: "smooth",
         block: "center",

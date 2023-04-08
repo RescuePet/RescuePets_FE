@@ -7,7 +7,7 @@ import CommentList from "./components/CommentList";
 import close from "../../asset/Close.svg";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { __getMyComment } from "../../redux/modules/profileSlice";
+import { __getMyComment, __getMyInfo } from "../../redux/modules/profileSlice";
 import { useInView } from "react-intersection-observer";
 
 const MyComment = () => {
@@ -15,16 +15,18 @@ const MyComment = () => {
   const dispatch = useDispatch();
   const [ref, inView] = useInView();
 
-  const { myCommentList, myCommentPage } = useSelector(
+  const { myCommentList, myCommentPage, myData } = useSelector(
     (state) => state.profile
   );
-
-  console.log(myCommentList);
 
   const payload = {
     page: myCommentPage,
     size: 15,
   };
+
+  useEffect(() => {
+    dispatch(__getMyInfo());
+  }, []);
 
   useEffect(() => {
     if (inView) {
@@ -34,15 +36,15 @@ const MyComment = () => {
 
   return (
     <Layout>
-      <MyPostHeader>
+      <MyCommentHeader>
         <h2>댓글 목록</h2>
         <CloseSvg src={close} onClick={() => navigate("/profile")} />
-      </MyPostHeader>
+      </MyCommentHeader>
       <PostInfoContainer>
         <PostInfoWrapper>
           <div>
             <EntireTitle>총 댓글</EntireTitle>
-            <EntireCount>{myCommentList.length}</EntireCount>
+            <EntireCount>{myData.commentCount}</EntireCount>
           </div>
         </PostInfoWrapper>
       </PostInfoContainer>
@@ -61,14 +63,15 @@ const MyComment = () => {
   );
 };
 
-const MyPostHeader = styled.div`
+const MyCommentHeader = styled.div`
   position: relative;
-  ${FlexAttribute("row", "center")}
+  ${FlexAttribute("row", "center")};
   ${HeaderStyle}
   h2 {
     ${(props) => props.theme.Body_500_16};
     color: ${(props) => props.theme.color.text_normal};
     line-height: 1.5rem;
+    margin-bottom: 16px;
   }
 `;
 

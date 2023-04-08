@@ -1,6 +1,19 @@
 import { instance } from "../../utils/api";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+// Get My Info
+export const __getMyInfo = createAsyncThunk(
+  "getMyInfo",
+  async (_, thunkAPI) => {
+    try {
+      const response = await instance.get("api/mypage");
+      return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 // Get My Post
 export const __getMyPost = createAsyncThunk(
   "getMyPost",
@@ -55,6 +68,7 @@ export const __getMyScrap = createAsyncThunk(
 const initialState = {
   loading: false,
   error: false,
+  myData: {},
   myPostList: [],
   myPostPage: 1,
   myCommentList: [],
@@ -70,13 +84,38 @@ export const profileSlice = createSlice({
     addMyPostPage: (state) => {
       state.entirePostPage = state.entirePostPage + 1;
     },
+    addMyPost: (state, action) => {
+      state.myPostList = [action.payload, ...action.payload];
+    },
+    addMyComment: (state, action) => {
+      state.myCommentList = [action.payload, ...state.myCommentList];
+    },
     deleteMyComment: (state, action) => {
       state.myCommentList = state.myCommentList.filter(
         (item) => item.id !== action.payload
       );
+      state.myData.commentCount = state.myData.commentCount - 1;
+    },
+    deleteMyPost: (state, action) => {
+      state.myPostList = state.myPostList.filter(
+        (item) => item.id !== action.payload
+      );
+      state.myData.postCount = state.myData.postCount - 1;
     },
   },
   extraReducers: (builder) => {
+    builder
+      .addCase(__getMyInfo.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(__getMyInfo.fulfilled, (state, action) => {
+        state.loading = false;
+        state.myData = action.payload;
+      })
+      .addCase(__getMyInfo.rejected, (state) => {
+        state.error = true;
+      });
+
     builder
       .addCase(__getMyPost.pending, (state) => {
         state.loading = true;
@@ -121,6 +160,12 @@ export const profileSlice = createSlice({
   },
 });
 
-export const { addMyPostPage, resetMyScrapPage, deleteMyComment } =
-  profileSlice.actions;
+export const {
+  addMyPostPage,
+  resetMyScrapPage,
+  deleteMyComment,
+  deleteMyPost,
+  addMyPost,
+  addMyComment,
+} = profileSlice.actions;
 export default profileSlice.reducer;

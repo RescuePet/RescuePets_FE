@@ -24,6 +24,7 @@ const InputContainer = ({ placeholder, submitHandler }) => {
       e.preventDefault();
       handleSubmit((register) => {
         submitHandler(register);
+        setInputValue("");
         reset();
       })();
     }

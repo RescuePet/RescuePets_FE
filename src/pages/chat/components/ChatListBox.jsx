@@ -41,7 +41,11 @@ const ChatListBox = ({ item }) => {
               </MessageCount>
             )}
           </TitleWrapper>
-          <Contents>{item.lastChat}</Contents>
+          <Contents>
+            {item.lastChat.length <= 20
+              ? item.lastChat
+              : item.lastChat.substring(0, 20) + ".."}
+          </Contents>
         </TextWrapper>
       </ClickDiv>
     </ChatRoomListContainer>

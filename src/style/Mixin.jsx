@@ -26,7 +26,6 @@ export const FlexAttribute = (direction, justify, align) => css`
 
 export const HeaderStyle = css`
   width: 100%;
-  height: 5rem;
   padding-top: 2.375rem;
   ${Border_2_color}
 `;
