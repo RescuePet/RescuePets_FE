@@ -27,8 +27,8 @@ export const __getMyComment = createAsyncThunk(
       const response = await instance.get(
         `api/comments/member?page=${payload.page}&size=${payload.size}`
       );
-      console.log("__getMyComment", response);
-      console.log("Array", response.data.data);
+      console.log("__getMyComment", response.data);
+      console.log("Array", response.data);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       throw new Error(error.response.data.message);
@@ -92,7 +92,10 @@ export const profileSlice = createSlice({
       .addCase(__getMyComment.fulfilled, (state, action) => {
         state.loading = false;
         state.myCommentPage = state.myCommentPage + 1;
-        state.myCommentList = [...state.myCommentList, ...action.payload];
+        state.myCommentList = [
+          ...state.myCommentList,
+          ...action.payload.dtoList,
+        ];
       })
       .addCase(__getMyComment.rejected, (state) => {
         state.error = true;
