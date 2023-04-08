@@ -20,6 +20,7 @@ import Meatballs from "../../asset/Meatballs";
 import { toggleOption } from "../../redux/modules/menubarSlice";
 import ReportModal from "../../components/ReportModal";
 import { toggleReport } from "../../redux/modules/menubarSlice";
+import { resetunreadChat } from "../../redux/modules/chatSlice";
 
 const ChatRoom = () => {
   const { id, nickname } = useParams();
@@ -79,6 +80,7 @@ const ChatRoom = () => {
     fetchData();
     return () => {
       stompDisconnect();
+      dispatch(resetunreadChat(id));
       getChatLog(id);
     };
   }, []);

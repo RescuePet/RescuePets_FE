@@ -44,4 +44,5 @@ export const chatSlice = createSlice({
   },
 });
 
+export const { resetunreadChat } = chatSlice.actions;
 export default chatSlice.reducer;
