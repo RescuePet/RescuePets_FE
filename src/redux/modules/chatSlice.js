@@ -26,8 +26,8 @@ export const chatSlice = createSlice({
   initialState,
   reducers: {
     resetunreadChat: (state, action) => {
-      const index = state.catchPostLists.findIndex(
-        (item) => item.id === Number(action.payload.id)
+      const index = state.myChatRoom.findIndex(
+        (item) => item.id === Number(action.payload)
       );
       state.myChatRoom[index] = { ...state.myChatRoom[index], unreadChat: 0 };
     },
