@@ -1,6 +1,6 @@
 import { keyframes } from "styled-components";
 
-const upAndDown = keyframes`
+export const upAndDown = keyframes`
   0% {
     transform: translate(-17%,-20%);
   }
