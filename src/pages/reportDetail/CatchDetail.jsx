@@ -52,7 +52,15 @@ const SightingDetail = () => {
   const commentRef = useRef(null);
 
   const [loginModal, toggleModal] = useModalState(false);
-  const [commentMsg, setCommentMsg] = useState("");
+  const [catchdetailMsg, setCatchDetailMsg] = useState("");
+
+  console.log("최신값: ", catchdetailMsg);
+
+  const onChangeReportMsg = (newMsg) => {
+    console.log(newMsg);
+    toggleModal();
+    setCatchDetailMsg(newMsg);
+  };
 
   const [commentPage, setCommentPage] = useState(1);
 
@@ -86,7 +94,7 @@ const SightingDetail = () => {
 
   if (error) {
     toggleModal();
-    setCommentMsg(errorMessage);
+    setCatchDetailMsg(errorMessage);
 
     // alert(errorMessage);
     dispatch(resetError());
@@ -120,7 +128,7 @@ const SightingDetail = () => {
     };
     if (content.message === "") {
       toggleModal();
-      setCommentMsg("댓글을 입력해주세요.");
+      setCatchDetailMsg("댓글을 입력해주세요.");
       // alert("댓글을 입력해주세요.");
       return;
     }
@@ -207,15 +215,6 @@ const SightingDetail = () => {
   return (
     <CatchLayout>
       <ScrollToTop />
-      {commentMsg == "" ? null : (
-        <CheckModal
-          isOpen={loginModal}
-          toggle={toggleModal}
-          onClose={toggleModal}
-        >
-          {commentMsg}
-        </CheckModal>
-      )}
       <ImageCarousel
         images={catchPostDetail?.postImages}
         imageCarouselInfo={imageCarouselInfo}
@@ -313,7 +312,18 @@ const SightingDetail = () => {
           }
         />
       )}
-      {reportState && <ReportModal setting={reportSetting} />}
+      {reportState && (
+        <ReportModal setting={reportSetting} onChangeMsg={onChangeReportMsg} />
+      )}
+      {catchdetailMsg == "" ? null : (
+        <CheckModal
+          isOpen={loginModal}
+          toggle={toggleModal}
+          onClose={toggleModal}
+        >
+          {catchdetailMsg}
+        </CheckModal>
+      )}
     </CatchLayout>
   );
 };

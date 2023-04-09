@@ -52,10 +52,18 @@ const MissingDetail = () => {
   const navigate = useNavigate();
   const userName = JSON.parse(Cookies.get("UserInfo"));
   const commentRef = useRef(null);
+  // const [reportMissingMsg, setReportMissingMsg] = useState("");
 
   const [loginModal, toggleModal] = useModalState(false);
-  const [commentMsg, setCommentMsg] = useState("");
+  const [missingdetailMsg, setMissingDetailMsg] = useState("");
 
+  console.log("최신값: ", missingdetailMsg);
+
+  const onChangeReportMsg = (newMsg) => {
+    console.log(newMsg);
+    toggleModal();
+    setMissingDetailMsg(newMsg);
+  };
   const [commentPage, setCommentPage] = useState(1);
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
@@ -88,7 +96,7 @@ const MissingDetail = () => {
 
   if (error) {
     toggleModal();
-    setCommentMsg(errorMessage);
+    setMissingDetailMsg(errorMessage);
     // alert(errorMessage);
     dispatch(resetError());
   }
@@ -116,7 +124,7 @@ const MissingDetail = () => {
     };
     if (content.message === "") {
       toggleModal();
-      setCommentMsg("댓글을 입력해주세요.");
+      setMissingDetailMsg("댓글을 입력해주세요.");
       // alert("댓글을 입력해주세요.");
       return;
     } else {
@@ -217,15 +225,6 @@ const MissingDetail = () => {
   return (
     <Layout>
       <ScrollToTop />
-      {commentMsg == "" ? null : (
-        <CheckModal
-          isOpen={loginModal}
-          toggle={toggleModal}
-          onClose={toggleModal}
-        >
-          {commentMsg}
-        </CheckModal>
-      )}
       <ImageCarousel
         images={missingPostDetail.postImages}
         imageCarouselInfo={imageCarouselInfo}
@@ -334,7 +333,18 @@ const MissingDetail = () => {
         />
       )}
 
-      {reportState && <ReportModal setting={reportSetting} />}
+      {reportState && (
+        <ReportModal setting={reportSetting} onChangeMsg={onChangeReportMsg} />
+      )}
+      {missingdetailMsg == "" ? null : (
+        <CheckModal
+          isOpen={loginModal}
+          toggle={toggleModal}
+          onClose={toggleModal}
+        >
+          {missingdetailMsg}
+        </CheckModal>
+      )}
     </Layout>
   );
 };

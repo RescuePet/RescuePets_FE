@@ -8,8 +8,10 @@ import { toggleReport } from "../redux/modules/menubarSlice";
 import { useForm } from "react-hook-form";
 import { CustomSelect } from "../elements/CustomSelect";
 import ModalPortal from "../elements/ModalPortal";
+import { useModalState } from "../hooks/useModalState";
+import { CheckModal } from "../elements/Modal";
 
-const ReportModal = ({ setting, reportCloseHandler }) => {
+const ReportModal = ({ setting, reportCloseHandler, onChangeMsg }) => {
   const reportOption = [
     { id: 0, name: "부적절한단어", value: "부적절한단어" },
     { id: 1, name: "거짓정보", value: "거짓정보" },
@@ -17,10 +19,16 @@ const ReportModal = ({ setting, reportCloseHandler }) => {
     { id: 3, name: "기타", value: "기타" },
   ];
 
+  // console.log(onChangeMsg);
+  //
+
   const [type, setType] = useState(reportOption[0].name);
   const [typeID, setTypeID] = useState("부적절한단어");
   const { register, handleSubmit, reset } = useForm();
   const dispatch = useDispatch();
+  const [loginModal, toggleModal] = useModalState(false);
+
+  const [reportMsg, setReportMsg] = useState("");
 
   const onChangeData = (newData) => {
     setType(newData);
@@ -31,6 +39,7 @@ const ReportModal = ({ setting, reportCloseHandler }) => {
   };
 
   const submitPostReport = async (payload) => {
+    // console.log(payload);
     const data = {
       content: payload.reason,
       postId: Number(setting.postId),
@@ -38,15 +47,24 @@ const ReportModal = ({ setting, reportCloseHandler }) => {
       reportCode: typeID,
     };
     try {
-      console.log("request data", data);
+      // console.log("request data", data);
       const response = await instance.post(`/api/report/post`, data);
       console.log(response);
       if (response.status === 200) {
-        alert("신고가 완료되었습니다.");
+        toggleModal();
+        // setReportMsg("신고가 완료되었습니다.");
+        onChangeMsg("신고가 완료되었습니다.");
+        // alert("신고가 완료되었습니다.");
       }
     } catch (error) {
+      // console.log("수정실패!");
       if (error.response.status === 409) {
-        alert("이미 신고하였습니다.");
+        toggleModal();
+        onChangeMsg("이미 신고한 게시물 입니다.");
+        // alert("이미 신고하였습니다.");
+      } else if (error.response.status === 400) {
+        // toggleModal();
+        onChangeMsg("서버 오류");
       }
     }
   };
@@ -62,11 +80,16 @@ const ReportModal = ({ setting, reportCloseHandler }) => {
       const response = await instance.post(`/api/report/comment`, data);
       console.log("response", response);
       if (response.status === 200) {
-        alert("신고가 완료되었습니다.");
+        // toggleModal();
+        console.log("이즈굿~");
+        setReportMsg("신고가 완료되었습니다.");
+        // alert("신고가 완료되었습니다.");
       }
     } catch (error) {
       if (error.response.status === 409) {
-        alert("이미 신고하였습니다.");
+        // toggleModal();
+        setReportMsg("이미 신고한 유저입니다.");
+        // alert("이미 신고하였습니다.");
       }
     }
   };
@@ -83,27 +106,35 @@ const ReportModal = ({ setting, reportCloseHandler }) => {
       const response = await instance.post(`/api/report/member`, data);
       console.log(response);
       if (response.status === 200) {
-        alert("신고가 완료되었습니다.");
+        // toggleModal();
+        setReportMsg("신고가 완료되었습니다.");
+        // alert("신고가 완료되었습니다.");
       }
     } catch (error) {
       if (error.response.status === 409) {
-        alert("이미 신고하였습니다.");
+        // alert("이미 신고하였습니다.");
+        // toggleModal();
+        setReportMsg("이미 신고한 댓글입니다.");
       }
     }
   };
 
   const submitHandler = (payload) => {
-    console.log(payload.reason);
+    // console.log("입력값", payload.reason);
     if (payload.reason === "") {
-      alert("내용을 작성해주세요");
+      toggleModal();
+      setReportMsg("내용을 작성해주세요");
       return;
     }
     if (setting.type === "post") {
       console.log("게시물 신고");
+      toggleModal();
+      console.log(payload);
       submitPostReport(payload);
       dispatch(toggleReport());
-      reset();
+      // reset();
     } else if (setting.type === "member") {
+      console.log("맴버 신고");
       submitMemberReport(payload);
       dispatch(toggleReport());
       reset();
@@ -118,6 +149,15 @@ const ReportModal = ({ setting, reportCloseHandler }) => {
   return (
     <>
       <ModalPortal>
+        {reportMsg == "" ? null : (
+          <CheckModal
+            isOpen={loginModal}
+            toggle={toggleModal}
+            onClose={toggleModal}
+          >
+            {reportMsg}
+          </CheckModal>
+        )}
         <ReportBackground></ReportBackground>
         <ReportContainer>
           <ReportWrapper>
