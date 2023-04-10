@@ -63,6 +63,9 @@ export const __getPostSearch = createAsyncThunk(
         `api/post/search?page=${newPayload.page}&size=${newPayload.size}&postType=${newPayload.postType}&memberLongitude=${newPayload.longitude}&memberLatitude=${newPayload.latitude}&description=${newPayload.description}&searchKey=${newPayload.searchKey}&searchValue=${newPayload.searchValue}`
       );
       console.log("getPostSearch", response);
+      if (response.data.data.length === 0) {
+        return thunkAPI.rejectWithValue("nonepost");
+      }
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       throw new Error(error.response.data.message);
@@ -139,7 +142,11 @@ export const searchSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(__getAdoptionSearch.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(__getAdoptionSearch.fulfilled, (state, action) => {
+        state.loading = false;
         state.publicSearchLists = [
           ...state.publicSearchLists,
           ...action.payload,

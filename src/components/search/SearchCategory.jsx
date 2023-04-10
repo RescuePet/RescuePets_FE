@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import styled, { css } from "styled-components";
+import React from "react";
+import styled from "styled-components";
 import Search from "../../asset/search";
 import { FlexAttribute } from "../../style/Mixin";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,11 +21,23 @@ const SearchCategory = ({ petwork }) => {
   const closeSearchSet = () => {
     dispatch(toggleSearchSetState(false));
     dispatch(toggleSearchState(false));
+    dispatch(resetSearchState());
   };
 
   return (
     <SearchCategoryContainer>
       <CategoruSearchIcon width={30} height={30} onClick={closeSearchSet} />
+      <CategoryBox
+        active={searchCategory === "distance"}
+        onClick={() => {
+          dispatch(toggleSearchSetState(true));
+          dispatch(toggleInputState(false));
+          dispatch(toggleDistanceState(true));
+          dispatch(toggleSearchCategory("distance"));
+        }}
+      >
+        <span>거리</span>
+      </CategoryBox>
       <CategoryBox
         petwork={petwork}
         active={searchCategory === "kindType"}
@@ -49,17 +61,6 @@ const SearchCategory = ({ petwork }) => {
         }}
       >
         <span>품종</span>
-      </CategoryBox>
-      <CategoryBox
-        active={searchCategory === "distance"}
-        onClick={() => {
-          dispatch(toggleSearchSetState(true));
-          dispatch(toggleInputState(false));
-          dispatch(toggleDistanceState(true));
-          dispatch(toggleSearchCategory("distance"));
-        }}
-      >
-        <span>거리</span>
       </CategoryBox>
       {!petwork && (
         <CategoryBox

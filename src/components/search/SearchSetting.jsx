@@ -70,7 +70,6 @@ const SearchSetting = ({
 
 const SearchSetContainer = styled.div`
   width: 100%;
-  height: 160px;
   padding-top: 8px;
   ${(props) =>
     !props.petwork &&

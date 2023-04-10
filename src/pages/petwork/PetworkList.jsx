@@ -29,6 +29,9 @@ import SearchCategory from "../../components/search/SearchCategory";
 import Search from "../../asset/search";
 import SearchSetting from "../../components/search/SearchSetting";
 import { toDown } from "../../style/Animation";
+import Error404 from "../../elements/Error404";
+import ErrorSearch from "../../asset/error/404search.png";
+import ErrorPost from "../../asset/error/404post.png";
 
 const PetworkList = () => {
   const [missingRef, missingInView] = useInView();
@@ -38,6 +41,7 @@ const PetworkList = () => {
   const [searchOn, setSearchOn] = useState(false);
 
   const {
+    error,
     postSearchLists,
     searchValue,
     distanceState,
@@ -198,6 +202,9 @@ const PetworkList = () => {
           <ListTitle>{petwork.category}</ListTitle>
         </ListTitleWrapper>
       )}
+      {searchSetState && postSearchLists.length === 0 && searchOn && (
+        <Error404 srcUrl={ErrorPost} />
+      )}
       <ListCardContainer>
         {!searchSetState &&
           petwork.category === "우리집 반려동물을 찾아주세요" &&
@@ -217,7 +224,7 @@ const PetworkList = () => {
               <Card
                 key={`missing-post-${index}`}
                 item={item}
-                page="searchmissing"
+                page="missingdetail"
               ></Card>
             );
           })}
@@ -240,7 +247,7 @@ const PetworkList = () => {
               <Card
                 key={`missing-post-${index}`}
                 item={item}
-                page="searchcatch"
+                page="catchdetail"
               ></Card>
             );
           })}

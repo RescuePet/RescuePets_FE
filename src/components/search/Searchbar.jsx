@@ -33,6 +33,7 @@ const Searchbar = ({ searchHandler }) => {
 const SearchContainer = styled.form`
   position: sticky;
   top: 0;
+  height: 40px;
   ${FlexAttribute("row", "center", "center")}
   width: 330px;
   border-radius: 20px;
