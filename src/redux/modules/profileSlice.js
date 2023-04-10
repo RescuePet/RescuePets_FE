@@ -84,12 +84,6 @@ export const profileSlice = createSlice({
     addMyPostPage: (state) => {
       state.entirePostPage = state.entirePostPage + 1;
     },
-    addMyPost: (state, action) => {
-      state.myPostList = [action.payload, ...action.payload];
-    },
-    addMyComment: (state, action) => {
-      state.myCommentList = [action.payload, ...state.myCommentList];
-    },
     deleteMyComment: (state, action) => {
       state.myCommentList = state.myCommentList.filter(
         (item) => item.id !== action.payload
@@ -101,6 +95,9 @@ export const profileSlice = createSlice({
         (item) => item.id !== action.payload
       );
       state.myData.postCount = state.myData.postCount - 1;
+    },
+    resetProfileState: (state) => {
+      return { ...initialState };
     },
   },
   extraReducers: (builder) => {
@@ -162,10 +159,8 @@ export const profileSlice = createSlice({
 
 export const {
   addMyPostPage,
-  resetMyScrapPage,
   deleteMyComment,
   deleteMyPost,
-  addMyPost,
-  addMyComment,
+  resetProfileState,
 } = profileSlice.actions;
 export default profileSlice.reducer;

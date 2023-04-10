@@ -12,6 +12,8 @@ import ScrollToTop from "../../elements/ScrollToTop";
 import refresh from "../../asset/refresh.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { __getMyInfo } from "../../redux/modules/profileSlice";
+import Error404 from "../../elements/Error404";
+import ErrorScrap from "../../asset/error/404scrap.png";
 
 const MyScrap = () => {
   const dispatch = useDispatch();
@@ -72,14 +74,18 @@ const MyScrap = () => {
         </PostInfoWrapper>
       </PostInfoContainer>
       <ListContainer>
-        {myScrapList.map((item) => {
-          return (
-            <ScrapList
-              key={`my-scrap-item-${item.scrapId}`}
-              item={item}
-            ></ScrapList>
-          );
-        })}
+        {myScrapList.length === 0 ? (
+          <Error404 srcUrl={ErrorScrap} />
+        ) : (
+          myScrapList.map((item) => {
+            return (
+              <ScrapList
+                key={`my-scrap-item-${item.scrapId}`}
+                item={item}
+              ></ScrapList>
+            );
+          })
+        )}
         <div ref={ref}></div>
       </ListContainer>
     </Layout>

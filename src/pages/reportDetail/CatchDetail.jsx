@@ -41,7 +41,6 @@ import { Loading } from "../../components/Loading";
 import { toggleOption, toggleReport } from "../../redux/modules/menubarSlice";
 import ReportModal from "../../components/ReportModal";
 import Option from "../../components/Option";
-import { addMyComment } from "../../redux/modules/profileSlice";
 
 const SightingDetail = () => {
   const { id } = useParams();
@@ -115,9 +114,7 @@ const SightingDetail = () => {
       alert("댓글을 입력해주세요.");
       return;
     } else {
-      dispatch(__postComment(data))
-        .then((response) => dispatch(addMyComment(response.payload)))
-        .catch((error) => console.log(error));
+      dispatch(__postComment(data));
       commentRef.current.scrollIntoView({
         behavior: "smooth",
         block: "center",

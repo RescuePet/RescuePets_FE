@@ -8,10 +8,13 @@ import {
   __getMyInfo,
   __getMyPost,
   addMyPostPage,
+  resetProfileState,
 } from "../../redux/modules/profileSlice";
 import { useInView } from "react-intersection-observer";
 import { useNavigate } from "react-router-dom";
 import close from "../../asset/Close.svg";
+import Error404 from "../../elements/Error404";
+import ErrorPost from "../../asset/error/404post.png";
 
 const MyPost = () => {
   const dispatch = useDispatch();
@@ -29,6 +32,9 @@ const MyPost = () => {
 
   useEffect(() => {
     dispatch(__getMyInfo());
+    return () => {
+      dispatch(resetProfileState());
+    };
   }, []);
 
   useEffect(() => {
@@ -54,11 +60,18 @@ const MyPost = () => {
           </PostInfoWrapper>
         </PostInfoContainer>
         <ListContainer>
-          {myPostList.map((item) => {
-            return (
-              <PostList key={`my-post-item-${item.id}`} item={item}></PostList>
-            );
-          })}
+          {myPostList.length === 0 ? (
+            <Error404 srcUrl={ErrorPost} />
+          ) : (
+            myPostList.map((item) => {
+              return (
+                <PostList
+                  key={`my-post-item-${item.id}`}
+                  item={item}
+                ></PostList>
+              );
+            })
+          )}
           <div ref={ref}></div>
         </ListContainer>
       </Layout>
@@ -97,11 +110,6 @@ const EntireCount = styled.span`
   margin-left: 0.5rem;
   ${(props) => props.theme.Body_500_12};
   color: ${(props) => props.theme.color.primary_normal};
-`;
-
-const EditButton = styled.button`
-  ${(props) => props.theme.Body_400_12};
-  color: ${(props) => props.theme.color.text_alternative};
 `;
 
 const PostInfoWrapper = styled.div`

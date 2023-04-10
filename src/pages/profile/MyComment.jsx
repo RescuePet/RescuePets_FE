@@ -7,8 +7,14 @@ import CommentList from "./components/CommentList";
 import close from "../../asset/Close.svg";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { __getMyComment, __getMyInfo } from "../../redux/modules/profileSlice";
+import {
+  __getMyComment,
+  __getMyInfo,
+  resetProfileState,
+} from "../../redux/modules/profileSlice";
 import { useInView } from "react-intersection-observer";
+import Error404 from "../../elements/Error404";
+import ErrorComment from "../../asset/error/404comment.png";
 
 const MyComment = () => {
   const navigate = useNavigate();
@@ -26,6 +32,9 @@ const MyComment = () => {
 
   useEffect(() => {
     dispatch(__getMyInfo());
+    return () => {
+      dispatch(resetProfileState());
+    };
   }, []);
 
   useEffect(() => {
@@ -49,14 +58,18 @@ const MyComment = () => {
         </PostInfoWrapper>
       </PostInfoContainer>
       <ListContainer>
-        {myCommentList.map((item) => {
-          return (
-            <CommentList
-              key={`comment-item-${item.id}`}
-              item={item}
-            ></CommentList>
-          );
-        })}
+        {myCommentList.length === 0 ? (
+          <Error404 srcUrl={ErrorComment} />
+        ) : (
+          myCommentList.map((item) => {
+            return (
+              <CommentList
+                key={`comment-item-${item.id}`}
+                item={item}
+              ></CommentList>
+            );
+          })
+        )}
         <div ref={ref}></div>
       </ListContainer>
     </Layout>
