@@ -228,7 +228,6 @@ const PetworkList = () => {
               ></Card>
             );
           })}
-
         {!searchSetState &&
           petwork.category === "길 잃은 동물을 발견했어요" &&
           petwork.catchPostLists.map((item, index) => {

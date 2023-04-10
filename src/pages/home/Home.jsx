@@ -31,7 +31,14 @@ import {
 } from "../../redux/modules/searchSlice";
 
 const Home = () => {
-  const images = [carouselImage1, carouselImage2];
+  const images = [
+    { imageUrl: carouselImage1, linkUrl: "/introduce" },
+    {
+      imageUrl: carouselImage2,
+      linkUrl:
+        "https://docs.google.com/forms/d/e/1FAIpQLSehjtbMQPEmG-UdqSTAAQOLogs6NtmHAwOKY4vNCHGawxe1FA/viewform",
+    },
+  ];
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [ref, inView] = useInView();

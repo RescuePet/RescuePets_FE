@@ -73,6 +73,7 @@ const Layout = ({ children }) => {
             location.pathname !== "/signup" &&
             location.pathname !== "/missing" &&
             location.pathname !== "/catch" &&
+            location.pathname !== "/introduce" &&
             location.pathname.split("/")[1] !== "editcatch" &&
             location.pathname.split("/")[1] !== "editmissing" &&
             location.pathname.split("/")[1] !== "chatroom" && <Footer></Footer>}
