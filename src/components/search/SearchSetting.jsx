@@ -3,16 +3,21 @@ import styled, { css } from "styled-components";
 import { FlexAttribute } from "../../style/Mixin";
 import { CategoryBoxStyle } from "./SearchMixin";
 import Searchbar from "./Searchbar";
-import { useDispatch, useSelector } from "react-redux";
-import { toggleDescriptionCategory } from "../../redux/modules/searchSlice";
+import { useSelector } from "react-redux";
+
 import { toDown } from "../../style/Animation";
 import SearchKind from "./SearchKind";
 
-const SearchSetting = ({ searchHandler, searchKindHandler, petwork }) => {
-  const dispatch = useDispatch();
-  const { descriptionCategory, inputState } = useSelector(
+const SearchSetting = ({
+  searchHandler,
+  searchKindHandler,
+  petwork,
+  searchDistanceHandler,
+}) => {
+  const { descriptionCategory, inputState, distanceState } = useSelector(
     (state) => state.search
   );
+
   return (
     <SearchSetContainer petwork={petwork}>
       <DescriptionContainer>
@@ -21,19 +26,19 @@ const SearchSetting = ({ searchHandler, searchKindHandler, petwork }) => {
           <DescreptionRow>
             <CategoryBox
               active={descriptionCategory === ""}
-              onClick={() => dispatch(toggleDescriptionCategory(""))}
+              onClick={() => searchDistanceHandler("")}
             >
               <span>선택안함</span>
             </CategoryBox>
             <CategoryBox
               active={descriptionCategory === "1000"}
-              onClick={() => dispatch(toggleDescriptionCategory("1000"))}
+              onClick={() => searchDistanceHandler("1000")}
             >
               <span>1km</span>
             </CategoryBox>
             <CategoryBox
               active={descriptionCategory === "10000"}
-              onClick={() => dispatch(toggleDescriptionCategory("10000"))}
+              onClick={() => searchDistanceHandler("10000")}
             >
               <span>10km</span>
             </CategoryBox>
@@ -41,19 +46,19 @@ const SearchSetting = ({ searchHandler, searchKindHandler, petwork }) => {
           <DescreptionRow>
             <CategoryBox
               active={descriptionCategory === "50000"}
-              onClick={() => dispatch(toggleDescriptionCategory("50000"))}
+              onClick={() => searchDistanceHandler("50000")}
             >
               <span>50km</span>
             </CategoryBox>
             <CategoryBox
               active={descriptionCategory === "100000"}
-              onClick={() => dispatch(toggleDescriptionCategory("100000"))}
+              onClick={() => searchDistanceHandler("100000")}
             >
               <span>100km</span>
             </CategoryBox>
           </DescreptionRow>
         </DescriptionWrapper>
-        {inputState ? (
+        {distanceState ? null : inputState ? (
           <Searchbar searchHandler={searchHandler} />
         ) : (
           <SearchKind searchKindHandler={searchKindHandler} />

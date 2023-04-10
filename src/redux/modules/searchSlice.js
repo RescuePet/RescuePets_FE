@@ -15,6 +15,9 @@ export const __getAdoptionSearch = createAsyncThunk(
     }
     if (newPayload.searchKey === "kindType") {
       newPayload.searchKey = "kindCd";
+    } else if (newPayload.searchKey === "distance") {
+      newPayload.searchKey = "";
+      newPayload.searchValue = "";
     }
     if (newPayload.type === "public") {
       if (newPayload.searchValue === "DOG") {
@@ -51,6 +54,9 @@ export const __getPostSearch = createAsyncThunk(
     }
     if (newPayload.searchKey === "kindType") {
       newPayload.searchKey = "upkind";
+    } else if (newPayload.searchKey === "distance") {
+      newPayload.searchKey = "";
+      newPayload.searchValue = "";
     }
     try {
       const response = await instance.get(
@@ -72,6 +78,7 @@ const initialState = {
   searchState: false,
   searchSetState: false,
   inputState: false,
+  distanceState: false,
   searchPage: 1,
   postType: "MISSING",
   longitude: "126.934086",
@@ -104,6 +111,9 @@ export const searchSlice = createSlice({
     toggleInputState: (state, action) => {
       state.inputState = action.payload;
     },
+    toggleDistanceState: (state, action) => {
+      state.distanceState = action.payload;
+    },
     setPostType: (state, action) => {
       state.postType = action.payload;
     },
@@ -123,7 +133,8 @@ export const searchSlice = createSlice({
     },
     completeSearch: (state) => {
       state.searchPage = 2;
-      state.searchLists = [];
+      state.publicSearchLists = [];
+      state.postSearchLists = [];
     },
   },
   extraReducers: (builder) => {
@@ -153,6 +164,7 @@ export const {
   toggleSearchState,
   toggleSearchSetState,
   toggleInputState,
+  toggleDistanceState,
   setPostType,
   setMemberPosition,
   setSearchValue,

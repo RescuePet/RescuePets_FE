@@ -21,6 +21,7 @@ import {
   completeSearch,
   setMemberPosition,
   setSearchValue,
+  toggleDescriptionCategory,
   toggleKindCategory,
   toggleSearchState,
 } from "../../redux/modules/searchSlice";
@@ -39,6 +40,7 @@ const PetworkList = () => {
   const {
     postSearchLists,
     searchValue,
+    distanceState,
     postType,
     longitude,
     latitude,
@@ -102,7 +104,7 @@ const PetworkList = () => {
     }
   }, [missingInView, catchInView]);
 
-  const searchPost = (value) => {
+  const searchPostHandler = (value) => {
     const payload = {
       page: 1,
       size: 10,
@@ -116,7 +118,30 @@ const PetworkList = () => {
     };
     setSearchOn(true);
     dispatch(completeSearch());
+
     dispatch(__getPostSearch(payload));
+  };
+
+  const searchDistanceHandler = (distance) => {
+    if (distanceState) {
+      const payload = {
+        page: 1,
+        size: 10,
+        longitude: longitude,
+        latitude: latitude,
+        description: distance,
+        searchKey: searchCategory,
+        type: "post",
+        postType: postType,
+      };
+      setSearchOn(true);
+      dispatch(completeSearch());
+      dispatch(toggleDescriptionCategory(distance));
+
+      dispatch(__getPostSearch(payload));
+    } else {
+      dispatch(toggleDescriptionCategory(distance));
+    }
   };
 
   const searchKindHandler = (kindCategory) => {
@@ -135,6 +160,7 @@ const PetworkList = () => {
     dispatch(toggleKindCategory(kindCategory));
     setSearchOn(true);
     dispatch(completeSearch());
+
     dispatch(__getPostSearch(payload));
   };
 
@@ -158,8 +184,9 @@ const PetworkList = () => {
       {searchSetState && (
         <SearchSetting
           petwork
-          searchHandler={searchPost}
+          searchHandler={searchPostHandler}
           searchKindHandler={searchKindHandler}
+          searchDistanceHandler={searchDistanceHandler}
         />
       )}
       {searchSetState ? (

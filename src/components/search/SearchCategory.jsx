@@ -5,6 +5,7 @@ import { FlexAttribute } from "../../style/Mixin";
 import { useDispatch, useSelector } from "react-redux";
 import {
   resetSearchState,
+  toggleDistanceState,
   toggleInputState,
   toggleSearchCategory,
   toggleSearchSetState,
@@ -16,12 +17,6 @@ import { toDown } from "../../style/Animation";
 const SearchCategory = ({ petwork }) => {
   const dispatch = useDispatch();
   const { searchCategory } = useSelector((state) => state.search);
-
-  useEffect(() => {
-    return () => {
-      dispatch(resetSearchState());
-    };
-  }, []);
 
   const closeSearchSet = () => {
     dispatch(toggleSearchSetState(false));
@@ -36,8 +31,9 @@ const SearchCategory = ({ petwork }) => {
         active={searchCategory === "kindType"}
         onClick={() => {
           dispatch(toggleSearchSetState(true));
-          dispatch(toggleSearchCategory("kindType"));
           dispatch(toggleInputState(false));
+          dispatch(toggleDistanceState(false));
+          dispatch(toggleSearchCategory("kindType"));
         }}
       >
         <span>종류</span>
@@ -47,19 +43,32 @@ const SearchCategory = ({ petwork }) => {
         active={searchCategory === "kindCd"}
         onClick={() => {
           dispatch(toggleSearchSetState(true));
-          dispatch(toggleSearchCategory("kindCd"));
           dispatch(toggleInputState(true));
+          dispatch(toggleDistanceState(false));
+          dispatch(toggleSearchCategory("kindCd"));
         }}
       >
         <span>품종</span>
+      </CategoryBox>
+      <CategoryBox
+        active={searchCategory === "distance"}
+        onClick={() => {
+          dispatch(toggleSearchSetState(true));
+          dispatch(toggleInputState(false));
+          dispatch(toggleDistanceState(true));
+          dispatch(toggleSearchCategory("distance"));
+        }}
+      >
+        <span>거리</span>
       </CategoryBox>
       {!petwork && (
         <CategoryBox
           active={searchCategory === "careNm"}
           onClick={() => {
             dispatch(toggleSearchSetState(true));
-            dispatch(toggleSearchCategory("careNm"));
             dispatch(toggleInputState(true));
+            dispatch(toggleDistanceState(false));
+            dispatch(toggleSearchCategory("careNm"));
           }}
         >
           <span>보호소</span>
@@ -80,11 +89,6 @@ const SearchCategoryContainer = styled.div`
 
 const CategoryBox = styled.div`
   ${CategoryBoxStyle}
-  ${(props) =>
-    props.petwork &&
-    css`
-      margin-left: 43px;
-    `};
 `;
 
 const CategoruSearchIcon = styled(Search)`

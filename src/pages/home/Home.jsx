@@ -25,6 +25,7 @@ import {
   completeSearch,
   setMemberPosition,
   setSearchValue,
+  toggleDescriptionCategory,
   toggleKindCategory,
   toggleSearchState,
 } from "../../redux/modules/searchSlice";
@@ -44,6 +45,7 @@ const Home = () => {
   const {
     publicSearchLists,
     searchValue,
+    distanceState,
     longitude,
     latitude,
     searchPage,
@@ -122,7 +124,29 @@ const Home = () => {
     };
     setSearchOn(true);
     dispatch(completeSearch());
+
     dispatch(__getAdoptionSearch(payload));
+  };
+
+  const searchDistanceHandler = (distance) => {
+    if (distanceState) {
+      const payload = {
+        page: 1,
+        size: 10,
+        longitude: longitude,
+        latitude: latitude,
+        description: distance,
+        searchKey: searchCategory,
+        type: "public",
+      };
+      setSearchOn(true);
+      dispatch(completeSearch());
+      dispatch(toggleDescriptionCategory(distance));
+
+      dispatch(__getAdoptionSearch(payload));
+    } else {
+      dispatch(toggleDescriptionCategory(distance));
+    }
   };
 
   const searchKindHandler = (kindCategory) => {
@@ -140,9 +164,8 @@ const Home = () => {
     dispatch(toggleKindCategory(kindCategory));
     setSearchOn(true);
     dispatch(completeSearch());
-    setTimeout(() => {
-      dispatch(__getAdoptionSearch(adoptionSearchPayload));
-    }, 2000);
+
+    dispatch(__getAdoptionSearch(adoptionSearchPayload));
   };
 
   const scrollAdoption = () => {
@@ -176,6 +199,7 @@ const Home = () => {
         <SearchSetting
           searchHandler={searchAdoption}
           searchKindHandler={searchKindHandler}
+          searchDistanceHandler={searchDistanceHandler}
         />
       )}
       <PostContainer>
