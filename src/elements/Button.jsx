@@ -75,10 +75,15 @@ const BtnStyle = styled.button`
       border-radius: 20px;
     `}
     ${(props) =>
-    props.Kakao &&
+    props.search &&
     css`
-      background-color: ${(props) => props.theme.color.kakao};
-      color: ${(props) => props.theme.color.kakao_text};
+      height: 100%;
+      width: fit-content;
+      margin-right: 10px;
+      background-color: ${(props) => props.theme.color.primary_normal};
+      color: ${(props) => props.theme.color.white};
+      cursor: pointer;
+      white-space: nowrap;
     `}
     /* &:hover {
     cursor: pointer;

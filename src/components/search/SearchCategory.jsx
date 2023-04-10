@@ -7,18 +7,15 @@ import {
   resetSearchState,
   toggleInputState,
   toggleSearchCategory,
+  toggleSearchSetState,
+  toggleSearchState,
 } from "../../redux/modules/searchSlice";
 import { CategoryBoxStyle } from "./SearchMixin";
 import { toDown } from "../../style/Animation";
 
-const SearchCategory = ({ toggleSearchState, handleSearchState }) => {
+const SearchCategory = () => {
   const dispatch = useDispatch();
   const { searchCategory } = useSelector((state) => state.search);
-
-  const closeSearchSet = () => {
-    toggleSearchState();
-    handleSearchState(false);
-  };
 
   useEffect(() => {
     return () => {
@@ -26,44 +23,39 @@ const SearchCategory = ({ toggleSearchState, handleSearchState }) => {
     };
   }, []);
 
+  const closeSearchSet = () => {
+    dispatch(toggleSearchSetState(false));
+    dispatch(toggleSearchState(false));
+  };
+
   return (
     <SearchCategoryContainer>
       <CategoruSearchIcon width={30} height={30} onClick={closeSearchSet} />
       <CategoryBox
-        active={searchCategory === "none"}
+        active={searchCategory === "kindType"}
         onClick={() => {
-          handleSearchState(true);
-          dispatch(toggleSearchCategory("none"));
-          dispatch(toggleInputState(true));
-        }}
-      >
-        <span>선택안함</span>
-      </CategoryBox>
-      <CategoryBox
-        active={searchCategory === "type"}
-        onClick={() => {
-          handleSearchState(true);
-          dispatch(toggleSearchCategory("type"));
+          dispatch(toggleSearchSetState(true));
+          dispatch(toggleSearchCategory("kindType"));
           dispatch(toggleInputState(false));
         }}
       >
         <span>종류</span>
       </CategoryBox>
       <CategoryBox
-        active={searchCategory === "kind"}
+        active={searchCategory === "kindCd"}
         onClick={() => {
-          handleSearchState(true);
-          dispatch(toggleSearchCategory("kind"));
+          dispatch(toggleSearchSetState(true));
+          dispatch(toggleSearchCategory("kindCd"));
           dispatch(toggleInputState(true));
         }}
       >
         <span>품종</span>
       </CategoryBox>
       <CategoryBox
-        active={searchCategory === "care"}
+        active={searchCategory === "careNm"}
         onClick={() => {
-          handleSearchState(true);
-          dispatch(toggleSearchCategory("care"));
+          dispatch(toggleSearchSetState(true));
+          dispatch(toggleSearchCategory("careNm"));
           dispatch(toggleInputState(true));
         }}
       >
@@ -75,7 +67,7 @@ const SearchCategory = ({ toggleSearchState, handleSearchState }) => {
 
 const SearchCategoryContainer = styled.div`
   position: relative;
-  ${FlexAttribute("row")}
+  ${FlexAttribute("row", "center", "center")}
   width: 100%;
   padding: 0 8px;
   margin-bottom: 7px;

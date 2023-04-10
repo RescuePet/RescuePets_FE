@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { FlexAttribute } from "../../style/Mixin";
 import Layout from "../../layouts/Layout";
@@ -18,9 +18,16 @@ import profile from "../../asset/profile.svg";
 import Cookies from "js-cookie";
 import isLogin from "../../utils/isLogin";
 import { useNavigate } from "react-router-dom";
-import useToggle from "../../hooks/useToggle";
 import SearchSetting from "../../components/search/SearchSetting";
 import SearchCategory from "../../components/search/SearchCategory";
+import {
+  __getAdoptionSearch,
+  completeSearch,
+  setMemberPosition,
+  setSearchValue,
+  toggleKindCategory,
+  toggleSearchState,
+} from "../../redux/modules/searchSlice";
 
 const Home = () => {
   const images = [carouselImage1, carouselImage2];
@@ -28,14 +35,49 @@ const Home = () => {
   const navigate = useNavigate();
   const [ref, inView] = useInView();
   const [userInfo, setUserInfo] = useState({});
-  const [searchSetState, toggleSearchSetState] = useState(false);
-  const [searchState, toggleSearchState] = useToggle(false);
+  const [searchOn, setSearchOn] = useState(false);
 
-  let { adoptionPage, adoptionLists } = useSelector((state) => state.adoption);
+  const {
+    searchLists,
+    searchValue,
+    longitude,
+    latitude,
+    searchPage,
+    searchState,
+    searchSetState,
+    searchCategory,
+    descriptionCategory,
+  } = useSelector((state) => state.search);
+
+  useEffect(() => {
+    console.log("navigator");
+    navigator.geolocation.getCurrentPosition(onSuccess, onFailure);
+  }, []);
+
+  // console.log(onSucces)
+  const onSuccess = useCallback((position) => {
+    console.log("onSuccess");
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
+    dispatch(setMemberPosition({ lat: lat, lng: lng }));
+  }, []);
+
+  const onFailure = () => {
+    console.log("onFaileure");
+    console.log("위치 정보를 찾을수 없습니당.");
+  };
+
+  const { adoptionPage, adoptionLists } = useSelector(
+    (state) => state.adoption
+  );
+
   const payloadSettings = {
     page: adoptionPage,
     size: 10,
   };
+
+  console.log(searchValue);
+
   useEffect(() => {
     if (isLogin() === false) {
       navigate("/signin");
@@ -45,24 +87,73 @@ const Home = () => {
   }, [navigate]);
 
   useEffect(() => {
-    if (inView) {
+    if (inView && !searchSetState) {
       dispatch(addAdoptionPage());
       dispatch(__getAdoptionList(payloadSettings));
+    } else if (inView && searchSetState && searchOn) {
+      scrollAdoption();
+    } else if (inView && searchSetState && searchOn) {
     }
   }, [inView]);
 
-  const handleSearchState = (boolean) => {
-    toggleSearchSetState(boolean);
+  const adoptionSearchPayload = {
+    page: searchPage,
+    size: 10,
+    longitude: longitude,
+    latitude: latitude,
+    description: descriptionCategory,
+    searchKey: searchCategory,
+    searchValue: searchValue,
+    type: "public",
+  };
+
+  console.log("searchValue", searchValue);
+
+  const searchAdoption = (value) => {
+    const payload = {
+      page: 1,
+      size: 10,
+      longitude: longitude,
+      latitude: latitude,
+      description: descriptionCategory,
+      searchKey: searchCategory,
+      searchValue: value,
+      type: "public",
+    };
+    setSearchOn(true);
+    dispatch(completeSearch());
+    dispatch(__getAdoptionSearch(payload));
+  };
+
+  const searchKindHandler = (kindCategory) => {
+    const adoptionSearchPayload = {
+      page: searchPage,
+      size: 10,
+      longitude: longitude,
+      latitude: latitude,
+      description: descriptionCategory,
+      searchKey: searchCategory,
+      searchValue: kindCategory,
+      type: "public",
+    };
+    dispatch(setSearchValue(kindCategory));
+    dispatch(toggleKindCategory(kindCategory));
+    setSearchOn(true);
+    dispatch(completeSearch());
+    setTimeout(() => {
+      dispatch(__getAdoptionSearch(adoptionSearchPayload));
+    }, 2000);
+  };
+
+  const scrollAdoption = () => {
+    dispatch(__getAdoptionSearch(adoptionSearchPayload));
   };
 
   return (
     <Layout>
       <Header>
         {searchState ? (
-          <SearchCategory
-            toggleSearchState={toggleSearchState}
-            handleSearchState={handleSearchState}
-          />
+          <SearchCategory />
         ) : (
           <>
             <img
@@ -72,12 +163,21 @@ const Home = () => {
               alt="profile"
             />
             <HeaderSpan>안녕하세요! {userInfo.nickname}님</HeaderSpan>
-            <SearchIcon width={30} height={30} onClick={toggleSearchState} />
+            <SearchIcon
+              width={30}
+              height={30}
+              onClick={() => dispatch(toggleSearchState())}
+            />
           </>
         )}
       </Header>
       {!searchSetState && <Carousel images={images} />}
-      {searchSetState && <SearchSetting />}
+      {searchSetState && (
+        <SearchSetting
+          searchHandler={searchAdoption}
+          searchKindHandler={searchKindHandler}
+        />
+      )}
       <PostContainer>
         <TitleBox>
           {searchSetState ? (
@@ -93,6 +193,15 @@ const Home = () => {
                 key={`post-item-${item.desertionNo}-${index}`}
                 item={item}
               ></Post>
+            );
+          })}
+        {searchSetState &&
+          searchLists.map((item, index) => {
+            return (
+              <Post
+                key={`search-item-${item.desertionNo}-${index}`}
+                item={item}
+              />
             );
           })}
         <div ref={ref}></div>

@@ -4,15 +4,13 @@ import { FlexAttribute } from "../../style/Mixin";
 import { CategoryBoxStyle } from "./SearchMixin";
 import Searchbar from "./Searchbar";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  toggleDescriptionCategory,
-  toggleKindCategory,
-} from "../../redux/modules/searchSlice";
+import { toggleDescriptionCategory } from "../../redux/modules/searchSlice";
 import { toDown } from "../../style/Animation";
+import SearchKind from "./SearchKind";
 
-const SearchSetting = () => {
+const SearchSetting = ({ searchHandler, searchKindHandler }) => {
   const dispatch = useDispatch();
-  const { descriptionCategory, kindCategory, inputState } = useSelector(
+  const { descriptionCategory, inputState } = useSelector(
     (state) => state.search
   );
   return (
@@ -28,59 +26,37 @@ const SearchSetting = () => {
               <span>선택안함</span>
             </CategoryBox>
             <CategoryBox
-              active={descriptionCategory === "1km"}
-              onClick={() => dispatch(toggleDescriptionCategory("1km"))}
+              active={descriptionCategory === "1000"}
+              onClick={() => dispatch(toggleDescriptionCategory("1000"))}
             >
               <span>1km</span>
             </CategoryBox>
             <CategoryBox
-              active={descriptionCategory === "10km"}
-              onClick={() => dispatch(toggleDescriptionCategory("10km"))}
+              active={descriptionCategory === "10000"}
+              onClick={() => dispatch(toggleDescriptionCategory("10000"))}
             >
               <span>10km</span>
             </CategoryBox>
           </DescreptionRow>
           <DescreptionRow>
             <CategoryBox
-              active={descriptionCategory === "50km"}
-              onClick={() => dispatch(toggleDescriptionCategory("50km"))}
+              active={descriptionCategory === "50000"}
+              onClick={() => dispatch(toggleDescriptionCategory("50000"))}
             >
               <span>50km</span>
             </CategoryBox>
             <CategoryBox
-              active={descriptionCategory === "100km"}
-              onClick={() => dispatch(toggleDescriptionCategory("100km"))}
+              active={descriptionCategory === "100000"}
+              onClick={() => dispatch(toggleDescriptionCategory("100000"))}
             >
               <span>100km</span>
             </CategoryBox>
           </DescreptionRow>
         </DescriptionWrapper>
         {inputState ? (
-          <Searchbar />
+          <Searchbar searchHandler={searchHandler} />
         ) : (
-          <>
-            <span>종류</span>
-            <KindRow>
-              <CategoryBox
-                active={kindCategory === "DOG"}
-                onClick={() => dispatch(toggleKindCategory("DOG"))}
-              >
-                <span>강아지</span>
-              </CategoryBox>
-              <CategoryBox
-                active={kindCategory === "CAT"}
-                onClick={() => dispatch(toggleKindCategory("CAT"))}
-              >
-                <span>고양이</span>
-              </CategoryBox>
-              <CategoryBox
-                active={kindCategory === "ETC"}
-                onClick={() => dispatch(toggleKindCategory("ETC"))}
-              >
-                <span>기타</span>
-              </CategoryBox>
-            </KindRow>
-          </>
+          <SearchKind searchKindHandler={searchKindHandler} />
         )}
       </DescriptionContainer>
     </SearchSetContainer>
@@ -117,12 +93,6 @@ const DescreptionRow = styled.div`
   :last-child {
     animation: ${toDown} 0.5s ease-in-out;
   }
-`;
-
-const KindRow = styled.div`
-  ${FlexAttribute("row", "center", "center")}
-  margin-top: 8px;
-  animation: ${toDown} 0.75s ease-in-out;
 `;
 
 export default SearchSetting;

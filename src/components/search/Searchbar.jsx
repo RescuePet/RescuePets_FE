@@ -3,20 +3,36 @@ import Search from "../../asset/search";
 import styled from "styled-components";
 import { FlexAttribute } from "../../style/Mixin";
 import { toDown } from "../../style/Animation";
+import Button from "../../elements/Button";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { setSearchValue } from "../../redux/modules/searchSlice";
 
-const Searchbar = ({ closeHandler }) => {
+const Searchbar = ({ searchHandler }) => {
+  const dispatch = useDispatch();
+  const { register, handleSubmit } = useForm();
+
+  const setInputValue = (value) => {
+    console.log(value.searchValue);
+    dispatch(setSearchValue(value.searchValue));
+    searchHandler(value.searchValue);
+  };
+
   return (
-    <>
-      <SearchContainer>
-        <SearchInput placeholder="검색어를 입력하세요"></SearchInput>
-        <SearchTrueIcon width={30} height={30} onClick={closeHandler} />
-      </SearchContainer>
-    </>
+    <SearchContainer onSubmit={handleSubmit(setInputValue)}>
+      <SearchInput
+        placeholder="검색어를 입력하세요"
+        {...register("searchValue")}
+      ></SearchInput>
+      <SearchTrueIcon width={30} height={30} />
+      <Button search>검색</Button>
+    </SearchContainer>
   );
 };
 
-const SearchContainer = styled.div`
-  position: relative;
+const SearchContainer = styled.form`
+  position: sticky;
+  top: 0;
   ${FlexAttribute("row", "center", "center")}
   width: 330px;
   border-radius: 20px;
@@ -37,7 +53,6 @@ const SearchInput = styled.input`
 const SearchTrueIcon = styled(Search)`
   position: absolute;
   left: 0;
-  cursor: pointer;
 `;
 
 export default Searchbar;
