@@ -13,6 +13,7 @@ import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
 import isLogin from "../../utils/isLogin";
 
+
 const Signin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -65,20 +66,6 @@ const Signin = () => {
       }
     });
   };
-
-  // const SignInMessage = useSelector((state) => {
-  //   return state?.users?.Signin;
-  // });
-
-  // useEffect(() => {
-  //   // console.log(SignInMessage)
-  //   if (SignInMessage?.status === true && isLogin()) {
-  //     setSignInMsg(`✅  ${SignInMessage?.message}`);
-  //     navigate("/home");
-  //   } else if (SignInMessage == "아이디,비밀번호를 확인해주세요") {
-  //     setSignInMsg(`⛔  ${SignInMessage}`);
-  //   }
-  // }, [SignInMessage]);
 
   const URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_SIGN_ID}&redirect_uri=${process.env.REACT_APP_RESCUEPETS}/kakaologin`;
 

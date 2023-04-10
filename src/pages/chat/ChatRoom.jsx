@@ -32,15 +32,15 @@ const ChatRoom = () => {
   const [chatlog, setChatLog] = useState([]);
   const sender = JSON.parse(Cookies.get("UserInfo"));
 
-  console.log(sender);
+  // console.log(sender);
 
   let client;
 
-  console.log("roomId", id);
+  // console.log("roomId", id);
   const getChatLog = async (roomId) => {
     try {
       const response = await instance.get(`/room/${roomId}`);
-      console.log(response);
+      // console.log(response);
       setChatLog(response.data.data.messages);
     } catch (error) {
       console.log(error);
@@ -55,7 +55,7 @@ const ChatRoom = () => {
         `/sub/${id}`,
         (response) => {
           let data = JSON.parse(response.body);
-          console.log(data);
+          // console.log(data);
           setChatLog((prev) => [...prev, data]);
         },
         { id: id }
@@ -111,7 +111,7 @@ const ChatRoom = () => {
       navigate("/chatlist");
       console.log(response);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -161,7 +161,7 @@ const ChatRoom = () => {
             }
           })}
       </ChatRoomBody>
-
+      {/* <SseModal /> */}
       <InputContainer
         placeholder="메세지를 입력해주세요."
         submitHandler={submitHandler}

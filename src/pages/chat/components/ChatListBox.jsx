@@ -14,13 +14,13 @@ const ChatListBox = ({ item }) => {
   let refineData = {
     state: "",
   };
-  console.log(item);
+  // console.log(item);
   if (item.postName === "MISSING") {
     refineData.state = "실종";
   } else if (item.postName === "CATCH") {
     refineData.state = "목격";
   }
-  console.log(item);
+  // console.log(item);
   return (
     <ChatRoomListContainer>
       <ClickDiv to={`/chatroom/${item.partner}/${item.roomId}`}>

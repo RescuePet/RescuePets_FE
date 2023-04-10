@@ -11,6 +11,10 @@ import backgroundImage from "../asset/webbackground/Desktop.jpg";
 import PopDog from "../asset/webbackground/PopDog.png";
 import Logo from "../asset/webbackground/Logo.png";
 import { upAndDown } from "../style/Animation";
+import { EventSourcePolyfill } from "event-source-polyfill";
+import Cookies from "js-cookie";
+import { useModalState } from "../hooks/useModalState";
+import { SseAlertModal } from "../elements/SeeAlert";
 
 const Layout = ({ children }) => {
   const navigate = useNavigate();
@@ -18,7 +22,64 @@ const Layout = ({ children }) => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const { scrollState } = useSelector((state) => state.comment);
   const dispatch = useDispatch();
+
+  const [loginModal, toggleModal] = useModalState(false);
+  // console.log(loginModal);
+
   const ref = useRef(null);
+  const token = Cookies.get("Token");
+
+  const [listening, setListening] = useState(false);
+  // console.log("SSE연결체크", listening);
+  const [data, setData] = useState([]);
+  let eventSource = undefined;
+  // let eventSource = useRef(null);
+  console.log(data.message);
+
+  useEffect(() => {
+    if (!listening) {
+      eventSource = new EventSourcePolyfill("https://heukwu.shop/sse/", {
+        headers: {
+          Authorization: token,
+          // "Content-Type": "text/event-stream",
+          // Connection: "keep-alive",
+        },
+        heartbeatTimeout: 3600000,
+        withCredentials: true,
+      });
+
+      eventSource.onopen = (event) => {
+        // console.log("SSE연결성공", event);
+        // console.log("connection opened");
+      };
+
+      eventSource.onmessage = (event) => {
+        // console.log(event);
+        toggleModal();
+        const checkJSON = event.data.split(" ")[0];
+        const data = checkJSON !== "EventStream" && JSON.parse(event.data);
+        // console.log(data.message);
+        // console.log("SSE데이터", event);
+        // console.log("result", event.data);
+        setData(data);
+      };
+
+      eventSource.onerror = (event) => {
+        console.log("SSE오류", event);
+        if (event.target.readyState === EventSource.CLOSED) {
+          // console.log("eventsource closed (" + event.target.readyState + ")");
+        }
+        eventSource.close();
+      };
+
+      setListening(true);
+    }
+
+    return () => {
+      eventSource.close();
+      // console.log("eventsource closed");
+    };
+  }, [eventSource]);
 
   useEffect(() => {
     const storedScrollPosition = localStorage.getItem("scrollPosition");
@@ -67,6 +128,16 @@ const Layout = ({ children }) => {
           onScroll={saveScrollPosition}
           scrollTop={scrollPosition}
         >
+          {data.message == undefined ? null : (
+            <SseAlertModal
+              isOpen={loginModal}
+              toggle={toggleModal}
+              onClose={toggleModal}
+            >
+              {data.message}
+            </SseAlertModal>
+          )}
+
           {children}
           {location.pathname !== "/" &&
             location.pathname !== "/signin" &&
