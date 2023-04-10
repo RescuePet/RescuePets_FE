@@ -13,7 +13,6 @@ import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
 import isLogin from "../../utils/isLogin";
 
-
 const Signin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -60,6 +59,7 @@ const Signin = () => {
       } else if (response.type === "signinUser/fulfilled") {
         console.log("성공");
         setSignInMsg(`✅  ${response.payload.message}`);
+         localStorage.setItem("SSECount", 0);
         setTimeout(function () {
           navigate("/home");
         }, 1000);

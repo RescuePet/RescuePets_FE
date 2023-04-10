@@ -19,6 +19,11 @@ const Footer = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const moveToChatRoom = () => {
+    navigate("/chatlist");
+    localStorage.setItem("SSECount", 0);
+  };
+
   const [menuBar, setMenuBar] = useState(false);
 
   const [menuBarToggle, setMenuBarToggle] = useState(false);
@@ -35,6 +40,8 @@ const Footer = () => {
     }
   };
 
+  const SSECOUNT = JSON.parse(localStorage.getItem("SSECount"));
+  console.log(SSECOUNT);
   return (
     <FooterContiner>
       <FooterEachIconContiner
@@ -60,11 +67,13 @@ const Footer = () => {
         <span>펫트워크</span>
       </FooterEachIconContiner>
       <FooterEachIconContiner
+        style={{ position: "relative" }}
         active={location.pathname === "/chatlist"}
-        onClick={() => navigate("/chatlist")}
+        onClick={moveToChatRoom}
       >
         <FooterIconChat></FooterIconChat>
         <span>채팅</span>
+        {SSECOUNT == 0 ? null : <p>{SSECOUNT}</p>}
       </FooterEachIconContiner>
       <FooterEachIconContiner
         active={location.pathname.split("/")[1] === "profile"}
@@ -184,11 +193,24 @@ const FooterEachIconContiner = styled.div`
     color: ${(props) => props.theme.color.text_alternative};
     white-space: nowrap;
   }
+  p {
+    position: absolute;
+    top: -5px;
+    right: 1.25rem;
+    width: 1rem;
+    height: 1rem;
+    ${(props) => props.theme.FlexCenter}
+    font-size: 12px;
+    color: #fff;
+    background: #fa5252;
+    border-radius: 0.9375rem;
+  }
   ${(props) =>
     props.active &&
     css`
   span {
       color: ${(props) => props.theme.color.primary_normal};
+      
     }
     path {
       fill: ${(props) => props.theme.color.primary_normal};

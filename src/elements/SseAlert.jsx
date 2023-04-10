@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Modal({ isOpen, onClose, children }) {
-  console.log("모달열린지 닫힌지 체크", isOpen);
   const backdropVariants = {
     visible: { opacity: 1 },
     hidden: { opacity: 0 },
@@ -16,10 +15,9 @@ export default function Modal({ isOpen, onClose, children }) {
 
   const [isOpenModal, setIsOpenModal] = useState(isOpen);
 
-  // 모달창이 열린 상태면 1초 후에 자동으로 닫히도록 설정
+
   useEffect(() => {
     if (isOpen) {
-      console.log("모달 오픈");
       setIsOpenModal(isOpen);
       const timeoutId = setTimeout(() => {
         setIsOpenModal(false);
@@ -75,7 +73,6 @@ const ModalContainer = styled(motion.div)`
   width: 14.0625rem;
   height: 4rem;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
-  /* filter: drop-shadow(rgba(0, 0, 0, 0.8) 2px 2px 20px); */
 `;
 
 export const ModalSEEMsgContainer = styled.div`

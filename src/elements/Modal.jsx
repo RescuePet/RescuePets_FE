@@ -7,8 +7,6 @@ export default function Modal({ isOpen, onClose, children }) {
     visible: { opacity: 1 },
     hidden: { opacity: 0 },
   };
-  // 위에서 아래에서
-  // 좌에서 우로는 visible x 0
 
   const modalVariants = {
     visible: { opacity: 1, y: 0 },
@@ -16,10 +14,9 @@ export default function Modal({ isOpen, onClose, children }) {
   };
 
   const [isOpenModal, setIsOpenModal] = useState(isOpen);
-  // 모달창이 열린 상태면 1초 후에 자동으로 닫히도록 설정
+
   useEffect(() => {
     if (isOpen) {
-      console.log("모달 오픈");
       setIsOpenModal(isOpen);
       const timeoutId = setTimeout(() => {
         setIsOpenModal(false);

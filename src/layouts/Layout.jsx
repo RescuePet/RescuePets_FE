@@ -14,7 +14,8 @@ import { upAndDown } from "../style/Animation";
 import { EventSourcePolyfill } from "event-source-polyfill";
 import Cookies from "js-cookie";
 import { useModalState } from "../hooks/useModalState";
-import { SseAlertModal } from "../elements/SeeAlert";
+import { SseAlertModal } from "../elements/SseAlert";
+import { seeaddCount } from "../redux/modules/sseSlice";
 
 const Layout = ({ children }) => {
   const navigate = useNavigate();
@@ -22,7 +23,8 @@ const Layout = ({ children }) => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const { scrollState } = useSelector((state) => state.comment);
   const dispatch = useDispatch();
-
+  const count = useSelector((state) => state.sseCount);
+  console.log(count);
   const [loginModal, toggleModal] = useModalState(false);
   // console.log(loginModal);
 
@@ -44,8 +46,8 @@ const Layout = ({ children }) => {
           // "Content-Type": "text/event-stream",
           // Connection: "keep-alive",
         },
-        heartbeatTimeout: 3600000,
-        withCredentials: true,
+        // heartbeatTimeout: 3600000,
+        // withCredentials: true,
       });
 
       eventSource.onopen = (event) => {
@@ -54,14 +56,15 @@ const Layout = ({ children }) => {
       };
 
       eventSource.onmessage = (event) => {
-        // console.log(event);
-        toggleModal();
+        console.log(event);
+
         const checkJSON = event.data.split(" ")[0];
         const data = checkJSON !== "EventStream" && JSON.parse(event.data);
-        // console.log(data.message);
-        // console.log("SSE데이터", event);
-        // console.log("result", event.data);
-        setData(data);
+        if (data.message !== undefined) {
+          toggleModal();
+          dispatch(seeaddCount(1));
+          setData(data);
+        }
       };
 
       eventSource.onerror = (event) => {
@@ -70,6 +73,7 @@ const Layout = ({ children }) => {
           // console.log("eventsource closed (" + event.target.readyState + ")");
         }
         eventSource.close();
+        setListening(false);
       };
 
       setListening(true);
