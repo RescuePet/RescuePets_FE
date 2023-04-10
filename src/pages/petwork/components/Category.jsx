@@ -4,6 +4,7 @@ import styled, { css } from "styled-components";
 import { toggleCategory } from "../../../redux/modules/petworkSlice";
 import { Border_2_color, FlexAttribute } from "../../../style/Mixin";
 import { Button_700_16 } from "../../../style/theme";
+import { setPostType } from "../../../redux/modules/searchSlice";
 
 const Category = () => {
   const dispatch = useDispatch();
@@ -20,13 +21,19 @@ const Category = () => {
     <CategoryWrapper>
       <ActiveButton
         active={category === "우리집 반려동물을 찾아주세요"}
-        onClick={() => toggleCategoryHandler("우리집 반려동물을 찾아주세요")}
+        onClick={() => {
+          dispatch(setPostType("MISSING"));
+          toggleCategoryHandler("우리집 반려동물을 찾아주세요");
+        }}
       >
         실종
       </ActiveButton>
       <ActiveButton
         active={category === "길 잃은 동물을 발견했어요"}
-        onClick={() => toggleCategoryHandler("길 잃은 동물을 발견했어요")}
+        onClick={() => {
+          dispatch(setPostType("CATCH"));
+          toggleCategoryHandler("길 잃은 동물을 발견했어요");
+        }}
       >
         목격
       </ActiveButton>

@@ -42,11 +42,21 @@ export const __getAdoptionSearch = createAsyncThunk(
 export const __getPostSearch = createAsyncThunk(
   "getPostSearch",
   async (payload, thunkAPI) => {
+    const newPayload = {
+      ...payload,
+    };
+    if (newPayload.description === "") {
+      newPayload.latitude = "";
+      newPayload.longitude = "";
+    }
+    if (newPayload.searchKey === "kindType") {
+      newPayload.searchKey = "upkind";
+    }
     try {
       const response = await instance.get(
-        `api/post/search?page=${payload.page}&size=${payload.size}`
+        `api/post/search?page=${newPayload.page}&size=${newPayload.size}&postType=${newPayload.postType}&memberLongitude=${newPayload.longitude}&memberLatitude=${newPayload.latitude}&description=${newPayload.description}&searchKey=${newPayload.searchKey}&searchValue=${newPayload.searchValue}`
       );
-      console.log("getPostSearch", response.data);
+      console.log("getPostSearch", response);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       throw new Error(error.response.data.message);
@@ -62,6 +72,7 @@ const initialState = {
   searchSetState: false,
   inputState: false,
   searchPage: 1,
+  postType: "MISSING",
   longitude: "126.934086",
   latitude: "37.515133",
   searchValue: "",
@@ -92,6 +103,9 @@ export const searchSlice = createSlice({
     toggleInputState: (state, action) => {
       state.inputState = action.payload;
     },
+    setPostType: (state, action) => {
+      state.postType = action.payload;
+    },
     setMemberPosition: (state, action) => {
       state.longitude = action.payload.lng;
       state.latitude = action.payload.lat;
@@ -112,7 +126,16 @@ export const searchSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(__getAdoptionSearch.fulfilled, (state, action) => {
+    builder
+      .addCase(__getAdoptionSearch.fulfilled, (state, action) => {
+        state.searchLists = [...state.searchLists, ...action.payload];
+        state.searchPage = state.searchPage + 1;
+      })
+      .addCase(__getAdoptionSearch.rejected, (state) => {
+        state.error = true;
+      });
+
+    builder.addCase(__getPostSearch.fulfilled, (state, action) => {
       state.searchLists = [...state.searchLists, ...action.payload];
       state.searchPage = state.searchPage + 1;
     });
@@ -126,6 +149,7 @@ export const {
   toggleSearchState,
   toggleSearchSetState,
   toggleInputState,
+  setPostType,
   setMemberPosition,
   setSearchValue,
   resetSearchState,

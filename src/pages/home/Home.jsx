@@ -134,7 +134,6 @@ const Home = () => {
       description: descriptionCategory,
       searchKey: searchCategory,
       searchValue: kindCategory,
-      type: "public",
     };
     dispatch(setSearchValue(kindCategory));
     dispatch(toggleKindCategory(kindCategory));

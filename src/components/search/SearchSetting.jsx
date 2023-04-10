@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { FlexAttribute } from "../../style/Mixin";
 import { CategoryBoxStyle } from "./SearchMixin";
 import Searchbar from "./Searchbar";
@@ -8,13 +8,13 @@ import { toggleDescriptionCategory } from "../../redux/modules/searchSlice";
 import { toDown } from "../../style/Animation";
 import SearchKind from "./SearchKind";
 
-const SearchSetting = ({ searchHandler, searchKindHandler }) => {
+const SearchSetting = ({ searchHandler, searchKindHandler, petwork }) => {
   const dispatch = useDispatch();
   const { descriptionCategory, inputState } = useSelector(
     (state) => state.search
   );
   return (
-    <SearchSetContainer>
+    <SearchSetContainer petwork={petwork}>
       <DescriptionContainer>
         <span>거리</span>
         <DescriptionWrapper>
@@ -67,13 +67,17 @@ const SearchSetContainer = styled.div`
   width: 100%;
   height: 160px;
   padding-top: 8px;
-  border-top: 2px solid ${(props) => props.theme.color.input_border};
+  ${(props) =>
+    !props.petwork &&
+    css`
+      border-top: 2px solid ${(props) => props.theme.color.input_border};
+    `}
 `;
 
 const DescriptionContainer = styled.div`
   width: 335px;
   margin: 0 auto;
-  > span {
+  span {
     ${(props) => props.theme.Body_400_12}
   }
 `;
