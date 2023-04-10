@@ -31,7 +31,6 @@ const Layout = ({ children }) => {
   const ref = useRef(null);
   const token = Cookies.get("Token");
 
-
   const [listening, setListening] = useState(false);
   // console.log("SSE연결체크", listening);
   const [data, setData] = useState([]);
@@ -61,21 +60,18 @@ const Layout = ({ children }) => {
 
     eventSource.onopen = (event) => {
       setListening(true);
-      // console.log("SSE연결성공", event);
-      // console.log("connection opened");
     };
 
     eventSource.onmessage = (event) => {
-      console.log(event);
+      // console.log(event);
       setListening(true);
-      toggleModal();
       const checkJSON = event.data.split(" ")[0];
-      console.log(checkJSON);
+      // console.log(checkJSON);
       const data = checkJSON !== "EventStream" && JSON.parse(event.data);
-      console.log(data);
+      // console.log(data);
       if (data.message !== undefined) {
         setData(data);
-        // toggleModal();
+        toggleModal();
         console.log(data.message);
         // toggleModal();
         dispatch(seeaddCount(1));
@@ -85,8 +81,14 @@ const Layout = ({ children }) => {
 
     eventSource.onerror = (event) => {
       console.log("SSE오류", event);
-      eventSource.close();
+      // eventSource.close();
       setListening(false);
+    };
+    return () => {
+      console.log("연결끊기 ");
+      setListening(false);
+      eventSource.close();
+      // console.log("eventsource closed");
     };
   }, [eventSource]);
 

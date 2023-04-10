@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// const 
-// const SSECOUNT = localStorage.setItem("SSECount", 0)
 
 
 const initialState = {
@@ -24,7 +22,7 @@ export const SseCount = createSlice({
       },
   },
 });
-export const { seeaddCount } = SseCount.actions;
+export const { seeaddCount,seeCountReset } = SseCount.actions;
 
 export default SseCount.reducer;
 

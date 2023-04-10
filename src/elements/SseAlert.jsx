@@ -12,25 +12,37 @@ export default function Modal({ isOpen, onClose, children }) {
     visible: { opacity: 1, x: 0 },
     hidden: { opacity: 0, x: "50%" },
   };
-  console.log("모달 열렸는지 테스트", isOpen);
+  // const [isOpenModal, setIsOpenModal] = useState(true);
+  // console.log("기존모달값", isOpen);
+  // // console.log("현재모달값", isOpenModal);
+  // useEffect(() => {
+  //   console.log("이펙트", isOpen);
+  //   setIsOpenModal(isOpen);
+  //   if (isOpen) {
+  //     console.log("이펙트22", isOpen);
+  //     console.log("이펙트33", isOpenModal);
+  //     const timeoutId = setTimeout(() => {
+  //       setIsOpenModal(!isOpenModal);
+  //     }, 750);
+  //     return () => clearTimeout(timeoutId);
+  //   }
+  // }, [isOpen]);
 
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  // setIsOpenModal(isOpen);
-  // console.log(isOpenModal);
+  // // console.log("현재모달값2", isOpenModal);
+  // console.log("내장", isOpen);
   useEffect(() => {
-    setIsOpenModal(isOpen);
+    // console.log("use내장", isOpen);
     if (isOpen) {
-      setIsOpenModal(isOpen);
       const timeoutId = setTimeout(() => {
-        setIsOpenModal(false);
-      }, 750);
+        onClose();
+      }, 650);
       return () => clearTimeout(timeoutId);
     }
   }, [isOpen]);
 
   return (
     <AnimatePresence>
-      {isOpenModal && (
+      {isOpen && (
         <Backdrop
           variants={backdropVariants}
           initial="hidden"
@@ -61,19 +73,18 @@ const Backdrop = styled(motion.div)`
   width: 27rem;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(1px);
 `;
 
 const ModalContainer = styled(motion.div)`
-  background-color: white;
+  background-color: ${(props) => props.theme.color.primary_normal};
+
   margin: auto; /* 추가 */
   border-radius: 0.5rem;
   position: absolute;
   top: 2%;
   right: 5%;
   width: 14.0625rem;
-  height: 4rem;
+  height: 3rem;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 `;
 
@@ -81,7 +92,8 @@ export const ModalSEEMsgContainer = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  color: #333333;
+  color: ${(props) => props.theme.color.white};
+  ${(props) => props.theme.Body_400_14_16}
   display: flex;
   align-items: center;
   ${(props) => props.theme.FlexCenter}

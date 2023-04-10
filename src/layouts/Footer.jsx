@@ -12,7 +12,7 @@ import FooterIconNetwork from "../asset/footericon/FooterIconNetwork";
 import FooterIconChat from "../asset/footericon/FooterIconChat";
 import FooterIconProfile from "../asset/footericon/FooterIconProfile";
 import Reportcatch from "../asset/Reportcatch";
-// import { seeCountReset } from "../redux/modules/sseSlice";
+import { seeCountReset } from "../redux/modules/sseSlice";
 
 const Footer = () => {
   // payload로 값 보내기 위한 훅
@@ -22,10 +22,10 @@ const Footer = () => {
 
   const moveToChatRoom = () => {
     localStorage.setItem("SSECount", 0);
-    // dispatch(seeCountReset(0));
+    dispatch(seeCountReset(0));
     navigate("/chatlist");
   };
-// const apple = 
+  // const apple =
   const [menuBar, setMenuBar] = useState(false);
 
   const [menuBarToggle, setMenuBarToggle] = useState(false);
