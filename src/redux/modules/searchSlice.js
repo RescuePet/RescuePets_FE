@@ -67,7 +67,8 @@ export const __getPostSearch = createAsyncThunk(
 const initialState = {
   loading: false,
   error: false,
-  searchLists: [],
+  publicSearchLists: [],
+  postSearchLists: [],
   searchState: false,
   searchSetState: false,
   inputState: false,
@@ -128,7 +129,10 @@ export const searchSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(__getAdoptionSearch.fulfilled, (state, action) => {
-        state.searchLists = [...state.searchLists, ...action.payload];
+        state.publicSearchLists = [
+          ...state.publicSearchLists,
+          ...action.payload,
+        ];
         state.searchPage = state.searchPage + 1;
       })
       .addCase(__getAdoptionSearch.rejected, (state) => {
@@ -136,7 +140,7 @@ export const searchSlice = createSlice({
       });
 
     builder.addCase(__getPostSearch.fulfilled, (state, action) => {
-      state.searchLists = [...state.searchLists, ...action.payload];
+      state.postSearchLists = [...state.postSearchLists, ...action.payload];
       state.searchPage = state.searchPage + 1;
     });
   },

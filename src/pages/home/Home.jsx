@@ -37,8 +37,12 @@ const Home = () => {
   const [userInfo, setUserInfo] = useState({});
   const [searchOn, setSearchOn] = useState(false);
 
+  const { adoptionPage, adoptionLists } = useSelector(
+    (state) => state.adoption
+  );
+
   const {
-    searchLists,
+    publicSearchLists,
     searchValue,
     longitude,
     latitude,
@@ -66,10 +70,6 @@ const Home = () => {
     console.log("onFaileure");
     console.log("위치 정보를 찾을수 없습니당.");
   };
-
-  const { adoptionPage, adoptionLists } = useSelector(
-    (state) => state.adoption
-  );
 
   const payloadSettings = {
     page: adoptionPage,
@@ -127,13 +127,14 @@ const Home = () => {
 
   const searchKindHandler = (kindCategory) => {
     const adoptionSearchPayload = {
-      page: searchPage,
+      page: 1,
       size: 10,
       longitude: longitude,
       latitude: latitude,
       description: descriptionCategory,
       searchKey: searchCategory,
       searchValue: kindCategory,
+      type: "public",
     };
     dispatch(setSearchValue(kindCategory));
     dispatch(toggleKindCategory(kindCategory));
@@ -195,7 +196,7 @@ const Home = () => {
             );
           })}
         {searchSetState &&
-          searchLists.map((item, index) => {
+          publicSearchLists.map((item, index) => {
             return (
               <Post
                 key={`search-item-${item.desertionNo}-${index}`}

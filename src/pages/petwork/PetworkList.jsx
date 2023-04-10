@@ -37,7 +37,7 @@ const PetworkList = () => {
   const [searchOn, setSearchOn] = useState(false);
 
   const {
-    searchLists,
+    postSearchLists,
     searchValue,
     postType,
     longitude,
@@ -185,7 +185,7 @@ const PetworkList = () => {
           })}
         {searchSetState &&
           petwork.category === "우리집 반려동물을 찾아주세요" &&
-          searchLists.map((item, index) => {
+          postSearchLists.map((item, index) => {
             return (
               <Card
                 key={`missing-post-${index}`}
@@ -208,7 +208,7 @@ const PetworkList = () => {
           })}
         {searchSetState &&
           petwork.category === "길 잃은 동물을 발견했어요" &&
-          searchLists.map((item, index) => {
+          postSearchLists.map((item, index) => {
             return (
               <Card
                 key={`missing-post-${index}`}
