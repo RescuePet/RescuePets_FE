@@ -10,18 +10,20 @@ export default function Modal({ isOpen, onClose, children }) {
 
   const modalVariants = {
     visible: { opacity: 1, x: 0 },
-    hidden: { opacity: 0, x: "50%", transition: { duration: 0.1 } },
+    hidden: { opacity: 0, x: "50%" },
   };
+  console.log("모달 열렸는지 테스트", isOpen);
 
-  const [isOpenModal, setIsOpenModal] = useState(isOpen);
-
-
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  // setIsOpenModal(isOpen);
+  // console.log(isOpenModal);
   useEffect(() => {
+    setIsOpenModal(isOpen);
     if (isOpen) {
       setIsOpenModal(isOpen);
       const timeoutId = setTimeout(() => {
         setIsOpenModal(false);
-      }, 1000);
+      }, 750);
       return () => clearTimeout(timeoutId);
     }
   }, [isOpen]);
@@ -90,6 +92,7 @@ export const ModalSEEMsgContainer = styled.div`
 
 // Sign 커스텀 모달
 export function SseAlertModal(props) {
+  // console.log("모달에 보일 text,", props);
   return (
     <>
       <Modal isOpen={props.isOpen} onClose={props.toggle}>

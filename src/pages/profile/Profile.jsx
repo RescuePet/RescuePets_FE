@@ -35,6 +35,8 @@ const Profile = () => {
           Cookies.remove("Refresh");
           Cookies.remove("UserInfo");
           console.log("로그아웃성공");
+          localStorage.removeItem("SSECount");
+          localStorage.removeItem("Count");
           setMsg("");
           navigate("/signin");
         }, 1000);

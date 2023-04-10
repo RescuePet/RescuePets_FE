@@ -24,64 +24,69 @@ const Layout = ({ children }) => {
   const { scrollState } = useSelector((state) => state.comment);
   const dispatch = useDispatch();
   const count = useSelector((state) => state.sseCount);
-  console.log(count);
+  // console.log(count);
   const [loginModal, toggleModal] = useModalState(false);
   // console.log(loginModal);
 
   const ref = useRef(null);
   const token = Cookies.get("Token");
 
+
   const [listening, setListening] = useState(false);
   // console.log("SSE연결체크", listening);
   const [data, setData] = useState([]);
   let eventSource = undefined;
   // let eventSource = useRef(null);
-  console.log(data.message);
+  // console.log(data.message);
 
   useEffect(() => {
-    if (!listening) {
-      eventSource = new EventSourcePolyfill("https://heukwu.shop/sse/", {
-        headers: {
-          Authorization: token,
-          // "Content-Type": "text/event-stream",
-          // Connection: "keep-alive",
-        },
-        // heartbeatTimeout: 3600000,
-        // withCredentials: true,
-      });
+    // setTimeout(function () {
+    //   // navigate("/home");
+    // }, 45000);
 
-      eventSource.onopen = (event) => {
-        // console.log("SSE연결성공", event);
-        // console.log("connection opened");
-      };
-
-      eventSource.onmessage = (event) => {
-        console.log(event);
-
-        const checkJSON = event.data.split(" ")[0];
-        const data = checkJSON !== "EventStream" && JSON.parse(event.data);
-        if (data.message !== undefined) {
-          toggleModal();
-          dispatch(seeaddCount(1));
-          setData(data);
+    if (listening === false) {
+      eventSource = new EventSourcePolyfill(
+        `${process.env.REACT_APP_SIGN_TEST}/sse/`,
+        {
+          headers: {
+            Authorization: token,
+            // "Content-Type": "text/event-stream",
+            // Connection: "keep-alive",
+          },
+          // heartbeatTimeout: 3600000,
+          // withCredentials: true,
         }
-      };
-
-      eventSource.onerror = (event) => {
-        console.log("SSE오류", event);
-        if (event.target.readyState === EventSource.CLOSED) {
-          // console.log("eventsource closed (" + event.target.readyState + ")");
-        }
-        eventSource.close();
-        setListening(false);
-      };
-
-      setListening(true);
+      );
     }
 
-    return () => {
+    eventSource.onopen = (event) => {
+      setListening(true);
+      // console.log("SSE연결성공", event);
+      // console.log("connection opened");
+    };
+
+    eventSource.onmessage = (event) => {
+      console.log(event);
+      setListening(true);
+      toggleModal();
+      const checkJSON = event.data.split(" ")[0];
+      console.log(checkJSON);
+      const data = checkJSON !== "EventStream" && JSON.parse(event.data);
+      console.log(data);
+      if (data.message !== undefined) {
+        setData(data);
+        // toggleModal();
+        console.log(data.message);
+        // toggleModal();
+        dispatch(seeaddCount(1));
+        setData(data);
+      }
+    };
+
+    eventSource.onerror = (event) => {
+      console.log("SSE오류", event);
       eventSource.close();
-      // console.log("eventsource closed");
+      setListening(false);
     };
   }, [eventSource]);
 

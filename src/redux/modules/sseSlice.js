@@ -6,7 +6,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     ssecount : Number(localStorage.getItem("SSECount")) || 0, // 로컬 스토리지에서 기존 값 불러오기
-    count : Number(localStorage.getItem("SSECount")) || 0, // 로컬 스토리지에서 기존 값 불러오기
+    count : Number(localStorage.getItem("Count")) || 0, // 로컬 스토리지에서 기존 값 불러오기
 };
 
 export const SseCount = createSlice({
@@ -17,6 +17,10 @@ export const SseCount = createSlice({
         const newCount = state.ssecount + action.payload;
         state.ssecount = newCount;
         localStorage.setItem("SSECount", newCount); // 로컬 스토리지에 새로운 값 저장
+      },
+      seeCountReset: (state, action) => {
+        state.ssecount = action.payload;
+        localStorage.setItem("SSECount", action.payload); // 로컬 스토리지에 새로운 값 저장
       },
   },
 });

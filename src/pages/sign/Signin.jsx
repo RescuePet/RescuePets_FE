@@ -59,7 +59,8 @@ const Signin = () => {
       } else if (response.type === "signinUser/fulfilled") {
         console.log("성공");
         setSignInMsg(`✅  ${response.payload.message}`);
-         localStorage.setItem("SSECount", 0);
+        localStorage.setItem("SSECount", 0);
+        localStorage.setItem("Count", 0);
         setTimeout(function () {
           navigate("/home");
         }, 1000);
