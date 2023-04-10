@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
+import ModalImg from "../asset/Spinner/spinner.png";
 
 export default function Modal({ isOpen, onClose, children }) {
   const backdropVariants = {
@@ -77,15 +78,15 @@ const Backdrop = styled(motion.div)`
 
 const ModalContainer = styled(motion.div)`
   background-color: ${(props) => props.theme.color.primary_normal};
-
   margin: auto; /* 추가 */
   border-radius: 0.5rem;
   position: absolute;
-  top: 2%;
-  right: 5%;
+  top: 9%;
+  right: 2%;
   width: 14.0625rem;
   height: 3rem;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+  /* border: 1px solid red; */
 `;
 
 export const ModalSEEMsgContainer = styled.div`
@@ -94,11 +95,14 @@ export const ModalSEEMsgContainer = styled.div`
   height: 100%;
   color: ${(props) => props.theme.color.white};
   ${(props) => props.theme.Body_400_14_16}
-  display: flex;
-  align-items: center;
   ${(props) => props.theme.FlexCenter}
-  > h2 {
-    ${(props) => props.theme.Body_400_14_16}
+  padding-left: .625rem;
+  > img {
+    position: fixed;
+    width: 2.5rem;
+    height: 2.5rem;
+    top: -13%;
+    left: -3%;
   }
 `;
 
@@ -109,6 +113,7 @@ export function SseAlertModal(props) {
     <>
       <Modal isOpen={props.isOpen} onClose={props.toggle}>
         <ModalSEEMsgContainer>
+          <img src={ModalImg} />
           <h2>{props.children}</h2>
         </ModalSEEMsgContainer>
       </Modal>
