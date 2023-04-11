@@ -11,3 +11,14 @@ export const upAndDown = keyframes`
     transform: translate(-17%,-20%);
   }
 `;
+
+export const toDown = keyframes`
+0% {
+  opacity: 0;
+  transform: translateY(-50%);
+}
+100% {
+  opacity: 1;
+  transform: translateY(0);
+}
+`;

@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Carousel = ({ images }) => {
   const settings = {
@@ -21,10 +22,10 @@ const Carousel = ({ images }) => {
   return (
     <Container>
       <StyledSlider {...settings}>
-        {images.map((image, index) => (
-          <div key={`carousel-image-${index}`}>
-            <Image src={image} />
-          </div>
+        {images.map((item, index) => (
+          <Link key={`carousel-image-${index}`} to={item.linkUrl}>
+            <Image src={item.imageUrl} />
+          </Link>
         ))}
       </StyledSlider>
     </Container>

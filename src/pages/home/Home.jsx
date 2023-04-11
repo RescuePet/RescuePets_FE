@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { FlexAttribute } from "../../style/Mixin";
 import Layout from "../../layouts/Layout";
@@ -12,25 +12,81 @@ import {
   addAdoptionPage,
   __getAdoptionList,
 } from "../../redux/modules/adoptionSlice";
-import refresh from "../../asset/refresh.svg";
+
+import Search from "../../asset/search";
 import profile from "../../asset/profile.svg";
-import search from "../../asset/search.svg";
 import Cookies from "js-cookie";
 import isLogin from "../../utils/isLogin";
 import { useNavigate } from "react-router-dom";
+import SearchSetting from "../../components/search/SearchSetting";
+import SearchCategory from "../../components/search/SearchCategory";
+import {
+  __getAdoptionSearch,
+  completeSearch,
+  setMemberPosition,
+  setSearchValue,
+  toggleDescriptionCategory,
+  toggleKindCategory,
+  toggleSearchState,
+} from "../../redux/modules/searchSlice";
 
 const Home = () => {
-  const images = [carouselImage1, carouselImage2];
+  const images = [
+    { imageUrl: carouselImage1, linkUrl: "/introduce" },
+    {
+      imageUrl: carouselImage2,
+      linkUrl:
+        "https://docs.google.com/forms/d/e/1FAIpQLSehjtbMQPEmG-UdqSTAAQOLogs6NtmHAwOKY4vNCHGawxe1FA/viewform",
+    },
+  ];
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [ref, inView] = useInView();
   const [userInfo, setUserInfo] = useState({});
+  const [searchOn, setSearchOn] = useState(false);
 
-  let { adoptionPage, adoptionLists } = useSelector((state) => state.adoption);
+  const { adoptionPage, adoptionLists } = useSelector(
+    (state) => state.adoption
+  );
+
+  const {
+    publicSearchLists,
+    searchValue,
+    distanceState,
+    longitude,
+    latitude,
+    searchPage,
+    searchState,
+    searchSetState,
+    searchCategory,
+    descriptionCategory,
+  } = useSelector((state) => state.search);
+
+  useEffect(() => {
+    console.log("navigator");
+    navigator.geolocation.getCurrentPosition(onSuccess, onFailure);
+  }, []);
+
+  // console.log(onSucces)
+  const onSuccess = useCallback((position) => {
+    console.log("onSuccess");
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
+    dispatch(setMemberPosition({ lat: lat, lng: lng }));
+  }, []);
+
+  const onFailure = () => {
+    console.log("onFaileure");
+    console.log("위치 정보를 찾을수 없습니당.");
+  };
+
   const payloadSettings = {
     page: adoptionPage,
     size: 10,
   };
+
+  console.log(searchValue);
+
   useEffect(() => {
     if (isLogin() === false) {
       navigate("/signin");
@@ -40,35 +96,145 @@ const Home = () => {
   }, [navigate]);
 
   useEffect(() => {
-    if (inView) {
+    if (inView && !searchSetState) {
       dispatch(addAdoptionPage());
       dispatch(__getAdoptionList(payloadSettings));
+    } else if (inView && searchSetState && searchOn) {
+      scrollAdoption();
+    } else if (inView && searchSetState && searchOn) {
     }
   }, [inView]);
+
+  const adoptionSearchPayload = {
+    page: searchPage,
+    size: 10,
+    longitude: longitude,
+    latitude: latitude,
+    description: descriptionCategory,
+    searchKey: searchCategory,
+    searchValue: searchValue,
+    type: "public",
+  };
+
+  console.log("searchValue", searchValue);
+
+  const searchAdoption = (value) => {
+    const payload = {
+      page: 1,
+      size: 10,
+      longitude: longitude,
+      latitude: latitude,
+      description: descriptionCategory,
+      searchKey: searchCategory,
+      searchValue: value,
+      type: "public",
+    };
+    setSearchOn(true);
+    dispatch(completeSearch());
+
+    dispatch(__getAdoptionSearch(payload));
+  };
+
+  const searchDistanceHandler = (distance) => {
+    if (distanceState) {
+      const payload = {
+        page: 1,
+        size: 10,
+        longitude: longitude,
+        latitude: latitude,
+        description: distance,
+        searchKey: searchCategory,
+        type: "public",
+      };
+      setSearchOn(true);
+      dispatch(completeSearch());
+      dispatch(toggleDescriptionCategory(distance));
+
+      dispatch(__getAdoptionSearch(payload));
+    } else {
+      dispatch(toggleDescriptionCategory(distance));
+    }
+  };
+
+  const searchKindHandler = (kindCategory) => {
+    const adoptionSearchPayload = {
+      page: 1,
+      size: 10,
+      longitude: longitude,
+      latitude: latitude,
+      description: descriptionCategory,
+      searchKey: searchCategory,
+      searchValue: kindCategory,
+      type: "public",
+    };
+    dispatch(setSearchValue(kindCategory));
+    dispatch(toggleKindCategory(kindCategory));
+    setSearchOn(true);
+    dispatch(completeSearch());
+
+    dispatch(__getAdoptionSearch(adoptionSearchPayload));
+  };
+
+  const scrollAdoption = () => {
+    dispatch(__getAdoptionSearch(adoptionSearchPayload));
+  };
 
   return (
     <Layout>
       <Header>
-        <img
-          src={userInfo.profileImage == null ? profile : userInfo.profileImage}
-          alt="profile"
-        />
-        <span>안녕하세요! {userInfo.nickname}님</span>
-        {/* <img src={search} alt="search" /> */}
+        {searchState ? (
+          <SearchCategory />
+        ) : (
+          <>
+            <img
+              src={
+                userInfo.profileImage == null ? profile : userInfo.profileImage
+              }
+              alt="profile"
+            />
+            <HeaderSpan>안녕하세요! {userInfo.nickname}님</HeaderSpan>
+            <SearchIcon
+              width={30}
+              height={30}
+              onClick={() => dispatch(toggleSearchState())}
+            />
+          </>
+        )}
       </Header>
-      <Carousel images={images} />
+      {!searchSetState && <Carousel images={images} />}
+      {searchSetState && (
+        <SearchSetting
+          searchHandler={searchAdoption}
+          searchKindHandler={searchKindHandler}
+          searchDistanceHandler={searchDistanceHandler}
+        />
+      )}
       <PostContainer>
         <TitleBox>
-          <h2>새로운 가족을 맞이해보세요</h2>
+          {searchSetState ? (
+            <h2>검색 내용</h2>
+          ) : (
+            <h2>새로운 가족을 맞이해보세요</h2>
+          )}
         </TitleBox>
-        {adoptionLists.map((item, index) => {
-          return (
-            <Post
-              key={`post-item-${item.desertionNo}-${index}`}
-              item={item}
-            ></Post>
-          );
-        })}
+        {!searchSetState &&
+          adoptionLists.map((item, index) => {
+            return (
+              <Post
+                key={`post-item-${item.desertionNo}-${index}`}
+                item={item}
+              ></Post>
+            );
+          })}
+        {searchSetState &&
+          publicSearchLists.map((item, index) => {
+            return (
+              <Post
+                key={`search-item-${item.desertionNo}-${index}`}
+                item={item}
+              />
+            );
+          })}
         <div ref={ref}></div>
       </PostContainer>
     </Layout>
@@ -76,24 +242,29 @@ const Home = () => {
 };
 
 const Header = styled.div`
-  ${FlexAttribute("row", "", "center")}
+  ${FlexAttribute("row", "center", "center")}
   margin: 0 auto;
-  width: 20.9375rem;
+  width: 100%;
   height: 5rem;
   padding-top: 2.5rem;
   padding-bottom: 0.5625rem;
   font-size: 1.125rem;
   font-weight: 700;
-  span {
-    flex-basis: 15rem;
-    margin-left: 0.625rem;
-    white-space: nowrap;
-  }
   img {
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 50%;
   }
+`;
+
+const HeaderSpan = styled.span`
+  flex-basis: 15rem;
+  margin-left: 0.625rem;
+  white-space: nowrap;
+`;
+
+const SearchIcon = styled(Search)`
+  cursor: pointer;
 `;
 
 const PostContainer = styled.div`

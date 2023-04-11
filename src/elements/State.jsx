@@ -12,7 +12,7 @@ const StateSpan = styled.span`
   box-shadow: 0.0313rem 0.0313rem 0.0625rem rgba(0, 0, 0, 0.1);
   text-align: center;
   font-weight: 500;
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   color: ${(props) => props.theme.color.white};
   white-space: nowrap;
   ${(props) =>

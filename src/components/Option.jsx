@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { toggleOption } from "../redux/modules/menubarSlice";
 import ModalPortal from "../elements/ModalPortal";
 
-const Option = ({ setting, commentCloseHandler }) => {
+const Option = ({ setting, mapCloseHandler }) => {
   const dispatch = useDispatch();
   const closeHandler = () => {
     dispatch(toggleOption());
@@ -30,8 +30,8 @@ const Option = ({ setting, commentCloseHandler }) => {
               );
             })}
           </OptionWrapper>
-          {commentCloseHandler ? (
-            <Button OptionClose onClick={commentCloseHandler}>
+          {mapCloseHandler ? (
+            <Button OptionClose onClick={mapCloseHandler}>
               닫기
             </Button>
           ) : (

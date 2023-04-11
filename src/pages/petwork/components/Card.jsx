@@ -54,7 +54,11 @@ const Card = ({ item, page }) => {
       </CardImgWrapper>
       <CardInfoContainer>
         <CardTitleWrapper>
-          <CardTitle>{item.kindCd}</CardTitle>
+          <CardTitle>
+            {item.kindCd.length <= 8
+              ? item.kindCd
+              : item.kindCd.substring(0, 8) + ".."}
+          </CardTitle>
           <img src={refineData.sexCd} alt="petworkSex" />
         </CardTitleWrapper>
         <CardInfoWrapper>

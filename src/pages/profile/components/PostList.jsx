@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import State from "../../../elements/State";
 import { FlexAttribute } from "../../../style/Mixin";
@@ -6,9 +6,18 @@ import { FlexAttribute } from "../../../style/Mixin";
 import male from "../../../asset/male.svg";
 import female from "../../../asset/female.svg";
 import questionmark from "../../../asset/questionmark.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Option from "../../../components/Option";
+import { useDispatch } from "react-redux";
+import { __deletePost } from "../../../redux/modules/petworkSlice";
+import Meatballs from "../../../asset/Meatballs";
+import { deleteMyPost } from "../../../redux/modules/profileSlice";
 
 const PostList = ({ item }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [postOption, setPostOption] = useState(false);
+
   const refineDataHandler = () => {
     let neuterYn;
     let refineData = {
@@ -46,30 +55,94 @@ const PostList = ({ item }) => {
   };
   const refineData = refineDataHandler();
 
-  console.log(refineData);
+  console.log("refineData", refineData);
+
+  const myPostHandler = (e) => {
+    e.stopPropagation();
+    setPostOption(!postOption);
+  };
+
+  const closePostOption = () => {
+    setPostOption(!postOption);
+  };
+
+  const deleteHandler = () => {
+    if (refineData.postType === "실종") {
+      const payload = {
+        id: item.id,
+        type: "missing",
+      };
+      dispatch(__deletePost(payload)).then(() => {
+        setPostOption(!postOption);
+      });
+    } else if (refineData.postType === "목격") {
+      const payload = {
+        id: item.id,
+        type: "catch",
+      };
+      dispatch(__deletePost(payload)).then(() => {
+        setPostOption(!postOption);
+      });
+    }
+    dispatch(deleteMyPost(item.id));
+  };
+
+  const editHandler = () => {
+    if (refineData.postType === "실종") {
+      setPostOption(!postOption);
+      navigate(`/editmissing/${refineData.id}`);
+    } else if (refineData.postType === "목격") {
+      setPostOption(!postOption);
+      navigate(`/editcatch/${refineData.id}`);
+    }
+  };
+
+  const optionMySetting = [
+    {
+      option: "게시물 수정하기",
+      color: "normal",
+      handler: editHandler,
+    },
+    {
+      option: "게시물 삭제하기",
+      color: "report",
+      handler: deleteHandler,
+    },
+  ];
+
   return (
-    <ListContainer to={`${refineData.URL}/${refineData.id}`}>
-      <Image src={item.postImages[0].imageURL} />
-      <div>
-        <ListTitleWrapper>
-          <State category={refineData.postType}>{refineData.postType}</State>
-          <Title>{item.kindCd}</Title>
-          <SexCd src={refineData.sexCd} />
-          <Info>{refineData.info.join("/")}</Info>
-        </ListTitleWrapper>
-        <AdditionalInfoWrapper>
-          <span>{item.happenDt}</span>
-        </AdditionalInfoWrapper>
-      </div>
-    </ListContainer>
+    <>
+      <ListContainer
+        onClick={() => navigate(`${refineData.URL}/${refineData.id}`)}
+      >
+        <Image src={item.postImages[0].imageURL} />
+        <div>
+          <ListTitleWrapper>
+            <State category={refineData.postType}>{refineData.postType}</State>
+            <Title>{item.kindCd}</Title>
+            <SexCd src={refineData.sexCd} />
+            <Info>{refineData.info.join("/")}</Info>
+          </ListTitleWrapper>
+          <AdditionalInfoWrapper>
+            <span>{item.happenDt}</span>
+          </AdditionalInfoWrapper>
+        </div>
+        <PostMeatballs onClick={myPostHandler} />
+      </ListContainer>
+      {postOption && (
+        <Option setting={optionMySetting} mapCloseHandler={closePostOption} />
+      )}
+    </>
   );
 };
 
-const ListContainer = styled(Link)`
+const ListContainer = styled.div`
+  position: relative;
   ${FlexAttribute("row", "", "center")}
   width: 335px;
   padding: 16px 0;
   border-bottom: 1px solid ${(props) => props.theme.color.input_border};
+  cursor: pointer;
   :hover {
     transform: translate(0px, -1px);
     box-shadow: 0px 1px ${(props) => props.theme.color.primary_strong};
@@ -119,6 +192,13 @@ const AdditionalInfoWrapper = styled.div`
     ${(props) => props.theme.Body_400_10};
     color: ${(props) => props.theme.color.text_assistive};
   }
+`;
+
+const PostMeatballs = styled(Meatballs)`
+  position: absolute;
+  left: calc(100% - 26px);
+  cursor: pointer;
+  z-index: 10;
 `;
 
 const CommentInfo = styled.div`

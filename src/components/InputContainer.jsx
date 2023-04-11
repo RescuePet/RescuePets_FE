@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled, { css } from "styled-components";
 import { FlexAttribute, InputBorder_1 } from "../style/Mixin";
@@ -15,6 +15,7 @@ const InputContainer = ({ placeholder, submitHandler }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { CommentInputState } = useSelector((state) => state.petwork);
+  const [inputValue, setInputValue] = useState("");
 
   const message = watch("message", "");
 
@@ -23,6 +24,7 @@ const InputContainer = ({ placeholder, submitHandler }) => {
       e.preventDefault();
       handleSubmit((register) => {
         submitHandler(register);
+        setInputValue("");
         reset();
       })();
     }
@@ -34,6 +36,12 @@ const InputContainer = ({ placeholder, submitHandler }) => {
     textarea.style.height = `${textarea.scrollHeight}px`;
   }, [message]);
 
+  const handleInputValue = (e) => {
+    if (e.target.value.length <= 200) {
+      setInputValue(e.target.value);
+    }
+  };
+
   return (
     <ChatFooter toggle={CommentInputState}>
       <ChatContainer>
@@ -41,6 +49,7 @@ const InputContainer = ({ placeholder, submitHandler }) => {
           onSubmit={handleSubmit((register) => {
             submitHandler(register);
             reset();
+            setInputValue("");
           })}
         >
           <Input
@@ -48,7 +57,9 @@ const InputContainer = ({ placeholder, submitHandler }) => {
             rows={1}
             onKeyDown={handleKeyDown}
             id="message-textarea"
-            {...register("message")}
+            {...register("message", { required: true, maxLength: 200 })}
+            value={inputValue}
+            onInput={handleInputValue}
           />
           <SubmitButton>
             <ChatSubmit />

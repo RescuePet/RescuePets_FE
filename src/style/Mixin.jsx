@@ -26,7 +26,6 @@ export const FlexAttribute = (direction, justify, align) => css`
 
 export const HeaderStyle = css`
   width: 100%;
-  height: 5rem;
   padding-top: 2.375rem;
   ${Border_2_color}
 `;
@@ -68,15 +67,15 @@ export const ContentInformationStyle = css`
 `;
 
 export const AlertMessageCountStyle = css`
+  ${FlexAttribute("row", "center", "center")}
   border-radius: 50%;
-  display: inline-block;
   margin-top: 0.25rem;
-  padding-top: 2.4px;
+  padding-top: 1px;
   width: 1rem;
   height: 1rem;
   background-color: ${(props) => props.theme.color.primary_normal};
   font-weight: 500;
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   line-height: 0.75rem;
   text-align: center;
   color: ${(props) => props.theme.color.white};

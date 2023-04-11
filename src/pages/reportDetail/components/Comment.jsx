@@ -85,7 +85,7 @@ const Comment = ({ item }) => {
               ? optionMySetting
               : optionOtherSetting
           }
-          commentCloseHandler={commentCloseHandler}
+          mapCloseHandler={commentCloseHandler}
         />
       )}
       {commentReport && (
@@ -145,13 +145,7 @@ const CommentTime = styled.span`
 const CommentText = styled.span`
   ${Body_400_12}
   margin-left: 3.0625rem;
-`;
-
-const DeleteButton = styled.button`
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  line-height: 18px;
 `;
 
 export default Comment;
