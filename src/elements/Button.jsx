@@ -74,6 +74,17 @@ const BtnStyle = styled.button`
       background-color: ${(props) => props.theme.color.text_disable};
       border-radius: 20px;
     `}
+    ${(props) =>
+    props.search &&
+    css`
+      height: 100%;
+      width: fit-content;
+      margin-right: 10px;
+      background-color: ${(props) => props.theme.color.primary_normal};
+      color: ${(props) => props.theme.color.white};
+      cursor: pointer;
+      white-space: nowrap;
+    `}
     /* &:hover {
     cursor: pointer;
     transition: 0.2s ease;

@@ -7,24 +7,35 @@ import CommentList from "./components/CommentList";
 import close from "../../asset/Close.svg";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { __getMyComment } from "../../redux/modules/profileSlice";
+import {
+  __getMyComment,
+  __getMyInfo,
+  resetProfileState,
+} from "../../redux/modules/profileSlice";
 import { useInView } from "react-intersection-observer";
+import Error404 from "../../elements/Error404";
+import ErrorComment from "../../asset/error/404comment.png";
 
 const MyComment = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [ref, inView] = useInView();
 
-  const { myCommentList, myCommentPage } = useSelector(
+  const { myCommentList, myCommentPage, myData } = useSelector(
     (state) => state.profile
   );
-
-  console.log(myCommentList);
 
   const payload = {
     page: myCommentPage,
     size: 15,
   };
+
+  useEffect(() => {
+    dispatch(__getMyInfo());
+    return () => {
+      dispatch(resetProfileState());
+    };
+  }, []);
 
   useEffect(() => {
     if (inView) {
@@ -34,41 +45,46 @@ const MyComment = () => {
 
   return (
     <Layout>
-      <MyPostHeader>
+      <MyCommentHeader>
         <h2>댓글 목록</h2>
         <CloseSvg src={close} onClick={() => navigate("/profile")} />
-      </MyPostHeader>
+      </MyCommentHeader>
       <PostInfoContainer>
         <PostInfoWrapper>
           <div>
             <EntireTitle>총 댓글</EntireTitle>
-            <EntireCount>{myCommentList.length}</EntireCount>
+            <EntireCount>{myData.commentCount}</EntireCount>
           </div>
         </PostInfoWrapper>
       </PostInfoContainer>
       <ListContainer>
-        {myCommentList.map((item) => {
-          return (
-            <CommentList
-              key={`comment-item-${item.id}`}
-              item={item}
-            ></CommentList>
-          );
-        })}
+        {myCommentList.length === 0 ? (
+          <Error404 srcUrl={ErrorComment} />
+        ) : (
+          myCommentList.map((item) => {
+            return (
+              <CommentList
+                key={`comment-item-${item.id}`}
+                item={item}
+              ></CommentList>
+            );
+          })
+        )}
         <div ref={ref}></div>
       </ListContainer>
     </Layout>
   );
 };
 
-const MyPostHeader = styled.div`
+const MyCommentHeader = styled.div`
   position: relative;
-  ${FlexAttribute("row", "center")}
+  ${FlexAttribute("row", "center")};
   ${HeaderStyle}
   h2 {
     ${(props) => props.theme.Body_500_16};
     color: ${(props) => props.theme.color.text_normal};
     line-height: 1.5rem;
+    margin-bottom: 16px;
   }
 `;
 
@@ -91,11 +107,6 @@ const EntireCount = styled.span`
   margin-left: 8px;
   ${(props) => props.theme.Body_500_12};
   color: ${(props) => props.theme.color.primary_normal};
-`;
-
-const EditButton = styled.button`
-  ${(props) => props.theme.Body_400_12};
-  color: ${(props) => props.theme.color.text_alternative};
 `;
 
 const PostInfoWrapper = styled.div`

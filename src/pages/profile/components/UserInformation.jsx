@@ -7,22 +7,16 @@ import defaultProfile from "../../../asset/profile.svg";
 import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import isLogin from "../../../utils/isLogin";
-import { instance } from "../../../utils/api";
+import { useDispatch, useSelector } from "react-redux";
+import { __getMyInfo } from "../../../redux/modules/profileSlice";
 
 const UserInformation = () => {
-  const [userInfo, setUserInfo] = useState({});
-  const [myData, setMyData] = useState({});
-
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [userInfo, setUserInfo] = useState({});
+  const { myData } = useSelector((state) => state.profile);
 
-  const fetchData = async () => {
-    try {
-      const response = await instance.get("api/mypage");
-      setMyData(response.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  console.log(myData);
 
   useEffect(() => {
     if (isLogin() === false) {
@@ -33,7 +27,7 @@ const UserInformation = () => {
   }, [navigate]);
 
   useEffect(() => {
-    fetchData();
+    dispatch(__getMyInfo());
   }, []);
 
   return (

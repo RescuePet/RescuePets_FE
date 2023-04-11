@@ -131,8 +131,13 @@ const SightingDetail = () => {
       setCatchDetailMsg("댓글을 입력해주세요.");
       // alert("댓글을 입력해주세요.");
       return;
+    } else {
+      dispatch(__postComment(data));
+      commentRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
     }
-    dispatch(__postComment(data));
   };
 
   const chatHandler = async () => {
@@ -248,32 +253,28 @@ const SightingDetail = () => {
             </ContentTextBox>
           </ContentTextWrapper>
         </InfoWrapper>
-        <InfoWrapper>
-          <BotyTitleWrapper>
-            <BodyTitleSvg src={informationIcon} />
-            <BodyTitleText>특징</BodyTitleText>
-          </BotyTitleWrapper>
-          <ContentTextWrapper>
-            <ContentText>
-              {catchPostDetail.specialMark !== null
-                ? catchPostDetail.specialMark
-                : "없음"}
-            </ContentText>
-          </ContentTextWrapper>
-        </InfoWrapper>
-        <InfoWrapper>
-          <BotyTitleWrapper>
-            <Memo />
-            <BodyTitleText>메모</BodyTitleText>
-          </BotyTitleWrapper>
-          <ContentTextWrapper>
-            <ContentText>
-              {catchPostDetail.content !== null
-                ? catchPostDetail.content
-                : "없음"}
-            </ContentText>
-          </ContentTextWrapper>
-        </InfoWrapper>
+        {catchPostDetail.specialMark && (
+          <InfoWrapper>
+            <BotyTitleWrapper>
+              <BodyTitleSvg src={informationIcon} />
+              <BodyTitleText>특징</BodyTitleText>
+            </BotyTitleWrapper>
+            <ContentTextWrapper>
+              <ContentText>{catchPostDetail.specialMark}</ContentText>
+            </ContentTextWrapper>
+          </InfoWrapper>
+        )}
+        {catchPostDetail.content && (
+          <InfoWrapper>
+            <BotyTitleWrapper>
+              <Memo />
+              <BodyTitleText>메모</BodyTitleText>
+            </BotyTitleWrapper>
+            <ContentTextWrapper>
+              <ContentText>{catchPostDetail.content}</ContentText>
+            </ContentTextWrapper>
+          </InfoWrapper>
+        )}
       </InfoContainer>
       <PostInformation postInfo={postInfo}></PostInformation>
       <CommentContainer>

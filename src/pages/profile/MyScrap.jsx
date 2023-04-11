@@ -10,17 +10,27 @@ import { useNavigate } from "react-router-dom";
 import { instance } from "../../utils/api";
 import ScrollToTop from "../../elements/ScrollToTop";
 import refresh from "../../asset/refresh.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { __getMyInfo } from "../../redux/modules/profileSlice";
+import Error404 from "../../elements/Error404";
+import ErrorScrap from "../../asset/error/404scrap.png";
 
 const MyScrap = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [ref, inView] = useInView();
   const [myScrapList, setMyScrapList] = useState([]);
   const [myScrapPage, setMyScrapPage] = useState(1);
+  const { myData } = useSelector((state) => state.profile);
 
   let payload = {
     page: myScrapPage,
     size: 15,
   };
+
+  useEffect(() => {
+    dispatch(__getMyInfo());
+  }, []);
 
   useEffect(() => {
     if (inView) {
@@ -58,20 +68,24 @@ const MyScrap = () => {
         <PostInfoWrapper>
           <div>
             <EntireTitle>총 작성 글</EntireTitle>
-            <EntireCount>{myScrapList.length}</EntireCount>
+            <EntireCount>{myData.scrapCount}</EntireCount>
           </div>
           <RefreshButton src={refresh} onClick={refreshHandler} />
         </PostInfoWrapper>
       </PostInfoContainer>
       <ListContainer>
-        {myScrapList.map((item) => {
-          return (
-            <ScrapList
-              key={`my-scrap-item-${item.scrapId}`}
-              item={item}
-            ></ScrapList>
-          );
-        })}
+        {myScrapList.length === 0 ? (
+          <Error404 srcUrl={ErrorScrap} />
+        ) : (
+          myScrapList.map((item) => {
+            return (
+              <ScrapList
+                key={`my-scrap-item-${item.scrapId}`}
+                item={item}
+              ></ScrapList>
+            );
+          })
+        )}
         <div ref={ref}></div>
       </ListContainer>
     </Layout>
@@ -86,6 +100,7 @@ const MyPostHeader = styled.div`
     ${(props) => props.theme.Body_500_16};
     color: ${(props) => props.theme.color.text_normal};
     line-height: 1.5rem;
+    margin-bottom: 16px;
   }
 `;
 
