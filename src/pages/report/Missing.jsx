@@ -358,8 +358,8 @@ const Missing = () => {
                   {...register("animalcolor", {
                     required: true,
                     pattern: {
-                      value: /^[가-힣\s]+$/,
-                      message: "한글만 2 ~ 8글자 사이로 입력 ",
+                      value: /^[가-힣\s\(\)\,]+$/,
+                      message: "한글 ( ) , 만입력가능 ",
                     },
                     maxLength: {
                       value: 8,
