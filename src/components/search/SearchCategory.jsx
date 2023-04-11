@@ -7,9 +7,11 @@ import {
   resetSearchState,
   toggleDistanceState,
   toggleInputState,
+  togglePostSearchState,
+  togglePublicSearchState,
   toggleSearchCategory,
-  toggleSearchSetState,
-  toggleSearchState,
+  toggleSearchPostSetState,
+  toggleSearchPublicSetState,
 } from "../../redux/modules/searchSlice";
 import { CategoryBoxStyle } from "./SearchMixin";
 import { toDown } from "../../style/Animation";
@@ -18,22 +20,38 @@ const SearchCategory = ({ petwork }) => {
   const dispatch = useDispatch();
   const { searchCategory } = useSelector((state) => state.search);
 
-  const closeSearchSet = () => {
-    dispatch(toggleSearchSetState(false));
-    dispatch(toggleSearchState(false));
+  const closePostSearchSet = () => {
+    dispatch(togglePostSearchState());
     dispatch(resetSearchState());
+  };
+
+  const closePublicSearchSet = () => {
+    dispatch(togglePublicSearchState());
+    dispatch(resetSearchState());
+  };
+
+  const categoryHandler = (category) => {
+    if (petwork) {
+      dispatch(toggleSearchPostSetState(true));
+    } else {
+      dispatch(toggleSearchPublicSetState(true));
+    }
+    dispatch(toggleSearchCategory(category));
   };
 
   return (
     <SearchCategoryContainer>
-      <CategoruSearchIcon width={30} height={30} onClick={closeSearchSet} />
+      <CategoruSearchIcon
+        width={30}
+        height={30}
+        onClick={petwork ? closePostSearchSet : closePublicSearchSet}
+      />
       <CategoryBox
         active={searchCategory === "distance"}
         onClick={() => {
-          dispatch(toggleSearchSetState(true));
+          categoryHandler("distance");
           dispatch(toggleInputState(false));
           dispatch(toggleDistanceState(true));
-          dispatch(toggleSearchCategory("distance"));
         }}
       >
         <span>거리</span>
@@ -42,10 +60,9 @@ const SearchCategory = ({ petwork }) => {
         petwork={petwork}
         active={searchCategory === "kindType"}
         onClick={() => {
-          dispatch(toggleSearchSetState(true));
+          categoryHandler("kindType");
           dispatch(toggleInputState(false));
           dispatch(toggleDistanceState(false));
-          dispatch(toggleSearchCategory("kindType"));
         }}
       >
         <span>종류</span>
@@ -54,10 +71,9 @@ const SearchCategory = ({ petwork }) => {
         petwork={petwork}
         active={searchCategory === "kindCd"}
         onClick={() => {
-          dispatch(toggleSearchSetState(true));
+          categoryHandler("kindCd");
           dispatch(toggleInputState(true));
           dispatch(toggleDistanceState(false));
-          dispatch(toggleSearchCategory("kindCd"));
         }}
       >
         <span>품종</span>
@@ -66,10 +82,9 @@ const SearchCategory = ({ petwork }) => {
         <CategoryBox
           active={searchCategory === "careNm"}
           onClick={() => {
-            dispatch(toggleSearchSetState(true));
+            categoryHandler("careNm");
             dispatch(toggleInputState(true));
             dispatch(toggleDistanceState(false));
-            dispatch(toggleSearchCategory("careNm"));
           }}
         >
           <span>보호소</span>

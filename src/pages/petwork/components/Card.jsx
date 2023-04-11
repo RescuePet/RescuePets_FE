@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import styled from "styled-components";
 import { FlexAttribute } from "../../../style/Mixin";
@@ -18,9 +18,10 @@ import {
   __postMissingScrap,
 } from "../../../redux/modules/petworkSlice";
 import ClippingFill from "../../../asset/profile/ClippingFill";
+import { resetResponseMessage } from "../../../redux/modules/searchSlice";
 
 const Card = ({ item, page }) => {
-  // console.log(item);
+  console.log(item);
   const refineData = petworkRefineData(item);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -41,9 +42,15 @@ const Card = ({ item, page }) => {
     }
   };
 
+  useEffect(() => {
+    return () => {
+      dispatch(resetResponseMessage());
+    };
+  }, []);
+
   return (
     <ListCard onClick={() => navigate(`/${page}/${item.id}`)}>
-      <CardImgWrapper imgae={item.postImages[0]?.imageURL}>
+      <CardImgWrapper imgae={item?.postImages[0]?.imageURL}>
         <CardImg src={item.postImages[0]?.imageURL}></CardImg>
         <State category={"petworkKind"}>{refineData.upkind}</State>
         {item.isWished ? (

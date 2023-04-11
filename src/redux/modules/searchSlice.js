@@ -33,8 +33,13 @@ export const __getAdoptionSearch = createAsyncThunk(
       const response = await home.get(
         `api/pets/search?page=${newPayload.page}&size=${newPayload.size}&memberLongitude=${newPayload.longitude}&memberLatitude=${newPayload.latitude}&description=${newPayload.description}&searchKey=${newPayload.searchKey}&searchValue=${newPayload.searchValue}`
       );
-      console.log("getPublicSearch", response);
-      return thunkAPI.fulfillWithValue(response.data.data);
+      console.log("getPublicSearch", response.data);
+      if (response.data.message === "유기동물 검색 결과가 없습니다.") {
+        console.log(response.data.message);
+        return thunkAPI.fulfillWithValue(response.data.message);
+      } else {
+        return thunkAPI.fulfillWithValue(response.data.data);
+      }
     } catch (error) {
       throw new Error(error.response.data.message);
     }
@@ -63,10 +68,12 @@ export const __getPostSearch = createAsyncThunk(
         `api/post/search?page=${newPayload.page}&size=${newPayload.size}&postType=${newPayload.postType}&memberLongitude=${newPayload.longitude}&memberLatitude=${newPayload.latitude}&description=${newPayload.description}&searchKey=${newPayload.searchKey}&searchValue=${newPayload.searchValue}`
       );
       console.log("getPostSearch", response);
-      if (response.data.data.length === 0) {
-        return thunkAPI.rejectWithValue("nonepost");
+      if (response.data.message === "유기동물 검색 결과가 없습니다.") {
+        console.log(response.data.message);
+        return thunkAPI.fulfillWithValue(response.data.message);
+      } else {
+        return thunkAPI.fulfillWithValue(response.data.data);
       }
-      return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       throw new Error(error.response.data.message);
     }
@@ -78,11 +85,16 @@ const initialState = {
   error: false,
   publicSearchLists: [],
   postSearchLists: [],
-  searchState: false,
-  searchSetState: false,
+  publicSearchMode: false,
+  postSearchMode: false,
+  searchPublicState: false,
+  searchPostState: false,
+  searchPublicSetState: false,
+  searchPostSetState: false,
   inputState: false,
   distanceState: false,
   searchPage: 1,
+  responseMessage: "",
   postType: "MISSING",
   longitude: "126.934086",
   latitude: "37.515133",
@@ -105,17 +117,29 @@ export const searchSlice = createSlice({
     toggleKindCategory: (state, action) => {
       state.kindCategory = action.payload;
     },
-    toggleSearchState: (state) => {
-      state.searchState = !state.searchState;
+    togglePublicSearchState: (state) => {
+      state.searchPublicState = !state.searchPublicState;
     },
-    toggleSearchSetState: (state, action) => {
-      state.searchSetState = action.payload;
+    togglePostSearchState: (state) => {
+      state.searchPostState = !state.searchPostState;
+    },
+    toggleSearchPublicSetState: (state, action) => {
+      state.searchPublicSetState = action.payload;
+    },
+    toggleSearchPostSetState: (state, action) => {
+      state.searchPostSetState = action.payload;
     },
     toggleInputState: (state, action) => {
       state.inputState = action.payload;
     },
     toggleDistanceState: (state, action) => {
       state.distanceState = action.payload;
+    },
+    togglePublicSearchMode: (state, action) => {
+      state.publicSearchMode = action.payload;
+    },
+    togglePostSearchMode: (state, action) => {
+      state.postSearchMode = action.payload;
     },
     setPostType: (state, action) => {
       state.postType = action.payload;
@@ -134,6 +158,9 @@ export const searchSlice = createSlice({
     resetKindValue: (state) => {
       state.kindCategory = "";
     },
+    resetResponseMessage: (state) => {
+      state.responseMessage = "";
+    },
     completeSearch: (state) => {
       state.searchPage = 2;
       state.publicSearchLists = [];
@@ -146,20 +173,28 @@ export const searchSlice = createSlice({
         state.loading = true;
       })
       .addCase(__getAdoptionSearch.fulfilled, (state, action) => {
-        state.loading = false;
-        state.publicSearchLists = [
-          ...state.publicSearchLists,
-          ...action.payload,
-        ];
-        state.searchPage = state.searchPage + 1;
+        console.log(typeof action.payload);
+        if (typeof action.payload === "string") {
+          state.responseMessage = action.payload;
+        } else if (typeof action.payload === "object") {
+          state.publicSearchLists = [
+            ...state.publicSearchLists,
+            ...action.payload,
+          ];
+          state.searchPage = state.searchPage + 1;
+        }
       })
       .addCase(__getAdoptionSearch.rejected, (state) => {
         state.error = true;
       });
 
     builder.addCase(__getPostSearch.fulfilled, (state, action) => {
-      state.postSearchLists = [...state.postSearchLists, ...action.payload];
-      state.searchPage = state.searchPage + 1;
+      if (typeof action.payload === "string") {
+        state.responseMessage = action.payload;
+      } else if (typeof action.payload === "object") {
+        state.postSearchLists = [...state.postSearchLists, ...action.payload];
+        state.searchPage = state.searchPage + 1;
+      }
     });
   },
 });
@@ -168,15 +203,19 @@ export const {
   toggleSearchCategory,
   toggleDescriptionCategory,
   toggleKindCategory,
-  toggleSearchState,
-  toggleSearchSetState,
+  togglePublicSearchState,
+  togglePostSearchState,
+  toggleSearchPublicSetState,
+  toggleSearchPostSetState,
   toggleInputState,
   toggleDistanceState,
+  togglePublicSearchMode,
   setPostType,
   setMemberPosition,
   setSearchValue,
   resetSearchState,
   resetKindValue,
+  resetResponseMessage,
   completeSearch,
 } = searchSlice.actions;
 export default searchSlice.reducer;
