@@ -48,6 +48,11 @@ const Catch = () => {
 
   const [catchMsg, setCatchMsg] = useState("");
 
+  // 커스텀 셀렉트 파트부분
+  const [type, setType] = useState(NameValue[0].name);
+  const [typeID, setTypeID] = useState("DOG");
+  const [time, setTime] = useState(TimeValue[0]?.name);
+
   const { postId } = useSelector((state) => {
     return state.petwork;
   });
@@ -60,11 +65,6 @@ const Catch = () => {
   useEffect(() => {
     setPostNumber(data);
   }, [postId]);
-
-  // 커스텀 셀렉트 파트부분
-  const [type, setType] = useState(NameValue[0].name);
-  const [typeID, setTypeID] = useState("DOG");
-  const [time, setTime] = useState(TimeValue[0]?.name);
 
   const onChangeData = (newData) => {
     setType(newData);

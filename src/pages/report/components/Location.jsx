@@ -104,7 +104,7 @@ const Location = () => {
   );
 };
 export default Location;
-const ReportKakaoMapContainer = styled.div`
+const ReportKakaoMapContainer = styled.section`
   position: relative;
   width: 20.9375rem;
   height: 18.75rem;

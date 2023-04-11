@@ -6,17 +6,19 @@ import cancel from "../../asset/cancel.svg";
 import check from "../../asset/check.svg";
 import Layout from "../../layouts/Layout";
 import { __signinUser } from "../../redux/modules/signSlice";
-import { FlexAttribute, HeaderStyle, SignSvgStyle } from "../../style/Mixin";
+import { FlexAttribute, Border_2_color, SignSvgStyle } from "../../style/Mixin";
 import Button from "../../elements/Button";
 import { useNavigate } from "react-router-dom";
 import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
 import isLogin from "../../utils/isLogin";
+import back from "../../asset/Back.svg";
+import SignHeader from "./SignHeader";
 
 const Signin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [loginModal, toggleModal, setIsOpen] = useModalState(false);
+  const [loginModal, toggleModal] = useModalState(false);
   const {
     register,
     handleSubmit,
@@ -29,6 +31,9 @@ const Signin = () => {
   const onClickDeleteValue = (data) => {
     resetField(data);
   };
+  // const MoveBackpage = () => {
+  //   navigate(-1);
+  // };
 
   const [isActive, setIsActive] = useState(false);
   const watchAll = Object.values(watch());
@@ -51,7 +56,7 @@ const Signin = () => {
       email: data.email,
       password: data.password,
     };
-
+    reset();
     toggleModal();
     dispatch(__signinUser(siginInfo)).then((response) => {
       if (response.type === "signinUser/rejected") {
@@ -77,9 +82,7 @@ const Signin = () => {
   return (
     <Layout>
       <SignContainer onSubmit={handleSubmit(onSubmitSigninHandler)}>
-        <SignHeader>
-          <span>로그인</span>
-        </SignHeader>
+        <SignHeader>로그인</SignHeader>
         <SignForm>
           <SignText>아이디</SignText>
           <InputWrapper>
@@ -177,13 +180,10 @@ const SignContainer = styled.form`
   ${FlexAttribute("column")}
   width: 100%;
 `;
-const SignHeader = styled.div`
-  ${FlexAttribute("row", "center")}
-  ${HeaderStyle}
-`;
+
 const SignForm = styled.div`
   ${FlexAttribute("column", "center")}
-  margin: 0px 20px 0px 20px;
+  margin: 0px 20px 0px 1.25rem;
   img {
     ${SignSvgStyle}
   }

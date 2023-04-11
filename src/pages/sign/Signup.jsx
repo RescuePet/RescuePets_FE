@@ -17,6 +17,7 @@ import { CustomSelect } from "../../elements/CustomSelect";
 import { useNavigate } from "react-router-dom";
 import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
+import SignHeader from "./SignHeader";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -118,13 +119,7 @@ const Signup = () => {
   return (
     <Layout>
       <SignContainer onSubmit={handleSubmit(onSubmitSignupHandler)}>
-        <SignHeader>
-          <BackButton onClick={() => navigate("/signin")}>
-            <img src={back} alt="back" />
-          </BackButton>
-          <div>회원가입</div>
-          <div></div>
-        </SignHeader>
+        <SignHeader>회원가입</SignHeader>
         <SignIdNincknameBox>
           <p>아이디</p>
           <div>
@@ -137,7 +132,6 @@ const Signup = () => {
                 {...register("id", {
                   pattern: {
                     value: /^[a-zA-Z0-9]+$/,
-                    // Error 영문 숫자 2 ~ 8글자 사이로 입력
                     message: "영문 숫자 2 ~ 12글자 사이로 입력",
                   },
                   maxLength: { value: 12, message: "12글자이내 작성" },
@@ -252,32 +246,6 @@ const SignContainer = styled.form`
   width: 100%;
   height: 50.75rem;
   gap: 2rem 0;
-`;
-
-const SignHeader = styled.div`
-  width: 100%;
-  height: 80px;
-  padding-top: 20px;
-  ${Border_2_color}
-  font-size: 1.125rem;
-  font-weight: 700;
-  ${FlexAttribute("row", "", "center")};
-  color: ${(props) => props.theme.color.text_normal};
-  div {
-    height: 100%;
-    width: 33.3%;
-    ${(props) => props.theme.FlexCenter}
-    ${(props) => props.theme.Title_700_18}
-  }
-  img {
-    width: 1.5rem;
-    height: 1.5rem;
-    margin-right: 3.125rem;
-  }
-`;
-
-const BackButton = styled.div`
-  cursor: pointer;
 `;
 
 const SignIdNincknameBox = styled.div`

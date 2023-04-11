@@ -32,7 +32,7 @@ const Header = ({ children }) => {
 
 export default Header;
 
-const EditInfoHeader = styled.div`
+const EditInfoHeader = styled.header`
   ${HeaderStyle}
   ${FlexAttribute("row", "space-between", "center")};
   position: relative;

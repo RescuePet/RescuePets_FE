@@ -88,44 +88,6 @@ export const ReportanimaltypesSelect = styled.div`
   }
 `;
 
-export const ReportAnimalInfoCheckBox = styled.div`
-  width: 100%;
-  height: 33.3%;
-  ${(props) => props.theme.FlexColumn}
-`;
-
-export const ReportAnimalInfoCheckBoxTitle = styled.div`
-  width: 100%;
-  height: 20%;
-  > p {
-    color: ${(props) => props.theme.color.gray};
-    ${(props) => props.theme.Body_400_12}
-  }
-`;
-export const ReportAnimalInfoCheckBoxSelete = styled.ul`
-  width: 100%;
-  height: 80%;
-  gap: 0 1rem;
-  ${(props) => props.theme.FlexCenter}
-  > li {
-    width: 6.3125rem;
-    height: 2rem;
-    cursor: pointer;
-  }
-  .submenu {
-    height: 2rem;
-    border-radius: 1rem;
-    border: 1px solid #cccccc;
-    color: #cccccc;
-    ${(props) => props.theme.FlexCenter}
-    ${(props) => props.theme.Body_400_12}
-  }
-  .focused {
-    border: 1px solid ${(props) => props.theme.color.primary_normal};
-    color: ${(props) => props.theme.color.primary_normal};
-  }
-`;
-
 export const ReportAnimalInfoBoxColumn = styled.div`
   width: 100%;
   height: 50%;

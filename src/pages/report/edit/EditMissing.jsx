@@ -4,7 +4,7 @@ import Button from "../../../elements/Button";
 import { CheckModal } from "../../../elements/Modal";
 import Header from "../components/Header";
 import SeleteTab from "../components/SeleteTab";
-import EditLocation from "./EditLocation";
+import EditLocation from "../components/EditLocation";
 import { CustomSelect } from "../../../elements/CustomSelect";
 import { NameValue, TimeValue } from "./../components/data";
 import { useNavigate, useParams } from "react-router-dom";

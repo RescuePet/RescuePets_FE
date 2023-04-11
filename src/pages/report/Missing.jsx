@@ -63,16 +63,6 @@ const Missing = () => {
     setPostNumber(data);
   }, [postId]);
 
-  // 리덕스에 저장되어있는 메뉴바 토글상태를 가지고 오고
-  const menutoggle = useSelector((state) => {
-    return state.menubar.toggle;
-  });
-
-  const [mapBg, setMapBg] = useState(menutoggle);
-  useEffect(() => {
-    setMapBg(true);
-  }, [menutoggle]);
-
   // 종류데이터
   const [type, setType] = useState(NameValue[0].name);
   const [typeID, setTypeID] = useState("DOG");
