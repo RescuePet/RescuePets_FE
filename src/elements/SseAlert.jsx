@@ -64,7 +64,7 @@ const ModalContainer = styled(motion.div)`
   border-radius: 0.5rem;
   position: absolute;
   top: 9%;
-  right: 2%;
+  right: 15%;
   width: 14.0625rem;
   height: 3rem;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
