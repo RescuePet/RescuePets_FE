@@ -27,8 +27,11 @@ import {
   setSearchValue,
   toggleDescriptionCategory,
   toggleKindCategory,
+  toggleSearchMode,
   toggleSearchState,
 } from "../../redux/modules/searchSlice";
+import Error404 from "../../elements/Error404";
+import ErrorPost from "../../asset/error/404post.png";
 
 const Home = () => {
   const images = [
@@ -43,15 +46,17 @@ const Home = () => {
   const navigate = useNavigate();
   const [ref, inView] = useInView();
   const [userInfo, setUserInfo] = useState({});
-  const [searchOn, setSearchOn] = useState(false);
+  // const [searchOn, setSearchOn] = useState(false);
 
   const { adoptionPage, adoptionLists } = useSelector(
     (state) => state.adoption
   );
 
   const {
+    searchMode,
     publicSearchLists,
     searchValue,
+    responseMessage,
     distanceState,
     longitude,
     latitude,
@@ -99,9 +104,9 @@ const Home = () => {
     if (inView && !searchSetState) {
       dispatch(addAdoptionPage());
       dispatch(__getAdoptionList(payloadSettings));
-    } else if (inView && searchSetState && searchOn) {
+    } else if (inView && searchSetState && searchMode) {
       scrollAdoption();
-    } else if (inView && searchSetState && searchOn) {
+    } else if (inView && searchSetState && searchMode) {
     }
   }, [inView]);
 
@@ -129,7 +134,7 @@ const Home = () => {
       searchValue: value,
       type: "public",
     };
-    setSearchOn(true);
+    dispatch(toggleSearchMode(true));
     dispatch(completeSearch());
 
     dispatch(__getAdoptionSearch(payload));
@@ -146,7 +151,7 @@ const Home = () => {
         searchKey: searchCategory,
         type: "public",
       };
-      setSearchOn(true);
+      dispatch(toggleSearchMode(true));
       dispatch(completeSearch());
       dispatch(toggleDescriptionCategory(distance));
 
@@ -169,7 +174,7 @@ const Home = () => {
     };
     dispatch(setSearchValue(kindCategory));
     dispatch(toggleKindCategory(kindCategory));
-    setSearchOn(true);
+    dispatch(toggleSearchMode(true));
     dispatch(completeSearch());
 
     dispatch(__getAdoptionSearch(adoptionSearchPayload));
@@ -178,6 +183,8 @@ const Home = () => {
   const scrollAdoption = () => {
     dispatch(__getAdoptionSearch(adoptionSearchPayload));
   };
+
+  console.log(responseMessage);
 
   return (
     <Layout>
@@ -217,6 +224,7 @@ const Home = () => {
             <h2>새로운 가족을 맞이해보세요</h2>
           )}
         </TitleBox>
+        {responseMessage && <Error404 srcUrl={ErrorPost} />}
         {!searchSetState &&
           adoptionLists.map((item, index) => {
             return (
