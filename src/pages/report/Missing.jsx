@@ -539,10 +539,9 @@ const Missing = () => {
               {...register("number", {
                 required: false, // 필수 X
                 pattern: {
-                  value: /^[0-9]{2,3}[0-9]{3,4}[0-9]{4}$/,
-                  message: "하이픈 없이 입력해주세요",
+                  value: /^\d{9,11}$/,
+                  message: " 국내 전화번호만 허용 하이픈 제거 후 입력   ",
                 },
-                minLength: { value: 11, message: "11글자 이상이어야 합니다." },
                 maxLength: { value: 12, message: "12글자 미만이어야 합니다." },
               })}
             />
