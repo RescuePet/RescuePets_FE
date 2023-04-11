@@ -10,7 +10,7 @@ export const logEvent = (eventName, eventProperties) => {
 };
 
 export const setAmplitudeUserId = () => {
-  const userId = JSON.parse(Cookies.get("UserInfo")).nickname;
+  const userId = JSON.parse(Cookies.get("UserInfo")).email;
   setUserId(userId);
 };
 
