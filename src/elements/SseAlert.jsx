@@ -17,7 +17,7 @@ export default function Modal({ isOpen, onClose, children }) {
   useEffect(() => {
     if (isOpen) {
       const timeoutId = setTimeout(() => {
-        // onClose();
+        onClose();
       }, 750);
       return () => clearTimeout(timeoutId);
     }
