@@ -8,7 +8,10 @@ import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import isLogin from "../../../utils/isLogin";
 import { useDispatch, useSelector } from "react-redux";
-import { __getMyInfo } from "../../../redux/modules/profileSlice";
+import {
+  __getMyInfo,
+  resetProfileState,
+} from "../../../redux/modules/profileSlice";
 
 const UserInformation = () => {
   const navigate = useNavigate();
@@ -26,6 +29,9 @@ const UserInformation = () => {
 
   useEffect(() => {
     dispatch(__getMyInfo());
+    return () => {
+      dispatch(resetProfileState());
+    };
   }, []);
 
   return (
