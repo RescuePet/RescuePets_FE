@@ -10,6 +10,7 @@ import profile from "../modules/profileSlice";
 import myChat from "../modules/chatSlice";
 import infoEdit from "../modules/infoeditSlice";
 import putMyposts from "../modules/editpostsSlice";
+import sseCount from "../modules/sseSlice";
 import search from "../modules/searchSlice";
 
 const store = configureStore({
@@ -25,6 +26,7 @@ const store = configureStore({
     myChat,
     infoEdit,
     putMyposts,
+    sseCount,
     search,
   },
 });

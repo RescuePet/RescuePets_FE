@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, {  useEffect } from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
+import ModalImg from "../asset/Spinner/spinner.png";
 
 export default function Modal({ isOpen, onClose, children }) {
   const backdropVariants = {
@@ -9,25 +10,23 @@ export default function Modal({ isOpen, onClose, children }) {
   };
 
   const modalVariants = {
-    visible: { opacity: 1, y: 0 },
-    hidden: { opacity: 0, y: "-50%", transition: { duration: 0.1 } },
+    visible: { opacity: 1, x: 0 },
+    hidden: { opacity: 0, x: "50%" },
   };
 
-  const [isOpenModal, setIsOpenModal] = useState(isOpen);
 
   useEffect(() => {
     if (isOpen) {
-      setIsOpenModal(isOpen);
       const timeoutId = setTimeout(() => {
-        setIsOpenModal(false);
-      }, 1000);
+        onClose();
+      }, 750);
       return () => clearTimeout(timeoutId);
     }
   }, [isOpen]);
 
   return (
     <AnimatePresence>
-      {isOpenModal && (
+      {isOpen && (
         <Backdrop
           variants={backdropVariants}
           initial="hidden"
@@ -52,49 +51,54 @@ export default function Modal({ isOpen, onClose, children }) {
 
 const Backdrop = styled(motion.div)`
   ${(props) => props.theme.FlexRow};
-  position: fixed;
+  position: absolute;
   z-index: 99999;
-  left: 0;
   top: 0;
-  width: 100%;
+  width: 27rem;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(1px);
 `;
 
 const ModalContainer = styled(motion.div)`
-  background-color: white;
+  background-color: ${(props) => props.theme.color.primary_normal};
   margin: auto; /* 추가 */
   border-radius: 0.5rem;
   position: absolute;
-  top: 2%;
-  width: 21.875rem;
-  height: 4rem;
-  /* filter: drop-shadow(rgba(0, 0, 0, 0.8) 2px 2px 20px); */
+  top: 9%;
+  right: 2%;
+  width: 14.0625rem;
+  height: 3rem;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+  /* border: 1px solid red; */
 `;
-export const ModalMsgContainer = styled.div`
+
+export const ModalSEEMsgContainer = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  color: #333333;
-  display: flex;
-  align-items: center;
-
-  > h2 {
-    margin-left: 1.25rem;
-    ${(props) => props.theme.Body_400_14_16}
+  color: ${(props) => props.theme.color.white};
+  ${(props) => props.theme.Body_400_14_16}
+  ${(props) => props.theme.FlexCenter}
+  padding-left: .625rem;
+  > img {
+    position: fixed;
+    width: 2.5rem;
+    height: 2.5rem;
+    top: -13%;
+    left: -3%;
   }
 `;
 
 // Sign 커스텀 모달
-export function CheckModal(props) {
+export function SseAlertModal(props) {
+  // console.log("모달에 보일 text,", props);
   return (
     <>
       <Modal isOpen={props.isOpen} onClose={props.toggle}>
-        <ModalMsgContainer>
+        <ModalSEEMsgContainer>
+          <img src={ModalImg} />
           <h2>{props.children}</h2>
-        </ModalMsgContainer>
+        </ModalSEEMsgContainer>
       </Modal>
     </>
   );

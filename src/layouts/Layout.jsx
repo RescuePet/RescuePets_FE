@@ -11,6 +11,12 @@ import backgroundImage from "../asset/webbackground/Desktop.jpg";
 import PopDog from "../asset/webbackground/PopDog.png";
 import Logo from "../asset/webbackground/Logo.png";
 import { upAndDown } from "../style/Animation";
+import { EventSourcePolyfill } from "event-source-polyfill";
+import Cookies from "js-cookie";
+import { useModalState } from "../hooks/useModalState";
+import { SseAlertModal } from "../elements/SseAlert";
+import { seeChatCount } from "../redux/modules/sseSlice";
+import { seeMyaddCount } from "../redux/modules/sseSlice";
 
 const Layout = ({ children }) => {
   const navigate = useNavigate();
@@ -18,7 +24,68 @@ const Layout = ({ children }) => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const { scrollState } = useSelector((state) => state.comment);
   const dispatch = useDispatch();
+
+
+  const [loginModal, toggleModal] = useModalState(false);
+
+
   const ref = useRef(null);
+  const token = Cookies.get("Token");
+
+  const [listening, setListening] = useState(false);
+
+  const [data, setData] = useState([]);
+  let eventSource = undefined;
+
+  useEffect(() => {
+    if (listening === false) {
+      eventSource = new EventSourcePolyfill(
+        `${process.env.REACT_APP_SIGN_TEST}/sse/`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+    }
+
+    eventSource.onopen = (event) => {
+      setListening(true);
+    };
+
+    eventSource.onmessage = (event) => {
+
+      setListening(true);
+      const checkJSON = event.data.split(" ")[0];
+
+      const data = checkJSON !== "EventStream" && JSON.parse(event.data);
+
+      if (data.message !== undefined) {
+        toggleModal();
+        console.log(data.message);
+        setData(data);
+        console.log(data.message.split(" ")[1]);
+        if (data.message.split(" ")[1] == "새로운") {
+          console.log("1");
+          dispatch(seeChatCount(1));
+        } else if (data.message.split(" ")[1] == "댓글을") {
+          dispatch(seeMyaddCount(1));
+          console.log("2");
+        } else if (data.message.split(" ")[1] == "스크랩") {
+          console.log("3");
+          dispatch(seeMyaddCount(1));
+        }
+      }
+    };
+
+    eventSource.onerror = (event) => {
+      setListening(false);
+    };
+    return () => {
+      setListening(false);
+      eventSource.close();
+    };
+  }, [eventSource]);
 
   useEffect(() => {
     const storedScrollPosition = localStorage.getItem("scrollPosition");
@@ -67,6 +134,16 @@ const Layout = ({ children }) => {
           onScroll={saveScrollPosition}
           scrollTop={scrollPosition}
         >
+          {data.message == undefined ? null : (
+            <SseAlertModal
+              isOpen={loginModal}
+              toggle={toggleModal}
+              onClose={toggleModal}
+            >
+              {data.message}
+            </SseAlertModal>
+          )}
+
           {children}
           {location.pathname !== "/" &&
             location.pathname !== "/signin" &&

@@ -25,14 +25,16 @@ const Signin = () => {
     resetField,
     watch,
   } = useForm({ mode: "onChange" });
-  // 삭제로직
+
   const onClickDeleteValue = (data) => {
     resetField(data);
   };
 
-  // 입력값에 따라 버튼 활성화
   const [isActive, setIsActive] = useState(false);
   const watchAll = Object.values(watch());
+
+  const chatCount = localStorage.getItem("chatCount");
+  const myCount = localStorage.getItem("myCount");
 
   useEffect(() => {
     if (watchAll.every((el) => el)) {
@@ -49,36 +51,24 @@ const Signin = () => {
       email: data.email,
       password: data.password,
     };
-    // 토
+
     toggleModal();
     dispatch(__signinUser(siginInfo)).then((response) => {
       console.log(response);
       if (response.type === "signinUser/rejected") {
-        console.log("실패");
         setSignInMsg(`⛔  ${response.error.message}`);
       } else if (response.type === "signinUser/fulfilled") {
-        console.log("성공");
         setSignInMsg(`✅  ${response.payload.message}`);
+        if (chatCount == null && myCount == null) {
+          localStorage.setItem("chatCount", 0);
+          localStorage.setItem("myCount", 0);
+        }
         setTimeout(function () {
           navigate("/home");
         }, 1000);
       }
     });
   };
-
-  // const SignInMessage = useSelector((state) => {
-  //   return state?.users?.Signin;
-  // });
-
-  // useEffect(() => {
-  //   // console.log(SignInMessage)
-  //   if (SignInMessage?.status === true && isLogin()) {
-  //     setSignInMsg(`✅  ${SignInMessage?.message}`);
-  //     navigate("/home");
-  //   } else if (SignInMessage == "아이디,비밀번호를 확인해주세요") {
-  //     setSignInMsg(`⛔  ${SignInMessage}`);
-  //   }
-  // }, [SignInMessage]);
 
   const URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_SIGN_ID}&redirect_uri=${process.env.REACT_APP_RESCUEPETS}/kakaologin`;
 
