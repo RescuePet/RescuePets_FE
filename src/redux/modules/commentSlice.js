@@ -9,7 +9,6 @@ export const __getComment = createAsyncThunk(
       const response = await instance.get(
         `/api/comments/${payload.postId}/?page=${payload.page}&size=5`
       );
-      console.log("get comment", response.data);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       throw new Error(error.response.data.message);
@@ -25,11 +24,8 @@ export const __postComment = createAsyncThunk(
       const response = await instance.post(`/api/comments/${payload.id}`, {
         content: payload.content,
       });
-      console.log("post comment", response.data);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
-      console.log("error", error);
-
       return thunkAPI.rejectWithValue(error.response.data.message);
     }
   }
@@ -40,8 +36,7 @@ export const __deleteComment = createAsyncThunk(
   "deleteComment",
   async (payload, thunkAPI) => {
     try {
-      const response = await instance.delete(`/api/comments/${payload}`);
-      console.log("delete missing comment", response.data);
+      await instance.delete(`/api/comments/${payload}`);
       return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
       throw new Error(error.response.data.message);

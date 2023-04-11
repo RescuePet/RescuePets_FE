@@ -47,8 +47,6 @@ const EditCatch = () => {
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
 
-  console.log(missingPostDetail);
-  console.log(missingPostDetail?.postImages?.length);
   useEffect(() => {
     dispatch(__getMissingPostDetail(id));
   }, [id]);
@@ -131,7 +129,6 @@ const EditCatch = () => {
     e.preventDefault();
     // 인풋에서 선택된 이미지들
     const imageLists = e.target.files;
-    console.log(imageLists);
     // 미리보기 담을것
     let imageUrlLists = [...showImages];
     // 폼데이터 담을것
@@ -159,7 +156,6 @@ const EditCatch = () => {
   const [editMsg, setEditMsg] = useState("");
 
   const onSubmitEditCatchHandler = (data) => {
-    console.log("시작");
     const formData = new FormData();
     formData.append("postType", "CATCH");
     formData.append("upkind", typeID);
@@ -226,10 +222,6 @@ const EditCatch = () => {
     imageFormData.map((img) => {
       formData.append("postImages", img);
     });
-
-    for (let value of formData.values()) {
-      console.log(value);
-    }
 
     toggleModal();
     const number = missingPostDetail.id;

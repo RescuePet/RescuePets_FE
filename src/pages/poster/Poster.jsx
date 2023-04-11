@@ -30,15 +30,12 @@ const Poster = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log("params id", id);
 
   const [imageURLState, setImageURLState] = useState("");
   const [poster, setPoster] = useState();
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
   const { imageURL } = useSelector((state) => state.MissingData);
-
-  console.log("image URL", imageURL);
 
   const refineData = petworkRefineData(missingPostDetail);
 
@@ -55,10 +52,8 @@ const Poster = () => {
     try {
       const canvas = await html2canvas(containerRef.current);
       const posterBlob = canvas.toBlob((blob) => {
-        console.log("blob", blob);
         submitImage(blob);
         setPoster(blob);
-        console.log("makeImageHandler");
         return blob;
       });
       setPoster(posterBlob);
@@ -72,12 +67,7 @@ const Poster = () => {
     try {
       const formData = new FormData();
       formData.append("postPoster", image);
-      for (let key of formData.keys()) {
-        console.log(key, ":", formData.get(key));
-      }
-      const response = await instance.post(`/api/post/posters/${id}`, formData);
-      console.log("poster response", response);
-      console.log("submitImage");
+      await instance.post(`/api/post/posters/${id}`, formData);
     } catch (error) {
       console.log(error);
     }
@@ -97,9 +87,6 @@ const Poster = () => {
     );
   }
 
-  // imageurl : missingPostDetail.
-  console.log(missingPostDetail);
-
   const fileToImageUrl = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -118,7 +105,6 @@ const Poster = () => {
 
   const ImageHandler = () => {
     const file = imageURL;
-    console.log("file", file);
 
     if (file) {
       fileToImageUrl(file)

@@ -4,7 +4,6 @@ import { FlexAttribute } from "../../../style/Mixin";
 import { Body_400_10, Body_400_14 } from "../../../style/theme";
 
 const Receive = ({ message, receiver, receiverImage, chatTime }) => {
-  // console.log("receiverImage", receiverImage);
   return (
     <ReceiveBox>
       <ReceiverImage src={receiverImage} />

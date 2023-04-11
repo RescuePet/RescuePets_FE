@@ -31,7 +31,6 @@ import ClippingFill from "../../asset/profile/ClippingFill";
 import ScrollToTop from "../../elements/ScrollToTop";
 import Backwhite from "../../asset/Backwhite";
 import { Loading } from "../../components/Loading";
-import ReportModal from "../../components/ReportModal";
 
 const AdoptionDetail = () => {
   const { id } = useParams();
@@ -46,8 +45,6 @@ const AdoptionDetail = () => {
   }, []);
 
   const { adoptionDetail } = useSelector((state) => state?.adoption);
-
-  console.log("data", adoptionDetail);
 
   // 비동기처리 시 detailInfo가 없을 경우를 고려
   if (JSON.stringify(adoptionDetail) === "{}") {
@@ -131,7 +128,6 @@ const AdoptionDetail = () => {
 
   const inquiryHandler = () => {
     if (!adoptionDetail.isInquiry) {
-      console.log("inquiry success");
       dispatch(__postAdoptionInquiry(adoptionDetail.desertionNo));
     }
     window.location.href = `tel:${adoptionDetail.careTel}`;

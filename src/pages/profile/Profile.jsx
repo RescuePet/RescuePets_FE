@@ -34,7 +34,6 @@ const Profile = () => {
           Cookies.remove("Token");
           Cookies.remove("Refresh");
           Cookies.remove("UserInfo");
-          console.log("로그아웃성공");
           setMsg("");
           navigate("/signin");
         }, 1000);

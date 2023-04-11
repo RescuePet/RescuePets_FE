@@ -85,10 +85,6 @@ const BtnStyle = styled.button`
       cursor: pointer;
       white-space: nowrap;
     `}
-    /* &:hover {
-    cursor: pointer;
-    transition: 0.2s ease;
-  } */
   &:active {
     filter: brightness(10%);
   }

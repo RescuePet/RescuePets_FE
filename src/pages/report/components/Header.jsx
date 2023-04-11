@@ -8,7 +8,6 @@ const Header = ({ children }) => {
   const navigate = useNavigate();
 
   const MoveToBackPage = () => {
-    // dispatch(toggleMenu(mapBg));
     navigate(-1);
   };
 

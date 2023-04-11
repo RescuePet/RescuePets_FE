@@ -48,7 +48,6 @@ const EditMissing = () => {
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
 
-  console.log(missingPostDetail);
   useEffect(() => {
     dispatch(__getMissingPostDetail(id));
   }, [id]);
@@ -132,7 +131,6 @@ const EditMissing = () => {
     e.preventDefault();
     // 인풋에서 선택된 이미지들
     const imageLists = e.target.files;
-    console.log(imageLists);
     // 미리보기 담을것
     let imageUrlLists = [...showImages];
     // 폼데이터 담을것
@@ -241,10 +239,6 @@ const EditMissing = () => {
     imageFormData.map((img) => {
       formData.append("postImages", img);
     });
-
-    // for (let value of formData.values()) {
-    //   console.log(value);
-    // }
 
     toggleModal();
     const number = missingPostDetail.id;

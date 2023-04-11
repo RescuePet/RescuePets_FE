@@ -17,7 +17,6 @@ export default function Modal({ isOpen, onClose, children }) {
     hidden: { opacity: 0, y: "100%", transition: { duration: 0.2 } },
   };
 
-
   return (
     <AnimatePresence>
       {isOpen && (
@@ -89,7 +88,6 @@ export function HamburgerModal(props) {
   });
 
   useEffect(() => {
-    console.log(SignoutMsg);
     setMsg(SignoutMsg);
   }, [SignoutMsg]);
 
@@ -97,7 +95,6 @@ export function HamburgerModal(props) {
     localStorage.removeItem("userInfo");
     Cookies.remove("Token");
     Cookies.remove("Refresh");
-    console.log("로그아웃성공");
     setTimeout(function () {
       navigate("/");
     }, 1000);
@@ -108,9 +105,7 @@ export function HamburgerModal(props) {
       <ModalEachBox>
         <div>내정보수정</div>
       </ModalEachBox>
-      <ModalEachBox>
-        {/* <div onClick={onClickLogoutHandler}>로그아웃</div> */}
-      </ModalEachBox>
+      <ModalEachBox></ModalEachBox>
     </Modal>
   );
 }

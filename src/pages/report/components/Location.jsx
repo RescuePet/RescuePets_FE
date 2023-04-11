@@ -8,7 +8,7 @@ import { Spinner } from "../../../components/Spinner";
 const Location = () => {
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
-  // console.log(location.pathname)
+
   const { kakao } = window;
   // 현재위치를 받아오는 로직
   const [long, setLong] = useState("");
@@ -19,8 +19,6 @@ const Location = () => {
   };
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(onSucces, onFailure);
-    // 성공
-    // 여기는 렌더링이 초기에 한번만 일어나게 해야만한다
     function onSucces(position) {
       const lat = position.coords.latitude;
       const lng = position.coords.longitude;
@@ -34,7 +32,6 @@ const Location = () => {
       setLati(defaultValue.lat);
       setIsLoading(false);
       console.log("위치 정보를 찾을수 없습니다.");
-      // alert("위치 정보를 찾을수 없습니다.");
     }
   }, []);
   useEffect(() => {
@@ -79,7 +76,6 @@ const Location = () => {
   }, [long]);
   return (
     <ReportKakaoMapContainer>
-      {/* {isLoading === true ? <Spinner /> : null} */}
       <ReportKakaoMapBoxTitle>
         <ReportKakaomapTitleInfoBox>
           {location.pathname === "/missing" ? (
@@ -182,9 +178,7 @@ const ReportKakaomapTitleValueBox = styled.div`
     width: 100%;
     height: 1.8125rem;
     ${Border_1_color}
-    /* border-bottom: 1px solid ${(props) =>
-      props.theme.color.text_alternative}; */
-        display: flex;
+    display: flex;
     align-items: center;
   }
 `;

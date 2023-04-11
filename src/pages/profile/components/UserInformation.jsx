@@ -16,8 +16,6 @@ const UserInformation = () => {
   const [userInfo, setUserInfo] = useState({});
   const { myData } = useSelector((state) => state.profile);
 
-  console.log(myData);
-
   useEffect(() => {
     if (isLogin() === false) {
       navigate("/signin");

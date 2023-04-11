@@ -54,10 +54,7 @@ const SightingDetail = () => {
   const [loginModal, toggleModal] = useModalState(false);
   const [catchdetailMsg, setCatchDetailMsg] = useState("");
 
-  console.log("최신값: ", catchdetailMsg);
-
   const onChangeReportMsg = (newMsg) => {
-    console.log(newMsg);
     toggleModal();
     setCatchDetailMsg(newMsg);
   };
@@ -95,8 +92,6 @@ const SightingDetail = () => {
   if (error) {
     toggleModal();
     setCatchDetailMsg(errorMessage);
-
-    // alert(errorMessage);
     dispatch(resetError());
   }
 
@@ -129,7 +124,6 @@ const SightingDetail = () => {
     if (content.message === "") {
       toggleModal();
       setCatchDetailMsg("댓글을 입력해주세요.");
-      // alert("댓글을 입력해주세요.");
       return;
     } else {
       dispatch(__postComment(data));

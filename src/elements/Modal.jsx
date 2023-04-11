@@ -65,13 +65,12 @@ const Backdrop = styled(motion.div)`
 
 const ModalContainer = styled(motion.div)`
   background-color: white;
-  margin: auto; /* 추가 */
+  margin: auto;
   border-radius: 0.5rem;
   position: absolute;
   top: 2%;
   width: 21.875rem;
   height: 4rem;
-  /* filter: drop-shadow(rgba(0, 0, 0, 0.8) 2px 2px 20px); */
 `;
 export const ModalMsgContainer = styled.div`
   position: relative;

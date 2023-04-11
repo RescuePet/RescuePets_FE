@@ -1,4 +1,4 @@
-import React, {  useEffect } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import ModalImg from "../asset/Spinner/spinner.png";
@@ -13,7 +13,6 @@ export default function Modal({ isOpen, onClose, children }) {
     visible: { opacity: 1, x: 0 },
     hidden: { opacity: 0, x: "50%" },
   };
-
 
   useEffect(() => {
     if (isOpen) {
@@ -61,7 +60,7 @@ const Backdrop = styled(motion.div)`
 
 const ModalContainer = styled(motion.div)`
   background-color: ${(props) => props.theme.color.primary_normal};
-  margin: auto; /* 추가 */
+  margin: auto;
   border-radius: 0.5rem;
   position: absolute;
   top: 9%;
@@ -69,7 +68,6 @@ const ModalContainer = styled(motion.div)`
   width: 14.0625rem;
   height: 3rem;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
-  /* border: 1px solid red; */
 `;
 
 export const ModalSEEMsgContainer = styled.div`
@@ -91,7 +89,6 @@ export const ModalSEEMsgContainer = styled.div`
 
 // Sign 커스텀 모달
 export function SseAlertModal(props) {
-  // console.log("모달에 보일 text,", props);
   return (
     <>
       <Modal isOpen={props.isOpen} onClose={props.toggle}>

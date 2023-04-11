@@ -54,7 +54,6 @@ const Signin = () => {
 
     toggleModal();
     dispatch(__signinUser(siginInfo)).then((response) => {
-      console.log(response);
       if (response.type === "signinUser/rejected") {
         setSignInMsg(`⛔  ${response.error.message}`);
       } else if (response.type === "signinUser/fulfilled") {

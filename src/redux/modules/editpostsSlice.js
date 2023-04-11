@@ -4,10 +4,9 @@ import { instance } from "../../utils/api";
 // 실종 글 수정
 export const __PutMissingposts = createAsyncThunk(
   "putmissingposts",
-  async ({formData, number}, thunkAPI) => {
-    console.log(number)
+  async ({ formData, number }, thunkAPI) => {
     try {
-        const response = await instance.put(`/api/post/${number}`, formData);
+      const response = await instance.put(`/api/post/${number}`, formData);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       console.log(error.response);
@@ -18,13 +17,11 @@ export const __PutMissingposts = createAsyncThunk(
 // 목격 글 수정
 export const __PutCatchposts = createAsyncThunk(
   "putcatchposts",
-  async ({formData, number}, thunkAPI) => {
+  async ({ formData, number }, thunkAPI) => {
     try {
       const response = await instance.put(`/api/post/${number}`, formData);
-      console.log(response);
       return thunkAPI.fulfillWithValue(response?.data?.data);
     } catch (error) {
-      console.log(error.response);
       throw new Error(error.response.data.message);
     }
   }

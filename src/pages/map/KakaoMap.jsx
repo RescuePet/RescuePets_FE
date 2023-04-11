@@ -39,7 +39,6 @@ const KakaoMap = () => {
   const [lati, setLati] = useState("");
 
   navigator.geolocation.getCurrentPosition(onSucces, onFailure);
-  // console.log(onSucces)
   function onSucces(position) {
     const lat = position.coords.latitude;
     const lng = position.coords.longitude;
@@ -125,7 +124,6 @@ const KakaoMap = () => {
     // 실종글 작성 마커 인포 생성 로직
     missingData &&
       missingData.map((item) => {
-        // console.log(item)
         let marker = new kakao.maps.Marker({
           map: mapRef.current,
           position: new kakao.maps.LatLng(
@@ -135,7 +133,6 @@ const KakaoMap = () => {
           image: missingmarkerImage,
         });
         kakao.maps.event.addListener(marker, "click", function () {
-          // console.log(item)
           toggleModal();
           // 현재 내위치랑 클릭한 마커에 위치를 가져오는 로직 거리도 구해야만한다
           const linePath = [
@@ -178,7 +175,6 @@ const KakaoMap = () => {
     // 목격글 작성 마커 인포 생성 로직
     catchData &&
       catchData.map((item) => {
-        // console.log(item)
         let marker = new kakao.maps.Marker({
           map: mapRef.current,
           position: new kakao.maps.LatLng(
@@ -221,7 +217,6 @@ const KakaoMap = () => {
   // // 실패시 작동 로직
 
   useEffect(() => {
-    // console.log("좌표못가지고옴");
     // 목격글 마커
     const missingimageSrc = `${missingmarker}`;
     const missingimageSize = new kakao.maps.Size(16, 20);
@@ -322,7 +317,6 @@ const KakaoMap = () => {
       });
   }, [onFailure]);
 
-  // console.log("값지워야함",newCatchData)
   return isLoading === true ? (
     <MyMap id="myMap">
       <Spinner />

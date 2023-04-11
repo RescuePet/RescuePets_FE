@@ -55,8 +55,6 @@ const PostList = ({ item }) => {
   };
   const refineData = refineDataHandler();
 
-  console.log("refineData", refineData);
-
   const myPostHandler = (e) => {
     e.stopPropagation();
     setPostOption(!postOption);

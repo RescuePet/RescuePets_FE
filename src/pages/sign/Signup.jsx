@@ -52,7 +52,6 @@ const Signup = () => {
       setEmailCheck(false);
     }
   }, [emailWatch]);
-  // console.log(emailCheck)
 
   // 비밀번호 체크 로직
   const [showPassword, setShowPassword] = useState(false);
@@ -65,7 +64,6 @@ const Signup = () => {
   const [isActive, setIsActive] = useState(false);
 
   const watchAll = Object.values(watch());
-  // console.log(watchAll)
 
   useEffect(() => {
     // react-hook-form 만든 값들이 전부 입력이 되면
@@ -96,8 +94,6 @@ const Signup = () => {
       toggleModal();
       dispatch(__signupUser(userInfo));
       reset();
-    } else {
-      console.log("d");
     }
   };
 
@@ -106,7 +102,6 @@ const Signup = () => {
   });
 
   useEffect(() => {
-    // console.log(SignUpmessage)
     if (SignUpmessage === "중복된 이메일이 존재합니다.") {
       setSignUpMsg("⛔ 중복된 이메일이 존재합니다.");
       // 모달 띄우기
@@ -119,8 +114,6 @@ const Signup = () => {
       }, 1000);
     }
   }, [SignUpmessage]);
-
-  // console.log(Message)
 
   return (
     <Layout>
@@ -306,7 +299,6 @@ const SignIdNincknameBox = styled.div`
       height: 90%;
       > span {
         ${(props) => props.theme.Span_alert}
-        /* border: 1px solid red; */
         color: #D6459C;
         font-size: 0.625rem;
         > img {
@@ -315,7 +307,7 @@ const SignIdNincknameBox = styled.div`
           bottom: 0.25rem;
           width: 0.625rem;
           height: 0.5625rem;
-          ${(props) => props.theme.FlexCenter}/* border: 1px solid red; */
+          ${(props) => props.theme.FlexCenter}
         }
       }
     }

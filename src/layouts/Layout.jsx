@@ -25,9 +25,7 @@ const Layout = ({ children }) => {
   const { scrollState } = useSelector((state) => state.comment);
   const dispatch = useDispatch();
 
-
   const [loginModal, toggleModal] = useModalState(false);
-
 
   const ref = useRef(null);
   const token = Cookies.get("Token");
@@ -54,7 +52,6 @@ const Layout = ({ children }) => {
     };
 
     eventSource.onmessage = (event) => {
-
       setListening(true);
       const checkJSON = event.data.split(" ")[0];
 
@@ -62,17 +59,12 @@ const Layout = ({ children }) => {
 
       if (data.message !== undefined) {
         toggleModal();
-        console.log(data.message);
         setData(data);
-        console.log(data.message.split(" ")[1]);
         if (data.message.split(" ")[1] == "새로운") {
-          console.log("1");
           dispatch(seeChatCount(1));
         } else if (data.message.split(" ")[1] == "댓글을") {
           dispatch(seeMyaddCount(1));
-          console.log("2");
         } else if (data.message.split(" ")[1] == "스크랩") {
-          console.log("3");
           dispatch(seeMyaddCount(1));
         }
       }

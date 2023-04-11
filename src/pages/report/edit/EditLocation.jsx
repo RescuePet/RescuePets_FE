@@ -7,7 +7,6 @@ import questionmark from "../../../asset/questionmark.svg";
 import { Border_1_color } from "../../../style/Mixin";
 
 const EditLocation = ({ data }) => {
-  // console.log(data);
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
   const { kakao } = window;
@@ -36,7 +35,6 @@ const EditLocation = ({ data }) => {
       setLati(defaultValue.lat);
       setIsLoading(false);
       console.log("위치 정보를 찾을수 없습니다.");
-      // alert("위치 정보를 찾을수 없습니다.");
     }
   }, []);
 
@@ -83,7 +81,6 @@ const EditLocation = ({ data }) => {
 
   return (
     <ReportKakaoMapContainer>
-      {/* {isLoading === true ? <Spinner /> : null} */}
       <ReportKakaoMapBoxTitle>
         <ReportKakaomapTitleInfoBox>
           {data.postType === "MISSING" ? <p>실종위치 </p> : <p>목격위치</p>}
@@ -184,9 +181,7 @@ const ReportKakaomapTitleValueBox = styled.div`
     width: 100%;
     height: 1.8125rem;
     ${Border_1_color}
-    /* border-bottom: 1px solid ${(props) =>
-      props.theme.color.text_alternative}; */
-        display: flex;
+    display: flex;
     align-items: center;
   }
 `;

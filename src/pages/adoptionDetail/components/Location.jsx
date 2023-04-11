@@ -14,7 +14,6 @@ import { useState } from "react";
 const Location = ({ locationData }) => {
   const [mapState, SetMapState] = useState(true);
   const { kakao } = window;
-  console.log(locationData);
   useEffect(() => {
     const mapContainer = document.getElementById(`${locationData.map}`),
       mapOption = {
@@ -30,7 +29,6 @@ const Location = ({ locationData }) => {
       `${locationData.address}`,
       function (result, status) {
         if (status === kakao.maps.services.Status.OK) {
-          console.log("성공");
           const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
           const imageSrc = `${
             locationData.type === "구조정보" ? catchmarker : sheltermarker
@@ -57,7 +55,6 @@ const Location = ({ locationData }) => {
     );
   }, []);
 
-  console.log(locationData);
   return (
     <LocationContainer>
       <LocationWrapper>

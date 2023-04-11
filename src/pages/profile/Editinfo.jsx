@@ -13,7 +13,6 @@ import { __PutMyinfoEdit } from "../../redux/modules/infoeditSlice";
 import Cookies from "js-cookie";
 import { Spinner } from "../../components/Spinner";
 
-// import
 const Editinfo = () => {
   let imageRef;
   const navigate = useNavigate();
@@ -27,7 +26,6 @@ const Editinfo = () => {
     reset,
     watch,
   } = useForm({ mode: "onChange" });
-
 
   const MoveToBackPage = () => {
     navigate(-1);
@@ -56,16 +54,10 @@ const Editinfo = () => {
     }
   }, [watch()]);
 
-
   const onSubmitmyInfoHandler = (data) => {
-
     const formData = new FormData();
     formData.append("nickname", data.name);
     formData.append("image", imageFormData);
-
-    // for (let key of formData.keys()) {
-    //   console.log(key, ":", formData.get(key));
-    // }
     dispatch(__PutMyinfoEdit(formData));
   };
 
@@ -73,38 +65,32 @@ const Editinfo = () => {
     return state.infoEdit;
   });
 
-  // 
   useEffect(() => {
-    console.log("통신결과", EditMsg);
     if (EditMsg?.message?.status === true) {
-      // console.log(userInfo);
-      // console.log(EditMsg?.message);
-      // console.log(EditMsg?.message?.message);
-      // console.log(EditMsg?.message?.data);
-      reset()
+      reset();
     } else {
       console.log("실패");
     }
-    // setEditInfoMsg()
   }, [EditMsg]);
 
   if (JSON.stringify(EditMsg.loading) === "true") {
-    return  <Spinner/>;
+    return <Spinner />;
   }
 
   return (
     <Layout>
       <EditInfoForm onSubmit={handleSubmit(onSubmitmyInfoHandler)}>
-
-       <EditInfoHeader>
-        <EditHeaderText> 
-        <div></div>
-        <div><h2>프로필 수정하기</h2></div>
-        </EditHeaderText>
-        <EditHeaderImg>   
-        <img src={close} onClick={MoveToBackPage} />
-        </EditHeaderImg> 
-       </EditInfoHeader>
+        <EditInfoHeader>
+          <EditHeaderText>
+            <div></div>
+            <div>
+              <h2>프로필 수정하기</h2>
+            </div>
+          </EditHeaderText>
+          <EditHeaderImg>
+            <img src={close} onClick={MoveToBackPage} />
+          </EditHeaderImg>
+        </EditInfoHeader>
 
         <EditInfoImgBox>
           <EditInfoImgBack>
@@ -114,8 +100,11 @@ const Editinfo = () => {
               <EditInfoImgIn src={imageShow} />
             )}
             <input
-              type="file" accept="image/*"  style={{ display: "none" }} 
-              ref={(refer) => (imageRef = refer)} onChange={onChangeUploadHandler}
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              ref={(refer) => (imageRef = refer)}
+              onChange={onChangeUploadHandler}
             />
             <EditInfoImgInput src={camera} onClick={() => imageRef.click()} />
           </EditInfoImgBack>
@@ -139,16 +128,19 @@ const Editinfo = () => {
         </EditInfoTextBox>
 
         <EditInfoTextBox>
-        <p>이메일</p>
-            <input  type="text"
-            value={userInfo.email}/>
+          <p>이메일</p>
+          <input type="text" value={userInfo.email} />
         </EditInfoTextBox>
 
         <EditinfoButtonBox>
           {isActive === true ? (
-            <Button disable emptyButton>저장대기 중</Button>
+            <Button disable emptyButton>
+              저장대기 중
+            </Button>
           ) : (
-            <Button type="submit" fillButton>저장하기</Button>
+            <Button type="submit" fillButton>
+              저장하기
+            </Button>
           )}
         </EditinfoButtonBox>
       </EditInfoForm>
@@ -178,12 +170,12 @@ const EditHeaderText = styled.div`
   align-items: center;
   justify-content: right;
   padding-right: 2.3125rem;
-  >div{
+  > div {
     width: 50%;
     height: 100%;
-    ${props => props.theme.FlexCenter}
+    ${(props) => props.theme.FlexCenter}
     >h2 {
-    ${(props) => props.theme.Body_500_16}
+      ${(props) => props.theme.Body_500_16}
       color: ${(props) => props.theme.color.black};
     }
   }
@@ -193,7 +185,7 @@ const EditHeaderImg = styled.div`
   right: 1%;
   width: 25%;
   height: 100%;
-  ${props => props.theme.FlexCenter}
+  ${(props) => props.theme.FlexCenter}
 `;
 
 const EditInfoImgBox = styled.div`
@@ -208,8 +200,6 @@ const EditInfoImgBack = styled.div`
   width: 5rem;
   height: 5rem;
   border-radius: 50%;
-  /* background: ${(props) => props.theme.color.gray}; */
-  /* opacity: 0.5; */
 `;
 
 const EditInfoImgIn = styled.img`
@@ -218,7 +208,6 @@ const EditInfoImgIn = styled.img`
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  /* background-color: rgba(0, 0, 0, 0.8); */
 `;
 
 const EditInfoImgInput = styled.img`

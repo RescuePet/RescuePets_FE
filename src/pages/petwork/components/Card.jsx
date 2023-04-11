@@ -21,23 +21,19 @@ import ClippingFill from "../../../asset/profile/ClippingFill";
 import { resetResponseMessage } from "../../../redux/modules/searchSlice";
 
 const Card = ({ item, page }) => {
-  console.log(item);
   const refineData = petworkRefineData(item);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const scrapHandler = (e) => {
     e.stopPropagation();
-    console.log("petwork scrap");
     let payload = {
       page: "petworkLists",
       state: item.isWished,
       id: item.id,
     };
     if (page === "missingdetail") {
-      console.log(page);
       dispatch(__postMissingScrap(payload));
     } else if (page === "catchdetail") {
-      console.log(page);
       dispatch(__postCatchScrap(payload));
     }
   };

@@ -79,13 +79,10 @@ export const ModalTitle = styled.div`
   font-size: 1rem;
   padding: 0.625rem 1.25rem;
   ${(props) => props.theme.FlexRow}
-  /* letter-spacing: -0.5px;
-  white-space: pre-line; */
   line-height: 1.3125rem;
   font-weight: bold;
   color: #333333;
   gap: 0 1.25rem;
-  /* border: 1px solid red; */
   > p {
   }
   > span {
@@ -97,14 +94,11 @@ const ModlaMainInfo = styled.div`
   height: 50%;
   ${(props) => props.theme.FlexCenter}
   gap: 0 1.25rem;
-  /* border: 1px solid red; */
 `;
 
 // 마커 클릭시 보여줄 모달
 export function PostModal(props) {
-  // console.log(props)
   const navigate = useNavigate();
-  // data.number
   return (
     <Modal isOpen={props.isOpen} onClose={props.toggle}>
       <ModalTitle>등록완료</ModalTitle>
@@ -117,15 +111,6 @@ export function PostModal(props) {
         >
           상세보기
         </Button>
-
-        {/* <Button
-          GOToDetailButton
-          onClick={() => {
-            navigate(`/poster/${props?.data?.number}`);
-          }}
-        >
-          포스터만들기
-        </Button> */}
       </ModlaMainInfo>
     </Modal>
   );

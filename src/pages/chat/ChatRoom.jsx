@@ -32,15 +32,11 @@ const ChatRoom = () => {
   const [chatlog, setChatLog] = useState([]);
   const sender = JSON.parse(Cookies.get("UserInfo"));
 
-  // console.log(sender);
-
   let client;
 
-  // console.log("roomId", id);
   const getChatLog = async (roomId) => {
     try {
       const response = await instance.get(`/room/${roomId}`);
-      // console.log(response);
       setChatLog(response.data.data.messages);
     } catch (error) {
       console.log(error);
@@ -50,12 +46,12 @@ const ChatRoom = () => {
   const stompConnect = () => {
     const socket = new SockJS(`${process.env.REACT_APP_HOME_URL}/ws/chat`);
     client = Stomp.over(socket);
+    client.debug = false; // Debug 옵션을 false로 설정
     client.connect({}, () => {
       client.subscribe(
         `/sub/${id}`,
         (response) => {
           let data = JSON.parse(response.body);
-          // console.log(data);
           setChatLog((prev) => [...prev, data]);
         },
         { id: id }
@@ -109,9 +105,8 @@ const ChatRoom = () => {
     try {
       const response = await instance.delete(`/chat/room/exit/${id}`);
       navigate("/chatlist");
-      console.log(response);
     } catch (error) {
-      // console.log(error);
+      console.log(error);
     }
   };
 
@@ -161,7 +156,6 @@ const ChatRoom = () => {
             }
           })}
       </ChatRoomBody>
-      {/* <SseModal /> */}
       <InputContainer
         placeholder="메세지를 입력해주세요."
         submitHandler={submitHandler}

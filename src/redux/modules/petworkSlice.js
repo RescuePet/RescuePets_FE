@@ -5,11 +5,8 @@ import { instance } from "../../utils/api";
 export const __PostMissingData = createAsyncThunk(
   "postMissingData",
   async (payload, thunkAPI) => {
-    console.log(payload);
     try {
       const response = await instance.post("/api/post/", payload);
-      console.log(response);
-      console.log(response.data.data.id);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       console.log(error.response);
@@ -51,7 +48,6 @@ export const __PostCatchData = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await instance.post("/api/post/", payload);
-      console.log(response);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       console.log(error.response);
@@ -65,9 +61,6 @@ export const __getCatchPost = createAsyncThunk(
   "getCatchPost",
   async (payload, thunkAPI) => {
     try {
-      console.log(payload.page);
-      console.log(payload.size);
-
       const response = await instance.get(
         `/api/post/list/CATCH/?page=${payload.page}&size=${payload.size}`
       );
@@ -84,7 +77,6 @@ export const __getCatchPostDetail = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await instance.get(`/api/post/${payload}`);
-      console.log(response.data);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       throw new Error(error.response.data.message);
@@ -103,13 +95,11 @@ export const __postMissingScrap = createAsyncThunk(
         state: Boolean,
       };
       if (!payload.state) {
-        const response = await instance.post(`/api/scrap/${payload.id}`);
-        console.log(response.data);
+        await instance.post(`/api/scrap/${payload.id}`);
         data.state = true;
         return thunkAPI.fulfillWithValue(data);
       } else {
-        const response = await instance.delete(`/api/scrap/${payload.id}`);
-        console.log(response.data);
+        await instance.delete(`/api/scrap/${payload.id}`);
         data.state = false;
         return thunkAPI.fulfillWithValue(data);
       }
@@ -131,14 +121,12 @@ export const __postCatchScrap = createAsyncThunk(
         count: Number,
       };
       if (!payload.state) {
-        const response = await instance.post(`/api/scrap/${payload.id}`);
-        console.log(response.data);
+        await instance.post(`/api/scrap/${payload.id}`);
         data.state = true;
         data.count = 1;
         return thunkAPI.fulfillWithValue(data);
       } else {
-        const response = await instance.delete(`/api/scrap/${payload.id}`);
-        console.log(response.data);
+        await instance.delete(`/api/scrap/${payload.id}`);
         data.state = false;
         data.count = -1;
         return thunkAPI.fulfillWithValue(data);
@@ -352,22 +340,15 @@ export const petworkSlice = createSlice({
 
     builder
       .addCase(__deletePost.fulfilled, (state, action) => {
-        console.log("action payload", action.payload);
         if (action.payload.type === "missing") {
-          console.log("missing 실행");
-
           const index = state.missingPostLists.findIndex((item) => {
-            console.log("item id", item.id);
-            console.log("action.payload.id", action.payload.id);
             return item.id === Number(action.payload.id);
           });
-          console.log("delete index", index);
           state.missingPostLists.splice(index, 1);
         } else if (action.payload.type === "catch") {
           const index = state.catchPostLists.findIndex(
             (item) => item.id === Number(action.payload.id)
           );
-          console.log("delete index", index);
           state.catchPostLists.splice(index, 1);
         }
       })

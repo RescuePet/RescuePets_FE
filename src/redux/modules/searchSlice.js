@@ -33,9 +33,7 @@ export const __getAdoptionSearch = createAsyncThunk(
       const response = await home.get(
         `api/pets/search?page=${newPayload.page}&size=${newPayload.size}&memberLongitude=${newPayload.longitude}&memberLatitude=${newPayload.latitude}&description=${newPayload.description}&searchKey=${newPayload.searchKey}&searchValue=${newPayload.searchValue}`
       );
-      console.log("getPublicSearch", response.data);
       if (response.data.message === "유기동물 검색 결과가 없습니다.") {
-        console.log(response.data.message);
         return thunkAPI.fulfillWithValue(response.data.message);
       } else {
         return thunkAPI.fulfillWithValue(response.data.data);
@@ -67,9 +65,7 @@ export const __getPostSearch = createAsyncThunk(
       const response = await instance.get(
         `api/post/search?page=${newPayload.page}&size=${newPayload.size}&postType=${newPayload.postType}&memberLongitude=${newPayload.longitude}&memberLatitude=${newPayload.latitude}&description=${newPayload.description}&searchKey=${newPayload.searchKey}&searchValue=${newPayload.searchValue}`
       );
-      console.log("getPostSearch", response);
       if (response.data.message === "유기동물 검색 결과가 없습니다.") {
-        console.log(response.data.message);
         return thunkAPI.fulfillWithValue(response.data.message);
       } else {
         return thunkAPI.fulfillWithValue(response.data.data);
@@ -149,7 +145,6 @@ export const searchSlice = createSlice({
       state.latitude = action.payload.lat;
     },
     setSearchValue: (state, action) => {
-      console.log(action.payload);
       state.searchValue = action.payload;
     },
     resetSearchState: (state) => {
@@ -173,7 +168,6 @@ export const searchSlice = createSlice({
         state.loading = true;
       })
       .addCase(__getAdoptionSearch.fulfilled, (state, action) => {
-        console.log(typeof action.payload);
         if (typeof action.payload === "string") {
           state.responseMessage = action.payload;
         } else if (typeof action.payload === "object") {

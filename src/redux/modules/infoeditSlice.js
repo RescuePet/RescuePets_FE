@@ -8,12 +8,10 @@ export const __PutMyinfoEdit = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await instance.put("/api/member/edit", payload);
-      console.log(response);
       const NEWUSERINFO = JSON.stringify(response.data.data);
       Cookies.set("UserInfo", NEWUSERINFO);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      console.log(error.response.data);
       throw new Error(error.response.data.message);
     }
   }

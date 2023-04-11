@@ -50,7 +50,6 @@ const PetworkList = () => {
     latitude,
     searchPage,
     searchPostSetState,
-    searchSetState,
     searchCategory,
     descriptionCategory,
   } = useSelector((state) => state.search);
@@ -60,14 +59,12 @@ const PetworkList = () => {
   }, []);
 
   const onSuccess = useCallback((position) => {
-    console.log("onSuccess");
     const lat = position.coords.latitude;
     const lng = position.coords.longitude;
     dispatch(setMemberPosition({ lat: lat, lng: lng }));
   }, []);
 
   const onFailure = () => {
-    console.log("onFaileure");
     console.log("위치 정보를 찾을수 없습니당.");
   };
 

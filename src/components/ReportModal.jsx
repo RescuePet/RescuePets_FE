@@ -19,9 +19,6 @@ const ReportModal = ({ setting, reportCloseHandler, onChangeMsg }) => {
     { id: 3, name: "기타", value: "기타" },
   ];
 
-  // console.log(onChangeMsg);
-  //
-
   const [type, setType] = useState(reportOption[0].name);
   const [typeID, setTypeID] = useState("부적절한단어");
   const { register, handleSubmit, reset } = useForm();
@@ -39,7 +36,6 @@ const ReportModal = ({ setting, reportCloseHandler, onChangeMsg }) => {
   };
 
   const submitPostReport = async (payload) => {
-    // console.log(payload);
     const data = {
       content: payload.reason,
       postId: Number(setting.postId),
@@ -47,23 +43,16 @@ const ReportModal = ({ setting, reportCloseHandler, onChangeMsg }) => {
       reportCode: typeID,
     };
     try {
-      // console.log("request data", data);
       const response = await instance.post(`/api/report/post`, data);
-      console.log(response);
       if (response.status === 200) {
         toggleModal();
-        // setReportMsg("신고가 완료되었습니다.");
         onChangeMsg("신고가 완료되었습니다.");
-        // alert("신고가 완료되었습니다.");
       }
     } catch (error) {
-      // console.log("수정실패!");
       if (error.response.status === 409) {
         toggleModal();
         onChangeMsg("이미 신고한 게시물 입니다.");
-        // alert("이미 신고하였습니다.");
       } else if (error.response.status === 400) {
-        // toggleModal();
         onChangeMsg("서버 오류");
       }
     }
@@ -78,18 +67,12 @@ const ReportModal = ({ setting, reportCloseHandler, onChangeMsg }) => {
     };
     try {
       const response = await instance.post(`/api/report/comment`, data);
-      console.log("response", response);
       if (response.status === 200) {
-        // toggleModal();
-        console.log("이즈굿~");
         setReportMsg("신고가 완료되었습니다.");
-        // alert("신고가 완료되었습니다.");
       }
     } catch (error) {
       if (error.response.status === 409) {
-        // toggleModal();
         setReportMsg("이미 신고한 유저입니다.");
-        // alert("이미 신고하였습니다.");
       }
     }
   };
@@ -102,44 +85,32 @@ const ReportModal = ({ setting, reportCloseHandler, onChangeMsg }) => {
       reportCode: typeID,
     };
     try {
-      console.log("request data", data);
       const response = await instance.post(`/api/report/member`, data);
-      console.log(response);
       if (response.status === 200) {
-        // toggleModal();
         setReportMsg("신고가 완료되었습니다.");
-        // alert("신고가 완료되었습니다.");
       }
     } catch (error) {
       if (error.response.status === 409) {
-        // alert("이미 신고하였습니다.");
-        // toggleModal();
         setReportMsg("이미 신고한 댓글입니다.");
       }
     }
   };
 
   const submitHandler = (payload) => {
-    // console.log("입력값", payload.reason);
     if (payload.reason === "") {
       toggleModal();
       setReportMsg("내용을 작성해주세요");
       return;
     }
     if (setting.type === "post") {
-      console.log("게시물 신고");
       toggleModal();
-      console.log(payload);
       submitPostReport(payload);
       dispatch(toggleReport());
-      // reset();
     } else if (setting.type === "member") {
-      console.log("맴버 신고");
       submitMemberReport(payload);
       dispatch(toggleReport());
       reset();
     } else if (setting.type === "comment") {
-      console.log("댓글 신고");
       submitCommentReport(payload);
       reportCloseHandler();
       reset();

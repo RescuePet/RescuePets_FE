@@ -6,14 +6,11 @@ export const __getAdoptionList = createAsyncThunk(
   "getAdoptionList",
   async (payload, thunkAPI) => {
     try {
-      // console.log("hihi");
       const response = await home.get(
         `/api/pets/info-list?page=${payload.page}&size=${payload.size}&sortBy=happenDt`
       );
-      // console.log(response.data);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
-      console.log(error.response.data.message);
       throw new Error(error.response.data.message);
     }
   }
@@ -27,7 +24,6 @@ export const __getAdoptionDetail = createAsyncThunk(
       const response = await home.get(`/api/pets/details/${payload}`);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      console.log(error.response.data.message);
       throw new Error(error.response.data.message);
     }
   }
@@ -38,7 +34,6 @@ export const __postAdoptionListScrap = createAsyncThunk(
   "postAdoptionScrap",
   async (payload, thunkAPI) => {
     try {
-      console.log("payload", payload);
       let data = {
         page: payload.page,
         boolean: null,
@@ -54,7 +49,6 @@ export const __postAdoptionListScrap = createAsyncThunk(
         return thunkAPI.fulfillWithValue(data);
       }
     } catch (error) {
-      console.log(error);
       throw new Error(error.response.data.message);
     }
   }
@@ -68,7 +62,6 @@ export const __postAdoptionInquiry = createAsyncThunk(
       await instance.post(`/api/pets/inquiry/${payload}`);
       return thunkAPI.fulfillWithValue(1);
     } catch (error) {
-      console.log(error.response.data.message);
       throw new Error(error.response.data.message);
     }
   }

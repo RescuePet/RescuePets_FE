@@ -18,10 +18,8 @@ export const __GetMissingData = createAsyncThunk(
 export const __PostMissingData = createAsyncThunk(
   "postMissingData",
   async (payload, thunkAPI) => {
-    console.log(payload);
     try {
       const response = await instance.post("/api/post/", payload);
-      console.log(response);
       return thunkAPI.fulfillWithValue(response?.data?.data);
     } catch (error) {
       console.log(error.response);

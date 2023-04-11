@@ -52,15 +52,11 @@ const MissingDetail = () => {
   const navigate = useNavigate();
   const userName = JSON.parse(Cookies.get("UserInfo"));
   const commentRef = useRef(null);
-  // const [reportMissingMsg, setReportMissingMsg] = useState("");
 
   const [loginModal, toggleModal] = useModalState(false);
   const [missingdetailMsg, setMissingDetailMsg] = useState("");
 
-  console.log("최신값: ", missingdetailMsg);
-
   const onChangeReportMsg = (newMsg) => {
-    console.log(newMsg);
     toggleModal();
     setMissingDetailMsg(newMsg);
   };
@@ -97,7 +93,6 @@ const MissingDetail = () => {
   if (error) {
     toggleModal();
     setMissingDetailMsg(errorMessage);
-    // alert(errorMessage);
     dispatch(resetError());
   }
 
@@ -125,7 +120,6 @@ const MissingDetail = () => {
     if (content.message === "") {
       toggleModal();
       setMissingDetailMsg("댓글을 입력해주세요.");
-      // alert("댓글을 입력해주세요.");
       return;
     } else {
       dispatch(__postComment(data));

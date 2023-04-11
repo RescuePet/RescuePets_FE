@@ -7,10 +7,8 @@ export const __getMyChatRoom = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await instance.get(`/chat/rooms`);
-      console.log("response", response.data.data);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
-      console.log(error.response.data.message);
       throw new Error(error.response.data.message);
     }
   }

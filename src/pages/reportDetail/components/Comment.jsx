@@ -18,9 +18,6 @@ const Comment = ({ item }) => {
   const [commentReport, setCommentReport] = useState(false);
   const { nickname } = JSON.parse(Cookies.get("UserInfo"));
 
-  console.log(nickname);
-  console.log(item);
-
   const optionMySetting = [
     {
       option: "댓글 삭제하기",

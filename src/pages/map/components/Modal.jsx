@@ -66,7 +66,6 @@ const ModalContainer = styled(motion.div)`
   bottom: 0%;
   width: 23.4375rem;
   height: 13rem;
-  /* box-shadow: 0 .25rem 0 .125rem rgba(0,0,0,0.4); */
   padding: 0.625rem;
 `;
 
@@ -202,7 +201,6 @@ export function MarkerModal(props) {
   const navigate = useNavigate();
 
   const data = props?.data;
-  console.log(data);
   const Stringkm = String(data?.km);
 
   const Arraykm = Stringkm.split("");

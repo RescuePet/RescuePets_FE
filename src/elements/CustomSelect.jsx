@@ -8,7 +8,6 @@ export const CustomSelect = ({
   onChangeID,
   selectedValue,
 }) => {
-  // console.log(selectedValue);
   const [currentValue, setCurrentValue] = useState(data[0].name);
 
   useEffect(() => {
@@ -68,18 +67,12 @@ export const CustomSelect = ({
     } else if (selectedValue === "11:00") {
       setCurrentValue(data[23].name);
     }
-
-    // for(let i=0; i<data.length; i++ ){
-
-    // }
   }, []);
-  // console.log(currentValue) //이 값을 상위컴포넌트로 보내야 한다
+
   const [showOptions, setShowOptions] = useState(false);
 
   const handleOnChangeSelectValue = (e) => {
-    // 하위컴포넌트에서 보여줄값
     setCurrentValue(e.target.getAttribute("value"));
-    // 이코드로 상위컴포넌트로 가장최신값을 보낸다
     onChangeData(e.target.getAttribute("value"));
     if (onChangeID !== null) {
       onChangeID(e.target.id);
@@ -95,12 +88,10 @@ export const CustomSelect = ({
         {data.map((data) => (
           <Option
             key={data.id}
-            // 옵션들 값
             id={data.value}
             value={data.name}
             onClick={handleOnChangeSelectValue}
           >
-            {/* 선택된 값*/}
             {data.name}
           </Option>
         ))}

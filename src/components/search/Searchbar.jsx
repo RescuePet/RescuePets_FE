@@ -13,7 +13,6 @@ const Searchbar = ({ searchHandler }) => {
   const { register, handleSubmit } = useForm();
 
   const setInputValue = (value) => {
-    console.log(value.searchValue);
     dispatch(setSearchValue(value.searchValue));
     searchHandler(value.searchValue);
   };

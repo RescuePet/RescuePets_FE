@@ -15,8 +15,6 @@ const ChatList = () => {
     dispatch(__getMyChatRoom());
   }, []);
 
-  // console.log(myChatRoom);
-
   return (
     <Layout>
       <ChatHeader>

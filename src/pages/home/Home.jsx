@@ -68,23 +68,19 @@ const Home = () => {
   } = useSelector((state) => state.search);
 
   useEffect(() => {
-    console.log("navigator");
     navigator.geolocation.getCurrentPosition(onSuccess, onFailure);
     return () => {
       resetResponseMessage();
     };
   }, []);
 
-  // console.log(onSucces)
   const onSuccess = useCallback((position) => {
-    console.log("onSuccess");
     const lat = position.coords.latitude;
     const lng = position.coords.longitude;
     dispatch(setMemberPosition({ lat: lat, lng: lng }));
   }, []);
 
   const onFailure = () => {
-    console.log("onFaileure");
     console.log("위치 정보를 찾을수 없습니당.");
   };
 
@@ -92,8 +88,6 @@ const Home = () => {
     page: adoptionPage,
     size: 10,
   };
-
-  console.log(searchValue);
 
   useEffect(() => {
     if (isLogin() === false) {
@@ -108,10 +102,8 @@ const Home = () => {
       dispatch(addAdoptionPage());
       dispatch(__getAdoptionList(payloadSettings));
     } else if (inView && searchPublicSetState && publicSearchMode) {
-      console.log("scroll function");
       scrollAdoption();
     }
-    console.log("none");
   }, [inView]);
 
   const adoptionSearchPayload = {
@@ -185,8 +177,6 @@ const Home = () => {
   const scrollAdoption = () => {
     dispatch(__getAdoptionSearch(adoptionSearchPayload));
   };
-
-  console.log(responseMessage);
 
   return (
     <Layout>

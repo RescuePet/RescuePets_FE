@@ -36,7 +36,6 @@ import { __PostCatchData } from "../../redux/modules/petworkSlice";
 import { useDispatch, useSelector } from "react-redux";
 import imgdelete from "../../asset/imgDelete.svg";
 import { useNavigate } from "react-router-dom";
-// import { PostModal } from "./components/Modal";
 import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
 
@@ -59,7 +58,6 @@ const Catch = () => {
   };
 
   useEffect(() => {
-    console.log(postId); // console.log(catchNumber.data[0].id)
     setPostNumber(data);
   }, [postId]);
 
@@ -172,15 +170,12 @@ const Catch = () => {
     ) {
       setIsActive(false);
     } else {
-      // console.log('실패')
       setIsActive(true);
     }
   }, [watch()]);
 
   // form submit 로직
   const onSubmitSightingHanlder = (data) => {
-    console.log(currentGenderEnValue);
-    console.log(currentNeuteredEnValue);
     if (addressDiv?.innerHTML === "" && selectedDate == "") {
       toggleModal();
       setCatchMsg("지도상에 위치와 날짜를 선택해주세요.");
@@ -206,11 +201,7 @@ const Catch = () => {
       imageFormData.map((img) => {
         formData.append("postImages", img);
       });
-      // for (let value of formData.values()) {
-      //   console.log(value);
-      // }
       dispatch(__PostCatchData(formData)).then((response) => {
-        console.log(response);
         if (response.type == "postgetCatchData/fulfilled") {
           toggleModal();
           setCatchMsg("등록 성공 ");

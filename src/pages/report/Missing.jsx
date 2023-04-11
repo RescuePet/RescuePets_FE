@@ -60,7 +60,6 @@ const Missing = () => {
   };
 
   useEffect(() => {
-    console.log("data.number", data.number);
     setPostNumber(data);
   }, [postId]);
 
@@ -116,7 +115,6 @@ const Missing = () => {
     e.preventDefault();
     // 인풋에서 선택된 이미지들
     const imageLists = e.target.files;
-    console.log(imageLists);
     // 미리보기 담을것
     let imageUrlLists = [...showImages];
     // 폼데이터 담을것
@@ -159,7 +157,6 @@ const Missing = () => {
     resetField(data);
   };
   const [selectedDate, setSelectedDate] = useState("");
-  console.log(selectedDate);
   // 현재 날짜를 가져옵니다.
   const currentDate = new Date().toISOString().split("T")[0];
   const handleDateChange = (e) => {
@@ -177,10 +174,8 @@ const Missing = () => {
       addressDiv?.innerHTML !== "" &&
       selectedDate !== ""
     ) {
-      // console.log('성공')
       setIsActive(false);
     } else {
-      // console.log('실패')
       setIsActive(true);
     }
   }, [watch()]);
@@ -214,9 +209,6 @@ const Missing = () => {
       imageFormData.map((img) => {
         formData.append("postImages", img);
       });
-      // for (let value of formData.values()) {
-      //   console.log(value);
-      // }
       dispatch(addImage(imageFormData[0]));
       dispatch(__PostMissingData(formData)).then((response) => {
         navigate(`/poster/${response.payload.id}`);

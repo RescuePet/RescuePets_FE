@@ -14,7 +14,6 @@ export const ReportMissingContainer = styled.form`
 export const ReportSightingContainer = styled.form`
   width: 100%;
   height: 72rem;
-  /* padding-top: 30px; */
   ${FlexAttribute("column", "", "center")}
   gap: .625rem 0;
 `;
@@ -25,7 +24,6 @@ export const ReportHeader = styled.div`
   border-bottom: 0.25rem solid #eeeeee;
   font-size: 1.125rem;
   font-weight: 700;
-  /* border: 1px solid red; */
   ${FlexAttribute("", "center", "space-around")}
   color: #222222;
   > div {
@@ -189,7 +187,6 @@ export const ReportInput = styled.input`
   margin-top: 0.3125rem;
   ${Border_1_color}
   border-radius: 0;
-  /* border-bottom: 1px solid gray; */
   background: transparent;
   font-size: 12px;
 `;
@@ -200,7 +197,6 @@ export const ReportLgInput = styled.input`
   margin-top: 0.3125rem;
   border-radius: 0;
   ${Border_1_color}
-  /* border: 1px solid red; */
   background: transparent;
   font-size: 0.75rem;
 `;
@@ -286,7 +282,6 @@ export const ReportAnimalPictureArea = styled.div`
   width: 18.75rem;
   height: 5.75rem;
   margin-right: 2.1875rem;
-  /* border: 1px solid blue; */
 `;
 export const ReportAnimalPictureAreaTitle = styled.div`
   width: 100%;
@@ -307,9 +302,7 @@ export const ReportAnimalPictureAreaInputBox = styled.div`
 export const ReportAnimalPictureInput = styled.div`
   width: 3.5rem;
   height: 3.5rem;
-  /* gary */
   background: ${(props) => props.theme.color.gray};
-  /* background: gray; */
   border-radius: 0.25rem;
   ${(props) => props.theme.FlexCenter}
   > h3 {

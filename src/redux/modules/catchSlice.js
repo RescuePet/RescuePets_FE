@@ -20,10 +20,8 @@ export const __PostCatchData = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await instance.post("/api/post/", payload);
-      console.log(response);
       return thunkAPI.fulfillWithValue(response?.data?.data);
     } catch (error) {
-      console.log(error.response);
       throw new Error(error.response.data.message);
     }
   }

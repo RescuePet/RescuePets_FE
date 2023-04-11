@@ -84,8 +84,6 @@ home.interceptors.request.use(
 );
 
 home.interceptors.response.use((response) => {
-  console.log("interceptors", response);
-  console.log("response url", response.config.url.split("?")[0]);
   if (response.config.url.replace(/[0-9]/g, "") === "/api/pets/details/") {
     const refinedata = refineData(response.data.data);
     const newData = { ...response.data.data, refinedata };
@@ -102,7 +100,6 @@ home.interceptors.response.use((response) => {
     response.data.publicPetResponseDto = [...newArray];
     return response;
   } else if (response.config.url.split("?")[0] === "api/pets/search") {
-    console.log("/api/pets/search");
     let newArray = [...response.data.data];
     newArray.map((item) => {
       const refinedata = refineData(item);
