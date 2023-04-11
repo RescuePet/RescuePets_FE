@@ -18,7 +18,10 @@ import {
   __postMissingScrap,
 } from "../../../redux/modules/petworkSlice";
 import ClippingFill from "../../../asset/profile/ClippingFill";
-import { resetResponseMessage } from "../../../redux/modules/searchSlice";
+import {
+  postScrap,
+  resetResponseMessage,
+} from "../../../redux/modules/searchSlice";
 
 const Card = ({ item, page }) => {
   const refineData = petworkRefineData(item);
@@ -33,8 +36,10 @@ const Card = ({ item, page }) => {
     };
     if (page === "missingdetail") {
       dispatch(__postMissingScrap(payload));
+      dispatch(postScrap(payload));
     } else if (page === "catchdetail") {
       dispatch(__postCatchScrap(payload));
+      dispatch(postScrap(payload));
     }
   };
 

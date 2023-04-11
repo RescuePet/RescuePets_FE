@@ -165,12 +165,21 @@ export const searchSlice = createSlice({
       const index = state.publicSearchLists.findIndex(
         (item) => item.desertionNo === action.payload.desertionNo.toString()
       );
-      console.log(index);
       const updateListsItem = {
         ...state.publicSearchLists[index],
         isScrap: !action.payload.state,
       };
       state.publicSearchLists[index] = updateListsItem;
+    },
+    postScrap: (state, action) => {
+      const index = state.postSearchLists.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      const updateListsItem = {
+        ...state.postSearchLists[index],
+        isWished: !action.payload.state,
+      };
+      state.postSearchLists[index] = updateListsItem;
     },
   },
   extraReducers: (builder) => {
@@ -223,5 +232,6 @@ export const {
   resetResponseMessage,
   completeSearch,
   publicScrap,
+  postScrap,
 } = searchSlice.actions;
 export default searchSlice.reducer;
