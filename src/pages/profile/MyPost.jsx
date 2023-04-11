@@ -28,7 +28,7 @@ const MyPost = () => {
   const location = useLocation();
   useEffect(() => {
     initAmplitude();
-    logEvent(`/${location.pathname}`);
+    logEvent(`enter_${location.pathname}`);
     setAmplitudeUserId();
     return () => {
       resetAmplitude();
