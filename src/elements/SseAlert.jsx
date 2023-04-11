@@ -17,7 +17,7 @@ export default function Modal({ isOpen, onClose, children }) {
   useEffect(() => {
     if (isOpen) {
       const timeoutId = setTimeout(() => {
-        onClose();
+        // onClose();
       }, 750);
       return () => clearTimeout(timeoutId);
     }
@@ -83,7 +83,7 @@ export const ModalSEEMsgContainer = styled.div`
     width: 2.5rem;
     height: 2.5rem;
     top: -13%;
-    left: -3%;
+    left: -4%;
   }
 `;
 
