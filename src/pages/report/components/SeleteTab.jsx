@@ -11,11 +11,11 @@ const SeleteTab = ({
   tabValue,
   onChangeGender,
   onChangeNeutered,
-  onChangeNickname,
+  // onChangeNickname,
 }) => {
   const [currentGenderTab, setCurrentGenderTab] = useState(2);
   const [currentNeuteredTab, setCurrentNeuteredTab] = useState(2);
-  const [currentNicknameTab, setCurrentNicknameTab] = useState(0);
+  // const [currentNicknameTab, setCurrentNicknameTab] = useState(0);
 
   // Edit 일때 값이 캐싱 되는 현상
   useEffect(() => {
@@ -37,13 +37,14 @@ const SeleteTab = ({
     } else if (tabValue?.neuterYn == "") {
       setCurrentNeuteredTab(0);
     }
-    if (tabValue?.ninkCheck == true) {
-      setCurrentNicknameTab(0);
-    } else if (tabValue?.ninkCheck == false) {
-      setCurrentNicknameTab(1);
-    } else if (tabValue?.ninkCheck == "") {
-      setCurrentNicknameTab(0);
-    } else {
+    // if (tabValue?.ninkCheck == true) {
+    //   setCurrentNicknameTab(0);
+    // } else if (tabValue?.ninkCheck == false) {
+    //   setCurrentNicknameTab(1);
+    // } else if (tabValue?.ninkCheck == "") {
+    //   setCurrentNicknameTab(0);
+    // } 
+    else {
       console.log("에러");
     }
   }, []);
@@ -58,10 +59,10 @@ const SeleteTab = ({
     onChangeNeutered(seleteneuteredArr[index].value);
   };
 
-  const selectNicknameHandler = (index) => {
-    setCurrentNicknameTab(index);
-    onChangeNickname(openNickname[index].value);
-  };
+  // const selectNicknameHandler = (index) => {
+  //   setCurrentNicknameTab(index);
+  //   onChangeNickname(openNickname[index].value);
+  // };
 
   return (
     <>
@@ -104,7 +105,7 @@ const SeleteTab = ({
           </ReportAnimalInfoCheckBoxSelete>
         </ReportAnimalInfoCheckBox>
 
-        <ReportAnimalInfoCheckBox>
+        {/* <ReportAnimalInfoCheckBox>
           <ReportAnimalInfoCheckBoxTitle>
             <p>닉네임 공개</p>
           </ReportAnimalInfoCheckBoxTitle>
@@ -121,7 +122,7 @@ const SeleteTab = ({
               </li>
             ))}
           </ReportAnimalInfoCheckBoxSelete>
-        </ReportAnimalInfoCheckBox>
+        </ReportAnimalInfoCheckBox> */}
       </ReportAnimalTabBox>
     </>
   );
