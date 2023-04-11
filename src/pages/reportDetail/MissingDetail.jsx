@@ -43,6 +43,8 @@ import { Loading } from "../../components/Loading";
 import { toggleOption, toggleReport } from "../../redux/modules/menubarSlice";
 import Option from "../../components/Option";
 import ReportModal from "../../components/ReportModal";
+import { useModalState } from "../../hooks/useModalState";
+import { CheckModal } from "../../elements/Modal";
 
 const MissingDetail = () => {
   const { id } = useParams();
@@ -50,7 +52,18 @@ const MissingDetail = () => {
   const navigate = useNavigate();
   const userName = JSON.parse(Cookies.get("UserInfo"));
   const commentRef = useRef(null);
+  // const [reportMissingMsg, setReportMissingMsg] = useState("");
 
+  const [loginModal, toggleModal] = useModalState(false);
+  const [missingdetailMsg, setMissingDetailMsg] = useState("");
+
+  console.log("최신값: ", missingdetailMsg);
+
+  const onChangeReportMsg = (newMsg) => {
+    console.log(newMsg);
+    toggleModal();
+    setMissingDetailMsg(newMsg);
+  };
   const [commentPage, setCommentPage] = useState(1);
 
   const { missingPostDetail } = useSelector((state) => state?.petwork);
@@ -82,7 +95,9 @@ const MissingDetail = () => {
   }
 
   if (error) {
-    alert(errorMessage);
+    toggleModal();
+    setMissingDetailMsg(errorMessage);
+    // alert(errorMessage);
     dispatch(resetError());
   }
 
@@ -108,7 +123,9 @@ const MissingDetail = () => {
       content: content.message,
     };
     if (content.message === "") {
-      alert("댓글을 입력해주세요.");
+      toggleModal();
+      setMissingDetailMsg("댓글을 입력해주세요.");
+      // alert("댓글을 입력해주세요.");
       return;
     } else {
       dispatch(__postComment(data));
@@ -315,7 +332,19 @@ const MissingDetail = () => {
           }
         />
       )}
-      {reportState && <ReportModal setting={reportSetting} />}
+
+      {reportState && (
+        <ReportModal setting={reportSetting} onChangeMsg={onChangeReportMsg} />
+      )}
+      {missingdetailMsg == "" ? null : (
+        <CheckModal
+          isOpen={loginModal}
+          toggle={toggleModal}
+          onClose={toggleModal}
+        >
+          {missingdetailMsg}
+        </CheckModal>
+      )}
     </Layout>
   );
 };

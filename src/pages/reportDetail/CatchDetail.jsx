@@ -41,6 +41,8 @@ import { Loading } from "../../components/Loading";
 import { toggleOption, toggleReport } from "../../redux/modules/menubarSlice";
 import ReportModal from "../../components/ReportModal";
 import Option from "../../components/Option";
+import { useModalState } from "../../hooks/useModalState";
+import { CheckModal } from "../../elements/Modal";
 
 const SightingDetail = () => {
   const { id } = useParams();
@@ -48,6 +50,17 @@ const SightingDetail = () => {
   const navigate = useNavigate();
   const userName = JSON.parse(Cookies.get("UserInfo"));
   const commentRef = useRef(null);
+
+  const [loginModal, toggleModal] = useModalState(false);
+  const [catchdetailMsg, setCatchDetailMsg] = useState("");
+
+  console.log("최신값: ", catchdetailMsg);
+
+  const onChangeReportMsg = (newMsg) => {
+    console.log(newMsg);
+    toggleModal();
+    setCatchDetailMsg(newMsg);
+  };
 
   const [commentPage, setCommentPage] = useState(1);
 
@@ -80,7 +93,10 @@ const SightingDetail = () => {
   }
 
   if (error) {
-    alert(errorMessage);
+    toggleModal();
+    setCatchDetailMsg(errorMessage);
+
+    // alert(errorMessage);
     dispatch(resetError());
   }
 
@@ -111,7 +127,9 @@ const SightingDetail = () => {
       content: content.message,
     };
     if (content.message === "") {
-      alert("댓글을 입력해주세요.");
+      toggleModal();
+      setCatchDetailMsg("댓글을 입력해주세요.");
+      // alert("댓글을 입력해주세요.");
       return;
     }
     dispatch(__postComment(data));
@@ -294,7 +312,18 @@ const SightingDetail = () => {
           }
         />
       )}
-      {reportState && <ReportModal setting={reportSetting} />}
+      {reportState && (
+        <ReportModal setting={reportSetting} onChangeMsg={onChangeReportMsg} />
+      )}
+      {catchdetailMsg == "" ? null : (
+        <CheckModal
+          isOpen={loginModal}
+          toggle={toggleModal}
+          onClose={toggleModal}
+        >
+          {catchdetailMsg}
+        </CheckModal>
+      )}
     </CatchLayout>
   );
 };

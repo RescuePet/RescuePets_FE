@@ -161,6 +161,7 @@ const ChatRoom = () => {
             }
           })}
       </ChatRoomBody>
+
       <InputContainer
         placeholder="메세지를 입력해주세요."
         submitHandler={submitHandler}
