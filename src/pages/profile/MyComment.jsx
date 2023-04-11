@@ -5,7 +5,7 @@ import { FlexAttribute, HeaderStyle } from "../../style/Mixin";
 import CommentList from "./components/CommentList";
 
 import close from "../../asset/Close.svg";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   __getMyComment,
@@ -16,7 +16,25 @@ import { useInView } from "react-intersection-observer";
 import Error404 from "../../elements/Error404";
 import ErrorComment from "../../asset/error/404comment.png";
 
+import {
+  initAmplitude,
+  logEvent,
+  setAmplitudeUserId,
+  resetAmplitude,
+} from "../../utils/amplitude";
+
 const MyComment = () => {
+  // 앰플리튜드
+  const location = useLocation();
+  useEffect(() => {
+    initAmplitude();
+    logEvent(`/${location.pathname}`);
+    setAmplitudeUserId();
+    return () => {
+      resetAmplitude();
+    };
+  }, []);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [ref, inView] = useInView();

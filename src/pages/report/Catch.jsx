@@ -35,11 +35,28 @@ import { NameValue, TimeValue } from "./components/data";
 import { __PostCatchData } from "../../redux/modules/petworkSlice";
 import { useDispatch, useSelector } from "react-redux";
 import imgdelete from "../../asset/imgDelete.svg";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
 
+import {
+  initAmplitude,
+  logEvent,
+  setAmplitudeUserId,
+  resetAmplitude,
+} from "../../utils/amplitude";
+
 const Catch = () => {
+  // 앰플리튜드
+  const location = useLocation();
+  useEffect(() => {
+    initAmplitude();
+    logEvent(`/${location.pathname}`);
+    setAmplitudeUserId();
+    return () => {
+      resetAmplitude();
+    };
+  }, []);
   let imageRef;
   const dispatch = useDispatch();
   const navigate = useNavigate();

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import { FlexAttribute, HeaderStyle } from "../../style/Mixin";
 import { Body_400_12 } from "../../style/theme";
 import ProfileSetList from "./components/ProfileSetList";
 import UserInformation from "./components/UserInformation";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import profileHeader from "./../../asset/header/profileheader.png";
 import Setting from "../../asset/profile/Setting";
 import Cookies from "js-cookie";
@@ -14,7 +14,25 @@ import { useDispatch } from "react-redux";
 import { __SignoutUser } from "../../redux/modules/signSlice";
 import { CheckModal } from "../../elements/Modal";
 
+import {
+  initAmplitude,
+  logEvent,
+  setAmplitudeUserId,
+  resetAmplitude,
+} from "../../utils/amplitude";
+
 const Profile = () => {
+  // 앰플리튜드
+  const location = useLocation();
+  useEffect(() => {
+    initAmplitude();
+    logEvent(`/${location.pathname}`);
+    setAmplitudeUserId();
+    return () => {
+      resetAmplitude();
+    };
+  }, []);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginModal, toggleModal] = useModalState(false);

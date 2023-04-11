@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import { HeaderStyle, Border_1_color, FlexAttribute } from "../../style/Mixin";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import imageCompression from "browser-image-compression";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +13,25 @@ import { __PutMyinfoEdit } from "../../redux/modules/infoeditSlice";
 import Cookies from "js-cookie";
 import { Spinner } from "../../components/Spinner";
 
+import {
+  initAmplitude,
+  logEvent,
+  setAmplitudeUserId,
+  resetAmplitude,
+} from "../../utils/amplitude";
+
 const Editinfo = () => {
+  // 앰플리튜드
+  const location = useLocation();
+  useEffect(() => {
+    initAmplitude();
+    logEvent(`/${location.pathname}`);
+    setAmplitudeUserId();
+    return () => {
+      resetAmplitude();
+    };
+  }, []);
+
   let imageRef;
   const navigate = useNavigate();
   const dispatch = useDispatch();

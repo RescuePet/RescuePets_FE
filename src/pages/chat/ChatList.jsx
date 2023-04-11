@@ -7,7 +7,26 @@ import ChatListBox from "./components/ChatListBox";
 import { useDispatch, useSelector } from "react-redux";
 import { __getMyChatRoom } from "../../redux/modules/chatSlice";
 
+import {
+  initAmplitude,
+  logEvent,
+  setAmplitudeUserId,
+  resetAmplitude,
+} from "../../utils/amplitude";
+import { useLocation } from "react-router-dom";
+
 const ChatList = () => {
+  // 앰플리튜드
+  const location = useLocation();
+  useEffect(() => {
+    initAmplitude();
+    logEvent(`/${location.pathname}`);
+    setAmplitudeUserId();
+    return () => {
+      resetAmplitude();
+    };
+  }, []);
+
   const dispatch = useDispatch();
   const { myChatRoom } = useSelector((state) => state.myChat);
 

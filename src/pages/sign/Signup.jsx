@@ -2,24 +2,36 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import back from "../../asset/Back.svg";
 import eye from "../../asset/eye.svg";
 import Layout from "../../layouts/Layout";
 import { __signupUser } from "../../redux/modules/signSlice";
-import {
-  FlexAttribute,
-  SignSvgStyle,
-  Border_2_color,
-  Border_1_color,
-} from "../../style/Mixin";
+import { FlexAttribute, SignSvgStyle, Border_1_color } from "../../style/Mixin";
 import Button from "../../elements/Button";
 import { CustomSelect } from "../../elements/CustomSelect";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
 import SignHeader from "./SignHeader";
 
+import {
+  initAmplitude,
+  logEvent,
+  setAmplitudeUserId,
+  resetAmplitude,
+} from "../../utils/amplitude";
+
 const Signup = () => {
+  // 앰플리튜드
+  const location = useLocation();
+  useEffect(() => {
+    initAmplitude();
+    logEvent(`/${location.pathname}`);
+    setAmplitudeUserId();
+    return () => {
+      resetAmplitude();
+    };
+  }, []);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginModal, toggleModal] = useModalState(false);

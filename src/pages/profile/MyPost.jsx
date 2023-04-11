@@ -11,12 +11,30 @@ import {
   resetProfileState,
 } from "../../redux/modules/profileSlice";
 import { useInView } from "react-intersection-observer";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import close from "../../asset/Close.svg";
 import Error404 from "../../elements/Error404";
 import ErrorPost from "../../asset/error/404post.png";
 
+import {
+  initAmplitude,
+  logEvent,
+  setAmplitudeUserId,
+  resetAmplitude,
+} from "../../utils/amplitude";
+
 const MyPost = () => {
+  // 앰플리튜드
+  const location = useLocation();
+  useEffect(() => {
+    initAmplitude();
+    logEvent(`/${location.pathname}`);
+    setAmplitudeUserId();
+    return () => {
+      resetAmplitude();
+    };
+  }, []);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [ref, inView] = useInView();

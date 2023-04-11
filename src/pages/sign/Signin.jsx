@@ -6,16 +6,32 @@ import cancel from "../../asset/cancel.svg";
 import check from "../../asset/check.svg";
 import Layout from "../../layouts/Layout";
 import { __signinUser } from "../../redux/modules/signSlice";
-import { FlexAttribute, Border_2_color, SignSvgStyle } from "../../style/Mixin";
+import { FlexAttribute, SignSvgStyle } from "../../style/Mixin";
 import Button from "../../elements/Button";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
-import isLogin from "../../utils/isLogin";
-import back from "../../asset/Back.svg";
 import SignHeader from "./SignHeader";
 
+import {
+  initAmplitude,
+  logEvent,
+  setAmplitudeUserId,
+  resetAmplitude,
+} from "../../utils/amplitude";
+
 const Signin = () => {
+  // 앰플리튜드
+  const location = useLocation();
+  useEffect(() => {
+    initAmplitude();
+    logEvent(`/${location.pathname}`);
+    setAmplitudeUserId();
+    return () => {
+      resetAmplitude();
+    };
+  }, []);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginModal, toggleModal] = useModalState(false);
@@ -31,9 +47,6 @@ const Signin = () => {
   const onClickDeleteValue = (data) => {
     resetField(data);
   };
-  // const MoveBackpage = () => {
-  //   navigate(-1);
-  // };
 
   const [isActive, setIsActive] = useState(false);
   const watchAll = Object.values(watch());

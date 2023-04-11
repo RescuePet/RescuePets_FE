@@ -6,7 +6,7 @@ import { useInView } from "react-intersection-observer";
 import ScrapList from "./components/ScrapList";
 
 import close from "../../asset/Close.svg";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { instance } from "../../utils/api";
 import ScrollToTop from "../../elements/ScrollToTop";
 import refresh from "../../asset/refresh.svg";
@@ -15,7 +15,25 @@ import { __getMyInfo } from "../../redux/modules/profileSlice";
 import Error404 from "../../elements/Error404";
 import ErrorScrap from "../../asset/error/404scrap.png";
 
+import {
+  initAmplitude,
+  logEvent,
+  setAmplitudeUserId,
+  resetAmplitude,
+} from "../../utils/amplitude";
+
 const MyScrap = () => {
+  // 앰플리튜드
+  const location = useLocation();
+  useEffect(() => {
+    initAmplitude();
+    logEvent(`/${location.pathname}`);
+    setAmplitudeUserId();
+    return () => {
+      resetAmplitude();
+    };
+  }, []);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [ref, inView] = useInView();

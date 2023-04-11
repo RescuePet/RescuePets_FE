@@ -11,7 +11,7 @@ import InputContainer from "../../components/InputContainer";
 import Title from "./components/Title";
 import Location from "./components/Location";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   __deletePost,
   __getCatchPostDetail,
@@ -44,7 +44,25 @@ import Option from "../../components/Option";
 import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
 
+import {
+  initAmplitude,
+  logEvent,
+  setAmplitudeUserId,
+  resetAmplitude,
+} from "../../utils/amplitude";
+
 const SightingDetail = () => {
+  // 앰플리튜드
+  const location = useLocation();
+  useEffect(() => {
+    initAmplitude();
+    logEvent(`/${location.pathname.split("/")[1]}`);
+    setAmplitudeUserId();
+    return () => {
+      resetAmplitude();
+    };
+  }, []);
+
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();

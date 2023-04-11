@@ -17,7 +17,7 @@ import Search from "../../asset/search";
 import profile from "../../asset/profile.svg";
 import Cookies from "js-cookie";
 import isLogin from "../../utils/isLogin";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SearchSetting from "../../components/search/SearchSetting";
 import SearchCategory from "../../components/search/SearchCategory";
 import {
@@ -34,7 +34,25 @@ import {
 import Error404 from "../../elements/Error404";
 import ErrorPost from "../../asset/error/404post.png";
 
+import {
+  initAmplitude,
+  logEvent,
+  setAmplitudeUserId,
+  resetAmplitude,
+} from "../../utils/amplitude";
+
 const Home = () => {
+  // 앰플리튜드
+  const location = useLocation();
+  useEffect(() => {
+    initAmplitude();
+    logEvent(`/${location.pathname}`);
+    setAmplitudeUserId();
+    return () => {
+      resetAmplitude();
+    };
+  }, []);
+
   const images = [
     { imageUrl: carouselImage1, linkUrl: "/introduce" },
     {

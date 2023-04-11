@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import {
   __getAdoptionDetail,
@@ -32,7 +32,25 @@ import ScrollToTop from "../../elements/ScrollToTop";
 import Backwhite from "../../asset/Backwhite";
 import { Loading } from "../../components/Loading";
 
+import {
+  initAmplitude,
+  logEvent,
+  setAmplitudeUserId,
+  resetAmplitude,
+} from "../../utils/amplitude";
+
 const AdoptionDetail = () => {
+  // 앰플리튜드
+  const location = useLocation();
+  useEffect(() => {
+    initAmplitude();
+    logEvent(`/${location.pathname.split("/")[1]}`);
+    setAmplitudeUserId();
+    return () => {
+      resetAmplitude();
+    };
+  }, []);
+
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();

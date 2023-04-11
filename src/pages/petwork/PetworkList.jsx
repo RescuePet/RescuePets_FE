@@ -14,7 +14,7 @@ import {
   resetPetworkLists,
 } from "../../redux/modules/petworkSlice";
 import { useInView } from "react-intersection-observer";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import petworkHeader from "../../asset/header/petworkheader.png";
 import FloatingButton from "./components/FloatingButton";
 import {
@@ -33,7 +33,25 @@ import { toDown } from "../../style/Animation";
 import Error404 from "../../elements/Error404";
 import ErrorPost from "../../asset/error/404post.png";
 
+import {
+  initAmplitude,
+  logEvent,
+  setAmplitudeUserId,
+  resetAmplitude,
+} from "../../utils/amplitude";
+
 const PetworkList = () => {
+  // 앰플리튜드
+  const location = useLocation();
+  useEffect(() => {
+    initAmplitude();
+    logEvent(`/${location.pathname}`);
+    setAmplitudeUserId();
+    return () => {
+      resetAmplitude();
+    };
+  }, []);
+
   const [missingRef, missingInView] = useInView();
   const [catchRef, catchInView] = useInView();
   const dispatch = useDispatch();

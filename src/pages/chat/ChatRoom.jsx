@@ -11,7 +11,7 @@ import InputContainer from "../../components/InputContainer";
 import Send from "./components/Send";
 import Receive from "./components/Receive";
 import { instance } from "../../utils/api";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import Back from "../../asset/Back.svg";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +22,25 @@ import ReportModal from "../../components/ReportModal";
 import { toggleReport } from "../../redux/modules/menubarSlice";
 import { resetunreadChat } from "../../redux/modules/chatSlice";
 
+import {
+  initAmplitude,
+  logEvent,
+  setAmplitudeUserId,
+  resetAmplitude,
+} from "../../utils/amplitude";
+
 const ChatRoom = () => {
+  // 앰플리튜드
+  const location = useLocation();
+  useEffect(() => {
+    initAmplitude();
+    logEvent(`/${location.pathname.split("/")[1]}`);
+    setAmplitudeUserId();
+    return () => {
+      resetAmplitude();
+    };
+  }, []);
+
   const { id, nickname } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();

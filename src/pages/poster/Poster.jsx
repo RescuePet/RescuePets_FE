@@ -10,7 +10,7 @@ import {
 } from "../../style/Mixin";
 import { useDispatch, useSelector } from "react-redux";
 import { __getMissingPostDetail } from "../../redux/modules/petworkSlice";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import QRCode from "qrcode.react";
 
 import html2canvas from "html2canvas";
@@ -25,7 +25,25 @@ import petworkRefineData from "../../utils/petworkRefine";
 import { instance } from "../../utils/api";
 import { Loading } from "../../components/Loading";
 
+import {
+  initAmplitude,
+  logEvent,
+  setAmplitudeUserId,
+  resetAmplitude,
+} from "../../utils/amplitude";
+
 const Poster = () => {
+  // 앰플리튜드
+  const location = useLocation();
+  useEffect(() => {
+    initAmplitude();
+    logEvent(`/${location.pathname.split("/")[1]}`);
+    setAmplitudeUserId();
+    return () => {
+      resetAmplitude();
+    };
+  }, []);
+
   const containerRef = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -120,6 +138,7 @@ const Poster = () => {
       const canvas = await html2canvas(containerRef.current);
       canvas.toBlob((blob) => {
         saveAs(blob);
+        logEvent("make_MissingPoster");
       });
     } catch (error) {
       console.log(error);
