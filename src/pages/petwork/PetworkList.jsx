@@ -57,6 +57,16 @@ const PetworkList = () => {
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(onSuccess, onFailure);
+    const missingFirstPayload = {
+      page: 1,
+      size: 10,
+    };
+    const catchFirstPayload = {
+      page: 1,
+      size: 10,
+    };
+    dispatch(__getMissingPost(missingFirstPayload));
+    dispatch(__getCatchPost(catchFirstPayload));
     return () => {
       dispatch(resetPetworkLists());
     };
@@ -73,6 +83,7 @@ const PetworkList = () => {
   };
 
   const petwork = useSelector((state) => state.petwork);
+
   const missingPayloadSettings = {
     page: petwork.missingPage,
     size: 10,

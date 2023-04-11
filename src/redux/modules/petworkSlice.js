@@ -157,8 +157,8 @@ const initialState = {
   loading: false,
   category: "우리집 반려동물을 찾아주세요",
   CommentInputState: false,
-  missingPage: 1,
-  catchPage: 1,
+  missingPage: 2,
+  catchPage: 2,
   missingPostLists: [],
   catchPostLists: [],
   missingPostDetail: {},
@@ -212,10 +212,6 @@ export const petworkSlice = createSlice({
       state.loading = false;
       state.postId = action.payload.id;
       state.error = null;
-      state.missingPostLists = [
-        { ...action.payload },
-        ...state.missingPostLists,
-      ];
     });
     builder.addCase(__PostMissingData.rejected, (state, action) => {
       state.loading = false;
