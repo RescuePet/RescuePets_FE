@@ -19,24 +19,14 @@ const KakaoMap = () => {
   const [loginModal, toggleModal] = useModalState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const menutoggle = useSelector((state) => {
-    return state.menubar.toggle;
-  });
-
-  const [mapBg, setMapBg] = useState(menutoggle);
-
-  useEffect(() => {
-    setMapBg(menutoggle);
-  }, [menutoggle]);
+  // 현재위치를 가지고오는 로직
+  const [long, setLong] = useState("");
+  const [lati, setLati] = useState("");
 
   //디비에 저장된 데이터 값 가져오기
   useEffect(() => {
     dispatch(__GetMissingData());
   }, []);
-
-  // 현재위치를 가지고오는 로직
-  const [long, setLong] = useState("");
-  const [lati, setLati] = useState("");
 
   navigator.geolocation.getCurrentPosition(onSucces, onFailure);
   function onSucces(position) {
