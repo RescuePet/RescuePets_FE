@@ -11,12 +11,14 @@ const OnBoarding = () => {
   const onBoardingCheck = Cookies.get("OnBoardingCheck");
 
   useEffect(() => {
-    Cookies.set("OnBoardingCheck", true);
     if (!!onBoardingCheck && isLogin()) {
       navigate("/home");
     } else if (!!onBoardingCheck && !isLogin()) {
       navigate("/signin");
     }
+    return () => {
+      Cookies.set("OnBoardingCheck", true);
+    };
   }, []);
 
   return (

@@ -93,6 +93,8 @@ const Layout = ({ children }) => {
   useEffect(() => {
     if (location.pathname === "/signup" && isLogin() === false) {
       return;
+    } else if (location.pathname === "/" && isLogin() === false) {
+      return;
     } else if (isLogin() === false) {
       navigate("/signin");
     }
