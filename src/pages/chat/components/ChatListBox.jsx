@@ -41,11 +41,15 @@ const ChatListBox = ({ item }) => {
               </MessageCount>
             )}
           </TitleWrapper>
-          <Contents>
-            {item.lastChat.length <= 20
-              ? item.lastChat
-              : item.lastChat.substring(0, 20) + ".."}
-          </Contents>
+          {item.lastChat == null ? (
+            <Contents>채팅이 없습니다.</Contents>
+          ) : (
+            <Contents>
+              {item.lastChat.length <= 20
+                ? item.lastChat
+                : item.lastChat.substring(0, 20) + ".."}
+            </Contents>
+          )}
         </TextWrapper>
       </ClickDiv>
     </ChatRoomListContainer>
