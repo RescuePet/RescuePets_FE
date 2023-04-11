@@ -15,7 +15,8 @@ import { EventSourcePolyfill } from "event-source-polyfill";
 import Cookies from "js-cookie";
 import { useModalState } from "../hooks/useModalState";
 import { SseAlertModal } from "../elements/SseAlert";
-import { seeaddCount } from "../redux/modules/sseSlice";
+import { seeChatCount } from "../redux/modules/sseSlice";
+import { seeMyaddCount } from "../redux/modules/sseSlice";
 
 const Layout = ({ children }) => {
   const navigate = useNavigate();
@@ -23,37 +24,27 @@ const Layout = ({ children }) => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const { scrollState } = useSelector((state) => state.comment);
   const dispatch = useDispatch();
-  const count = useSelector((state) => state.sseCount);
-  // console.log(count);
+
+
   const [loginModal, toggleModal] = useModalState(false);
-  // console.log(loginModal);
+
 
   const ref = useRef(null);
   const token = Cookies.get("Token");
 
   const [listening, setListening] = useState(false);
-  // console.log("SSE연결체크", listening);
+
   const [data, setData] = useState([]);
   let eventSource = undefined;
-  // let eventSource = useRef(null);
-  // console.log(data.message);
 
   useEffect(() => {
-    // setTimeout(function () {
-    //   // navigate("/home");
-    // }, 45000);
-
     if (listening === false) {
       eventSource = new EventSourcePolyfill(
         `${process.env.REACT_APP_SIGN_TEST}/sse/`,
         {
           headers: {
             Authorization: token,
-            // "Content-Type": "text/event-stream",
-            // Connection: "keep-alive",
           },
-          // heartbeatTimeout: 3600000,
-          // withCredentials: true,
         }
       );
     }
@@ -63,32 +54,36 @@ const Layout = ({ children }) => {
     };
 
     eventSource.onmessage = (event) => {
-      // console.log(event);
+
       setListening(true);
       const checkJSON = event.data.split(" ")[0];
-      // console.log(checkJSON);
+
       const data = checkJSON !== "EventStream" && JSON.parse(event.data);
-      // console.log(data);
+
       if (data.message !== undefined) {
-        setData(data);
         toggleModal();
         console.log(data.message);
-        // toggleModal();
-        dispatch(seeaddCount(1));
         setData(data);
+        console.log(data.message.split(" ")[1]);
+        if (data.message.split(" ")[1] == "새로운") {
+          console.log("1");
+          dispatch(seeChatCount(1));
+        } else if (data.message.split(" ")[1] == "댓글을") {
+          dispatch(seeMyaddCount(1));
+          console.log("2");
+        } else if (data.message.split(" ")[1] == "스크랩") {
+          console.log("3");
+          dispatch(seeMyaddCount(1));
+        }
       }
     };
 
     eventSource.onerror = (event) => {
-      console.log("SSE오류", event);
-      // eventSource.close();
       setListening(false);
     };
     return () => {
-      console.log("연결끊기 ");
       setListening(false);
       eventSource.close();
-      // console.log("eventsource closed");
     };
   }, [eventSource]);
 

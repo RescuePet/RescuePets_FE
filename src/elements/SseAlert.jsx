@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {  useEffect } from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import ModalImg from "../asset/Spinner/spinner.png";
@@ -13,30 +13,13 @@ export default function Modal({ isOpen, onClose, children }) {
     visible: { opacity: 1, x: 0 },
     hidden: { opacity: 0, x: "50%" },
   };
-  // const [isOpenModal, setIsOpenModal] = useState(true);
-  // console.log("기존모달값", isOpen);
-  // // console.log("현재모달값", isOpenModal);
-  // useEffect(() => {
-  //   console.log("이펙트", isOpen);
-  //   setIsOpenModal(isOpen);
-  //   if (isOpen) {
-  //     console.log("이펙트22", isOpen);
-  //     console.log("이펙트33", isOpenModal);
-  //     const timeoutId = setTimeout(() => {
-  //       setIsOpenModal(!isOpenModal);
-  //     }, 750);
-  //     return () => clearTimeout(timeoutId);
-  //   }
-  // }, [isOpen]);
 
-  // // console.log("현재모달값2", isOpenModal);
-  // console.log("내장", isOpen);
+
   useEffect(() => {
-    // console.log("use내장", isOpen);
     if (isOpen) {
       const timeoutId = setTimeout(() => {
         onClose();
-      }, 650);
+      }, 750);
       return () => clearTimeout(timeoutId);
     }
   }, [isOpen]);

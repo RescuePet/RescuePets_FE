@@ -3,26 +3,36 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 const initialState = {
-    ssecount : Number(localStorage.getItem("SSECount")) || 0, // 로컬 스토리지에서 기존 값 불러오기
-    count : Number(localStorage.getItem("Count")) || 0, // 로컬 스토리지에서 기존 값 불러오기
+  chatCount : Number(localStorage.getItem("chatCount")) || 0, 
+    ssemycount : Number(localStorage.getItem("myCount")) || 0,
 };
 
 export const SseCount = createSlice({
   name: "seeCount",
   initialState: initialState,
   reducers: {
-    seeaddCount: (state, action) => {
-        const newCount = state.ssecount + action.payload;
-        state.ssecount = newCount;
-        localStorage.setItem("SSECount", newCount); // 로컬 스토리지에 새로운 값 저장
+    seeChatCount: (state, action) => {
+        const newCount = state.chatCount + action.payload;
+        state.chatCount = newCount;
+        localStorage.setItem("chatCount", newCount); 
       },
-      seeCountReset: (state, action) => {
-        state.ssecount = action.payload;
-        localStorage.setItem("SSECount", action.payload); // 로컬 스토리지에 새로운 값 저장
+      seeChatCountReset: (state, action) => {
+        state.chatCount = action.payload;
+        localStorage.setItem("chatCount", action.payload); 
+      },
+
+      seeMyaddCount: (state, action) => {
+        const newCount = state.ssemycount + action.payload;
+        state.ssemycount = newCount;
+        localStorage.setItem("myCount", newCount); 
+      },
+      seeMyCountReset: (state, action) => {
+        state.ssemycount = action.payload;
+        localStorage.setItem("myCount", action.payload);
       },
   },
 });
-export const { seeaddCount,seeCountReset } = SseCount.actions;
+export const { seeChatCount,seeChatCountReset ,seeMyaddCount,seeMyCountReset} = SseCount.actions;
 
 export default SseCount.reducer;
 

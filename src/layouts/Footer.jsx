@@ -12,19 +12,26 @@ import FooterIconNetwork from "../asset/footericon/FooterIconNetwork";
 import FooterIconChat from "../asset/footericon/FooterIconChat";
 import FooterIconProfile from "../asset/footericon/FooterIconProfile";
 import Reportcatch from "../asset/Reportcatch";
-import { seeCountReset } from "../redux/modules/sseSlice";
+import { seeChatCountReset } from "../redux/modules/sseSlice";
+import { seeMyCountReset } from "../redux/modules/sseSlice";
 
 const Footer = () => {
-  // payload로 값 보내기 위한 훅
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
   const moveToChatRoom = () => {
-    localStorage.setItem("SSECount", 0);
-    dispatch(seeCountReset(0));
+    localStorage.setItem("chatCount", 0);
+    dispatch(seeChatCountReset(0));
     navigate("/chatlist");
   };
+
+  const moveToMypage = () => {
+    localStorage.setItem("myCount", 0);
+    dispatch(seeMyCountReset(0));
+    navigate("/profile");
+  };
+
   // const apple =
   const [menuBar, setMenuBar] = useState(false);
 
@@ -42,7 +49,8 @@ const Footer = () => {
     }
   };
 
-  const SSECOUNT = JSON.parse(localStorage.getItem("SSECount"));
+  const sseChatCount = JSON.parse(localStorage.getItem("chatCount"));
+  const sseMyCount = JSON.parse(localStorage.getItem("myCount"));
   // console.log(SSECOUNT);
   return (
     <FooterContiner>
@@ -75,14 +83,16 @@ const Footer = () => {
       >
         <FooterIconChat></FooterIconChat>
         <span>채팅</span>
-        {SSECOUNT == 0 ? null : <p>{SSECOUNT}</p>}
+        {sseChatCount == 0 ? null : <p>{sseChatCount}</p>}
       </FooterEachIconContiner>
       <FooterEachIconContiner
+        style={{ position: "relative" }}
         active={location.pathname.split("/")[1] === "profile"}
-        onClick={() => navigate("/profile")}
+        onClick={moveToMypage}
       >
         <FooterIconProfile></FooterIconProfile>
         <span>마이페이지</span>
+        {sseMyCount == 0 ? null : <p>{sseMyCount}</p>}
       </FooterEachIconContiner>
       <div>
         <FooterIconToggleBtn

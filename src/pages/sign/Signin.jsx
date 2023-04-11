@@ -25,14 +25,16 @@ const Signin = () => {
     resetField,
     watch,
   } = useForm({ mode: "onChange" });
-  // 삭제로직
+
   const onClickDeleteValue = (data) => {
     resetField(data);
   };
 
-  // 입력값에 따라 버튼 활성화
   const [isActive, setIsActive] = useState(false);
   const watchAll = Object.values(watch());
+
+  const chatCount = localStorage.getItem("chatCount");
+  const myCount = localStorage.getItem("myCount");
 
   useEffect(() => {
     if (watchAll.every((el) => el)) {
@@ -49,18 +51,18 @@ const Signin = () => {
       email: data.email,
       password: data.password,
     };
-    // 토
+
     toggleModal();
     dispatch(__signinUser(siginInfo)).then((response) => {
       console.log(response);
       if (response.type === "signinUser/rejected") {
-        console.log("실패");
         setSignInMsg(`⛔  ${response.error.message}`);
       } else if (response.type === "signinUser/fulfilled") {
-        console.log("성공");
         setSignInMsg(`✅  ${response.payload.message}`);
-        localStorage.setItem("SSECount", 0);
-        localStorage.setItem("Count", 0);
+        if (chatCount == null && myCount == null) {
+          localStorage.setItem("chatCount", 0);
+          localStorage.setItem("myCount", 0);
+        }
         setTimeout(function () {
           navigate("/home");
         }, 1000);
