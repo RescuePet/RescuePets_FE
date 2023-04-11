@@ -413,12 +413,12 @@ const EditCatch = () => {
                 }
                 {...register("characteristic", {
                   pattern: {
-                    value: /^[가-힣\s]+$/,
-                    message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
+                    value: /^[a-zA-Z가-힣\s!,.]+$/,
+                    message: "한글,영어 . , ! 만 들어갈 수있습니다 ",
                   },
                   maxLength: {
-                    value: 20,
-                    message: "20글자 이하이어야 합니다.",
+                    value: 30,
+                    message: "30글자 이하이어야 합니다.",
                   },
                 })}
               />
@@ -442,12 +442,12 @@ const EditCatch = () => {
                 }
                 {...register("memo", {
                   pattern: {
-                    value: /^[가-힣\s]+$/,
-                    message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
+                    value: /^[a-zA-Z가-힣\s!,.]+$/,
+                    message: "한글,영어 . , ! 만 들어갈 수있습니다 ",
                   },
                   maxLength: {
-                    value: 20,
-                    message: "20글자 이하이어야 합니다.",
+                    value: 40,
+                    message: "40글자 이하이어야 합니다.",
                   },
                 })}
               />
