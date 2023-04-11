@@ -11,6 +11,7 @@ import {
   addMissingPage,
   __getCatchPost,
   __getMissingPost,
+  resetPetworkLists,
 } from "../../redux/modules/petworkSlice";
 import { useInView } from "react-intersection-observer";
 import { useNavigate } from "react-router-dom";
@@ -56,6 +57,9 @@ const PetworkList = () => {
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(onSuccess, onFailure);
+    return () => {
+      dispatch(resetPetworkLists());
+    };
   }, []);
 
   const onSuccess = useCallback((position) => {

@@ -177,9 +177,6 @@ export const petworkSlice = createSlice({
     toggleCommentInput: (state) => {
       state.CommentInputState = !state.CommentInputState;
     },
-    resetCommentInput: (state) => {
-      state.CommentInputState = false;
-    },
     addMissingPage: (state) => {
       state.missingPage = state.missingPage + 1;
     },
@@ -191,6 +188,13 @@ export const petworkSlice = createSlice({
         state.missingPostDetail.commentCount + 1;
       state.catchPostDetail.commentCount =
         state.catchPostDetail.commentCount + 1;
+    },
+    resetCommentInput: (state) => {
+      state.CommentInputState = false;
+    },
+    resetPetworkLists: (state) => {
+      state.missingPostLists = [];
+      state.catchPostLists = [];
     },
     removeCommentCount: (state) => {
       state.missingPostDetail.commentCount =
@@ -364,6 +368,7 @@ export const {
   addMissingPage,
   addCatchPage,
   resetCommentInput,
+  resetPetworkLists,
   addCommentCount,
   removeCommentCount,
 } = petworkSlice.actions;
