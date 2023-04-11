@@ -392,8 +392,8 @@ const EditMissing = () => {
                   placeholder={missingPostDetail.colorCd}
                   {...register("animalcolor", {
                     pattern: {
-                      value: /^[가-힣\s]+$/,
-                      message: "한글만 2 ~ 8글자 사이로 입력 ",
+                      value: /^[가-힣\s\(\)\,]+$/,
+                      message: "한글 ( ) , 만입력가능 ",
                     },
                     maxLength: {
                       value: 8,
@@ -453,12 +453,12 @@ const EditMissing = () => {
                 {...register("characteristic", {
                   required: false,
                   pattern: {
-                    value: /^[가-힣\s]+$/,
-                    message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
+                    value: /^[a-zA-Z가-힣\s!,.]+$/,
+                    message: "한글,영어 . , ! 만 들어갈 수있습니다 ",
                   },
                   maxLength: {
-                    value: 20,
-                    message: "20글자 이하이어야 합니다.",
+                    value: 30,
+                    message: "30글자 이하이어야 합니다.",
                   },
                 })}
               />
@@ -479,12 +479,12 @@ const EditMissing = () => {
                 {...register("memo", {
                   required: false,
                   pattern: {
-                    value: /^[가-힣\s]+$/,
-                    message: "한글만 20글자 안으로 입력 띄워쓰기 X ",
+                    value: /^[a-zA-Z가-힣\s!,.]+$/,
+                    message: "한글,영어 . , ! 만 들어갈 수있습니다 ",
                   },
                   maxLength: {
-                    value: 20,
-                    message: "20글자 이하이어야 합니다.",
+                    value: 40,
+                    message: "40글자 이하이어야 합니다.",
                   },
                 })}
               />
