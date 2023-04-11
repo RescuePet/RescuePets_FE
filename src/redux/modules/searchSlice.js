@@ -161,6 +161,17 @@ export const searchSlice = createSlice({
       state.publicSearchLists = [];
       state.postSearchLists = [];
     },
+    publicScrap: (state, action) => {
+      const index = state.publicSearchLists.findIndex(
+        (item) => item.desertionNo === action.payload.desertionNo.toString()
+      );
+      console.log(index);
+      const updateListsItem = {
+        ...state.publicSearchLists[index],
+        isScrap: !action.payload.state,
+      };
+      state.publicSearchLists[index] = updateListsItem;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -211,5 +222,6 @@ export const {
   resetKindValue,
   resetResponseMessage,
   completeSearch,
+  publicScrap,
 } = searchSlice.actions;
 export default searchSlice.reducer;

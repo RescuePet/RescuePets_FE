@@ -11,7 +11,10 @@ import ClippingFill from "../../../asset/profile/ClippingFill";
 import { useDispatch } from "react-redux";
 import { __postAdoptionListScrap } from "../../../redux/modules/adoptionSlice";
 import State from "../../../elements/State";
-import { resetResponseMessage } from "../../../redux/modules/searchSlice";
+import {
+  publicScrap,
+  resetResponseMessage,
+} from "../../../redux/modules/searchSlice";
 
 const Post = ({ item }) => {
   const navigate = useNavigate();
@@ -25,6 +28,9 @@ const Post = ({ item }) => {
       desertionNo: item.desertionNo,
     };
     dispatch(__postAdoptionListScrap(payload));
+    console.log("publickScrap before");
+    dispatch(publicScrap(payload));
+    console.log("publickScrap after");
   };
 
   useEffect(() => {
