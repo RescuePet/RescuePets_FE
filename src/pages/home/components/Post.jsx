@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import styled from "styled-components";
 import { FlexAttribute } from "../../../style/Mixin";
@@ -11,10 +11,12 @@ import ClippingFill from "../../../asset/profile/ClippingFill";
 import { useDispatch } from "react-redux";
 import { __postAdoptionListScrap } from "../../../redux/modules/adoptionSlice";
 import State from "../../../elements/State";
+import { resetResponseMessage } from "../../../redux/modules/searchSlice";
 
 const Post = ({ item }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const scrapHandler = (e) => {
     e.stopPropagation();
     let payload = {
@@ -24,6 +26,12 @@ const Post = ({ item }) => {
     };
     dispatch(__postAdoptionListScrap(payload));
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetResponseMessage());
+    };
+  }, []);
 
   return (
     <PostContainer

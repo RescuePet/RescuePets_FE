@@ -23,12 +23,13 @@ import SearchCategory from "../../components/search/SearchCategory";
 import {
   __getAdoptionSearch,
   completeSearch,
+  resetResponseMessage,
   setMemberPosition,
   setSearchValue,
   toggleDescriptionCategory,
   toggleKindCategory,
-  toggleSearchMode,
-  toggleSearchState,
+  togglePublicSearchMode,
+  togglePublicSearchState,
 } from "../../redux/modules/searchSlice";
 import Error404 from "../../elements/Error404";
 import ErrorPost from "../../asset/error/404post.png";
@@ -46,14 +47,13 @@ const Home = () => {
   const navigate = useNavigate();
   const [ref, inView] = useInView();
   const [userInfo, setUserInfo] = useState({});
-  // const [searchOn, setSearchOn] = useState(false);
 
   const { adoptionPage, adoptionLists } = useSelector(
     (state) => state.adoption
   );
 
   const {
-    searchMode,
+    publicSearchMode,
     publicSearchLists,
     searchValue,
     responseMessage,
@@ -61,8 +61,8 @@ const Home = () => {
     longitude,
     latitude,
     searchPage,
-    searchState,
-    searchSetState,
+    searchPublicState,
+    searchPublicSetState,
     searchCategory,
     descriptionCategory,
   } = useSelector((state) => state.search);
@@ -70,6 +70,9 @@ const Home = () => {
   useEffect(() => {
     console.log("navigator");
     navigator.geolocation.getCurrentPosition(onSuccess, onFailure);
+    return () => {
+      resetResponseMessage();
+    };
   }, []);
 
   // console.log(onSucces)
@@ -101,13 +104,14 @@ const Home = () => {
   }, [navigate]);
 
   useEffect(() => {
-    if (inView && !searchSetState) {
+    if (inView && !searchPublicSetState) {
       dispatch(addAdoptionPage());
       dispatch(__getAdoptionList(payloadSettings));
-    } else if (inView && searchSetState && searchMode) {
+    } else if (inView && searchPublicSetState && publicSearchMode) {
+      console.log("scroll function");
       scrollAdoption();
-    } else if (inView && searchSetState && searchMode) {
     }
+    console.log("none");
   }, [inView]);
 
   const adoptionSearchPayload = {
@@ -121,8 +125,6 @@ const Home = () => {
     type: "public",
   };
 
-  console.log("searchValue", searchValue);
-
   const searchAdoption = (value) => {
     const payload = {
       page: 1,
@@ -134,7 +136,7 @@ const Home = () => {
       searchValue: value,
       type: "public",
     };
-    dispatch(toggleSearchMode(true));
+    dispatch(togglePublicSearchMode(true));
     dispatch(completeSearch());
 
     dispatch(__getAdoptionSearch(payload));
@@ -151,8 +153,8 @@ const Home = () => {
         searchKey: searchCategory,
         type: "public",
       };
-      dispatch(toggleSearchMode(true));
       dispatch(completeSearch());
+      dispatch(togglePublicSearchMode(true));
       dispatch(toggleDescriptionCategory(distance));
 
       dispatch(__getAdoptionSearch(payload));
@@ -172,10 +174,10 @@ const Home = () => {
       searchValue: kindCategory,
       type: "public",
     };
+    dispatch(completeSearch());
     dispatch(setSearchValue(kindCategory));
     dispatch(toggleKindCategory(kindCategory));
-    dispatch(toggleSearchMode(true));
-    dispatch(completeSearch());
+    dispatch(togglePublicSearchMode(true));
 
     dispatch(__getAdoptionSearch(adoptionSearchPayload));
   };
@@ -189,7 +191,7 @@ const Home = () => {
   return (
     <Layout>
       <Header>
-        {searchState ? (
+        {searchPublicState ? (
           <SearchCategory />
         ) : (
           <>
@@ -203,13 +205,13 @@ const Home = () => {
             <SearchIcon
               width={30}
               height={30}
-              onClick={() => dispatch(toggleSearchState())}
+              onClick={() => dispatch(togglePublicSearchState())}
             />
           </>
         )}
       </Header>
-      {!searchSetState && <Carousel images={images} />}
-      {searchSetState && (
+      {!searchPublicSetState && <Carousel images={images} />}
+      {searchPublicSetState && (
         <SearchSetting
           searchHandler={searchAdoption}
           searchKindHandler={searchKindHandler}
@@ -218,14 +220,15 @@ const Home = () => {
       )}
       <PostContainer>
         <TitleBox>
-          {searchSetState ? (
+          {searchPublicSetState ? (
             <h2>검색 내용</h2>
           ) : (
             <h2>새로운 가족을 맞이해보세요</h2>
           )}
         </TitleBox>
-        {responseMessage && <Error404 srcUrl={ErrorPost} />}
-        {!searchSetState &&
+        {responseMessage === "유기동물 검색 결과가 없습니다." &&
+          publicSearchLists.length === 0 && <Error404 srcUrl={ErrorPost} />}
+        {!searchPublicSetState &&
           adoptionLists.map((item, index) => {
             return (
               <Post
@@ -234,7 +237,7 @@ const Home = () => {
               ></Post>
             );
           })}
-        {searchSetState &&
+        {searchPublicState &&
           publicSearchLists.map((item, index) => {
             return (
               <Post

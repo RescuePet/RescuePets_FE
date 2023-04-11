@@ -23,14 +23,13 @@ import {
   setSearchValue,
   toggleDescriptionCategory,
   toggleKindCategory,
-  toggleSearchState,
+  togglePostSearchState,
 } from "../../redux/modules/searchSlice";
 import SearchCategory from "../../components/search/SearchCategory";
 import Search from "../../asset/search";
 import SearchSetting from "../../components/search/SearchSetting";
 import { toDown } from "../../style/Animation";
 import Error404 from "../../elements/Error404";
-import ErrorSearch from "../../asset/error/404search.png";
 import ErrorPost from "../../asset/error/404post.png";
 
 const PetworkList = () => {
@@ -41,15 +40,16 @@ const PetworkList = () => {
   const [searchOn, setSearchOn] = useState(false);
 
   const {
-    error,
+    responseMessage,
     postSearchLists,
     searchValue,
+    searchPostState,
     distanceState,
     postType,
     longitude,
     latitude,
     searchPage,
-    searchState,
+    searchPostSetState,
     searchSetState,
     searchCategory,
     descriptionCategory,
@@ -171,7 +171,7 @@ const PetworkList = () => {
   return (
     <Layout>
       <PetworkHeader>
-        {searchState ? (
+        {searchPostState ? (
           <SearchCategory petwork />
         ) : (
           <>
@@ -179,13 +179,13 @@ const PetworkList = () => {
             <SearchIcon
               width={30}
               height={30}
-              onClick={() => dispatch(toggleSearchState())}
+              onClick={() => dispatch(togglePostSearchState())}
             />
           </>
         )}
       </PetworkHeader>
       <Category></Category>
-      {searchSetState && (
+      {searchPostSetState && (
         <SearchSetting
           petwork
           searchHandler={searchPostHandler}
@@ -193,7 +193,7 @@ const PetworkList = () => {
           searchDistanceHandler={searchDistanceHandler}
         />
       )}
-      {searchSetState ? (
+      {searchPostSetState ? (
         <ListTitleWrapper search>
           <ListTitle>검색 내용</ListTitle>
         </ListTitleWrapper>
@@ -202,11 +202,10 @@ const PetworkList = () => {
           <ListTitle>{petwork.category}</ListTitle>
         </ListTitleWrapper>
       )}
-      {searchSetState && postSearchLists.length === 0 && searchOn && (
-        <Error404 srcUrl={ErrorPost} />
-      )}
+      {responseMessage === "유기동물 검색 결과가 없습니다." &&
+        postSearchLists.length === 0 && <Error404 srcUrl={ErrorPost} />}
       <ListCardContainer>
-        {!searchSetState &&
+        {!searchPostSetState &&
           petwork.category === "우리집 반려동물을 찾아주세요" &&
           petwork.missingPostLists.map((item, index) => {
             return (
@@ -217,8 +216,9 @@ const PetworkList = () => {
               ></Card>
             );
           })}
-        {searchSetState &&
+        {searchPostSetState &&
           petwork.category === "우리집 반려동물을 찾아주세요" &&
+          searchOn &&
           postSearchLists.map((item, index) => {
             return (
               <Card
@@ -228,7 +228,7 @@ const PetworkList = () => {
               ></Card>
             );
           })}
-        {!searchSetState &&
+        {!searchPostSetState &&
           petwork.category === "길 잃은 동물을 발견했어요" &&
           petwork.catchPostLists.map((item, index) => {
             return (
@@ -239,8 +239,9 @@ const PetworkList = () => {
               ></Card>
             );
           })}
-        {searchSetState &&
+        {searchPostSetState &&
           petwork.category === "길 잃은 동물을 발견했어요" &&
+          searchOn &&
           postSearchLists.map((item, index) => {
             return (
               <Card

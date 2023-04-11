@@ -68,10 +68,12 @@ export const __getPostSearch = createAsyncThunk(
         `api/post/search?page=${newPayload.page}&size=${newPayload.size}&postType=${newPayload.postType}&memberLongitude=${newPayload.longitude}&memberLatitude=${newPayload.latitude}&description=${newPayload.description}&searchKey=${newPayload.searchKey}&searchValue=${newPayload.searchValue}`
       );
       console.log("getPostSearch", response);
-      if (response.data.data.length === 0) {
-        return thunkAPI.rejectWithValue("nonepost");
+      if (response.data.message === "유기동물 검색 결과가 없습니다.") {
+        console.log(response.data.message);
+        return thunkAPI.fulfillWithValue(response.data.message);
+      } else {
+        return thunkAPI.fulfillWithValue(response.data.data);
       }
-      return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       throw new Error(error.response.data.message);
     }
@@ -83,9 +85,12 @@ const initialState = {
   error: false,
   publicSearchLists: [],
   postSearchLists: [],
-  searchMode: false,
-  searchState: false,
-  searchSetState: false,
+  publicSearchMode: false,
+  postSearchMode: false,
+  searchPublicState: false,
+  searchPostState: false,
+  searchPublicSetState: false,
+  searchPostSetState: false,
   inputState: false,
   distanceState: false,
   searchPage: 1,
@@ -112,11 +117,17 @@ export const searchSlice = createSlice({
     toggleKindCategory: (state, action) => {
       state.kindCategory = action.payload;
     },
-    toggleSearchState: (state) => {
-      state.searchState = !state.searchState;
+    togglePublicSearchState: (state) => {
+      state.searchPublicState = !state.searchPublicState;
     },
-    toggleSearchSetState: (state, action) => {
-      state.searchSetState = action.payload;
+    togglePostSearchState: (state) => {
+      state.searchPostState = !state.searchPostState;
+    },
+    toggleSearchPublicSetState: (state, action) => {
+      state.searchPublicSetState = action.payload;
+    },
+    toggleSearchPostSetState: (state, action) => {
+      state.searchPostSetState = action.payload;
     },
     toggleInputState: (state, action) => {
       state.inputState = action.payload;
@@ -124,8 +135,11 @@ export const searchSlice = createSlice({
     toggleDistanceState: (state, action) => {
       state.distanceState = action.payload;
     },
-    toggleSearchMode: (state, action) => {
-      state.searchMode = action.payload;
+    togglePublicSearchMode: (state, action) => {
+      state.publicSearchMode = action.payload;
+    },
+    togglePostSearchMode: (state, action) => {
+      state.postSearchMode = action.payload;
     },
     setPostType: (state, action) => {
       state.postType = action.payload;
@@ -143,6 +157,9 @@ export const searchSlice = createSlice({
     },
     resetKindValue: (state) => {
       state.kindCategory = "";
+    },
+    resetResponseMessage: (state) => {
+      state.responseMessage = "";
     },
     completeSearch: (state) => {
       state.searchPage = 2;
@@ -172,8 +189,12 @@ export const searchSlice = createSlice({
       });
 
     builder.addCase(__getPostSearch.fulfilled, (state, action) => {
-      state.postSearchLists = [...state.postSearchLists, ...action.payload];
-      state.searchPage = state.searchPage + 1;
+      if (typeof action.payload === "string") {
+        state.responseMessage = action.payload;
+      } else if (typeof action.payload === "object") {
+        state.postSearchLists = [...state.postSearchLists, ...action.payload];
+        state.searchPage = state.searchPage + 1;
+      }
     });
   },
 });
@@ -182,16 +203,19 @@ export const {
   toggleSearchCategory,
   toggleDescriptionCategory,
   toggleKindCategory,
-  toggleSearchState,
-  toggleSearchSetState,
+  togglePublicSearchState,
+  togglePostSearchState,
+  toggleSearchPublicSetState,
+  toggleSearchPostSetState,
   toggleInputState,
   toggleDistanceState,
-  toggleSearchMode,
+  togglePublicSearchMode,
   setPostType,
   setMemberPosition,
   setSearchValue,
   resetSearchState,
   resetKindValue,
+  resetResponseMessage,
   completeSearch,
 } = searchSlice.actions;
 export default searchSlice.reducer;
