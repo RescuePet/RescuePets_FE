@@ -146,7 +146,7 @@ export const ReportAnimalInfoBoxColumnRow = styled.div`
   > img {
     position: absolute;
     ${SignSvgStyle}
-    bottom: 1.875rem;
+    bottom: 1.6875rem;
     right: 0.625rem;
   }
   > span {
@@ -268,7 +268,7 @@ export const ReportAnimalSignificantBoxInputArea = styled.div`
     > img {
       position: absolute;
       ${SignSvgStyle}
-      bottom: 1.5625rem;
+      bottom: 1.0938rem;
       right: 0.9375rem;
     }
     > span {
