@@ -12,6 +12,7 @@ import infoEdit from "../modules/infoeditSlice";
 import putMyposts from "../modules/editpostsSlice";
 import sseCount from "../modules/sseSlice";
 import search from "../modules/searchSlice";
+import link from "../modules/linkSlice";
 
 const store = configureStore({
   reducer: {
@@ -28,6 +29,7 @@ const store = configureStore({
     putMyposts,
     sseCount,
     search,
+    link,
   },
 });
 

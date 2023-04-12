@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { SignSvgStyle, FlexAttribute } from "../../../style/Mixin";
@@ -7,6 +7,8 @@ import time from "../../../asset/time.svg";
 import information from "../../../asset/information.svg";
 import Button from "../../../elements/Button";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { __PostLink } from "../../../redux/modules/linkSlice";
 
 export default function Modal({ isOpen, onClose, children }) {
   const backdropVariants = {
@@ -65,181 +67,19 @@ const ModalContainer = styled(motion.div)`
   position: absolute;
   bottom: 0%;
   width: 21.875rem;
-  height: 13rem;
+  height: 13.75rem;
   padding: 0.625rem;
-`;
-
-export const ModalInBox = styled.div`
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-  padding: 0 0.625rem;
-  overflow: hidd;
-`;
-export const ModalTitle = styled.div`
-  width: 100%;
-  height: 15%;
-  ${(props) => props.theme.FlexRow}
-`;
-export const ModalTitleinfo = styled.div`
-  position: relative;
-  ${FlexAttribute("row", "", "center")}
-  display: flex;
-  align-items: center;
-  width: 70%;
-  height: 100%;
-  ${(props) => props.theme.Body_400_14}
-  h1 {
-    border: 0.0625rem solid #d6459c;
-    color: #d6459c;
-    width: 2.5rem;
-    ${(props) => props.theme.FlexCenter}
-    border-radius: .5rem;
-    padding: 0.25rem, 0.25rem, 0.125rem, 0.25rem;
-  }
-  h2 {
-    padding-left: 0.625rem;
-    font-weight: 700;
-  }
-  h3 {
-    padding-left: 0.3125rem;
-    color: ${(props) => props.theme.color.gray};
-    ${(props) => props.theme.Body_400_12}
-  }
-  > p {
-    padding-left: 10px;
-    color: ${(props) => props.theme.color.gray};
-    ${(props) => props.theme.Body_400_12}
-  }
-`;
-
-export const ModalTopLinknumber = styled.div`
-  position: absolute;
-  top: -25px;
-  right: 1.875rem;
-  border-top-right-radius: 1rem;
-  border-top-left-radius: 1rem;
-  width: 6.25rem;
-  height: 1.5625rem;
-  background: white;
-  ${(props) => props.theme.FlexCenter}
-  ${(props) => props.theme.Body_400_14_16}
-`;
-
-const ModalSideLinkLook = styled.div`
-  position: absolute;
-  ${(props) => props.theme.Body_500_16}
-  text-align: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  cursor: pointer;
-  background: rgb(255, 255, 255);
-  border: solid 3px rgb(220, 220, 220);
-  border-radius: 50%;
-  top: 0;
-  right: -1.25rem;
-  box-shadow: 0px 0.125rem 0.125rem rgb(109 109 109);
-  ${(props) => props.theme.FlexCenter}
-`;
-
-const ModalSideLinkadd = styled.div`
-  position: absolute;
-  ${(props) => props.theme.Body_500_16}
-  text-align: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  cursor: pointer;
-  background: rgb(255, 255, 255);
-  border: solid 3px rgb(220, 220, 220);
-  border-radius: 50%;
-  top: 2.5rem;
-  right: -1.25rem;
-  box-shadow: 0px 0.125rem 0.125rem rgb(109 109 109);
-  ${(props) => props.theme.FlexCenter}
-`;
-
-export const ModalTitleKm = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: right;
-  width: 30%;
-  height: 100%;
-  gap: 0 3.4375rem;
-  ${(props) => props.theme.Body_400_12}
-`;
-
-export const ModlaMiddlContianer = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-  gap: 0 1.125rem;
-`;
-
-export const ModlaMiddleInfoBox = styled.div`
-  width: 65%;
-  height: 5.8125rem;
-  padding: 0.3125rem 0;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 0.3125rem 0;
-  > p {
-    width: 100%;
-    color: ${(props) => props.theme.color.text_alternative};
-    ${(props) => props.theme.Body_400_12};
-    display: flex;
-    align-items: center;
-    > img {
-      ${SignSvgStyle}
-    }
-  }
-  > span {
-    width: 100%;
-    color: ${(props) => props.theme.color.text_alternative};
-    ${(props) => props.theme.Body_400_12};
-    display: flex;
-    align-items: center;
-    > img {
-      ${SignSvgStyle}
-    }
-  }
-  > h4 {
-    ${(props) => props.theme.FlexCenter}
-  }
-`;
-
-export const ModlaImgInfoBox = styled.div`
-  width: 30%;
-  height: 5.8125rem;
-  > div {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    > img {
-      width: 6.0625rem;
-      height: 5.8125rem;
-      cursor: pointer;
-    }
-    > p {
-      position: absolute;
-      ${SignSvgStyle}
-      ${(props) => props.theme.FlexCenter}
-      background: ${(props) => props.theme.color.gray};
-      color: ${(props) => props.theme.color.white};
-      ${(props) => props.theme.Body_300_10}
-      bottom: 0;
-      right: 0;
-    }
-  }
 `;
 
 // 마커 클릭시 보여줄 모달
 export function MarkerModal(props) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
+  const [firstId, setFirstId] = useState("");
+  const [secondId, setSecondId] = useState("");
+  console.log(firstId);
+  console.log(secondId);
   const data = props?.data;
   const Stringkm = String(data?.km);
 
@@ -254,15 +94,49 @@ export function MarkerModal(props) {
   } else if (data?.upkind === "ETC") {
     data.upkind = "기타";
   }
+  // console.log(data);
 
-  const linkadd = () => {};
+  const linkaddfirst = () => {
+    // if (firstId == "") {
+    setFirstId(data.id);
+    props.onClose();
+  };
+
+  const linkaddsecond = () => {
+    setSecondId(data.id);
+    if (secondId !== "") {
+      const one = {
+        first: firstId,
+        second: {
+          linkedPostId: secondId,
+        },
+      };
+      dispatch(__PostLink(one)).then((response) => {
+        console.log(response);
+        if (response.type == "postLink/rejected") {
+          console.log("실패");
+          setFirstId("");
+          setSecondId("");
+        }else if (response.type == "postLink/fulfilled"){
+          console.log("연결성공")
+        }
+      });
+    }
+  };
 
   return (
     <Modal isOpen={props.isOpen} onClose={props.toggle}>
       <ModalInBox>
         <ModalTopLinknumber>링크갯수</ModalTopLinknumber>
         <ModalSideLinkLook>🔍</ModalSideLinkLook>
-        <ModalSideLinkadd onClick={linkadd}>➕</ModalSideLinkadd>
+        {firstId === "" ? (
+          <ModalSideLinkadd onClick={linkaddfirst}>➕1</ModalSideLinkadd>
+        ) : (
+          <ModalSideLinkadd onClick={linkaddsecond}>➕2</ModalSideLinkadd>
+        )}
+        {/* <ModalSideLinkadd onClick={linkadd}>
+          {firstId == "" ? "+" : "➕"}
+        </ModalSideLinkadd> */}
         <ModalTitle>
           <ModalTitleinfo>
             {data?.name !== "missingdetail" ? (
@@ -336,3 +210,171 @@ export function MarkerModal(props) {
     </Modal>
   );
 }
+
+const ModalInBox = styled.div`
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 0.625rem;
+  overflow: hidden;
+`;
+const ModalTitle = styled.div`
+  width: 100%;
+  height: 15%;
+  ${(props) => props.theme.FlexRow}
+`;
+const ModalTitleinfo = styled.div`
+  position: relative;
+  ${FlexAttribute("row", "", "center")}
+  display: flex;
+  align-items: center;
+  width: 70%;
+  height: 100%;
+  ${(props) => props.theme.Body_400_14}
+  h1 {
+    border: 0.0625rem solid #d6459c;
+    color: #d6459c;
+    width: 2.5rem;
+    ${(props) => props.theme.FlexCenter}
+    border-radius: .5rem;
+    padding: 0.25rem, 0.25rem, 0.125rem, 0.25rem;
+  }
+  h2 {
+    padding-left: 0.625rem;
+    font-weight: 600;
+  }
+  h3 {
+    padding-left: 0.3125rem;
+    color: ${(props) => props.theme.color.gray};
+    ${(props) => props.theme.Body_400_12}
+  }
+  > p {
+    padding-left: 10px;
+    color: ${(props) => props.theme.color.gray};
+    ${(props) => props.theme.Body_400_12}
+  }
+`;
+
+const ModalTopLinknumber = styled.div`
+  position: absolute;
+  top: -25px;
+  right: 1.875rem;
+  border-top-right-radius: 1rem;
+  border-top-left-radius: 1rem;
+  width: 6.25rem;
+  height: 1.5625rem;
+  background: white;
+  ${(props) => props.theme.FlexCenter}
+  ${(props) => props.theme.Body_400_14_16}
+`;
+
+const ModalSideLinkLook = styled.div`
+  position: absolute;
+  ${(props) => props.theme.Body_500_16}
+  text-align: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  cursor: pointer;
+  background: rgb(255, 255, 255);
+  border: solid 3px rgb(220, 220, 220);
+  border-radius: 50%;
+  top: 0;
+  right: -1.25rem;
+  box-shadow: 0px 0.125rem 0.125rem rgb(109 109 109);
+  ${(props) => props.theme.FlexCenter}
+`;
+
+const ModalSideLinkadd = styled.div`
+  position: absolute;
+  ${(props) => props.theme.Body_500_16}
+  text-align: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  cursor: pointer;
+  background: rgb(255, 255, 255);
+  border: solid 3px rgb(220, 220, 220);
+  border-radius: 50%;
+  top: 2.5rem;
+  right: -1.25rem;
+  box-shadow: 0px 0.125rem 0.125rem rgb(109 109 109);
+  ${(props) => props.theme.FlexCenter}
+`;
+
+const ModalTitleKm = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  width: 30%;
+  height: 100%;
+  gap: 0 3.4375rem;
+  ${(props) => props.theme.Body_400_12}
+`;
+
+const ModlaMiddlContianer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  gap: 0 1.125rem;
+`;
+
+const ModlaMiddleInfoBox = styled.div`
+  width: 65%;
+  height: 5.8125rem;
+  padding: 0.3125rem 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.3125rem 0;
+  > p {
+    width: 100%;
+    color: ${(props) => props.theme.color.text_alternative};
+    ${(props) => props.theme.Body_400_12};
+    display: flex;
+    align-items: center;
+    > img {
+      ${SignSvgStyle}
+    }
+  }
+  > span {
+    width: 100%;
+    color: ${(props) => props.theme.color.text_alternative};
+    ${(props) => props.theme.Body_400_12};
+    display: flex;
+    align-items: center;
+    > img {
+      ${SignSvgStyle}
+    }
+  }
+  > h4 {
+    ${(props) => props.theme.FlexCenter}
+  }
+`;
+
+const ModlaImgInfoBox = styled.div`
+  width: 30%;
+  height: 5.8125rem;
+  > div {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    > img {
+      width: 6.0625rem;
+      height: 6.375rem;
+      border-radius: 0.3125rem;
+      cursor: pointer;
+    }
+    > p {
+      position: absolute;
+      ${SignSvgStyle}
+      ${(props) => props.theme.FlexCenter}
+    background: ${(props) => props.theme.color.gray};
+      color: ${(props) => props.theme.color.white};
+      ${(props) => props.theme.Body_300_10}
+      bottom: 0;
+      right: 0;
+    }
+  }
+`;
