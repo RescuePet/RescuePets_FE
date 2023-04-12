@@ -9,6 +9,7 @@ import Button from "../../../elements/Button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { __PostLink } from "../../../redux/modules/linkSlice";
+import { __GetLink } from "../../../redux/modules/linkSlice";
 
 export default function Modal({ isOpen, onClose, children }) {
   const backdropVariants = {
@@ -117,18 +118,24 @@ export function MarkerModal(props) {
           console.log("실패");
           setFirstId("");
           setSecondId("");
-        }else if (response.type == "postLink/fulfilled"){
-          console.log("연결성공")
+        } else if (response.type == "postLink/fulfilled") {
+          console.log("연결성공");
         }
       });
     }
+  };
+
+  const linkshow = () => {
+    dispatch(__GetLink(data.id)).then((response) => {
+      console.log(response);
+    });
   };
 
   return (
     <Modal isOpen={props.isOpen} onClose={props.toggle}>
       <ModalInBox>
         <ModalTopLinknumber>링크갯수</ModalTopLinknumber>
-        <ModalSideLinkLook>🔍</ModalSideLinkLook>
+        <ModalSideLinkLook onClick={linkshow}>🔍</ModalSideLinkLook>
         {firstId === "" ? (
           <ModalSideLinkadd onClick={linkaddfirst}>➕1</ModalSideLinkadd>
         ) : (

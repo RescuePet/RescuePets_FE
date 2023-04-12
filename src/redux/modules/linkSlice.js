@@ -4,9 +4,10 @@ import { instance } from "../../utils/api";
 // 링크불러오기
 export const __GetLink = createAsyncThunk(
   "getLink",
-  async (arg, thunkAPI) => {
+  async (payload, thunkAPI) => {
+    console.log(payload)
     try {
-      const response = await instance.get("/api/post/all");
+      const response = await instance.get(`/api/post/links/Coordinates/${payload}`);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       console.log(error.response);
