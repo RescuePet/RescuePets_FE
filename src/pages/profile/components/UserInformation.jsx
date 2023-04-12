@@ -12,6 +12,8 @@ import {
   __getMyInfo,
   resetProfileState,
 } from "../../../redux/modules/profileSlice";
+import Layout from "../../../layouts/Layout";
+import { Loading } from "../../../components/Loading";
 
 const UserInformation = () => {
   const navigate = useNavigate();

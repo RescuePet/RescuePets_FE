@@ -16,6 +16,8 @@ import {
 import { CategoryBoxStyle } from "./SearchMixin";
 import { toDown } from "../../style/Animation";
 
+import { logEvent } from "../../utils/amplitude";
+
 const SearchCategory = ({ petwork }) => {
   const dispatch = useDispatch();
   const { searchCategory } = useSelector((state) => state.search);
@@ -52,6 +54,7 @@ const SearchCategory = ({ petwork }) => {
           categoryHandler("distance");
           dispatch(toggleInputState(false));
           dispatch(toggleDistanceState(true));
+          logEvent("search_distance");
         }}
       >
         <span>거리</span>
@@ -63,6 +66,7 @@ const SearchCategory = ({ petwork }) => {
           categoryHandler("kindType");
           dispatch(toggleInputState(false));
           dispatch(toggleDistanceState(false));
+          logEvent("search_kindType");
         }}
       >
         <span>종류</span>
@@ -74,6 +78,7 @@ const SearchCategory = ({ petwork }) => {
           categoryHandler("kindCd");
           dispatch(toggleInputState(true));
           dispatch(toggleDistanceState(false));
+          logEvent("search_kindCd");
         }}
       >
         <span>품종</span>
@@ -85,6 +90,7 @@ const SearchCategory = ({ petwork }) => {
             categoryHandler("careNm");
             dispatch(toggleInputState(true));
             dispatch(toggleDistanceState(false));
+            logEvent("search_careNm");
           }}
         >
           <span>보호소</span>

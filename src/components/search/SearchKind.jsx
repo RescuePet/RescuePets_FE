@@ -5,6 +5,8 @@ import { toDown } from "../../style/Animation";
 import { FlexAttribute } from "../../style/Mixin";
 import { useSelector } from "react-redux";
 
+import { logEvent } from "../../utils/amplitude";
+
 const SearchKind = ({ searchKindHandler }) => {
   const { kindCategory } = useSelector((state) => state.search);
 
@@ -14,19 +16,28 @@ const SearchKind = ({ searchKindHandler }) => {
       <KindRow>
         <CategoryBox
           active={kindCategory === "DOG"}
-          onClick={() => searchKindHandler("DOG")}
+          onClick={() => {
+            searchKindHandler("DOG");
+            logEvent("search_type_DOG");
+          }}
         >
           <span>강아지</span>
         </CategoryBox>
         <CategoryBox
           active={kindCategory === "CAT"}
-          onClick={() => searchKindHandler("CAT")}
+          onClick={() => {
+            searchKindHandler("CAT");
+            logEvent("search_type_CAT");
+          }}
         >
           <span>고양이</span>
         </CategoryBox>
         <CategoryBox
           active={kindCategory === "ETC"}
-          onClick={() => searchKindHandler("ETC")}
+          onClick={() => {
+            searchKindHandler("ETC");
+            logEvent("search_type_ETC");
+          }}
         >
           <span>기타</span>
         </CategoryBox>
