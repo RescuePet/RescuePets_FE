@@ -324,11 +324,11 @@ const Catch = () => {
                   type="text"
                   placeholder="입력하기"
                   {...register("animalkg", {
-                    required: false,
-                    pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
+                    required: true,
+                    pattern: { value: /^[0-9.]+$/, message: "숫자만입력가능" },
                     maxLength: {
-                      value: 3,
-                      message: "숫자만 입력! 3자리수 이하로 작성",
+                      value: 4,
+                      message: "숫자 . 만 입력! 4자리수 이하로 작성",
                     },
                   })}
                 />
