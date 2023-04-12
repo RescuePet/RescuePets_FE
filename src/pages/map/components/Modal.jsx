@@ -69,20 +69,11 @@ const ModalContainer = styled(motion.div)`
   padding: 0.625rem;
 `;
 
-export const CloseContainer = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  border-bottom-left-radius: 0.375rem;
-  border-bottom-right-radius: 0.375rem;
-  min-height: 3.5rem;
-  margin-top: 0rem;
-  align-items: center;
-`;
-
 export const ModalInBox = styled.div`
-  width: 95%;
+  width: 100%;
   height: 100%;
   margin: 0 auto;
+  padding: 0 0.625rem;
 `;
 export const ModalTitle = styled.div`
   width: 100%;
@@ -95,6 +86,7 @@ export const ModalTitleinfo = styled.div`
   align-items: center;
   width: 70%;
   height: 100%;
+  border: 1px solid red;
   ${(props) => props.theme.Body_400_14}
   h1 {
     border: 0.0625rem solid #d6459c;
@@ -135,17 +127,17 @@ export const ModlaMiddlContianer = styled.div`
   flex-direction: row;
   width: 100%;
   height: 100%;
-  gap: 0 0.625rem;
+  gap: 0 1.125rem;
 `;
 
 export const ModlaMiddleInfoBox = styled.div`
   width: 65%;
   height: 5.8125rem;
-  padding: 5px 0;
+  padding: 0.3125rem 0;
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 5px 0;
+  gap: 0.3125rem 0;
   > p {
     width: 100%;
     color: ${(props) => props.theme.color.text_alternative};
@@ -170,8 +162,9 @@ export const ModlaMiddleInfoBox = styled.div`
     ${(props) => props.theme.FlexCenter}
   }
 `;
+
 export const ModlaImgInfoBox = styled.div`
-  width: 6.0625rem;
+  width: 30%;
   height: 5.8125rem;
   > div {
     position: relative;
@@ -179,8 +172,8 @@ export const ModlaImgInfoBox = styled.div`
     height: 100%;
     object-fit: cover;
     > img {
-      width: 100%;
-      height: 100%;
+      width: 6.0625rem;
+      height: 5.8125rem;
       cursor: pointer;
     }
     > p {

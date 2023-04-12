@@ -42,11 +42,12 @@ const ProfileSetList = () => {
         <List>App 설정</List>
         <ArrowSvg>&gt;</ArrowSvg>
       </ListBox>
-      <ListBox onClick={() => alert("준비 중 입니다.")}>
+      */}
+      <ListBox onClick={() => navigate("/profile/customer")}>
         <Headphone />
         <List>고객센터</List>
         <ArrowSvg>&gt;</ArrowSvg>
-      </ListBox> */}
+      </ListBox>
     </ProfileSetListsContainer>
   );
 };

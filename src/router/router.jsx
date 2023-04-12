@@ -24,6 +24,7 @@ import EditCatch from "../pages/report/edit/EditCatch";
 import EditMissing from "../pages/report/edit/EditMissing";
 import NotFound from "../pages/NotFound";
 import CarouselLink from "../pages/carousel/CarouselLink";
+import CustomerSC from "../pages/profile/CustomerSC";
 
 const Router = () => {
   return (
@@ -52,6 +53,7 @@ const Router = () => {
         <Route path="/profile/mycomment" element={<MyComment />} />
         <Route path="/profile/mypost" element={<MyPost />} />
         <Route path="/profile/myscrap" element={<MyScrap />} />
+        <Route path="/profile/customer" element={<CustomerSC />} />
         <Route path="/introduce" element={<CarouselLink />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
