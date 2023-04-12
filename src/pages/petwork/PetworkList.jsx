@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import styled, { css } from "styled-components";
 import Layout from "../../layouts/Layout";
 import { Title_700_18 } from "../../style/theme";
@@ -24,6 +24,7 @@ import {
   setSearchValue,
   toggleDescriptionCategory,
   toggleKindCategory,
+  togglePostSearchMode,
   togglePostSearchState,
 } from "../../redux/modules/searchSlice";
 import SearchCategory from "../../components/search/SearchCategory";
@@ -56,7 +57,6 @@ const PetworkList = () => {
   const [catchRef, catchInView] = useInView();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [searchOn, setSearchOn] = useState(false);
 
   const {
     responseMessage,
@@ -64,6 +64,7 @@ const PetworkList = () => {
     searchValue,
     searchPostState,
     distanceState,
+    postSearchMode,
     postType,
     longitude,
     latitude,
@@ -77,11 +78,11 @@ const PetworkList = () => {
     navigator.geolocation.getCurrentPosition(onSuccess, onFailure);
     const missingFirstPayload = {
       page: 1,
-      size: 10,
+      size: 15,
     };
     const catchFirstPayload = {
       page: 1,
-      size: 10,
+      size: 15,
     };
     dispatch(__getMissingPost(missingFirstPayload));
     dispatch(__getCatchPost(catchFirstPayload));
@@ -104,17 +105,17 @@ const PetworkList = () => {
 
   const missingPayloadSettings = {
     page: petwork.missingPage,
-    size: 10,
+    size: 15,
   };
 
   const catchPayloadSettings = {
     page: petwork.catchPage,
-    size: 10,
+    size: 15,
   };
 
   const adoptionSearchPayload = {
     page: searchPage,
-    size: 10,
+    size: 15,
     longitude: longitude,
     latitude: latitude,
     description: descriptionCategory,
@@ -125,23 +126,23 @@ const PetworkList = () => {
   };
 
   useEffect(() => {
-    if (missingInView && !petwork.missingLastPage) {
+    if (missingInView && !postSearchMode) {
       dispatch(addMissingPage());
       dispatch(__getMissingPost(missingPayloadSettings));
     }
-    if (catchInView && !petwork.catchLastPage) {
+    if (catchInView && !postSearchMode) {
       dispatch(addCatchPage());
       dispatch(__getCatchPost(catchPayloadSettings));
     }
-    if ((missingInView || catchInView) && searchOn) {
+    if ((missingInView || catchInView) && postSearchMode) {
       dispatch(__getPostSearch(adoptionSearchPayload));
     }
   }, [missingInView, catchInView]);
 
   const searchPostHandler = (value) => {
     const payload = {
-      page: 1,
-      size: 10,
+      page: searchPage,
+      size: 15,
       longitude: longitude,
       latitude: latitude,
       description: descriptionCategory,
@@ -150,7 +151,7 @@ const PetworkList = () => {
       type: "post",
       postType: postType,
     };
-    setSearchOn(true);
+    dispatch(togglePostSearchMode(true));
     dispatch(completeSearch());
 
     dispatch(__getPostSearch(payload));
@@ -159,8 +160,8 @@ const PetworkList = () => {
   const searchDistanceHandler = (distance) => {
     if (distanceState) {
       const payload = {
-        page: 1,
-        size: 10,
+        page: searchPage,
+        size: 15,
         longitude: longitude,
         latitude: latitude,
         description: distance,
@@ -168,7 +169,7 @@ const PetworkList = () => {
         type: "post",
         postType: postType,
       };
-      setSearchOn(true);
+      dispatch(togglePostSearchMode(true));
       dispatch(completeSearch());
       dispatch(toggleDescriptionCategory(distance));
 
@@ -180,8 +181,8 @@ const PetworkList = () => {
 
   const searchKindHandler = (kindCategory) => {
     const payload = {
-      page: 1,
-      size: 10,
+      page: searchPage,
+      size: 15,
       longitude: longitude,
       latitude: latitude,
       description: descriptionCategory,
@@ -192,7 +193,7 @@ const PetworkList = () => {
     };
     dispatch(setSearchValue(kindCategory));
     dispatch(toggleKindCategory(kindCategory));
-    setSearchOn(true);
+    dispatch(togglePostSearchMode(true));
     dispatch(completeSearch());
 
     dispatch(__getPostSearch(payload));
@@ -248,7 +249,7 @@ const PetworkList = () => {
           })}
         {searchPostSetState &&
           petwork.category === "우리집 반려동물을 찾아주세요" &&
-          searchOn &&
+          postSearchMode &&
           postSearchLists.map((item, index) => {
             return (
               <Card
@@ -271,7 +272,7 @@ const PetworkList = () => {
           })}
         {searchPostSetState &&
           petwork.category === "길 잃은 동물을 발견했어요" &&
-          searchOn &&
+          postSearchMode &&
           postSearchLists.map((item, index) => {
             return (
               <Card

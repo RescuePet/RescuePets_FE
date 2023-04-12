@@ -157,7 +157,7 @@ export const searchSlice = createSlice({
       state.responseMessage = "";
     },
     completeSearch: (state) => {
-      state.searchPage = 2;
+      state.searchPage = 1;
       state.publicSearchLists = [];
       state.postSearchLists = [];
     },
@@ -224,6 +224,7 @@ export const {
   toggleInputState,
   toggleDistanceState,
   togglePublicSearchMode,
+  togglePostSearchMode,
   setPostType,
   setMemberPosition,
   setSearchValue,

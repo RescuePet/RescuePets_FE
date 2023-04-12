@@ -163,8 +163,6 @@ const initialState = {
   catchPostLists: [],
   missingPostDetail: {},
   catchPostDetail: {},
-  missingLastPage: false,
-  catchLastPage: false,
 };
 
 export const petworkSlice = createSlice({
@@ -195,6 +193,8 @@ export const petworkSlice = createSlice({
     resetPetworkLists: (state) => {
       state.missingPostLists = [];
       state.catchPostLists = [];
+      state.missingPage = 2;
+      state.catchPage = 2;
     },
     removeCommentCount: (state) => {
       state.missingPostDetail.commentCount =
@@ -258,10 +258,6 @@ export const petworkSlice = createSlice({
 
     builder
       .addCase(__getCatchPost.fulfilled, (state, action) => {
-        if (action.payload.length === 0) {
-          state.catchLastPage = true;
-          return;
-        }
         state.catchPostLists = [...state.catchPostLists, ...action.payload];
       })
       .addCase(__getCatchPost.rejected, (state) => {
