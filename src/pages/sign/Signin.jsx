@@ -156,10 +156,10 @@ const Signin = () => {
             {SignInMsg}
           </CheckModal>
         )}
-        <AutoSignInWrapper>
+        {/* <AutoSignInWrapper>
           <img src={check} alt="check" />
           <span>자동로그인</span>
-        </AutoSignInWrapper>
+        </AutoSignInWrapper> */}
         <ButtonWrapper>
           {isActive === false ? (
             <Button type="submit" disable assistiveFillButton>
@@ -176,8 +176,8 @@ const Signin = () => {
         </ButtonWrapper>
         <SignUpWrapper>
           <SignUpSpan onClick={() => navigate("/signup")}>회원가입</SignUpSpan>
-          <BrSpan>|</BrSpan>
-          <Forgot>아이디/비밀번호찾기</Forgot>
+          {/* <BrSpan>|</BrSpan>
+          <Forgot>아이디/비밀번호찾기</Forgot> */}
         </SignUpWrapper>
       </SignContainer>
     </Layout>
