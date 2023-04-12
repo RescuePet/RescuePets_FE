@@ -64,7 +64,7 @@ export const __getMyScrap = createAsyncThunk(
 const initialState = {
   loading: false,
   error: false,
-  myData: {},
+  myData: { postCount: 0, commentCount: 0, scrapCount: 0 },
   myPostList: [],
   myPostPage: 1,
   myCommentList: [],
