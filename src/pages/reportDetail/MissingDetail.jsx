@@ -345,12 +345,12 @@ const MissingDetail = () => {
         placeholder="댓글을 입력해주세요."
         submitHandler={submitHandler}
       ></InputContainer>
-      {optionState && missingPostDetail.nickname === nickname && (
-        <Option setting={optionMySetting} />
-      )}
-      {optionState && missingPostDetail.nickname !== nickname && (
-        <Option setting={optionOtherSetting} />
-      )}
+      {optionState &&
+        missingPostDetail.nickname === nickname &&
+        memberRole !== "ADMIN" && <Option setting={optionMySetting} />}
+      {optionState &&
+        missingPostDetail.nickname !== nickname &&
+        memberRole !== "ADMIN" && <Option setting={optionOtherSetting} />}
       {optionState && memberRole === "ADMIN" && (
         <Option setting={optionAdminSetting} />
       )}
