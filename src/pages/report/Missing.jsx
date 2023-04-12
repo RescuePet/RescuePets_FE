@@ -487,13 +487,7 @@ const Missing = () => {
             <ReportAnimalPictureInput onClick={() => imageRef.click()}>
               <h3>+</h3>
             </ReportAnimalPictureInput>
-            {showImages.length === 0 ? (
-              <ReportAnimalPicturePreview>
-                <div>
-                  <img src={imgdelete} />
-                </div>
-              </ReportAnimalPicturePreview>
-            ) : (
+            {showImages.length === 0 ? null : (
               <>
                 {showImages.map((image, index) => (
                   <ReportAnimalPicturePreview key={index}>
