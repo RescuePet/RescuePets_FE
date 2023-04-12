@@ -68,7 +68,7 @@ const MissingDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userName = JSON.parse(Cookies.get("UserInfo"));
+  const { nickname, memberRole } = JSON.parse(Cookies.get("UserInfo"));
   const commentRef = useRef(null);
 
   const [loginModal, toggleModal] = useModalState(false);
@@ -228,6 +228,16 @@ const MissingDetail = () => {
     },
   ];
 
+  const optionAdminSetting = [
+    {
+      option: "관리자 권한으로 삭제",
+      color: "report",
+      handler: () => {
+        console.log("ADMIN");
+      },
+    },
+  ];
+
   const reportSetting = {
     type: "post",
     nickname: missingPostDetail.nickname,
@@ -324,7 +334,7 @@ const MissingDetail = () => {
           )}
         </CommentListWrapper>
       </CommentContainer>
-      {userName.nickname !== missingPostDetail.nickname && (
+      {nickname !== missingPostDetail.nickname && (
         <FloatingButton
           onClick={() => {
             chatHandler();
@@ -335,16 +345,15 @@ const MissingDetail = () => {
         placeholder="댓글을 입력해주세요."
         submitHandler={submitHandler}
       ></InputContainer>
-      {optionState && (
-        <Option
-          setting={
-            missingPostDetail.nickname === userName.nickname
-              ? optionMySetting
-              : optionOtherSetting
-          }
-        />
+      {optionState && missingPostDetail.nickname === nickname && (
+        <Option setting={optionMySetting} />
       )}
-
+      {optionState && missingPostDetail.nickname !== nickname && (
+        <Option setting={optionOtherSetting} />
+      )}
+      {optionState && memberRole === "ADMIN" && (
+        <Option setting={optionAdminSetting} />
+      )}
       {reportState && (
         <ReportModal setting={reportSetting} onChangeMsg={onChangeReportMsg} />
       )}
