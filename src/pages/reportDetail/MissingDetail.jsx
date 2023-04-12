@@ -28,7 +28,7 @@ import {
 } from "../../redux/modules/commentSlice";
 import petworkRefineData from "../../utils/petworkRefine";
 
-import location from "../../asset/location.svg";
+import locationSvg from "../../asset/location.svg";
 import time from "../../asset/time.svg";
 import informationIcon from "../../asset/information.svg";
 import Memo from "../../asset/Memo";
@@ -249,7 +249,7 @@ const MissingDetail = () => {
       <InfoContainer>
         <InfoWrapper>
           <BodyTitleWrapper>
-            <BodyTitleSvg src={location} />
+            <BodyTitleSvg src={locationSvg} />
             <BodyTitleText>위치</BodyTitleText>
           </BodyTitleWrapper>
           <ContentTextWrapper>

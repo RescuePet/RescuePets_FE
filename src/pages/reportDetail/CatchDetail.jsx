@@ -27,7 +27,7 @@ import {
 import Comment from "./components/Comment";
 import petworkRefineData from "../../utils/petworkRefine";
 
-import location from "../../asset/location.svg";
+import locationSvg from "../../asset/location.svg";
 import time from "../../asset/time.svg";
 import informationIcon from "../../asset/information.svg";
 import refresh from "../../asset/refresh.svg";
@@ -244,7 +244,7 @@ const SightingDetail = () => {
       <InfoContainer>
         <InfoWrapper>
           <BotyTitleWrapper>
-            <BodyTitleSvg src={location} />
+            <BodyTitleSvg src={locationSvg} />
             <BodyTitleText>위치</BodyTitleText>
           </BotyTitleWrapper>
           <ContentTextWrapper>

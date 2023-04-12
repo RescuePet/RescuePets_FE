@@ -15,7 +15,6 @@ const KakaoSignin = () => {
   useEffect(() => {
     initAmplitude();
     logEvent(`enter_/${location.pathname.split("/")[1]}`);
-    setAmplitudeUserId();
     return () => {
       resetAmplitude();
     };

@@ -14,7 +14,7 @@ import Shelter from "./components/Shelter";
 import Location from "./components/Location";
 import Title from "./components/Title";
 
-import location from "../../asset/location.svg";
+import locationSvg from "../../asset/location.svg";
 import calendar from "../../asset/calendar.svg";
 import specialmark from "../../asset/specialmark.svg";
 import user from "../../asset/user.svg";
@@ -104,7 +104,7 @@ const AdoptionDetail = () => {
 
   const shelterData = [
     {
-      icon: location,
+      icon: locationSvg,
       option: "주소",
       data: adoptionDetail.careAddr,
     },
