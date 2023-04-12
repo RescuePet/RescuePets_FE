@@ -8,8 +8,11 @@ import information from "../../../asset/information.svg";
 import Button from "../../../elements/Button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { __PostLink } from "../../../redux/modules/linkSlice";
-import { __GetLink } from "../../../redux/modules/linkSlice";
+import {
+  __GetLink,
+  __PostLink,
+  __DeleteLink,
+} from "../../../redux/modules/linkSlice";
 
 export default function Modal({ isOpen, onClose, children }) {
   const backdropVariants = {
@@ -131,6 +134,12 @@ export function MarkerModal(props) {
     });
   };
 
+  const linkDelete = () => {
+    dispatch(__DeleteLink(data.id)).then((response) => {
+      console.log(response);
+    });
+  };
+
   return (
     <Modal isOpen={props.isOpen} onClose={props.toggle}>
       <ModalInBox>
@@ -141,9 +150,7 @@ export function MarkerModal(props) {
         ) : (
           <ModalSideLinkadd onClick={linkaddsecond}>➕2</ModalSideLinkadd>
         )}
-        {/* <ModalSideLinkadd onClick={linkadd}>
-          {firstId == "" ? "+" : "➕"}
-        </ModalSideLinkadd> */}
+        <ModalSideDelete onClick={linkDelete}>🗑</ModalSideDelete>
         <ModalTitle>
           <ModalTitleinfo>
             {data?.name !== "missingdetail" ? (
@@ -266,8 +273,8 @@ const ModalTopLinknumber = styled.div`
   position: absolute;
   top: -25px;
   right: 1.875rem;
-  border-top-right-radius: 1rem;
-  border-top-left-radius: 1rem;
+  border-top-right-radius: 0.7rem;
+  border-top-left-radius: 0.7rem;
   width: 6.25rem;
   height: 1.5625rem;
   background: white;
@@ -302,6 +309,22 @@ const ModalSideLinkadd = styled.div`
   border: solid 3px rgb(220, 220, 220);
   border-radius: 50%;
   top: 2.5rem;
+  right: -1.25rem;
+  box-shadow: 0px 0.125rem 0.125rem rgb(109 109 109);
+  ${(props) => props.theme.FlexCenter}
+`;
+
+const ModalSideDelete = styled.div`
+  position: absolute;
+  ${(props) => props.theme.Body_500_16}
+  text-align: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  cursor: pointer;
+  background: rgb(255, 255, 255);
+  border: solid 3px rgb(220, 220, 220);
+  border-radius: 50%;
+  top: 5rem;
   right: -1.25rem;
   box-shadow: 0px 0.125rem 0.125rem rgb(109 109 109);
   ${(props) => props.theme.FlexCenter}

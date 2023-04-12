@@ -97,7 +97,7 @@ const Location = () => {
           </div>
         </ReportKakaomapTitleValueBox>
       </ReportKakaoMapBoxTitle>
-      {/* <ReportKakaoMapBoxMap id="map"></ReportKakaoMapBoxMap> */}
+      <ReportKakaoMapBoxMap id="map"></ReportKakaoMapBoxMap>
     </ReportKakaoMapContainer>
   );
 };

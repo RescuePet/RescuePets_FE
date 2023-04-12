@@ -21,7 +21,6 @@ export const __PostLink = createAsyncThunk(
   async (payload,thunkAPI) => {
     // console.log(firstId)
     console.log(payload)
-
     try {
       const response = await instance.post(`/api/post/links/${payload.first}`, payload.second);
       return thunkAPI.fulfillWithValue(response?.data?.data);
@@ -33,13 +32,12 @@ export const __PostLink = createAsyncThunk(
 
 
 // 링크 삭제
-export const _DeleteLink = createAsyncThunk(
+export const __DeleteLink = createAsyncThunk(
   "deleteLink",
-  async ({firstId,linkedPostId}, thunkAPI) => {
-    console.log(firstId)
-    console.log(linkedPostId)
+  async (payload, thunkAPI) => {
+    console.log(payload)
     try {
-      const response = await instance.post(`/api/post/links/${firstId}`, linkedPostId);
+      const response = await instance.delete(`/api/post/links/${payload}`);
       return thunkAPI.fulfillWithValue(response?.data?.data);
     } catch (error) {
       throw new Error(error.response.data.message);
@@ -83,6 +81,20 @@ export const link = createSlice({
       state.error = null;
     });
     builder.addCase(__PostLink.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
+
+    builder.addCase(__DeleteLink.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(__DeleteLink.fulfilled, (state, action) => {
+      state.loading = false;
+      state.data = action.payload;
+      state.error = null;
+    });
+    builder.addCase(__DeleteLink.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
     });
