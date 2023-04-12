@@ -86,7 +86,6 @@ export const ModalTitleinfo = styled.div`
   align-items: center;
   width: 70%;
   height: 100%;
-  border: 1px solid red;
   ${(props) => props.theme.Body_400_14}
   h1 {
     border: 0.0625rem solid #d6459c;

@@ -13,7 +13,12 @@ import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
 import SignHeader from "./SignHeader";
 
-import { initAmplitude, logEvent, resetAmplitude } from "../../utils/amplitude";
+import {
+  initAmplitude,
+  logEvent,
+  setAmplitudeUserId,
+  resetAmplitude,
+} from "../../utils/amplitude";
 
 const Signup = () => {
   // 앰플리튜드
@@ -21,6 +26,7 @@ const Signup = () => {
   useEffect(() => {
     initAmplitude();
     logEvent(`enter_${location.pathname}`);
+    setAmplitudeUserId();
     return () => {
       resetAmplitude();
     };
