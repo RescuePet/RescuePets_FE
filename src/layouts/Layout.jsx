@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { FlexAttribute } from "../style/Mixin";
 import Footer from "./Footer";
 import isLogin from "../utils/isLogin";
@@ -10,6 +10,10 @@ import { toggleScroll } from "../redux/modules/commentSlice";
 import backgroundImage from "../asset/webbackground/Desktop.jpg";
 import PopDog from "../asset/webbackground/PopDog.png";
 import Logo from "../asset/webbackground/Logo.png";
+import Road from "../asset/webbackground/PopRoad.png";
+import Marker from "../asset/webbackground/PopMaker.png";
+import Sole from "../asset/webbackground/PopSole.png";
+
 import { upAndDown } from "../style/Animation";
 import { EventSourcePolyfill } from "event-source-polyfill";
 import Cookies from "js-cookie";
@@ -150,6 +154,9 @@ const Layout = ({ children }) => {
         </MobileLayout>
         <LogoImage src={Logo} />
         <DogImage src={PopDog} />
+        <RoadImage src={Road} />
+        <MarkerImage src={Marker} />
+        <SoleImage src={Sole} />
       </WebLayout>
     </>
   );
@@ -205,6 +212,30 @@ const DogImage = styled.img`
   transform: translate(-17%, -20%);
   left: calc(50% - 500px);
   animation: ${upAndDown} 2.3s infinite;
+`;
+
+const RoadImage = styled.img`
+  position: absolute;
+  top: calc(50% - 275px);
+  height: 940px;
+  transform: translate(-17%, -20%);
+  left: calc(50% - 550px);
+`;
+
+const MarkerImage = styled.img`
+  position: absolute;
+  top: calc(50% - 140px);
+  height: 80px;
+  transform: translate(-17%, -20%);
+  left: calc(50% - 490px);
+`;
+
+const SoleImage = styled.img`
+  position: absolute;
+  top: calc(50% - 140px);
+  height: 80px;
+  transform: translate(-17%, -20%);
+  left: calc(50% - 490px);
 `;
 
 export default Layout;
