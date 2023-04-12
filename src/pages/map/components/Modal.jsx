@@ -64,7 +64,7 @@ const ModalContainer = styled(motion.div)`
   border-top-right-radius: 1rem;
   position: absolute;
   bottom: 0%;
-  width: 23.4375rem;
+  width: 21.875rem;
   height: 13rem;
   padding: 0.625rem;
 `;
@@ -74,6 +74,7 @@ export const ModalInBox = styled.div`
   height: 100%;
   margin: 0 auto;
   padding: 0 0.625rem;
+  overflow: hidd;
 `;
 export const ModalTitle = styled.div`
   width: 100%;
@@ -81,6 +82,7 @@ export const ModalTitle = styled.div`
   ${(props) => props.theme.FlexRow}
 `;
 export const ModalTitleinfo = styled.div`
+  position: relative;
   ${FlexAttribute("row", "", "center")}
   display: flex;
   align-items: center;
@@ -110,6 +112,52 @@ export const ModalTitleinfo = styled.div`
     ${(props) => props.theme.Body_400_12}
   }
 `;
+
+export const ModalTopLinknumber = styled.div`
+  position: absolute;
+  top: -25px;
+  right: 1.875rem;
+  border-top-right-radius: 1rem;
+  border-top-left-radius: 1rem;
+  width: 6.25rem;
+  height: 1.5625rem;
+  background: white;
+  ${(props) => props.theme.FlexCenter}
+  ${(props) => props.theme.Body_400_14_16}
+`;
+
+const ModalSideLinkLook = styled.div`
+  position: absolute;
+  ${(props) => props.theme.Body_500_16}
+  text-align: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  cursor: pointer;
+  background: rgb(255, 255, 255);
+  border: solid 3px rgb(220, 220, 220);
+  border-radius: 50%;
+  top: 0;
+  right: -1.25rem;
+  box-shadow: 0px 0.125rem 0.125rem rgb(109 109 109);
+  ${(props) => props.theme.FlexCenter}
+`;
+
+const ModalSideLinkadd = styled.div`
+  position: absolute;
+  ${(props) => props.theme.Body_500_16}
+  text-align: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  cursor: pointer;
+  background: rgb(255, 255, 255);
+  border: solid 3px rgb(220, 220, 220);
+  border-radius: 50%;
+  top: 2.5rem;
+  right: -1.25rem;
+  box-shadow: 0px 0.125rem 0.125rem rgb(109 109 109);
+  ${(props) => props.theme.FlexCenter}
+`;
+
 export const ModalTitleKm = styled.div`
   display: flex;
   align-items: center;
@@ -207,9 +255,14 @@ export function MarkerModal(props) {
     data.upkind = "기타";
   }
 
+  const linkadd = () => {};
+
   return (
     <Modal isOpen={props.isOpen} onClose={props.toggle}>
       <ModalInBox>
+        <ModalTopLinknumber>링크갯수</ModalTopLinknumber>
+        <ModalSideLinkLook>🔍</ModalSideLinkLook>
+        <ModalSideLinkadd onClick={linkadd}>➕</ModalSideLinkadd>
         <ModalTitle>
           <ModalTitleinfo>
             {data?.name !== "missingdetail" ? (
