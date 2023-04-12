@@ -67,7 +67,8 @@ const Footer = () => {
           location.pathname.split("/")[1] === "map" ||
           location.pathname.split("/")[1] === "petwork" ||
           location.pathname.split("/")[1] === "missingdetail" ||
-          location.pathname.split("/")[1] === "catchdetail"
+          location.pathname.split("/")[1] === "catchdetail" ||
+          location.pathname.split("/")[1] === "poster"
         }
         onClick={() => navigate("/map")}
       >

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { FlexAttribute } from "../style/Mixin";
 import Footer from "./Footer";
 import isLogin from "../utils/isLogin";
@@ -144,7 +144,6 @@ const Layout = ({ children }) => {
             location.pathname !== "/signup" &&
             location.pathname !== "/missing" &&
             location.pathname !== "/catch" &&
-            location.pathname !== "/introduce" &&
             location.pathname.split("/")[1] !== "editcatch" &&
             location.pathname.split("/")[1] !== "editmissing" &&
             location.pathname.split("/")[1] !== "chatroom" && <Footer></Footer>}

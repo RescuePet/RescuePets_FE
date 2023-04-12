@@ -25,24 +25,17 @@ const CarouselLink = () => {
     };
   }, []);
 
-  const navigate = useNavigate();
   return (
-    <Layout>
+    <IntroduceLayout>
       <IntroduceImage src={introduce} />
-      <ButtonWrapper>
-        <Button fillButton onClick={() => navigate("/home")}>
-          서비스 이용하기
-        </Button>
-      </ButtonWrapper>
-    </Layout>
+    </IntroduceLayout>
   );
 };
 
-const IntroduceImage = styled.img``;
-
-const ButtonWrapper = styled.div`
-  ${FlexAttribute("row", "center", "center")};
-  margin-top: 20px;
+const IntroduceLayout = styled(Layout)`
+  position: relative;
 `;
+
+const IntroduceImage = styled.img``;
 
 export default CarouselLink;
