@@ -22,6 +22,7 @@ const UserInformation = () => {
   const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState({});
   const { myData } = useSelector((state) => state.profile);
+  const { memberRole } = JSON.parse(Cookies.get("UserInfo"));
 
   useEffect(() => {
     if (isLogin() === false) {
@@ -38,9 +39,22 @@ const UserInformation = () => {
     };
   }, []);
 
+  const userGradeRender = () => {
+    switch (memberRole) {
+      case "MANAGER":
+        return <UserGradeImage src={managerImage} />;
+      case "MEMBER":
+        return <UserGradeImage src={memberImage} />;
+      case "BADMEMBER":
+        return <UserGradeImage src={banImage} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <UserInfoContainer>
-      <UserGradeImage src={memberImage} />
+      {userGradeRender()}
       <UserImage
         src={
           userInfo.profileImage !== null
