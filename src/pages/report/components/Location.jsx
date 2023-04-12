@@ -9,71 +9,71 @@ const Location = () => {
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
 
-  const { kakao } = window;
-  // 현재위치를 받아오는 로직
-  const [long, setLong] = useState("");
-  const [lati, setLati] = useState("");
-  const defaultValue = {
-    lat: "37.515133",
-    lng: "126.934086",
-  };
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(onSucces, onFailure);
-    function onSucces(position) {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      setIsLoading(false);
-      setLong(lng);
-      setLati(lat);
-    }
-    // 실패
-    function onFailure() {
-      setLong(defaultValue.lng);
-      setLati(defaultValue.lat);
-      setIsLoading(false);
-      console.log("위치 정보를 찾을수 없습니다.");
-    }
-  }, []);
-  useEffect(() => {
-    const mapContainer = document.getElementById("map"),
-      mapOption = {
-        center: new kakao.maps.LatLng(lati, long),
-        level: 5,
-      };
-    const map = new kakao.maps.Map(mapContainer, mapOption);
-    const imageSrc = `${Marker}`;
-    const imageSize = new kakao.maps.Size(24, 24);
-    const imageOption = { offset: new kakao.maps.Point(10, 20) };
-    const markerImage = new kakao.maps.MarkerImage(
-      imageSrc,
-      imageSize,
-      imageOption
-    );
-    const marker = new kakao.maps.Marker({
-      position: map.getCenter(),
-      image: markerImage,
-    });
-    marker.setMap(map);
-    let geocoder = new kakao.maps.services.Geocoder();
-    kakao.maps.event.addListener(map, "click", function (mouseEvent) {
-      searchDetailAddrFromCoords(mouseEvent.latLng, function (result, status) {
-        if (status === kakao.maps.services.Status.OK) {
-          marker.setPosition(mouseEvent.latLng);
-          marker.setMap(map);
-          const currentAddress = result[0]?.address?.address_name;
-          const addressDiv = document.getElementById("address");
-          addressDiv.innerHTML = currentAddress;
-          const addressLatDiv = document.getElementById("addressLat");
-          addressLatDiv.innerHTML = mouseEvent.latLng.Ma;
-          const addressLngDiv = document.getElementById("addressLng");
-          addressLngDiv.innerHTML = mouseEvent.latLng.La;
-        }
-      });
-    });
-    const searchDetailAddrFromCoords = (coords, callback) => {
-      geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
-    };
-  }, [long]);
+  // const { kakao } = window;
+  // // 현재위치를 받아오는 로직
+  // const [long, setLong] = useState("");
+  // const [lati, setLati] = useState("");
+  // const defaultValue = {
+  //   lat: "37.515133",
+  //   lng: "126.934086",
+  // };
+  // useEffect(() => {
+  //   navigator.geolocation.getCurrentPosition(onSucces, onFailure);
+  //   function onSucces(position) {
+  //     const lat = position.coords.latitude;
+  //     const lng = position.coords.longitude;
+  //     setIsLoading(false);
+  //     setLong(lng);
+  //     setLati(lat);
+  //   }
+  //   // 실패
+  //   function onFailure() {
+  //     setLong(defaultValue.lng);
+  //     setLati(defaultValue.lat);
+  //     setIsLoading(false);
+  //     console.log("위치 정보를 찾을수 없습니다.");
+  //   }
+  // }, []);
+  // useEffect(() => {
+  //   const mapContainer = document.getElementById("map"),
+  //     mapOption = {
+  //       center: new kakao.maps.LatLng(lati, long),
+  //       level: 5,
+  //     };
+  //   const map = new kakao.maps.Map(mapContainer, mapOption);
+  //   const imageSrc = `${Marker}`;
+  //   const imageSize = new kakao.maps.Size(24, 24);
+  //   const imageOption = { offset: new kakao.maps.Point(10, 20) };
+  //   const markerImage = new kakao.maps.MarkerImage(
+  //     imageSrc,
+  //     imageSize,
+  //     imageOption
+  //   );
+  //   const marker = new kakao.maps.Marker({
+  //     position: map.getCenter(),
+  //     image: markerImage,
+  //   });
+  //   marker.setMap(map);
+  //   let geocoder = new kakao.maps.services.Geocoder();
+  //   kakao.maps.event.addListener(map, "click", function (mouseEvent) {
+  //     searchDetailAddrFromCoords(mouseEvent.latLng, function (result, status) {
+  //       if (status === kakao.maps.services.Status.OK) {
+  //         marker.setPosition(mouseEvent.latLng);
+  //         marker.setMap(map);
+  //         const currentAddress = result[0]?.address?.address_name;
+  //         const addressDiv = document.getElementById("address");
+  //         addressDiv.innerHTML = currentAddress;
+  //         const addressLatDiv = document.getElementById("addressLat");
+  //         addressLatDiv.innerHTML = mouseEvent.latLng.Ma;
+  //         const addressLngDiv = document.getElementById("addressLng");
+  //         addressLngDiv.innerHTML = mouseEvent.latLng.La;
+  //       }
+  //     });
+  //   });
+  //   const searchDetailAddrFromCoords = (coords, callback) => {
+  //     geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+  //   };
+  // }, [long]);
   return (
     <ReportKakaoMapContainer>
       <ReportKakaoMapBoxTitle>
@@ -84,9 +84,7 @@ const Location = () => {
             <p>목격위치</p>
           )}
           <img id="img" src={questionmark} />
-          <div className="tooltip">
-            지도상에서 클릭하여 위치 마커 를 표시해주세요
-          </div>
+          <div className="tooltip">지도를 클릭하여 위치마커를 표시해주세요</div>
         </ReportKakaomapTitleInfoBox>
         <ReportKakaomapTitleValueBox>
           {/* <p>위치</p> */}
@@ -99,7 +97,7 @@ const Location = () => {
           </div>
         </ReportKakaomapTitleValueBox>
       </ReportKakaoMapBoxTitle>
-      <ReportKakaoMapBoxMap id="map"></ReportKakaoMapBoxMap>
+      {/* <ReportKakaoMapBoxMap id="map"></ReportKakaoMapBoxMap> */}
     </ReportKakaoMapContainer>
   );
 };
@@ -142,7 +140,7 @@ const ReportKakaomapTitleInfoBox = styled.div`
   > div {
     position: relative;
     ${(props) => props.theme.FlexCenter}
-    left: 57px;
+    left: 45px;
     top: -2.5px;
     width: 14.3125rem;
     height: 1.5rem;
