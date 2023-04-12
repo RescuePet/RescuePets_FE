@@ -93,6 +93,7 @@ const ProfileHeader = styled.div`
   ${FlexAttribute("row", "space-between", "center")}
   padding-left: 1.25rem;
   padding-right: 1.25rem;
+  
 `;
 
 const HeaderImage = styled.div`

@@ -12,6 +12,8 @@ import Button from "../../elements/Button";
 import { __PutMyinfoEdit } from "../../redux/modules/infoeditSlice";
 import Cookies from "js-cookie";
 import { Spinner } from "../../components/Spinner";
+import { useModalState } from "../../hooks/useModalState";
+import { CheckModal } from "../../elements/Modal";
 
 import {
   initAmplitude,
@@ -21,6 +23,10 @@ import {
 } from "../../utils/amplitude";
 
 const Editinfo = () => {
+  let imageRef;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userInfo = JSON.parse(Cookies.get("UserInfo"));
   // 앰플리튜드
   const location = useLocation();
   useEffect(() => {
@@ -32,10 +38,8 @@ const Editinfo = () => {
     };
   }, []);
 
-  let imageRef;
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const userInfo = JSON.parse(Cookies.get("UserInfo"));
+  const [loginModal, toggleModal] = useModalState(false);
+  const [editMsg, setEditMsg] = useState("");
 
   const {
     register,
@@ -76,20 +80,26 @@ const Editinfo = () => {
     const formData = new FormData();
     formData.append("nickname", data.name);
     formData.append("image", imageFormData);
-    dispatch(__PutMyinfoEdit(formData));
+    dispatch(__PutMyinfoEdit(formData)).then((response) => {
+      toggleModal();
+      reset();
+      if (response.type === "putMyinfoEdit/rejected") {
+        if (response.error.message == "중복된 닉네임이 존재합니다.") {
+          setEditMsg(response.error.message);
+        }
+        setEditMsg("실패! 알림창을 클릭하여 다시 시도해주세요!");
+      } else if (response.type == "putMyinfoEdit/fulfilled") {
+        setEditMsg(response.payload.message);
+        setTimeout(function () {
+          navigate("/profile");
+        }, 1000);
+      }
+    });
   };
 
   const EditMsg = useSelector((state) => {
     return state.infoEdit;
   });
-
-  useEffect(() => {
-    if (EditMsg?.message?.status === true) {
-      reset();
-    } else {
-      console.log("실패");
-    }
-  }, [EditMsg]);
 
   if (JSON.stringify(EditMsg.loading) === "true") {
     return <Spinner />;
@@ -98,6 +108,15 @@ const Editinfo = () => {
   return (
     <Layout>
       <EditInfoForm onSubmit={handleSubmit(onSubmitmyInfoHandler)}>
+        {editMsg == "" ? null : (
+          <CheckModal
+            isOpen={loginModal}
+            toggle={toggleModal}
+            onClose={toggleModal}
+          >
+            {editMsg}
+          </CheckModal>
+        )}
         <EditInfoHeader>
           <EditHeaderText>
             <div></div>
@@ -152,8 +171,8 @@ const Editinfo = () => {
 
         <EditinfoButtonBox>
           {isActive === true ? (
-            <Button disable emptyButton>
-              저장대기 중
+            <Button disable emptyButton type="button">
+              저장 중
             </Button>
           ) : (
             <Button type="submit" fillButton>
