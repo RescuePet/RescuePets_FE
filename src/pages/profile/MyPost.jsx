@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
-import { FlexAttribute, HeaderStyle } from "../../style/Mixin";
+import ProfileHeader from "./components/ProfileHeader";
+import { FlexAttribute } from "../../style/Mixin";
 import PostList from "./components/PostList";
 import {
   __getMyInfo,
@@ -11,8 +12,7 @@ import {
   resetProfileState,
 } from "../../redux/modules/profileSlice";
 import { useInView } from "react-intersection-observer";
-import { useLocation, useNavigate } from "react-router-dom";
-import close from "../../asset/Close.svg";
+import { useLocation } from "react-router-dom";
 import Error404 from "../../elements/Error404";
 import ErrorPost from "../../asset/error/404post.png";
 
@@ -36,7 +36,6 @@ const MyPost = () => {
   }, []);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [ref, inView] = useInView();
 
   const { myPostList, myPostPage, myData } = useSelector(
@@ -65,10 +64,7 @@ const MyPost = () => {
   return (
     <>
       <Layout>
-        <MyPostHeader>
-          <h2>작성 글 목록</h2>
-          <CloseSvg src={close} onClick={() => navigate("/profile")} />
-        </MyPostHeader>
+        <ProfileHeader>작성 글 목록</ProfileHeader>
         <PostInfoContainer>
           <PostInfoWrapper>
             <div>
@@ -96,24 +92,6 @@ const MyPost = () => {
     </>
   );
 };
-
-const MyPostHeader = styled.div`
-  position: relative;
-  ${FlexAttribute("row", "center")};
-  ${HeaderStyle};
-  h2 {
-    ${(props) => props.theme.Body_500_16};
-    color: ${(props) => props.theme.color.text_normal};
-    line-height: 1.5rem;
-    margin-bottom: 16px;
-  }
-`;
-
-const CloseSvg = styled.img`
-  position: absolute;
-  right: 1.25rem;
-  cursor: pointer;
-`;
 
 const PostInfoContainer = styled.div`
   width: 100%;

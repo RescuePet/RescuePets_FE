@@ -91,9 +91,9 @@ const Profile = () => {
 const ProfileHeader = styled.div`
   ${HeaderStyle}
   ${FlexAttribute("row", "space-between", "center")}
+  position: relative;
   padding-left: 1.25rem;
   padding-right: 1.25rem;
-  
 `;
 
 const HeaderImage = styled.div`
@@ -110,7 +110,7 @@ const HeaderHamburgermenu = styled.div`
   display: flex;
   align-items: center;
   justify-content: right;
-  
+
   > svg {
     width: 1.5rem;
     height: 1.5rem;

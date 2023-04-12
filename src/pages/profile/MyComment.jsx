@@ -3,9 +3,9 @@ import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import { FlexAttribute, HeaderStyle } from "../../style/Mixin";
 import CommentList from "./components/CommentList";
+import ProfileHeader from "./components/ProfileHeader";
 
-import close from "../../asset/Close.svg";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   __getMyComment,
@@ -35,7 +35,6 @@ const MyComment = () => {
     };
   }, []);
 
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [ref, inView] = useInView();
 
@@ -63,10 +62,7 @@ const MyComment = () => {
 
   return (
     <Layout>
-      <MyCommentHeader>
-        <h2>댓글 목록</h2>
-        <CloseSvg src={close} onClick={() => navigate("/profile")} />
-      </MyCommentHeader>
+      <ProfileHeader>댓글 목록</ProfileHeader>
       <PostInfoContainer>
         <PostInfoWrapper>
           <div>

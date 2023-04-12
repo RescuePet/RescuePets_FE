@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import camera from "../../asset/profile/camera.png";
 import close from "../../asset/Close.svg";
 import Button from "../../elements/Button";
+
 import { __PutMyinfoEdit } from "../../redux/modules/infoeditSlice";
 import Cookies from "js-cookie";
 import { Spinner } from "../../components/Spinner";
@@ -117,18 +118,10 @@ const Editinfo = () => {
             {editMsg}
           </CheckModal>
         )}
-        <EditInfoHeader>
-          <EditHeaderText>
-            <div></div>
-            <div>
-              <h2>프로필 수정하기</h2>
-            </div>
-          </EditHeaderText>
-          <EditHeaderImg>
-            <img src={close} onClick={MoveToBackPage} />
-          </EditHeaderImg>
-        </EditInfoHeader>
-
+        <EditHeader>
+          <h2>내 정보 수정</h2>
+          <CloseSvg src={close} onClick={MoveToBackPage} />
+        </EditHeader>
         <EditInfoImgBox>
           <EditInfoImgBack>
             {imageFormData == "" ? (
@@ -192,37 +185,22 @@ const EditInfoForm = styled.form`
   height: 100%;
 `;
 
-const EditInfoHeader = styled.div`
-  ${HeaderStyle}
-  ${FlexAttribute("row", "space-between", "center")}
+const EditHeader = styled.header`
   position: relative;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
-`;
-
-const EditHeaderText = styled.div`
-  width: 75%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: right;
-  padding-right: 2.3125rem;
-  > div {
-    width: 50%;
-    height: 100%;
-    ${(props) => props.theme.FlexCenter}
-    >h2 {
-      ${(props) => props.theme.Body_500_16}
-      color: ${(props) => props.theme.color.black};
-    }
+  ${FlexAttribute("row", "center")};
+  ${HeaderStyle}
+  h2 {
+    ${(props) => props.theme.Body_500_16};
+    color: ${(props) => props.theme.color.text_normal};
+    line-height: 1.5rem;
+    margin-bottom: 16px;
   }
 `;
-const EditHeaderImg = styled.div`
+
+const CloseSvg = styled.img`
   position: absolute;
-  right: 1%;
-  width: 25%;
-  height: 100%;
-  ${(props) => props.theme.FlexCenter}
+  right: 1.25rem;
+  cursor: pointer;
 `;
 
 const EditInfoImgBox = styled.div`

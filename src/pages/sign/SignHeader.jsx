@@ -4,6 +4,7 @@ import { FlexAttribute, Border_2_color } from "../../style/Mixin";
 import { useNavigate } from "react-router-dom";
 import back from "../../asset/Back.svg";
 
+
 const SignHeader = ({ children }) => {
   const navigate = useNavigate();
   const MoveBackpage = () => {

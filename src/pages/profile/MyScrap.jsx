@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../layouts/Layout";
-import { FlexAttribute, HeaderStyle } from "../../style/Mixin";
+import { FlexAttribute } from "../../style/Mixin";
 import { useInView } from "react-intersection-observer";
 import ScrapList from "./components/ScrapList";
+import ProfileHeader from "./components/ProfileHeader";
 
-import close from "../../asset/Close.svg";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { instance } from "../../utils/api";
 import ScrollToTop from "../../elements/ScrollToTop";
 import refresh from "../../asset/refresh.svg";
@@ -35,7 +35,6 @@ const MyScrap = () => {
   }, []);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [ref, inView] = useInView();
   const [myScrapList, setMyScrapList] = useState([]);
   const [myScrapPage, setMyScrapPage] = useState(1);
@@ -78,10 +77,7 @@ const MyScrap = () => {
   return (
     <Layout>
       <ScrollToTop />
-      <MyPostHeader>
-        <h2>스크랩 목록</h2>
-        <CloseSvg src={close} onClick={() => navigate("/profile")} />
-      </MyPostHeader>
+      <ProfileHeader>스크랩 목록</ProfileHeader>
       <PostInfoContainer>
         <PostInfoWrapper>
           <div>
@@ -109,24 +105,6 @@ const MyScrap = () => {
     </Layout>
   );
 };
-
-const MyPostHeader = styled.div`
-  position: relative;
-  ${FlexAttribute("row", "center")}
-  ${HeaderStyle}
-  h2 {
-    ${(props) => props.theme.Body_500_16};
-    color: ${(props) => props.theme.color.text_normal};
-    line-height: 1.5rem;
-    margin-bottom: 16px;
-  }
-`;
-
-const CloseSvg = styled.img`
-  position: absolute;
-  right: 1.25rem;
-  cursor: pointer;
-`;
 
 const PostInfoContainer = styled.div`
   width: 100%;
