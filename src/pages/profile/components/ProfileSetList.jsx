@@ -32,17 +32,16 @@ const ProfileSetList = () => {
         <List>스크랩 목록</List>
         <ArrowSvg>&gt;</ArrowSvg>
       </ListBox>
-      {/* <ListBox onClick={() => alert("준비중 입니다.")}>
+      <ListBox onClick={() => alert("준비중 입니다.")}>
         <ReportSvg></ReportSvg>
         <List>신고관리</List>
         <ArrowSvg>&gt;</ArrowSvg>
       </ListBox>
-      <ListBox onClick={() => alert("준비중 입니다.")}>
+      {/* <ListBox onClick={() => alert("준비중 입니다.")}>
         <Setting />
         <List>App 설정</List>
         <ArrowSvg>&gt;</ArrowSvg>
-      </ListBox>
-      */}
+      </ListBox> */}
       <ListBox onClick={() => navigate("/profile/customer")}>
         <Headphone />
         <List>고객센터</List>
