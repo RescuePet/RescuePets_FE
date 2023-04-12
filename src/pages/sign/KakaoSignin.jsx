@@ -3,12 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Splash from "../../elements/Splash";
 import { instance } from "../../utils/api";
 
-import {
-  initAmplitude,
-  logEvent,
-  setAmplitudeUserId,
-  resetAmplitude,
-} from "../../utils/amplitude";
+import { initAmplitude, logEvent, resetAmplitude } from "../../utils/amplitude";
 
 const KakaoSignin = () => {
   const location = useLocation();

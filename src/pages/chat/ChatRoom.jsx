@@ -121,7 +121,7 @@ const ChatRoom = () => {
 
   const leaveChatHandler = async () => {
     try {
-      const response = await instance.delete(`/chat/room/exit/${id}`);
+      await instance.delete(`/chat/room/exit/${id}`);
       navigate("/chatlist");
     } catch (error) {
       console.log(error);
@@ -134,8 +134,16 @@ const ChatRoom = () => {
   };
 
   const ChatRoomMeatData = [
-    { option: "채팅방 나가기", color: "normal", handler: leaveChatHandler },
-    { option: "신고하기", color: "report", handler: OpenReportHandler },
+    {
+      option: "채팅방 나가기",
+      color: "normal",
+      handler: leaveChatHandler,
+    },
+    {
+      option: "신고하기",
+      color: "report",
+      handler: OpenReportHandler,
+    },
   ];
 
   const reportModalData = {

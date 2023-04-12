@@ -5,6 +5,7 @@ import { FlexAttribute } from "../style/Mixin";
 import { useDispatch } from "react-redux";
 import { toggleOption } from "../redux/modules/menubarSlice";
 import ModalPortal from "../elements/ModalPortal";
+import { toUp } from "../style/Animation";
 
 const Option = ({ setting, mapCloseHandler }) => {
   const dispatch = useDispatch();
@@ -67,6 +68,7 @@ const OptionWrapper = styled.div`
   margin-bottom: 8px;
   border-radius: 20px;
   background-color: ${(props) => props.theme.color.white};
+  animation: ${toUp} 0.5s ease-in-out;
 `;
 
 const OptionSelect = styled.div`

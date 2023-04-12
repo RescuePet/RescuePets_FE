@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { Body_500_14 } from "../style/theme";
+import { toUp } from "../style/Animation";
 
 const Button = ({ children, ...props }) => {
   return (
@@ -73,6 +74,7 @@ const BtnStyle = styled.button`
       margin-bottom: 32px;
       background-color: ${(props) => props.theme.color.text_disable};
       border-radius: 20px;
+      animation: ${toUp} 0.25s ease-in-out;
     `}
     ${(props) =>
     props.search &&
