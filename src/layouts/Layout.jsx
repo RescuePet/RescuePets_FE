@@ -154,7 +154,7 @@ const Layout = ({ children }) => {
         </MobileLayout>
         <LogoImage src={Logo} />
         <DogImage src={PopDog} />
-        <RoadImage src={Road} />
+        {/* <RoadImage src={Road} /> */}
         <MarkerImage src={Marker} />
         <SoleImage src={Sole} />
       </WebLayout>
@@ -232,10 +232,10 @@ const MarkerImage = styled.img`
 
 const SoleImage = styled.img`
   position: absolute;
-  top: calc(50% - 140px);
-  height: 80px;
+  top: calc(50% - 9px);
+  height: 110px;
   transform: translate(-17%, -20%);
-  left: calc(50% - 490px);
+  left: calc(50% - 611px);
 `;
 
 export default Layout;
