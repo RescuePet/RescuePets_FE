@@ -10,7 +10,9 @@ import { toggleScroll } from "../redux/modules/commentSlice";
 import backgroundImage from "../asset/webbackground/Desktop.jpg";
 import PopDog from "../asset/webbackground/PopDog.png";
 import Logo from "../asset/webbackground/Logo.png";
-import Road from "../asset/webbackground/PopRoad.png";
+import RoadLeft from "../asset/webbackground/PopRoadLeft.png";
+import RoadRight from "../asset/webbackground/PopRoadRight.png";
+import People from "../asset/webbackground/PopPeople.png";
 import Marker from "../asset/webbackground/PopMaker.png";
 import Sole from "../asset/webbackground/PopSole.png";
 
@@ -153,10 +155,12 @@ const Layout = ({ children }) => {
             location.pathname.split("/")[1] !== "chatroom" && <Footer></Footer>}
         </MobileLayout>
         <LogoImage src={Logo} />
+        <RoadLeftImage src={RoadLeft} />
         <DogImage src={PopDog} />
-        {/* <RoadImage src={Road} /> */}
         <MarkerImage src={Marker} />
         <SoleImage src={Sole} />
+        <RoadRightImage src={RoadRight} />
+        <PeopleImage src={People} />
       </WebLayout>
     </>
   );
@@ -214,12 +218,12 @@ const DogImage = styled.img`
   animation: ${upAndDown} 2.3s infinite;
 `;
 
-const RoadImage = styled.img`
+const RoadLeftImage = styled.img`
   position: absolute;
-  top: calc(50% - 275px);
-  height: 940px;
+  top: calc(50% - -150px);
+  height: 550px;
   transform: translate(-17%, -20%);
-  left: calc(50% - 550px);
+  left: calc(50% - 520px);
 `;
 
 const MarkerImage = styled.img`
@@ -236,6 +240,20 @@ const SoleImage = styled.img`
   height: 110px;
   transform: translate(-17%, -20%);
   left: calc(50% - 611px);
+`;
+
+const RoadRightImage = styled.img`
+  position: absolute;
+  height: calc(50% + 410px);
+  top: calc(50% - 370px);
+  left: calc(50% + 331px);
+`;
+
+const PeopleImage = styled.img`
+  position: absolute;
+  height: calc(50% + 290px);
+  top: calc(50% - 410px);
+  left: calc(50% + 331px);
 `;
 
 export default Layout;
