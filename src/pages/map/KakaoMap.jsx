@@ -375,4 +375,5 @@ const CurrentLocationBtn = styled.aside`
   border-radius: 50%;
   background: ${(props) => props.theme.color.white};
   ${(props) => props.theme.FlexCenter}; /* border: 1px solid red; */
+  cursor: pointer;
 `;
