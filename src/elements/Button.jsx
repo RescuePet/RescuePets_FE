@@ -79,7 +79,7 @@ const BtnStyle = styled.button`
     ${(props) =>
     props.search &&
     css`
-      height: 100%;
+      height: 30px;
       width: fit-content;
       margin-right: 10px;
       background-color: ${(props) => props.theme.color.primary_normal};
