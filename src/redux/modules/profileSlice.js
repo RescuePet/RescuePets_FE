@@ -61,16 +61,46 @@ export const __getMyScrap = createAsyncThunk(
   }
 );
 
+// Get User List
+export const __getUserList = createAsyncThunk(
+  "getUserList",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await instance.get(
+        `/api/member/list?page=${payload.page}&size=${payload.size}`
+      );
+      return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+// Put User Grade
+export const __putUserGrade = createAsyncThunk(
+  "putUserGrade",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await instance.put(`/api/member/role`, payload);
+      return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 const initialState = {
   loading: false,
   error: false,
-  myData: {},
+  myData: { postCount: 0, commentCount: 0, scrapCount: 0 },
   myPostList: [],
   myPostPage: 1,
   myCommentList: [],
   myCommentPage: 1,
   myScrapList: [],
   myScrapPage: 1,
+  userList: [],
+  userListPage: 1,
 };
 
 export const profileSlice = createSlice({
@@ -150,6 +180,22 @@ export const profileSlice = createSlice({
       .addCase(__getMyScrap.rejected, (state) => {
         state.error = true;
       });
+
+    builder
+      .addCase(__getUserList.fulfilled, (state, action) => {
+        state.userList = [...action.payload];
+        state.userListPage = state.userListPage + 1;
+      })
+      .addCase(__getUserList.rejected, (state) => {
+        state.error = true;
+      });
+
+    builder.addCase(__putUserGrade.fulfilled, (state, action) => {
+      const itemIndex = state.userList.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      state.userList[itemIndex] = { ...action.payload };
+    });
   },
 });
 

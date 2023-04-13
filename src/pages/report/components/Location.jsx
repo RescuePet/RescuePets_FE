@@ -84,9 +84,7 @@ const Location = () => {
             <p>목격위치</p>
           )}
           <img id="img" src={questionmark} />
-          <div className="tooltip">
-            지도상에서 클릭하여 위치 마커 를 표시해주세요
-          </div>
+          <div className="tooltip">지도를 클릭하여 위치마커를 표시해주세요</div>
         </ReportKakaomapTitleInfoBox>
         <ReportKakaomapTitleValueBox>
           {/* <p>위치</p> */}
@@ -142,7 +140,7 @@ const ReportKakaomapTitleInfoBox = styled.div`
   > div {
     position: relative;
     ${(props) => props.theme.FlexCenter}
-    left: 57px;
+    left: 45px;
     top: -2.5px;
     width: 14.3125rem;
     height: 1.5rem;

@@ -16,7 +16,7 @@ import QRCode from "qrcode.react";
 import html2canvas from "html2canvas";
 import { saveAs } from "file-saver";
 
-import location from "../../asset/location.svg";
+import locationSVG from "../../asset/location.svg";
 import time from "../../asset/time.svg";
 import informationIcon from "../../asset/information.svg";
 import Memo from "../../asset/Memo";
@@ -167,7 +167,7 @@ const Poster = () => {
         <LocationWrapper>
           <InfoWrapper>
             <BodyTitleWrapper>
-              <BodyTitleSvg src={location} />
+              <BodyTitleSvg src={locationSVG} />
               <BodyTitleText>위치</BodyTitleText>
             </BodyTitleWrapper>
             <ContentTextWrapper>

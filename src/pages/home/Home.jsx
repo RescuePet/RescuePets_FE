@@ -166,6 +166,7 @@ const Home = () => {
       dispatch(completeSearch());
       dispatch(togglePublicSearchMode(true));
       dispatch(toggleDescriptionCategory(distance));
+      logEvent(`search_distance_${distance}`);
 
       dispatch(__getAdoptionSearch(payload));
     } else {

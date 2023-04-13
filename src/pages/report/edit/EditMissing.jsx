@@ -370,10 +370,10 @@ const EditMissing = () => {
                   type="text"
                   placeholder={missingPostDetail.weight}
                   {...register("animalkg", {
-                    pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
+                    pattern: { value: /^[0-9.]+$/, message: "숫자만입력가능" },
                     maxLength: {
                       value: 4,
-                      message: "4글자 이하이어야 합니다.",
+                      message: "숫자 . 만 입력! 4자리수 이하로 작성",
                     },
                   })}
                 />
@@ -515,13 +515,7 @@ const EditMissing = () => {
               <h3>+</h3>
             </ReportAnimalPictureInput>
 
-            {showImages.length === 0 ? (
-              <ReportAnimalPicturePreview>
-                <div>
-                  <img src={imgdelete} />
-                </div>
-              </ReportAnimalPicturePreview>
-            ) : (
+            {showImages.length === 0 ? null : (
               <>
                 {showImages.map((image, index) => (
                   <ReportAnimalPicturePreview key={index}>

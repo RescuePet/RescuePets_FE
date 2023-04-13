@@ -91,7 +91,7 @@ const Footer = () => {
       >
         <FooterIconProfile></FooterIconProfile>
         <span>마이페이지</span>
-        {sseMyCount == 0 ? null : <p>{sseMyCount}</p>}
+        {/* {sseMyCount == 0 ? null : <p>{sseMyCount}</p>} */}
       </FooterEachIconContiner>
       <div>
         <FooterIconToggleBtn

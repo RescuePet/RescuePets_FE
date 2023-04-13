@@ -8,6 +8,8 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { setSearchValue } from "../../redux/modules/searchSlice";
 
+import { logEvent } from "../../utils/amplitude";
+
 const Searchbar = ({ searchHandler }) => {
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
@@ -15,6 +17,7 @@ const Searchbar = ({ searchHandler }) => {
   const setInputValue = (value) => {
     dispatch(setSearchValue(value.searchValue));
     searchHandler(value.searchValue);
+    logEvent("searchValue", { searchValue: value.searchValue });
   };
 
   return (

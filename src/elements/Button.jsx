@@ -56,8 +56,8 @@ const BtnStyle = styled.button`
     ${(props) =>
     props.moveToDetailButton &&
     css`
-      width: 4.7rem;
-      height: 1rem;
+      width: 12.5rem;
+      height: 1.375rem;
       ${(props) => props.theme.Body_400_12}
       ${(props) => props.theme.FlexCenter}
       color: ${(props) => props.theme.color.black};
@@ -70,7 +70,7 @@ const BtnStyle = styled.button`
     ${(props) =>
     props.OptionClose &&
     css`
-      width: 93%;
+      width: 80%;
       margin-bottom: 32px;
       background-color: ${(props) => props.theme.color.text_disable};
       border-radius: 20px;
@@ -79,7 +79,7 @@ const BtnStyle = styled.button`
     ${(props) =>
     props.search &&
     css`
-      height: 100%;
+      height: 30px;
       width: fit-content;
       margin-right: 10px;
       background-color: ${(props) => props.theme.color.primary_normal};

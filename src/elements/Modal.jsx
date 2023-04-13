@@ -20,7 +20,7 @@ export default function Modal({ isOpen, onClose, children }) {
       setIsOpenModal(isOpen);
       const timeoutId = setTimeout(() => {
         setIsOpenModal(false);
-      }, 1000);
+      }, 550);
       return () => clearTimeout(timeoutId);
     }
   }, [isOpen]);
@@ -77,11 +77,11 @@ export const ModalMsgContainer = styled.div`
   width: 100%;
   height: 100%;
   color: #333333;
-  display: flex;
-  align-items: center;
-
+  /* display: flex;
+  align-items: center; */
+  ${(props) => props.theme.FlexCenter}
   > h2 {
-    margin-left: 1.25rem;
+    /* margin-left: 1.25rem; */
     ${(props) => props.theme.Body_400_14_16}
   }
 `;

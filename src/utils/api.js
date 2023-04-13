@@ -12,10 +12,13 @@ const checkAccess = async (token) => {
     .get(`${process.env.REACT_APP_SIGN_TEST}/chat/rooms`, {
       headers: { Authorization: token },
     })
-    .catch((respon) => {
-      status = respon.message;
+    .catch((response) => {
+      status = response.message;
     });
-  if (status === "Network Error") {
+  if (
+    status === "Network Error" ||
+    status === "Request failed with status code 303"
+  ) {
     const REFRESH = Cookies.get("Refresh");
     const token = await axios.get(
       `${process.env.REACT_APP_SIGN_TEST}/api/reissue`,

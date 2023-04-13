@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Border_1_color, FlexAttribute } from "../../../style/Mixin";
 import { Body_500_14 } from "../../../style/theme";
 
-import Setting from "../../../asset/profile/Setting";
+import User from "../../../asset/User";
 import Headphone from "../../../asset/profile/Headphone";
 import Reportcatch from "../../../asset/Reportcatch";
 import ClippingFill from "../../../asset/profile/ClippingFill";
@@ -11,9 +11,11 @@ import ClippingFill from "../../../asset/profile/ClippingFill";
 import { useNavigate } from "react-router-dom";
 import Memo from "../../../asset/Memo";
 import Comment from "../../../asset/Comment";
+import Cookies from "js-cookie";
 
 const ProfileSetList = () => {
   const navigate = useNavigate();
+  const { memberRole } = JSON.parse(Cookies.get("UserInfo"));
 
   return (
     <ProfileSetListsContainer>
@@ -32,21 +34,25 @@ const ProfileSetList = () => {
         <List>스크랩 목록</List>
         <ArrowSvg>&gt;</ArrowSvg>
       </ListBox>
-      {/* <ListBox onClick={() => alert("준비중 입니다.")}>
-        <ReportSvg></ReportSvg>
-        <List>신고관리</List>
-        <ArrowSvg>&gt;</ArrowSvg>
-      </ListBox>
-      <ListBox onClick={() => alert("준비중 입니다.")}>
-        <Setting />
-        <List>App 설정</List>
-        <ArrowSvg>&gt;</ArrowSvg>
-      </ListBox>
-      <ListBox onClick={() => alert("준비 중 입니다.")}>
+      {(memberRole === "ADMIN" || memberRole === "MANAGER") && (
+        <ListBox onClick={() => navigate("/profile/usergrade")}>
+          <User />
+          <List>사용자 등급 관리</List>
+          <ArrowSvg>&gt;</ArrowSvg>
+        </ListBox>
+      )}
+      {memberRole === "ADMIN" && (
+        <ListBox onClick={() => navigate("/profile/reportmanagement")}>
+          <ReportSvg></ReportSvg>
+          <List>신고관리</List>
+          <ArrowSvg>&gt;</ArrowSvg>
+        </ListBox>
+      )}
+      <ListBox onClick={() => navigate("/profile/customer")}>
         <Headphone />
         <List>고객센터</List>
         <ArrowSvg>&gt;</ArrowSvg>
-      </ListBox> */}
+      </ListBox>
     </ProfileSetListsContainer>
   );
 };

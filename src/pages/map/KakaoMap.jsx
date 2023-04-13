@@ -11,6 +11,7 @@ import { __GetMissingData } from "../../redux/modules/missingSlice";
 import { useModalState } from "../../hooks/useModalState";
 import { MarkerModal } from "./components/Modal";
 import { Spinner } from "../../components/Spinner";
+import currentLocationimg from "../../asset/currentLocation.svg";
 const { kakao } = window;
 
 const KakaoMap = () => {
@@ -28,6 +29,10 @@ const KakaoMap = () => {
   useEffect(() => {
     setMapBg(menutoggle);
   }, [menutoggle]);
+
+  const getlink = useSelector((state) => {
+    return state.link;
+  });
 
   //디비에 저장된 데이터 값 가져오기
   useEffect(() => {
@@ -86,7 +91,7 @@ const KakaoMap = () => {
     const container = document.getElementById("myMap");
     const options = {
       center: new kakao.maps.LatLng(lati, long),
-      level: 12,
+      level: 11,
     };
     mapRef.current = new kakao.maps.Map(container, options);
 
@@ -212,6 +217,12 @@ const KakaoMap = () => {
           polyline.setMap(mapRef.current);
         });
       });
+
+    if (getlink.data.data?.length > 0) {
+      // console.log(newCatchData.happenLatitude);
+      // console.log(newCatchData.happenLongitude);
+      // console.log(getlink?.data?.data);
+    }
   }, [onSucces]);
 
   // // 실패시 작동 로직
@@ -317,6 +328,11 @@ const KakaoMap = () => {
       });
   }, [onFailure]);
 
+  const MoveToCurrentLocation = () => {
+    const moveLatLon = new kakao.maps.LatLng(lati, long);
+    mapRef.current.panTo(moveLatLon);
+  };
+
   return isLoading === true ? (
     <MyMap id="myMap">
       <Spinner />
@@ -333,6 +349,9 @@ const KakaoMap = () => {
           data={newCatchData}
         ></MarkerModal>
         <FloatingPetwork />
+        <CurrentLocationBtn onClick={MoveToCurrentLocation}>
+          <img src={currentLocationimg} />
+        </CurrentLocationBtn>
       </MyMap>
     </>
   );
@@ -344,4 +363,17 @@ const MyMap = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
+`;
+
+const CurrentLocationBtn = styled.aside`
+  position: absolute;
+  z-index: 7;
+  right: 1.25rem;
+  top: 3.125rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: ${(props) => props.theme.color.white};
+  ${(props) => props.theme.FlexCenter}; /* border: 1px solid red; */
+  cursor: pointer;
 `;

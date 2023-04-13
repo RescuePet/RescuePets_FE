@@ -2,9 +2,7 @@ import React, { useEffect } from "react";
 import Layout from "../../layouts/Layout";
 import styled from "styled-components";
 import introduce from "../../asset/carousel/introduce.png";
-import Button from "../../elements/Button";
-import { FlexAttribute } from "../../style/Mixin";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import {
   initAmplitude,

@@ -9,9 +9,12 @@ import { useDispatch, useSelector } from "react-redux";
 import camera from "../../asset/profile/camera.png";
 import close from "../../asset/Close.svg";
 import Button from "../../elements/Button";
+
 import { __PutMyinfoEdit } from "../../redux/modules/infoeditSlice";
 import Cookies from "js-cookie";
 import { Spinner } from "../../components/Spinner";
+import { useModalState } from "../../hooks/useModalState";
+import { CheckModal } from "../../elements/Modal";
 
 import {
   initAmplitude,
@@ -21,6 +24,10 @@ import {
 } from "../../utils/amplitude";
 
 const Editinfo = () => {
+  let imageRef;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userInfo = JSON.parse(Cookies.get("UserInfo"));
   // 앰플리튜드
   const location = useLocation();
   useEffect(() => {
@@ -32,10 +39,8 @@ const Editinfo = () => {
     };
   }, []);
 
-  let imageRef;
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const userInfo = JSON.parse(Cookies.get("UserInfo"));
+  const [loginModal, toggleModal] = useModalState(false);
+  const [editMsg, setEditMsg] = useState("");
 
   const {
     register,
@@ -76,20 +81,26 @@ const Editinfo = () => {
     const formData = new FormData();
     formData.append("nickname", data.name);
     formData.append("image", imageFormData);
-    dispatch(__PutMyinfoEdit(formData));
+    dispatch(__PutMyinfoEdit(formData)).then((response) => {
+      toggleModal();
+      reset();
+      if (response.type === "putMyinfoEdit/rejected") {
+        if (response.error.message == "중복된 닉네임이 존재합니다.") {
+          setEditMsg(response.error.message);
+        }
+        setEditMsg("실패! 알림창을 클릭하여 다시 시도해주세요!");
+      } else if (response.type == "putMyinfoEdit/fulfilled") {
+        setEditMsg(response.payload.message);
+        setTimeout(function () {
+          navigate("/profile");
+        }, 1000);
+      }
+    });
   };
 
   const EditMsg = useSelector((state) => {
     return state.infoEdit;
   });
-
-  useEffect(() => {
-    if (EditMsg?.message?.status === true) {
-      reset();
-    } else {
-      console.log("실패");
-    }
-  }, [EditMsg]);
 
   if (JSON.stringify(EditMsg.loading) === "true") {
     return <Spinner />;
@@ -98,18 +109,19 @@ const Editinfo = () => {
   return (
     <Layout>
       <EditInfoForm onSubmit={handleSubmit(onSubmitmyInfoHandler)}>
-        <EditInfoHeader>
-          <EditHeaderText>
-            <div></div>
-            <div>
-              <h2>프로필 수정하기</h2>
-            </div>
-          </EditHeaderText>
-          <EditHeaderImg>
-            <img src={close} onClick={MoveToBackPage} />
-          </EditHeaderImg>
-        </EditInfoHeader>
-
+        {editMsg == "" ? null : (
+          <CheckModal
+            isOpen={loginModal}
+            toggle={toggleModal}
+            onClose={toggleModal}
+          >
+            {editMsg}
+          </CheckModal>
+        )}
+        <EditHeader>
+          <h2>내 정보 수정</h2>
+          <CloseSvg src={close} onClick={MoveToBackPage} />
+        </EditHeader>
         <EditInfoImgBox>
           <EditInfoImgBack>
             {imageFormData == "" ? (
@@ -152,8 +164,8 @@ const Editinfo = () => {
 
         <EditinfoButtonBox>
           {isActive === true ? (
-            <Button disable emptyButton>
-              저장대기 중
+            <Button disable emptyButton type="button">
+              저장 중
             </Button>
           ) : (
             <Button type="submit" fillButton>
@@ -173,37 +185,22 @@ const EditInfoForm = styled.form`
   height: 100%;
 `;
 
-const EditInfoHeader = styled.div`
-  ${HeaderStyle}
-  ${FlexAttribute("row", "space-between", "center")}
+const EditHeader = styled.header`
   position: relative;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
-`;
-
-const EditHeaderText = styled.div`
-  width: 75%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: right;
-  padding-right: 2.3125rem;
-  > div {
-    width: 50%;
-    height: 100%;
-    ${(props) => props.theme.FlexCenter}
-    >h2 {
-      ${(props) => props.theme.Body_500_16}
-      color: ${(props) => props.theme.color.black};
-    }
+  ${FlexAttribute("row", "center")};
+  ${HeaderStyle}
+  h2 {
+    ${(props) => props.theme.Body_500_16};
+    color: ${(props) => props.theme.color.text_normal};
+    line-height: 1.5rem;
+    margin-bottom: 16px;
   }
 `;
-const EditHeaderImg = styled.div`
+
+const CloseSvg = styled.img`
   position: absolute;
-  right: 1%;
-  width: 25%;
-  height: 100%;
-  ${(props) => props.theme.FlexCenter}
+  right: 1.25rem;
+  cursor: pointer;
 `;
 
 const EditInfoImgBox = styled.div`

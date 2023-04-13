@@ -171,7 +171,8 @@ const PetworkList = () => {
       };
       dispatch(togglePostSearchMode(true));
       dispatch(completeSearch());
-      dispatch(toggleDescriptionCategory(distance));
+      dispatch(toggleDescriptionCategory(`search_distance_${distance}`));
+      logEvent(distance);
 
       dispatch(__getPostSearch(payload));
     } else {

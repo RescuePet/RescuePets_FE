@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { FlexAttribute } from "../style/Mixin";
 import Footer from "./Footer";
 import isLogin from "../utils/isLogin";
@@ -10,6 +10,12 @@ import { toggleScroll } from "../redux/modules/commentSlice";
 import backgroundImage from "../asset/webbackground/Desktop.jpg";
 import PopDog from "../asset/webbackground/PopDog.png";
 import Logo from "../asset/webbackground/Logo.png";
+import RoadLeft from "../asset/webbackground/PopRoadLeft.png";
+import RoadRight from "../asset/webbackground/PopRoadRight.png";
+import People from "../asset/webbackground/PopPeople.png";
+import Marker from "../asset/webbackground/PopMaker.png";
+import Sole from "../asset/webbackground/PopSole.png";
+
 import { upAndDown } from "../style/Animation";
 import { EventSourcePolyfill } from "event-source-polyfill";
 import Cookies from "js-cookie";
@@ -149,7 +155,12 @@ const Layout = ({ children }) => {
             location.pathname.split("/")[1] !== "chatroom" && <Footer></Footer>}
         </MobileLayout>
         <LogoImage src={Logo} />
+        <RoadLeftImage src={RoadLeft} />
         <DogImage src={PopDog} />
+        <MarkerImage src={Marker} />
+        <SoleImage src={Sole} />
+        <RoadRightImage src={RoadRight} />
+        <PeopleImage src={People} />
       </WebLayout>
     </>
   );
@@ -205,6 +216,44 @@ const DogImage = styled.img`
   transform: translate(-17%, -20%);
   left: calc(50% - 500px);
   animation: ${upAndDown} 2.3s infinite;
+`;
+
+const RoadLeftImage = styled.img`
+  position: absolute;
+  top: calc(50% - -150px);
+  height: 550px;
+  transform: translate(-17%, -20%);
+  left: calc(50% - 520px);
+`;
+
+const MarkerImage = styled.img`
+  position: absolute;
+  top: calc(50% - 140px);
+  height: 80px;
+  transform: translate(-17%, -20%);
+  left: calc(50% - 490px);
+`;
+
+const SoleImage = styled.img`
+  position: absolute;
+  top: calc(50% - 9px);
+  height: 110px;
+  transform: translate(-17%, -20%);
+  left: calc(50% - 611px);
+`;
+
+const RoadRightImage = styled.img`
+  position: absolute;
+  height: calc(50% + 410px);
+  top: calc(50% - 370px);
+  left: calc(50% + 331px);
+`;
+
+const PeopleImage = styled.img`
+  position: absolute;
+  height: calc(50% + 290px);
+  top: calc(50% - 410px);
+  left: calc(50% + 331px);
 `;
 
 export default Layout;

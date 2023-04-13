@@ -17,7 +17,7 @@ import Title from "./components/Title";
 import locationSvg from "../../asset/location.svg";
 import calendar from "../../asset/calendar.svg";
 import specialmark from "../../asset/specialmark.svg";
-import user from "../../asset/user.svg";
+import user from "../../asset/usersvg.svg";
 import information from "../../asset/information.svg";
 import Clippingwhite from "../../asset/Clippingwhite";
 import {

@@ -6,12 +6,7 @@ import Layout from "../../layouts/Layout";
 import OnbooardingCarousel from "./components/OnboardingCarousel";
 import isLogin from "../../utils/isLogin";
 
-import {
-  initAmplitude,
-  logEvent,
-  setAmplitudeUserId,
-  resetAmplitude,
-} from "../../utils/amplitude";
+import { initAmplitude, logEvent, resetAmplitude } from "../../utils/amplitude";
 
 const OnBoarding = () => {
   // 앰플리튜드
@@ -19,7 +14,6 @@ const OnBoarding = () => {
   useEffect(() => {
     initAmplitude();
     logEvent(`enter_${location.pathname}`);
-    setAmplitudeUserId();
     return () => {
       resetAmplitude();
     };

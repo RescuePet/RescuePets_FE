@@ -66,7 +66,7 @@ const SightingDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userName = JSON.parse(Cookies.get("UserInfo"));
+  const { nickname, memberRole } = JSON.parse(Cookies.get("UserInfo"));
   const commentRef = useRef(null);
 
   const [loginModal, toggleModal] = useModalState(false);
@@ -223,6 +223,16 @@ const SightingDetail = () => {
     },
   ];
 
+  const optionAdminSetting = [
+    {
+      option: "관리자 권한으로 삭제",
+      color: "report",
+      handler: () => {
+        console.log("ADMIN");
+      },
+    },
+  ];
+
   const reportSetting = {
     type: "post",
     nickname: catchPostDetail.nickname,
@@ -309,22 +319,23 @@ const SightingDetail = () => {
         placeholder="댓글을 입력해주세요."
         submitHandler={submitHandler}
       ></InputContainer>
-      {userName.nickname !== catchPostDetail.nickname && (
+      {nickname !== catchPostDetail.nickname && (
         <FloatingButton
           onClick={() => {
             chatHandler();
           }}
         ></FloatingButton>
       )}
-      {optionState && (
-        <Option
-          setting={
-            catchPostDetail.nickname === userName.nickname
-              ? optionMySetting
-              : optionOtherSetting
-          }
-        />
+      {optionState &&
+        catchPostDetail.nickname === nickname &&
+        memberRole !== "ADMIN" && <Option setting={optionMySetting} />}
+      {optionState &&
+        catchPostDetail.nickname !== nickname &&
+        memberRole !== "ADMIN" && <Option setting={optionOtherSetting} />}
+      {optionState && memberRole === "ADMIN" && (
+        <Option setting={optionAdminSetting} />
       )}
+
       {reportState && (
         <ReportModal setting={reportSetting} onChangeMsg={onChangeReportMsg} />
       )}

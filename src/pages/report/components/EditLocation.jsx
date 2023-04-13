@@ -85,9 +85,7 @@ const EditLocation = ({ data }) => {
         <ReportKakaomapTitleInfoBox>
           {data.postType === "MISSING" ? <p>실종위치 </p> : <p>목격위치</p>}
           <img id="img" src={questionmark} />
-          <div className="tooltip">
-            지도를 클릭하여 위치를 마커로 표시해주세요
-          </div>
+          <div className="tooltip">지도를 클릭하여 위치마커를 표시해주세요</div>
         </ReportKakaomapTitleInfoBox>
         <ReportKakaomapTitleValueBox>
           {/* <p>위치</p> */}
