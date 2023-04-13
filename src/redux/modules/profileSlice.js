@@ -77,11 +77,14 @@ export const __getUserList = createAsyncThunk(
   }
 );
 
-// Post User Grade
-export const __postUserGrade = createAsyncThunk(
-  "postUserGrade",
+// Put User Grade
+export const __putUserGrade = createAsyncThunk(
+  "putUserGrade",
   async (payload, thunkAPI) => {
     try {
+      const response = await instance.put(`/api/member/role`, payload);
+      console.log(response);
+      return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -188,6 +191,13 @@ export const profileSlice = createSlice({
       .addCase(__getUserList.rejected, (state) => {
         state.error = true;
       });
+
+    builder.addCase(__putUserGrade.fulfilled, (state, action) => {
+      const itemIndex = state.userList.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      state.userList[itemIndex] = { ...action.payload };
+    });
   },
 });
 

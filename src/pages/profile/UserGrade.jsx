@@ -17,9 +17,7 @@ const UserGrade = () => {
       size: 100,
     };
     dispatch(__getUserList(payload));
-  }, [userList]);
-
-  console.log(userList);
+  }, []);
 
   return (
     <Layout>

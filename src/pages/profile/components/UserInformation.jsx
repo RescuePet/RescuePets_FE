@@ -45,7 +45,7 @@ const UserInformation = () => {
         return <UserGradeImage src={managerImage} />;
       case "MEMBER":
         return <UserGradeImage src={memberImage} />;
-      case "BADMEMBER":
+      case "BAD_MEMBER":
         return <UserGradeImage src={banImage} />;
       default:
         return null;

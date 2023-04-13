@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Border_1_color, FlexAttribute } from "../../../style/Mixin";
 import { Body_500_14 } from "../../../style/theme";
 
-import User from "../../../asset/user.svg";
+import User from "../../../asset/User";
 import Headphone from "../../../asset/profile/Headphone";
 import Reportcatch from "../../../asset/Reportcatch";
 import ClippingFill from "../../../asset/profile/ClippingFill";
@@ -38,7 +38,7 @@ const ProfileSetList = () => {
       </ListBox>
       {(memberRole === "ADMIN" || memberRole === "MANAGER") && (
         <ListBox onClick={() => navigate("/profile/usergrade")}>
-          <img src={User} alt="usericon" />
+          <User />
           <List>사용자 등급 관리</List>
           <ArrowSvg>&gt;</ArrowSvg>
         </ListBox>
