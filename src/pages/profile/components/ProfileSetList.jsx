@@ -17,8 +17,6 @@ const ProfileSetList = () => {
   const navigate = useNavigate();
   const { memberRole } = JSON.parse(Cookies.get("UserInfo"));
 
-  console.log(memberRole);
-
   return (
     <ProfileSetListsContainer>
       <ListBox onClick={() => navigate("/profile/mypost")}>

@@ -69,7 +69,6 @@ export const __getUserList = createAsyncThunk(
       const response = await instance.get(
         `/api/member/list?page=${payload.page}&size=${payload.size}`
       );
-      console.log(response);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       console.log(error);
@@ -83,7 +82,6 @@ export const __putUserGrade = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await instance.put(`/api/member/role`, payload);
-      console.log(response);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       console.log(error);
