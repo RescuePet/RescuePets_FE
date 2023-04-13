@@ -423,7 +423,7 @@ const ModlaImgInfoBox = styled.div`
       width: 6.0625rem;
       height: 6.375rem;
       border-radius: 0.3125rem;
-      cursor: pointer;
+      object-fit: cover;
     }
     > p {
       position: absolute;
