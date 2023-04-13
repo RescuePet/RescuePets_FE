@@ -367,7 +367,7 @@ const MyMap = styled.div`
 
 const CurrentLocationBtn = styled.aside`
   position: absolute;
-  z-index: 100;
+  z-index: 7;
   right: 1.25rem;
   top: 3.125rem;
   width: 2rem;
