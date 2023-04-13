@@ -183,7 +183,8 @@ const Catch = () => {
       watch("address") !== "" &&
       watch("animalcolor") !== "" &&
       addressDiv?.innerHTML !== "" &&
-      selectedDate !== ""
+      selectedDate !== "" &&
+      showImages.length > 0
     ) {
       setIsActive(false);
     } else {
@@ -196,7 +197,7 @@ const Catch = () => {
     if (addressDiv?.innerHTML === "" && selectedDate == "") {
       toggleModal();
       setCatchMsg("지도상에 위치와 날짜를 선택해주세요.");
-    } else {
+    } else if (addressDiv?.innerHTML !== "" && selectedDate !== "") {
       const formData = new FormData();
       formData.append("postType", "CATCH");
       formData.append("upkind", typeID);
@@ -324,11 +325,11 @@ const Catch = () => {
                   type="text"
                   placeholder="입력하기"
                   {...register("animalkg", {
-                    required: false,
-                    pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
+                    required: true,
+                    pattern: { value: /^[0-9.]+$/, message: "숫자만입력가능" },
                     maxLength: {
-                      value: 3,
-                      message: "숫자만 입력! 3자리수 이하로 작성",
+                      value: 4,
+                      message: "숫자 . 만 입력! 4자리수 이하로 작성",
                     },
                   })}
                 />
@@ -468,13 +469,7 @@ const Catch = () => {
             <ReportAnimalPictureInput onClick={() => imageRef.click()}>
               <h3>+</h3>
             </ReportAnimalPictureInput>
-            {showImages.length === 0 ? (
-              <ReportAnimalPicturePreview>
-                <div>
-                  <img src={imgdelete} />
-                </div>
-              </ReportAnimalPicturePreview>
-            ) : (
+            {showImages.length === 0 ? null : (
               <>
                 {showImages.map((image, index) => (
                   <ReportAnimalPicturePreview key={index}>

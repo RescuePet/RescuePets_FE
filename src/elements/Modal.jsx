@@ -14,8 +14,7 @@ export default function Modal({ isOpen, onClose, children }) {
   };
 
   const [isOpenModal, setIsOpenModal] = useState(isOpen);
-  console.log(isOpen);
-  console.log(isOpenModal);
+
   useEffect(() => {
     if (isOpen) {
       setIsOpenModal(isOpen);

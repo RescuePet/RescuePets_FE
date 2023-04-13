@@ -170,6 +170,7 @@ const Missing = () => {
   const handleDateChange = (e) => {
     setSelectedDate(e.target.value);
   };
+
   useEffect(() => {
     if (
       watch("animaltypes") !== "" &&
@@ -180,7 +181,8 @@ const Missing = () => {
       watch("address") !== "" &&
       watch("animalcolor") !== "" &&
       addressDiv?.innerHTML !== "" &&
-      selectedDate !== ""
+      selectedDate !== "" &&
+      showImages.length > 0
     ) {
       setIsActive(false);
     } else {
@@ -193,7 +195,7 @@ const Missing = () => {
     if (addressDiv?.innerHTML === "" && selectedDate == "") {
       toggleModal();
       setMissingMsg("지도상에 위치와 날짜를 선택해주세요.");
-    } else {
+    } else if (addressDiv?.innerHTML !== "" && selectedDate !== "") {
       const formData = new FormData();
       formData.append("postType", "MISSING");
       formData.append("upkind", typeID);
@@ -343,10 +345,10 @@ const Missing = () => {
                   placeholder="입력하기"
                   {...register("animalkg", {
                     required: true,
-                    pattern: { value: /^[0-9]+$/, message: "숫자만입력가능" },
+                    pattern: { value: /^[0-9.]+$/, message: "숫자만입력가능" },
                     maxLength: {
                       value: 4,
-                      message: "4글자 이하이어야 합니다.",
+                      message: "숫자 . 만 입력! 4자리수 이하로 작성",
                     },
                   })}
                 />
@@ -487,13 +489,7 @@ const Missing = () => {
             <ReportAnimalPictureInput onClick={() => imageRef.click()}>
               <h3>+</h3>
             </ReportAnimalPictureInput>
-            {showImages.length === 0 ? (
-              <ReportAnimalPicturePreview>
-                <div>
-                  <img src={imgdelete} />
-                </div>
-              </ReportAnimalPicturePreview>
-            ) : (
+            {showImages.length === 0 ? null : (
               <>
                 {showImages.map((image, index) => (
                   <ReportAnimalPicturePreview key={index}>
