@@ -11,9 +11,13 @@ import ClippingFill from "../../../asset/profile/ClippingFill";
 import { useNavigate } from "react-router-dom";
 import Memo from "../../../asset/Memo";
 import Comment from "../../../asset/Comment";
+import Cookies from "js-cookie";
 
 const ProfileSetList = () => {
   const navigate = useNavigate();
+  const { memberRole } = JSON.parse(Cookies.get("UserInfo"));
+
+  console.log(memberRole);
 
   return (
     <ProfileSetListsContainer>
@@ -32,16 +36,20 @@ const ProfileSetList = () => {
         <List>스크랩 목록</List>
         <ArrowSvg>&gt;</ArrowSvg>
       </ListBox>
-      <ListBox onClick={() => alert("준비중 입니다.")}>
-        <ReportSvg></ReportSvg>
-        <List>신고관리</List>
-        <ArrowSvg>&gt;</ArrowSvg>
-      </ListBox>
-      {/* <ListBox onClick={() => alert("준비중 입니다.")}>
-        <Setting />
-        <List>App 설정</List>
-        <ArrowSvg>&gt;</ArrowSvg>
-      </ListBox> */}
+      {(memberRole === "ADMIN" || memberRole === "MANAGER") && (
+        <ListBox onClick={() => navigate("/profile/usergrade")}>
+          <Setting />
+          <List>사용자 등급 관리</List>
+          <ArrowSvg>&gt;</ArrowSvg>
+        </ListBox>
+      )}
+      {memberRole === "ADMIN" && (
+        <ListBox onClick={() => navigate("/profile/reportmanagement")}>
+          <ReportSvg></ReportSvg>
+          <List>신고관리</List>
+          <ArrowSvg>&gt;</ArrowSvg>
+        </ListBox>
+      )}
       <ListBox onClick={() => navigate("/profile/customer")}>
         <Headphone />
         <List>고객센터</List>

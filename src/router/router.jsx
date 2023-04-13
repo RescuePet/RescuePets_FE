@@ -25,6 +25,8 @@ import EditMissing from "../pages/report/edit/EditMissing";
 import NotFound from "../pages/NotFound";
 import CarouselLink from "../pages/carousel/CarouselLink";
 import CustomerSC from "../pages/profile/CustomerSC";
+import UserGrade from "../pages/profile/UserGrade";
+import ReportManagement from "../pages/profile/ReportManagement";
 
 const Router = () => {
   return (
@@ -53,6 +55,11 @@ const Router = () => {
         <Route path="/profile/mycomment" element={<MyComment />} />
         <Route path="/profile/mypost" element={<MyPost />} />
         <Route path="/profile/myscrap" element={<MyScrap />} />
+        <Route path="/profile/usergrade" element={<UserGrade />} />
+        <Route
+          path="/profile/reportmanagement"
+          element={<ReportManagement />}
+        />
         <Route path="/profile/customer" element={<CustomerSC />} />
         <Route path="/introduce" element={<CarouselLink />} />
         <Route path="/*" element={<NotFound />} />
