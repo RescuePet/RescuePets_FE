@@ -170,6 +170,7 @@ const Missing = () => {
   const handleDateChange = (e) => {
     setSelectedDate(e.target.value);
   };
+
   useEffect(() => {
     if (
       watch("animaltypes") !== "" &&
@@ -180,7 +181,8 @@ const Missing = () => {
       watch("address") !== "" &&
       watch("animalcolor") !== "" &&
       addressDiv?.innerHTML !== "" &&
-      selectedDate !== ""
+      selectedDate !== "" &&
+      showImages.length > 0
     ) {
       setIsActive(false);
     } else {
@@ -193,7 +195,7 @@ const Missing = () => {
     if (addressDiv?.innerHTML === "" && selectedDate == "") {
       toggleModal();
       setMissingMsg("지도상에 위치와 날짜를 선택해주세요.");
-    } else {
+    } else if (addressDiv?.innerHTML !== "" && selectedDate !== "") {
       const formData = new FormData();
       formData.append("postType", "MISSING");
       formData.append("upkind", typeID);

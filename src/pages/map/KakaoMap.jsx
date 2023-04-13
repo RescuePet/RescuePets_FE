@@ -329,9 +329,7 @@ const KakaoMap = () => {
   }, [onFailure]);
 
   const MoveToCurrentLocation = () => {
-    var moveLatLon = new kakao.maps.LatLng(lati, long);
-
-    // 지도 중심을 이동 시킵니다
+    const moveLatLon = new kakao.maps.LatLng(lati, long);
     mapRef.current.panTo(moveLatLon);
   };
 
@@ -370,8 +368,8 @@ const MyMap = styled.div`
 const CurrentLocationBtn = styled.aside`
   position: absolute;
   z-index: 100;
-  left: 10px;
-  bottom: 50px;
+  right: 1.25rem;
+  top: 3.125rem;
   width: 2rem;
   height: 2rem;
   border-radius: 50%;

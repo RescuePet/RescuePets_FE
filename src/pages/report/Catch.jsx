@@ -183,7 +183,8 @@ const Catch = () => {
       watch("address") !== "" &&
       watch("animalcolor") !== "" &&
       addressDiv?.innerHTML !== "" &&
-      selectedDate !== ""
+      selectedDate !== "" &&
+      showImages.length > 0
     ) {
       setIsActive(false);
     } else {
@@ -196,7 +197,7 @@ const Catch = () => {
     if (addressDiv?.innerHTML === "" && selectedDate == "") {
       toggleModal();
       setCatchMsg("지도상에 위치와 날짜를 선택해주세요.");
-    } else {
+    } else if (addressDiv?.innerHTML !== "" && selectedDate !== "") {
       const formData = new FormData();
       formData.append("postType", "CATCH");
       formData.append("upkind", typeID);

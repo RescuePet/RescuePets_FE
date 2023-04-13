@@ -82,8 +82,8 @@ export function MarkerModal(props) {
 
   const [firstId, setFirstId] = useState("");
   const [secondId, setSecondId] = useState("");
-  console.log(firstId);
-  console.log(secondId);
+  // console.log(firstId);
+  // console.log(secondId);
   const data = props?.data;
   const Stringkm = String(data?.km);
 
@@ -170,7 +170,7 @@ export function MarkerModal(props) {
   return (
     <Modal isOpen={props.isOpen} onClose={props.toggle}>
       <ModalInBox>
-        <ModalTopLinknumber>
+        {/* <ModalTopLinknumber>
           링크{showLink.length == 0 ? null : showLink.length}
         </ModalTopLinknumber>
         <ModalSideLinkLook onClick={linkshow}>🔍</ModalSideLinkLook>
@@ -178,7 +178,7 @@ export function MarkerModal(props) {
           <ModalSideLinkadd onClick={linkaddfirst}>➕1</ModalSideLinkadd>
         ) : (
           <ModalSideLinkadd onClick={linkaddsecond}>➕2</ModalSideLinkadd>
-        )}
+        )} */}
         <ModalSideDelete onClick={linkDelete}>🗑</ModalSideDelete>
         <ModalTitle>
           <ModalTitleinfo>
@@ -216,7 +216,7 @@ export function MarkerModal(props) {
             {data?.name === "missingdetail" ? (
               <span>
                 <img src={information} />
-                펫이름:&nbsp;{data?.petName}   색깔: {data?.colorCd}
+                펫이름:&nbsp;{data?.petName} / 색깔: {data?.colorCd}
               </span>
             ) : (
               <span>
