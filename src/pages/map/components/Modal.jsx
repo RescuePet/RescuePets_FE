@@ -70,7 +70,7 @@ const ModalContainer = styled(motion.div)`
   border-top-right-radius: 1rem;
   position: absolute;
   bottom: 0%;
-  width: 21.875rem;
+  width: 22.8125rem;
   height: 13.75rem;
   padding: 0.625rem;
 `;
@@ -119,7 +119,7 @@ export function MarkerModal(props) {
 
     if (firstId !== "" && secondId !== "") {
       dispatch(__PostLink(one)).then((response) => {
-        console.log(response);
+        // console.log(response);
         if (response.type == "postLink/rejected") {
           // console.log("실패");
           setFirstId("");
@@ -134,7 +134,7 @@ export function MarkerModal(props) {
   }, [secondId]);
 
   const [showLink, setShowLink] = useState("");
-  console.log(showLink.length);
+  // console.log(showLink.length);
 
   const linkshow = () => {
     dispatch(__GetLink(data.id)).then((response) => {
@@ -144,7 +144,7 @@ export function MarkerModal(props) {
           console.log("연결은 됬는데 없다");
         } else {
           setShowLink(response.payload.data);
-          console.log(response.payload.data);
+          // console.log(response.payload.data);
         }
       } else {
         console.log("통신 실패");
@@ -155,7 +155,7 @@ export function MarkerModal(props) {
   const linkDelete = () => {
     dispatch(__DeleteLink(data.id)).then((response) => {
       // if (response.type == "getLink/fulfilled") {
-      console.log("통신성공");
+      // console.log("통신성공");
       //   if (response.payload.data == []) {
       //     console.log("연결은 됬는데 없다");
       //   } else {
@@ -166,7 +166,7 @@ export function MarkerModal(props) {
       // }
     });
   };
-  console.log(data);
+  // console.log(data);
   return (
     <Modal isOpen={props.isOpen} onClose={props.toggle}>
       <ModalInBox>
@@ -178,8 +178,8 @@ export function MarkerModal(props) {
           <ModalSideLinkadd onClick={linkaddfirst}>➕1</ModalSideLinkadd>
         ) : (
           <ModalSideLinkadd onClick={linkaddsecond}>➕2</ModalSideLinkadd>
-        )} */}
-        <ModalSideDelete onClick={linkDelete}>🗑</ModalSideDelete>
+        )} 
+        <ModalSideDelete onClick={linkDelete}>🗑</ModalSideDelete>*/}
         <ModalTitle>
           <ModalTitleinfo>
             {data?.name !== "missingdetail" ? (
