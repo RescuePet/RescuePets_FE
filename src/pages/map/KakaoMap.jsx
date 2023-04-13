@@ -11,6 +11,7 @@ import { __GetMissingData } from "../../redux/modules/missingSlice";
 import { useModalState } from "../../hooks/useModalState";
 import { MarkerModal } from "./components/Modal";
 import { Spinner } from "../../components/Spinner";
+import currentLocationimg from "../../asset/currentLocation.svg";
 const { kakao } = window;
 
 const KakaoMap = () => {
@@ -32,7 +33,6 @@ const KakaoMap = () => {
   const getlink = useSelector((state) => {
     return state.link;
   });
-
 
   //디비에 저장된 데이터 값 가져오기
   useEffect(() => {
@@ -91,7 +91,7 @@ const KakaoMap = () => {
     const container = document.getElementById("myMap");
     const options = {
       center: new kakao.maps.LatLng(lati, long),
-      level: 12,
+      level: 11,
     };
     mapRef.current = new kakao.maps.Map(container, options);
 
@@ -218,37 +218,11 @@ const KakaoMap = () => {
         });
       });
 
-    // if (getlink.data.data?.length > 0) {
-    //   console.log(newCatchData.happenLatitude);
-    //   console.log(newCatchData.happenLongitude);
-    //   console.log(getlink?.data?.data);
-
-    //   const linePath = [
-    //     new kakao.maps.LatLng(
-    //       newCatchData.happenLatitude,
-    //       newCatchData.happenLongitude
-    //     ),
-    //     new kakao.maps.LatLng(
-    //       getlink?.data?.data[0].linkedPostLatitude,
-    //       getlink?.data?.data[0].linkedPostLongitude
-    //     ),
-    //   ];
-
-    //       // path: linePath, // 선을 구성하는 좌표배열 입니다
-    //       // strokeWeight: 0, // 선의 두께 입니다
-    //       // strokeColor: "#FFAE00", // 선의 색깔입니다
-    //       // strokeOpacity: 0, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-
-    //   const link = new kakao.maps.Polyline({
-    //     path: linePath,
-    //     strokeWeight: 2,
-    //     strokeColor: "#FFAE00",
-    //     strokeOpacity: 1,
-    //   });
-
-    //   const distance = Math.round(link.getLength());
-    //   link.setMap(mapRef.current);
-    // }
+    if (getlink.data.data?.length > 0) {
+      // console.log(newCatchData.happenLatitude);
+      // console.log(newCatchData.happenLongitude);
+      // console.log(getlink?.data?.data);
+    }
   }, [onSucces]);
 
   // // 실패시 작동 로직
@@ -354,6 +328,13 @@ const KakaoMap = () => {
       });
   }, [onFailure]);
 
+  const MoveToCurrentLocation = () => {
+    var moveLatLon = new kakao.maps.LatLng(lati, long);
+
+    // 지도 중심을 이동 시킵니다
+    mapRef.current.panTo(moveLatLon);
+  };
+
   return isLoading === true ? (
     <MyMap id="myMap">
       <Spinner />
@@ -370,6 +351,9 @@ const KakaoMap = () => {
           data={newCatchData}
         ></MarkerModal>
         <FloatingPetwork />
+        <CurrentLocationBtn onClick={MoveToCurrentLocation}>
+          <img src={currentLocationimg} />
+        </CurrentLocationBtn>
       </MyMap>
     </>
   );
@@ -381,4 +365,16 @@ const MyMap = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
+`;
+
+const CurrentLocationBtn = styled.aside`
+  position: absolute;
+  z-index: 100;
+  left: 10px;
+  bottom: 50px;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: ${(props) => props.theme.color.white};
+  ${(props) => props.theme.FlexCenter}; /* border: 1px solid red; */
 `;

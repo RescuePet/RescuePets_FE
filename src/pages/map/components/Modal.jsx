@@ -221,7 +221,7 @@ export function MarkerModal(props) {
             ) : (
               <span>
                 <img src={information} />
-                이름:&nbsp;{data?.nickname} / 색깔: {data?.colorCd}
+                작성자:&nbsp;{data?.nickname} / 색깔: {data?.colorCd}
               </span>
             )}
 
