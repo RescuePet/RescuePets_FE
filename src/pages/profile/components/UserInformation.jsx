@@ -12,14 +12,17 @@ import {
   __getMyInfo,
   resetProfileState,
 } from "../../../redux/modules/profileSlice";
-import Layout from "../../../layouts/Layout";
-import { Loading } from "../../../components/Loading";
+
+import managerImage from "../../../asset/userGrade/manager.png";
+import memberImage from "../../../asset/userGrade/member.png";
+import banImage from "../../../asset/userGrade/ban.png";
 
 const UserInformation = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState({});
   const { myData } = useSelector((state) => state.profile);
+  const { memberRole } = JSON.parse(Cookies.get("UserInfo"));
 
   useEffect(() => {
     if (isLogin() === false) {
@@ -36,8 +39,22 @@ const UserInformation = () => {
     };
   }, []);
 
+  const userGradeRender = () => {
+    switch (memberRole) {
+      case "MANAGER":
+        return <UserGradeImage src={managerImage} />;
+      case "MEMBER":
+        return <UserGradeImage src={memberImage} />;
+      case "BAD_MEMBER":
+        return <UserGradeImage src={banImage} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <UserInfoContainer>
+      {userGradeRender()}
       <UserImage
         src={
           userInfo.profileImage !== null
@@ -66,9 +83,15 @@ const UserInformation = () => {
 };
 
 const UserInfoContainer = styled.div`
+  position: relative;
   ${FlexAttribute("column", "center", "center")}
   padding: 2rem 0;
   ${Border_1_color}
+`;
+
+const UserGradeImage = styled.img`
+  position: absolute;
+  bottom: calc(100% - 49px);
 `;
 
 const UserImage = styled.img`
