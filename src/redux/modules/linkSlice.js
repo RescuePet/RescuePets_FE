@@ -47,7 +47,7 @@ export const __DeleteLink = createAsyncThunk(
 
 
 const initialState = {
-  data: [],
+  data: '',
   error: false,
   loading: false,
 };

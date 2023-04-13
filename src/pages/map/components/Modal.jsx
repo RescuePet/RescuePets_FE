@@ -98,52 +98,81 @@ export function MarkerModal(props) {
   } else if (data?.upkind === "ETC") {
     data.upkind = "기타";
   }
-  // console.log(data);
 
   const linkaddfirst = () => {
-    // if (firstId == "") {
     setFirstId(data.id);
     props.onClose();
   };
 
   const linkaddsecond = () => {
     setSecondId(data.id);
-    if (secondId !== "") {
-      const one = {
-        first: firstId,
-        second: {
-          linkedPostId: secondId,
-        },
-      };
+    props.onClose();
+  };
+
+  useEffect(() => {
+    const one = {
+      first: firstId,
+      second: {
+        linkedPostId: secondId,
+      },
+    };
+
+    if (firstId !== "" && secondId !== "") {
       dispatch(__PostLink(one)).then((response) => {
         console.log(response);
         if (response.type == "postLink/rejected") {
-          console.log("실패");
+          // console.log("실패");
           setFirstId("");
           setSecondId("");
         } else if (response.type == "postLink/fulfilled") {
-          console.log("연결성공");
+          // console.log("연결성공");
+          setFirstId("");
+          setSecondId("");
         }
       });
     }
-  };
+  }, [secondId]);
+
+  const [showLink, setShowLink] = useState("");
+  console.log(showLink.length);
 
   const linkshow = () => {
     dispatch(__GetLink(data.id)).then((response) => {
-      console.log(response);
+      if (response.type == "getLink/fulfilled") {
+        console.log("통신성공");
+        if (response.payload.data == []) {
+          console.log("연결은 됬는데 없다");
+        } else {
+          setShowLink(response.payload.data);
+          console.log(response.payload.data);
+        }
+      } else {
+        console.log("통신 실패");
+      }
     });
   };
 
   const linkDelete = () => {
     dispatch(__DeleteLink(data.id)).then((response) => {
-      console.log(response);
+      // if (response.type == "getLink/fulfilled") {
+      console.log("통신성공");
+      //   if (response.payload.data == []) {
+      //     console.log("연결은 됬는데 없다");
+      //   } else {
+      //     console.log(response.payload.data);
+      //   }
+      // } else {
+      //   console.log("통신 실패");
+      // }
     });
   };
-
+  console.log(data);
   return (
     <Modal isOpen={props.isOpen} onClose={props.toggle}>
       <ModalInBox>
-        <ModalTopLinknumber>링크갯수</ModalTopLinknumber>
+        <ModalTopLinknumber>
+          링크{showLink.length == 0 ? null : showLink.length}
+        </ModalTopLinknumber>
         <ModalSideLinkLook onClick={linkshow}>🔍</ModalSideLinkLook>
         {firstId === "" ? (
           <ModalSideLinkadd onClick={linkaddfirst}>➕1</ModalSideLinkadd>
@@ -187,7 +216,7 @@ export function MarkerModal(props) {
             {data?.name === "missingdetail" ? (
               <span>
                 <img src={information} />
-                색깔: {data?.colorCd}
+                펫이름:&nbsp;{data?.petName}   색깔: {data?.colorCd}
               </span>
             ) : (
               <span>

@@ -29,6 +29,11 @@ const KakaoMap = () => {
     setMapBg(menutoggle);
   }, [menutoggle]);
 
+  const getlink = useSelector((state) => {
+    return state.link;
+  });
+
+
   //디비에 저장된 데이터 값 가져오기
   useEffect(() => {
     dispatch(__GetMissingData());
@@ -212,6 +217,38 @@ const KakaoMap = () => {
           polyline.setMap(mapRef.current);
         });
       });
+
+    // if (getlink.data.data?.length > 0) {
+    //   console.log(newCatchData.happenLatitude);
+    //   console.log(newCatchData.happenLongitude);
+    //   console.log(getlink?.data?.data);
+
+    //   const linePath = [
+    //     new kakao.maps.LatLng(
+    //       newCatchData.happenLatitude,
+    //       newCatchData.happenLongitude
+    //     ),
+    //     new kakao.maps.LatLng(
+    //       getlink?.data?.data[0].linkedPostLatitude,
+    //       getlink?.data?.data[0].linkedPostLongitude
+    //     ),
+    //   ];
+
+    //       // path: linePath, // 선을 구성하는 좌표배열 입니다
+    //       // strokeWeight: 0, // 선의 두께 입니다
+    //       // strokeColor: "#FFAE00", // 선의 색깔입니다
+    //       // strokeOpacity: 0, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+
+    //   const link = new kakao.maps.Polyline({
+    //     path: linePath,
+    //     strokeWeight: 2,
+    //     strokeColor: "#FFAE00",
+    //     strokeOpacity: 1,
+    //   });
+
+    //   const distance = Math.round(link.getLength());
+    //   link.setMap(mapRef.current);
+    // }
   }, [onSucces]);
 
   // // 실패시 작동 로직
