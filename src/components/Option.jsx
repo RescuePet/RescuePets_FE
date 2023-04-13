@@ -64,7 +64,7 @@ const OptionContainer = styled.div`
 `;
 
 const OptionWrapper = styled.div`
-  width: 93%;
+  width: 80%;
   margin-bottom: 8px;
   border-radius: 20px;
   background-color: ${(props) => props.theme.color.white};
@@ -92,6 +92,16 @@ const OptionSelect = styled.div`
       css`
         color: ${(props) => props.theme.color.text_normal};
       `};
+    ${(props) =>
+      props.color === "MEMBER" &&
+      css`
+        color: ${(props) => props.theme.color.primary_normal};
+      `}
+    ${(props) =>
+      props.color === "MANAGER" &&
+      css`
+        color: ${(props) => props.theme.color.status_positive};
+      `}
   }
 `;
 

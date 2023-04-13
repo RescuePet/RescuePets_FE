@@ -70,7 +70,7 @@ const BtnStyle = styled.button`
     ${(props) =>
     props.OptionClose &&
     css`
-      width: 93%;
+      width: 80%;
       margin-bottom: 32px;
       background-color: ${(props) => props.theme.color.text_disable};
       border-radius: 20px;

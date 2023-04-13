@@ -61,6 +61,33 @@ export const __getMyScrap = createAsyncThunk(
   }
 );
 
+// Get User List
+export const __getUserList = createAsyncThunk(
+  "getUserList",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await instance.get(
+        `/api/member/list?page=${payload.page}&size=${payload.size}`
+      );
+      console.log(response);
+      return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+// Post User Grade
+export const __postUserGrade = createAsyncThunk(
+  "postUserGrade",
+  async (payload, thunkAPI) => {
+    try {
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 const initialState = {
   loading: false,
   error: false,
@@ -71,6 +98,8 @@ const initialState = {
   myCommentPage: 1,
   myScrapList: [],
   myScrapPage: 1,
+  userList: [],
+  userListPage: 1,
 };
 
 export const profileSlice = createSlice({
@@ -148,6 +177,15 @@ export const profileSlice = createSlice({
         state.myScrapList = [...state.myScrapList, ...action.payload];
       })
       .addCase(__getMyScrap.rejected, (state) => {
+        state.error = true;
+      });
+
+    builder
+      .addCase(__getUserList.fulfilled, (state, action) => {
+        state.userList = [...action.payload];
+        state.userListPage = state.userListPage + 1;
+      })
+      .addCase(__getUserList.rejected, (state) => {
         state.error = true;
       });
   },
