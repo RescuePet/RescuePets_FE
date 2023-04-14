@@ -21,6 +21,7 @@ import { toggleOption } from "../../redux/modules/menubarSlice";
 import ReportModal from "../../components/ReportModal";
 import { toggleReport } from "../../redux/modules/menubarSlice";
 import { resetunreadChat } from "../../redux/modules/chatSlice";
+import chatroombackground from "../../asset/chat/chatroombackground.png";
 
 import {
   initAmplitude,
@@ -158,7 +159,7 @@ const ChatRoom = () => {
         <HeaderTitle>{nickname}</HeaderTitle>
         <OptionChat onClick={() => dispatch(toggleOption())} />
       </ChatRoomHeader>
-      <ChatRoomBody ref={messagesRef}>
+      <ChatRoomBody ref={messagesRef} image={chatroombackground}>
         {chatlog.length !== 0 &&
           chatlog.map((item, index) => {
             if (item.sender === sender.nickname) {
@@ -220,8 +221,13 @@ const OptionChat = styled(Meatballs)`
 
 const ChatRoomBody = styled.div`
   width: 100%;
+  height: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
+  background-image: url(${(props) => props.image});
+  background-size: 200px;
+  background-repeat: no-repeat;
+  background-position: center;
 `;
 
 export default ChatRoom;
