@@ -301,7 +301,7 @@ const SightingDetail = () => {
       <PostInformation postInfo={postInfo}></PostInformation>
       <CommentContainer>
         <CommentListWrapper>
-          <div ref={commentRef}></div>
+          {commentList.length >= 8 && <div ref={commentRef}></div>}
           {commentList?.map((item) => {
             return (
               <Comment key={`catch-comment-${item.id}`} item={item}></Comment>
