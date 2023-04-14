@@ -73,6 +73,7 @@ const ProfileImage = styled.img`
   height: 2.5rem;
   margin-left: 16px;
   border-radius: 50%;
+  object-fit: cover;
 `;
 
 const TextWrapper = styled.div`
