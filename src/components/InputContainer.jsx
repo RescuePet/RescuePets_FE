@@ -42,11 +42,6 @@ const InputContainer = ({ placeholder, submitHandler }) => {
     }
   };
 
-  console.log(
-    location.pathname.split("/")[1] === "missingdetail" ||
-      location.pathname.split("/")[1] === "catchdetail"
-  );
-
   return (
     <ChatFooter toggle={CommentInputState}>
       <ChatContainer>

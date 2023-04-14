@@ -343,7 +343,6 @@ const SightingDetail = () => {
       {optionState && memberRole === "ADMIN" && (
         <Option setting={optionAdminSetting} />
       )}
-
       {reportState && (
         <ReportModal setting={reportSetting} onChangeMsg={onChangeReportMsg} />
       )}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import Button from "../elements/Button";
 import styled, { css } from "styled-components";
 import { FlexAttribute } from "../style/Mixin";
@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { toggleOption } from "../redux/modules/menubarSlice";
 import ModalPortal from "../elements/ModalPortal";
 import { toUp } from "../style/Animation";
+import useOutSideClick from "../hooks/useOutsideClick";
 
 const Option = ({ setting, mapCloseHandler }) => {
   const dispatch = useDispatch();
@@ -13,12 +14,24 @@ const Option = ({ setting, mapCloseHandler }) => {
     dispatch(toggleOption());
   };
 
+  const optionRef = useRef();
+
+  let handler = null;
+
+  if (mapCloseHandler) {
+    handler = mapCloseHandler;
+  } else {
+    handler = closeHandler;
+  }
+
+  useOutSideClick(optionRef, handler);
+
   return (
     <>
       <ModalPortal>
         <OptionBackground></OptionBackground>
         <OptionContainer>
-          <OptionWrapper>
+          <OptionWrapper ref={optionRef}>
             {setting.map((item, index) => {
               return (
                 <OptionSelect
