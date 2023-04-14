@@ -204,7 +204,7 @@ const Home = () => {
           <SearchCategory />
         ) : (
           <>
-            <img
+            <UserImage
               src={
                 userInfo.profileImage == null ? profile : userInfo.profileImage
               }
@@ -270,11 +270,13 @@ const Header = styled.div`
   padding-bottom: 0.5625rem;
   font-size: 1.125rem;
   font-weight: 700;
-  img {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-  }
+`;
+
+const UserImage = styled.img`
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  object-fit: cover;
 `;
 
 const HeaderSpan = styled.span`

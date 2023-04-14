@@ -101,6 +101,7 @@ const HeaderImage = styled.div`
   height: 100%;
   > img {
     height: 1.875rem;
+    object-fit: cover;
   }
 `;
 
