@@ -14,9 +14,8 @@ const SearchSetting = ({
   petwork,
   searchDistanceHandler,
 }) => {
-  const { descriptionCategory, inputState, distanceState } = useSelector(
-    (state) => state.search
-  );
+  const { descriptionCategory, inputState, distanceState, searchCategory } =
+    useSelector((state) => state.search);
 
   return (
     <SearchSetContainer petwork={petwork}>
@@ -24,12 +23,15 @@ const SearchSetting = ({
         <span>거리</span>
         <DescriptionWrapper>
           <DescreptionRow>
-            <CategoryBox
-              active={descriptionCategory === ""}
-              onClick={() => searchDistanceHandler("")}
-            >
-              <span>선택안함</span>
-            </CategoryBox>
+            {searchCategory !== "distance" && (
+              <CategoryBox
+                active={descriptionCategory === ""}
+                onClick={() => searchDistanceHandler("")}
+              >
+                <span>선택안함</span>
+              </CategoryBox>
+            )}
+
             <CategoryBox
               active={descriptionCategory === "1000"}
               onClick={() => searchDistanceHandler("1000")}
@@ -56,6 +58,14 @@ const SearchSetting = ({
             >
               <span>100km</span>
             </CategoryBox>
+            {searchCategory === "distance" && (
+              <CategoryBox
+                active={descriptionCategory === "200000"}
+                onClick={() => searchDistanceHandler("200000")}
+              >
+                <span>200km</span>
+              </CategoryBox>
+            )}
           </DescreptionRow>
         </DescriptionWrapper>
         {distanceState ? null : inputState ? (
