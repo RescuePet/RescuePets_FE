@@ -9,7 +9,7 @@ import questionmark from "../../../asset/questionmark.svg";
 import { useNavigate } from "react-router-dom";
 import Option from "../../../components/Option";
 import { useDispatch } from "react-redux";
-import { __deletePost } from "../../../redux/modules/petworkSlice";
+import { __deleteMemberPost } from "../../../redux/modules/petworkSlice";
 import Meatballs from "../../../asset/Meatballs";
 import { deleteMyPost } from "../../../redux/modules/profileSlice";
 
@@ -70,7 +70,7 @@ const PostList = ({ item }) => {
         id: item.id,
         type: "missing",
       };
-      dispatch(__deletePost(payload)).then(() => {
+      dispatch(__deleteMemberPost(payload)).then(() => {
         setPostOption(!postOption);
       });
     } else if (refineData.postType === "목격") {
@@ -78,7 +78,7 @@ const PostList = ({ item }) => {
         id: item.id,
         type: "catch",
       };
-      dispatch(__deletePost(payload)).then(() => {
+      dispatch(__deleteMemberPost(payload)).then(() => {
         setPostOption(!postOption);
       });
     }
@@ -197,25 +197,6 @@ const PostMeatballs = styled(Meatballs)`
   left: calc(100% - 26px);
   cursor: pointer;
   z-index: 10;
-`;
-
-const CommentInfo = styled.div`
-  width: 28px;
-  height: 28px;
-  border: 1px solid ${(props) => props.theme.color.text_alternative};
-  border-radius: 50%;
-  text-align: center;
-  span {
-    ${(props) => props.theme.Body_300_10};
-    color: ${(props) => props.theme.color.text_alternative};
-    line-height: 28px;
-  }
-`;
-
-const ScrapInfo = styled.div`
-  width: 24px;
-  height: 24px;
-  background-color: black;
 `;
 
 export default PostList;

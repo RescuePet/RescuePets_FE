@@ -13,7 +13,8 @@ import Location from "./components/Location";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
-  __deletePost,
+  __deleteAdminPost,
+  __deleteMemberPost,
   __getCatchPostDetail,
   __postCatchScrap,
 } from "../../redux/modules/petworkSlice";
@@ -204,7 +205,7 @@ const SightingDetail = () => {
           id: id,
           type: "catch",
         };
-        dispatch(__deletePost(payload)).then(() => {
+        dispatch(__deleteMemberPost(payload)).then(() => {
           dispatch(toggleOption());
           navigate("/petwork");
         });
@@ -228,7 +229,14 @@ const SightingDetail = () => {
       option: "관리자 권한으로 삭제",
       color: "report",
       handler: () => {
-        console.log("ADMIN");
+        const payload = {
+          id: id,
+          type: "catch",
+        };
+        dispatch(__deleteMemberPost(payload)).then(() => {
+          dispatch(toggleOption());
+          navigate("/petwork");
+        });
       },
     },
   ];
@@ -339,7 +347,7 @@ const SightingDetail = () => {
       {reportState && (
         <ReportModal setting={reportSetting} onChangeMsg={onChangeReportMsg} />
       )}
-      {catchdetailMsg == "" ? null : (
+      {catchdetailMsg === "" ? null : (
         <CheckModal
           isOpen={loginModal}
           toggle={toggleModal}

@@ -13,7 +13,8 @@ import Location from "./components/Location";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  __deletePost,
+  __deleteAdminPost,
+  __deleteMemberPost,
   __getMissingPostDetail,
   __postMissingScrap,
   addCommentCount,
@@ -209,7 +210,7 @@ const MissingDetail = () => {
           id: id,
           type: "missing",
         };
-        dispatch(__deletePost(payload)).then(() => {
+        dispatch(__deleteMemberPost(payload)).then(() => {
           dispatch(toggleOption());
           navigate("/petwork");
         });
@@ -233,7 +234,14 @@ const MissingDetail = () => {
       option: "관리자 권한으로 삭제",
       color: "report",
       handler: () => {
-        console.log("ADMIN");
+        const payload = {
+          id: id,
+          type: "catch",
+        };
+        dispatch(__deleteMemberPost(payload)).then(() => {
+          dispatch(toggleOption());
+          navigate("/petwork");
+        });
       },
     },
   ];

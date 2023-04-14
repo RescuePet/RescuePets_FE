@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import Memo from "../../../asset/Memo";
 import Comment from "../../../asset/Comment";
 import Cookies from "js-cookie";
+import Trash from "../../../asset/Trash";
 
 const ProfileSetList = () => {
   const navigate = useNavigate();
@@ -38,6 +39,13 @@ const ProfileSetList = () => {
         <ListBox onClick={() => navigate("/profile/usergrade")}>
           <User />
           <List>사용자 등급 관리</List>
+          <ArrowSvg>&gt;</ArrowSvg>
+        </ListBox>
+      )}
+      {(memberRole === "ADMIN" || memberRole === "MANAGER") && (
+        <ListBox onClick={() => navigate("/profile/deletelists")}>
+          <Trash />
+          <List>임시 삭제 게시물</List>
           <ArrowSvg>&gt;</ArrowSvg>
         </ListBox>
       )}
