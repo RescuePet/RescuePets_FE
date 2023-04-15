@@ -489,7 +489,7 @@ const Catch = () => {
         </ReportAnimalPictureArea>
         {isActive === true ? (
           <Button type="submit" disable assistiveFillButton>
-            작성 완료
+            작성 하기
           </Button>
         ) : (
           <Button type="submit" fillButton>

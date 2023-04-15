@@ -12,6 +12,9 @@ import { useModalState } from "../../hooks/useModalState";
 import { MarkerModal } from "./components/Modal";
 import { Spinner } from "../../components/Spinner";
 import currentLocationimg from "../../asset/currentLocation.svg";
+import { CheckModal } from "../../elements/Modal";
+import { showlinkToggle } from "../../redux/modules/linkSlice";
+import Meatballs from "../../asset/Meatballs";
 const { kakao } = window;
 
 const KakaoMap = () => {
@@ -19,6 +22,9 @@ const KakaoMap = () => {
   const [newCatchData, setNewCatchData] = useState("");
   const [loginModal, toggleModal] = useModalState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  // 링크 토글
+  const [currentLink, setCurrentLink] = useState(false);
 
   const menutoggle = useSelector((state) => {
     return state.menubar.toggle;
@@ -152,7 +158,6 @@ const KakaoMap = () => {
             strokeOpacity: 0, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
           });
 
-          // // 선의 총 거리를 계산합니다 이값을 item이라는 객체안에 넣어애만한다
           const distance = Math.round(polyline.getLength());
           const data = { km: distance, name: "missingdetail" };
 
@@ -218,10 +223,34 @@ const KakaoMap = () => {
         });
       });
 
-    if (getlink.data.data?.length > 0) {
-      // console.log(newCatchData.happenLatitude);
-      // console.log(newCatchData.happenLongitude);
-      // console.log(getlink?.data?.data);
+    // console.log("연결된 링크지우기", getlink.showlink);
+    if (getlink.showlink === false) {
+    } else if (getlink.showlink === true) {
+      if (getlink.data.data?.length > 0) {
+        console.log("링크연결");
+
+        const linePath = [
+          new kakao.maps.LatLng(
+            newCatchData.happenLatitude,
+            newCatchData.happenLongitude
+          ),
+          new kakao.maps.LatLng(
+            getlink.data?.data[0]?.linkedPostLatitude,
+            getlink.data?.data[0]?.linkedPostLongitude
+          ),
+        ];
+
+        const polyline = new kakao.maps.Polyline({
+          path: linePath,
+          strokeWeight: 2,
+          strokeColor: "#FFAE00",
+          strokeOpacity: 1,
+        });
+        const distance = Math.round(polyline.getLength());
+        polyline.setMap(mapRef.current);
+      } else {
+        // alert("연결된 링크 없다");
+      }
     }
   }, [onSucces]);
 
@@ -328,9 +357,41 @@ const KakaoMap = () => {
       });
   }, [onFailure]);
 
+  const link = useSelector((state) => {
+    return state.link?.data?.data;
+  });
+
+  const linkAlert = useSelector((state) => {
+    return state.linkAlert;
+  });
+
+  useEffect(() => {
+    // console.log(linkAlert);
+
+    if (linkAlert?.linkToggle === true) {
+      console.log(linkAlert.getlinkMsg);
+    }
+  }, [linkAlert]);
+
   const MoveToCurrentLocation = () => {
     const moveLatLon = new kakao.maps.LatLng(lati, long);
     mapRef.current.panTo(moveLatLon);
+  };
+
+  const MoveToPlus = () => {
+    const level = mapRef.current.getLevel();
+    mapRef.current.setLevel(level - 1);
+  };
+
+  const MoveToMinus = () => {
+    const level = mapRef.current.getLevel();
+    mapRef.current.setLevel(level + 1);
+  };
+
+  const [markerInfoTabToggle, setMarkerInfoTabToggle] = useState(false);
+
+  const mapToggleHandler = () => {
+    setMarkerInfoTabToggle(!markerInfoTabToggle);
   };
 
   return isLoading === true ? (
@@ -352,6 +413,24 @@ const KakaoMap = () => {
         <CurrentLocationBtn onClick={MoveToCurrentLocation}>
           <img src={currentLocationimg} />
         </CurrentLocationBtn>
+        {markerInfoTabToggle === false ? null : (
+          <MapTabInfo>
+            <div>
+              <img src={missingmarker} />
+              <p>실종</p>
+            </div>
+            <div>
+              <img src={catchmarker} />
+              <p>목격</p>
+            </div>
+          </MapTabInfo>
+        )}
+
+        <MapTabBtn>
+          <CommentMeatBalls onClick={mapToggleHandler} />
+        </MapTabBtn>
+        {/* <MapAddBtn onClick={MoveToPlus}>+</MapAddBtn> */}
+        {/* <MapMinusBtn onClick={MoveToMinus}>-</MapMinusBtn> */}
       </MyMap>
     </>
   );
@@ -374,6 +453,96 @@ const CurrentLocationBtn = styled.aside`
   height: 2rem;
   border-radius: 50%;
   background: ${(props) => props.theme.color.white};
-  ${(props) => props.theme.FlexCenter}; /* border: 1px solid red; */
+  ${(props) => props.theme.FlexCenter};
+  cursor: pointer;
+  &:hover {
+    border: 1px solid ${(props) => props.theme.color.primary_normal};
+  }
+  &:active {
+    background: ${(props) => props.theme.color.primary_normal};
+    transition: 0.2s ease;
+  }
+`;
+
+const MapTabInfo = styled.aside`
+  position: absolute;
+  z-index: 7;
+  left: 3.125rem;
+  bottom: 4.375rem;
+  width: 5.625rem;
+  height: 5.3125rem;
+  border-radius: 0.625rem;
+  background: ${(props) => props.theme.color.white};
+  ${(props) => props.theme.FlexColumn};
+  cursor: pointer;
+  > div {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    padding-left: 1.25rem;
+    gap: 0 0.5rem;
+    > img {
+      width: 1rem;
+      height: 1.2rem;
+    }
+    > p {
+      ${(props) => props.theme.Body_400_14_16}
+    }
+  }
+`;
+
+const MapTabBtn = styled.aside`
+  position: absolute;
+  z-index: 7;
+  left: 1.25rem;
+  bottom: 2.1875rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: ${(props) => props.theme.color.white};
+  ${(props) => props.theme.FlexCenter};
+  /* cursor: pointer; */
+  &:hover {
+    border: 1px solid ${(props) => props.theme.color.primary_normal};
+  }
+  &:active {
+    background: ${(props) => props.theme.color.primary_normal};
+    transition: 0.2s ease;
+  }
+`;
+
+const CommentMeatBalls = styled(Meatballs)`
+  cursor: pointer;
+  &:hover {
+    color: red;
+  }
+  &:active {
+    transition: 0.2s ease;
+  }
+`;
+
+const MapAddBtn = styled.aside`
+  position: absolute;
+  z-index: 7;
+  left: 1.25rem;
+  bottom: 4.6875rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: ${(props) => props.theme.color.white};
+  ${(props) => props.theme.FlexCenter};
+  cursor: pointer;
+`;
+const MapMinusBtn = styled.aside`
+  position: absolute;
+  z-index: 7;
+  left: 1.25rem;
+  bottom: 1.875rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: ${(props) => props.theme.color.white};
+  ${(props) => props.theme.FlexCenter};
   cursor: pointer;
 `;

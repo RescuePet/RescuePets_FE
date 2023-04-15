@@ -151,6 +151,7 @@ export const ReportInput = styled.input`
   border-radius: 0;
   background: transparent;
   font-size: 12px;
+  cursor: default;
 `;
 
 export const ReportLgInput = styled.input`
@@ -161,6 +162,7 @@ export const ReportLgInput = styled.input`
   ${Border_1_color}
   background: transparent;
   font-size: 0.75rem;
+  cursor: default;
 `;
 
 export const ReportAnimalDayBox = styled.div`

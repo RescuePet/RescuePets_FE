@@ -127,12 +127,12 @@ const Withdrawal = styled.button`
   ${Body_400_12}
   color: ${(props) => props.theme.color.text_alternative};
   text-decoration: underline;
-  :hover {
+  /* :hover {
     transform: translate(0px, -1px);
     background-color: ${(props) => props.theme.color.line_alternative};
     transition: 0.3s;
     color: ${(props) => props.theme.color.status_caution};
-  }
+  } */
   :active {
     background-color: ${(props) => props.theme.color.line_alternative};
     color: ${(props) => props.theme.color.status_caution};
