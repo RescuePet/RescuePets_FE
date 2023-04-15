@@ -29,6 +29,7 @@ import {
   setAmplitudeUserId,
   resetAmplitude,
 } from "../../utils/amplitude";
+import isLogin from "../../utils/isLogin";
 
 const ChatRoom = () => {
   // 앰플리튜드
@@ -36,7 +37,9 @@ const ChatRoom = () => {
   useEffect(() => {
     initAmplitude();
     logEvent(`enter_/${location.pathname.split("/")[1]}`);
-    setAmplitudeUserId();
+    if (isLogin()) {
+      setAmplitudeUserId();
+    }
     return () => {
       resetAmplitude();
     };

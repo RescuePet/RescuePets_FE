@@ -31,6 +31,7 @@ import {
   setAmplitudeUserId,
   resetAmplitude,
 } from "../../utils/amplitude";
+import isLogin from "../../utils/isLogin";
 
 const Poster = () => {
   // 앰플리튜드
@@ -38,7 +39,9 @@ const Poster = () => {
   useEffect(() => {
     initAmplitude();
     logEvent(`enter_/${location.pathname.split("/")[1]}`);
-    setAmplitudeUserId();
+    if (isLogin()) {
+      setAmplitudeUserId();
+    }
     return () => {
       resetAmplitude();
     };

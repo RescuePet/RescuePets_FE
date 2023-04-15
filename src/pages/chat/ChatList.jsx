@@ -15,6 +15,7 @@ import {
   resetAmplitude,
 } from "../../utils/amplitude";
 import { useLocation } from "react-router-dom";
+import isLogin from "../../utils/isLogin";
 
 const ChatList = () => {
   // 앰플리튜드
@@ -22,7 +23,9 @@ const ChatList = () => {
   useEffect(() => {
     initAmplitude();
     logEvent(`enter_${location.pathname}`);
-    setAmplitudeUserId();
+    if (isLogin()) {
+      setAmplitudeUserId();
+    }
     return () => {
       resetAmplitude();
     };

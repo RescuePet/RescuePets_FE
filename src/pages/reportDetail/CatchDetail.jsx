@@ -13,7 +13,6 @@ import Location from "./components/Location";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
-  __deleteAdminPost,
   __deleteMemberPost,
   __getCatchPostDetail,
   __postCatchScrap,
@@ -51,6 +50,7 @@ import {
   setAmplitudeUserId,
   resetAmplitude,
 } from "../../utils/amplitude";
+import isLogin from "../../utils/isLogin";
 
 const SightingDetail = () => {
   // 앰플리튜드
@@ -58,7 +58,9 @@ const SightingDetail = () => {
   useEffect(() => {
     initAmplitude();
     logEvent(`enter_/${location.pathname.split("/")[1]}`);
-    setAmplitudeUserId();
+    if (isLogin()) {
+      setAmplitudeUserId();
+    }
     return () => {
       resetAmplitude();
     };
