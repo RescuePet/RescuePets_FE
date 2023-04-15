@@ -23,6 +23,7 @@ import {
   resetAmplitude,
 } from "../../utils/amplitude";
 import isLogin from "../../utils/isLogin";
+import { instance } from "../../utils/api";
 
 const Editinfo = () => {
   let imageRef;
@@ -44,6 +45,7 @@ const Editinfo = () => {
 
   const [loginModal, toggleModal] = useModalState(false);
   const [editMsg, setEditMsg] = useState("");
+  const [Msg, setMsg] = useState("");
 
   const {
     register,
@@ -109,75 +111,110 @@ const Editinfo = () => {
     return <Spinner />;
   }
 
+  const secessionHandler = async () => {
+    try {
+      const response = await instance.post(`/api/member/withdrawal`);
+      if (response.data.status === true) {
+        toggleModal();
+        setMsg("✅ 회원탈퇴 성공");
+        setTimeout(() => {
+          Cookies.remove("Token");
+          Cookies.remove("Refresh");
+          Cookies.remove("UserInfo");
+          setMsg("");
+          navigate("/signin");
+        }, 1000);
+      } else {
+        setMsg("회원탈퇴 오류");
+      }
+    } catch (error) {
+      return;
+    }
+  };
+
   return (
-    <Layout>
-      <EditInfoForm onSubmit={handleSubmit(onSubmitmyInfoHandler)}>
-        {editMsg == "" ? null : (
-          <CheckModal
-            isOpen={loginModal}
-            toggle={toggleModal}
-            onClose={toggleModal}
-          >
-            {editMsg}
-          </CheckModal>
-        )}
-        <EditHeader>
-          <h2>내 정보 수정</h2>
-          <CloseSvg src={close} onClick={MoveToBackPage} />
-        </EditHeader>
-        <EditInfoImgBox>
-          <EditInfoImgBack>
-            {imageFormData == "" ? (
-              <EditInfoImgIn src={userInfo?.profileImage} />
-            ) : (
-              <EditInfoImgIn src={imageShow} />
-            )}
-            <input
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
-              ref={(refer) => (imageRef = refer)}
-              onChange={onChangeUploadHandler}
-            />
-            <EditInfoImgInput src={camera} onClick={() => imageRef.click()} />
-          </EditInfoImgBack>
-        </EditInfoImgBox>
-
-        <EditInfoTextBox>
-          <p>닉네임</p>
-          <input
-            type="text"
-            placeholder={userInfo.nickname}
-            {...register("name", {
-              required: true,
-              pattern: {
-                value: /^[ㄱ-ㅎ|가-힣]+$/,
-                message: "한글만 2 ~ 6글자 사이로 입력",
-              },
-              maxLength: { value: 6, message: "6글자 이하이어야 합니다." },
-            })}
-          />
-          <span>{errors?.name?.message}</span>
-        </EditInfoTextBox>
-
-        <EditInfoTextBox>
-          <p>이메일</p>
-          <input type="text" value={userInfo.email} />
-        </EditInfoTextBox>
-
-        <EditinfoButtonBox>
-          {isActive === true ? (
-            <Button disable emptyButton type="button">
-              저장 중
-            </Button>
-          ) : (
-            <Button type="submit" fillButton>
-              저장하기
-            </Button>
+    <>
+      <Layout>
+        <EditInfoForm onSubmit={handleSubmit(onSubmitmyInfoHandler)}>
+          {editMsg == "" ? null : (
+            <CheckModal
+              isOpen={loginModal}
+              toggle={toggleModal}
+              onClose={toggleModal}
+            >
+              {editMsg}
+            </CheckModal>
           )}
-        </EditinfoButtonBox>
-      </EditInfoForm>
-    </Layout>
+          <EditHeader>
+            <h2>내 정보 수정</h2>
+            <CloseSvg src={close} onClick={MoveToBackPage} />
+          </EditHeader>
+          <EditInfoImgBox>
+            <EditInfoImgBack>
+              {imageFormData == "" ? (
+                <EditInfoImgIn src={userInfo?.profileImage} />
+              ) : (
+                <EditInfoImgIn src={imageShow} />
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                ref={(refer) => (imageRef = refer)}
+                onChange={onChangeUploadHandler}
+              />
+              <EditInfoImgInput src={camera} onClick={() => imageRef.click()} />
+            </EditInfoImgBack>
+          </EditInfoImgBox>
+
+          <EditInfoTextBox>
+            <p>닉네임</p>
+            <input
+              type="text"
+              placeholder={userInfo.nickname}
+              {...register("name", {
+                required: true,
+                pattern: {
+                  value: /^[ㄱ-ㅎ|가-힣]+$/,
+                  message: "한글만 2 ~ 6글자 사이로 입력",
+                },
+                maxLength: { value: 6, message: "6글자 이하이어야 합니다." },
+              })}
+            />
+            <span>{errors?.name?.message}</span>
+          </EditInfoTextBox>
+
+          <EditInfoTextBox>
+            <p>이메일</p>
+            <input type="text" value={userInfo.email} />
+          </EditInfoTextBox>
+
+          <EditinfoButtonBox>
+            {isActive === true ? (
+              <Button disable emptyButton type="button">
+                저장 중
+              </Button>
+            ) : (
+              <Button type="submit" fillButton>
+                저장하기
+              </Button>
+            )}
+            <SecessionButton assistiveFillButton onClick={secessionHandler}>
+              회원 탈퇴
+            </SecessionButton>
+          </EditinfoButtonBox>
+        </EditInfoForm>
+      </Layout>
+      {Msg == "" ? null : (
+        <CheckModal
+          isOpen={loginModal}
+          toggle={toggleModal}
+          onClose={toggleModal}
+        >
+          {Msg}
+        </CheckModal>
+      )}
+    </>
   );
 };
 
@@ -267,6 +304,10 @@ const EditInfoTextBox = styled.div`
 `;
 
 const EditinfoButtonBox = styled.div`
-  ${(props) => props.theme.FlexCenter}
-  margin-top: 9.375rem;
+  ${FlexAttribute("column", "center", "center")}
+  margin-top: 6.25rem
+`;
+
+const SecessionButton = styled(Button)`
+  margin-top: 1rem;
 `;
