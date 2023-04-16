@@ -5,20 +5,20 @@ import {
   Border_1_color,
 } from "../../../style/Mixin";
 
-export const ReportMissingContainer = styled.form`
+const ReportMissingContainer = styled.form`
   width: 100%;
   height: 83.375rem;
   ${FlexAttribute("column", "center", "center")}
   gap: .625rem 0;
 `;
-export const ReportSightingContainer = styled.form`
+const ReportSightingContainer = styled.form`
   width: 100%;
   height: 72rem;
   ${FlexAttribute("column", "", "center")}
   gap: .625rem 0;
 `;
 
-export const ReportHeader = styled.div`
+const ReportHeader = styled.div`
   width: 100%;
   height: 2.625rem;
   border-bottom: 0.25rem solid #eeeeee;
@@ -37,24 +37,24 @@ export const ReportHeader = styled.div`
   }
 `;
 
-export const ReportAnimalInfoArea = styled.div`
+const ReportAnimalInfoArea = styled.div`
   width: 20.9375rem;
   height: 28.125rem;
   margin: 0 auto;
 `;
 
-export const ReportAnimalTabBox = styled.div`
+const ReportAnimalTabBox = styled.div`
   width: 100%;
   height: 12.5rem;
 `;
 
-export const ReportAnimalInfoBox = styled.div`
+const ReportAnimalInfoBox = styled.div`
   width: 100%;
   height: 8.125rem;
   margin: 0 auto;
 `;
 
-export const ReportanimaltypesTitle = styled.div`
+const ReportanimaltypesTitle = styled.div`
   width: 100%;
   height: 30%;
   display: flex;
@@ -62,7 +62,7 @@ export const ReportanimaltypesTitle = styled.div`
   ${(props) => props.theme.Body_400_20_14}
 `;
 
-export const ReportanimaltypesSelect = styled.div`
+const ReportanimaltypesSelect = styled.div`
   width: 20.9375rem;
   height: 3.75rem;
   display: flex;
@@ -88,7 +88,7 @@ export const ReportanimaltypesSelect = styled.div`
   }
 `;
 
-export const ReportAnimalInfoBoxColumn = styled.div`
+const ReportAnimalInfoBoxColumn = styled.div`
   width: 100%;
   height: 50%;
   margin-top: 0.3125rem;
@@ -97,7 +97,7 @@ export const ReportAnimalInfoBoxColumn = styled.div`
 `;
 
 // 나이/체중
-export const ReportAnimalInfoBoxColumnRow = styled.div`
+const ReportAnimalInfoBoxColumnRow = styled.div`
   position: relative;
   width: 50%;
   height: 100%;
@@ -117,7 +117,7 @@ export const ReportAnimalInfoBoxColumnRow = styled.div`
 `;
 
 // 색상
-export const ReportAnimalInfoBoxColumnColumn = styled.div`
+const ReportAnimalInfoBoxColumnColumn = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
@@ -136,14 +136,14 @@ export const ReportAnimalInfoBoxColumnColumn = styled.div`
   }
 `;
 
-export const ReportanimaltypesBox = styled.div`
+const ReportanimaltypesBox = styled.div`
   width: 100%;
   height: 7.5rem;
   margin: 0 auto;
   ${(props) => props.theme.FlexColumn}
 `;
 
-export const ReportInput = styled.input`
+const ReportInput = styled.input`
   width: 9.75rem;
   height: 1.5625rem;
   margin-top: 0.3125rem;
@@ -154,7 +154,7 @@ export const ReportInput = styled.input`
   cursor: default;
 `;
 
-export const ReportLgInput = styled.input`
+const ReportLgInput = styled.input`
   width: 20.9375rem;
   height: 1.5625rem;
   margin-top: 0.3125rem;
@@ -165,7 +165,7 @@ export const ReportLgInput = styled.input`
   cursor: default;
 `;
 
-export const ReportAnimalDayBox = styled.div`
+const ReportAnimalDayBox = styled.div`
   width: 20.9375rem;
   height: 5.5rem;
   margin: 0 auto;
@@ -200,13 +200,13 @@ export const ReportAnimalDayBox = styled.div`
   }
 `;
 
-export const ReportAnimalSignificantBox = styled.div`
+const ReportAnimalSignificantBox = styled.div`
   width: 20.9375rem;
   height: 9.75rem;
   margin: 0 auto;
 `;
 
-export const ReportAnimalSignificantBoxTitle = styled.div`
+const ReportAnimalSignificantBoxTitle = styled.div`
   width: 100%;
   height: 15%;
   > p {
@@ -214,7 +214,7 @@ export const ReportAnimalSignificantBoxTitle = styled.div`
   }
 `;
 
-export const ReportAnimalSignificantBoxInputArea = styled.div`
+const ReportAnimalSignificantBoxInputArea = styled.div`
   width: 100%;
   height: 85%;
   color: #222222;
@@ -241,13 +241,13 @@ export const ReportAnimalSignificantBoxInputArea = styled.div`
   }
 `;
 
-export const ReportAnimalPictureArea = styled.div`
+const ReportAnimalPictureArea = styled.div`
   position: relative;
   width: 18.75rem;
   height: 5.75rem;
   margin-right: 2.1875rem;
 `;
-export const ReportAnimalPictureAreaTitle = styled.div`
+const ReportAnimalPictureAreaTitle = styled.div`
   width: 100%;
   height: 20%;
   > p {
@@ -255,7 +255,7 @@ export const ReportAnimalPictureAreaTitle = styled.div`
   }
 `;
 
-export const ReportAnimalPictureAreaInputBox = styled.div`
+const ReportAnimalPictureAreaInputBox = styled.div`
   width: 100%;
   height: 80%;
   display: flex;
@@ -263,7 +263,7 @@ export const ReportAnimalPictureAreaInputBox = styled.div`
   gap: 0px 1.25rem;
 `;
 
-export const ReportAnimalPictureInput = styled.div`
+const ReportAnimalPictureInput = styled.div`
   width: 3.5rem;
   height: 3.5rem;
   background: ${(props) => props.theme.color.gray};
@@ -275,7 +275,7 @@ export const ReportAnimalPictureInput = styled.div`
     font-weight: 200;
   }
 `;
-export const ReportAnimalPicturePreview = styled.div`
+const ReportAnimalPicturePreview = styled.div`
   position: relative;
   width: 3.5rem;
   height: 3.5rem;
@@ -300,7 +300,7 @@ export const ReportAnimalPicturePreview = styled.div`
   }
 `;
 
-export const ReportAnimalUserInfo = styled.div`
+const ReportAnimalUserInfo = styled.div`
   width: 20.9375rem;
   height: 5.5rem;
   margin-top: 0.625rem;
@@ -325,7 +325,38 @@ export const ReportAnimalUserInfo = styled.div`
   }
 `;
 
-export const PreviewImage = styled.img`
+const PreviewImage = styled.img`
   width: 100%;
   height: 100%;
 `;
+
+const styles = {
+  ReportMissingContainer,
+  ReportSightingContainer,
+  ReportAnimalInfoArea,
+  ReportHeader,
+  ReportAnimalTabBox,
+  ReportAnimalInfoBox,
+  ReportAnimalInfoBoxColumn,
+  ReportAnimalInfoBoxColumnRow,
+  ReportanimaltypesBox,
+  ReportanimaltypesTitle,
+  ReportanimaltypesSelect,
+  ReportInput,
+  ReportLgInput,
+  ReportAnimalDayBox,
+  ReportAnimalSignificantBox,
+  ReportAnimalSignificantBoxTitle,
+  ReportAnimalSignificantBoxInputArea,
+  ReportAnimalPictureArea,
+  ReportAnimalPictureAreaTitle,
+  ReportAnimalPictureAreaInputBox,
+  ReportAnimalPictureInput,
+  ReportAnimalPicturePreview,
+  ReportAnimalUserInfo,
+  ReportAnimalUserInfo,
+  PreviewImage,
+  ReportAnimalInfoBoxColumnColumn,
+};
+
+export default styles;

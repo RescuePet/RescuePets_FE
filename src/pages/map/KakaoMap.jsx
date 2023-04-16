@@ -40,6 +40,12 @@ const KakaoMap = () => {
     return state.link;
   });
 
+  // const currentPosition = useSelector((state) => {
+  //   return state.search;
+  // });
+  // console.log(currentPosition.latitude);
+  // console.log(currentPosition.longitude);
+
   //디비에 저장된 데이터 값 가져오기
   useEffect(() => {
     dispatch(__GetMissingData());
@@ -373,7 +379,7 @@ const KakaoMap = () => {
     }
   }, [linkAlert]);
 
-  const MoveToCurrentLocation = () => {
+  const onClickMoveToCurrentLocation = () => {
     const moveLatLon = new kakao.maps.LatLng(lati, long);
     mapRef.current.panTo(moveLatLon);
   };
@@ -390,7 +396,7 @@ const KakaoMap = () => {
 
   const [markerInfoTabToggle, setMarkerInfoTabToggle] = useState(false);
 
-  const mapToggleHandler = () => {
+  const onClickTabToggleHandler = () => {
     setMarkerInfoTabToggle(!markerInfoTabToggle);
   };
 
@@ -410,7 +416,7 @@ const KakaoMap = () => {
           data={newCatchData}
         ></MarkerModal>
         <FloatingPetwork />
-        <CurrentLocationBtn onClick={MoveToCurrentLocation}>
+        <CurrentLocationBtn onClick={onClickMoveToCurrentLocation}>
           <img src={currentLocationimg} />
         </CurrentLocationBtn>
         {markerInfoTabToggle === false ? null : (
@@ -427,7 +433,7 @@ const KakaoMap = () => {
         )}
 
         <MapTabBtn>
-          <CommentMeatBalls onClick={mapToggleHandler} />
+          <CommentMeatBalls onClick={onClickTabToggleHandler} />
         </MapTabBtn>
         {/* <MapAddBtn onClick={MoveToPlus}>+</MapAddBtn> */}
         {/* <MapMinusBtn onClick={MoveToMinus}>-</MapMinusBtn> */}

@@ -78,6 +78,7 @@ const Layout = ({ children }) => {
 
     eventSource.onerror = (event) => {
       setListening(false);
+      eventSource.close();
     };
     return () => {
       setListening(false);

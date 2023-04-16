@@ -5,32 +5,11 @@ import Button from "../../elements/Button";
 import cancel from "../../asset/delete.svg";
 import Location from "./components/Location";
 import Header from "./components/Header";
+
 import imageCompression from "browser-image-compression";
 import { CustomSelect } from "../../elements/CustomSelect";
 import SeleteTab from "./components/SeleteTab";
-import {
-  ReportMissingContainer,
-  ReportanimaltypesBox,
-  ReportAnimalInfoArea,
-  ReportAnimalInfoBox,
-  ReportAnimalInfoBoxColumn,
-  ReportAnimalInfoBoxColumnRow,
-  ReportAnimalInfoBoxColumnColumn,
-  ReportanimaltypesTitle,
-  ReportanimaltypesSelect,
-  ReportInput,
-  ReportLgInput,
-  ReportAnimalDayBox,
-  ReportAnimalSignificantBox,
-  ReportAnimalSignificantBoxTitle,
-  ReportAnimalSignificantBoxInputArea,
-  ReportAnimalPictureArea,
-  ReportAnimalPictureAreaTitle,
-  ReportAnimalPictureAreaInputBox,
-  ReportAnimalPictureInput,
-  ReportAnimalPicturePreview,
-  PreviewImage,
-} from "./components/reportstyle";
+import styles from "./components/reportstyle";
 import { NameValue, TimeValue } from "./components/data";
 import { __PostCatchData } from "../../redux/modules/petworkSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -236,7 +215,9 @@ const Catch = () => {
 
   return (
     <Layout>
-      <ReportMissingContainer onSubmit={handleSubmit(onSubmitSightingHanlder)}>
+      <styles.ReportMissingContainer
+        onSubmit={handleSubmit(onSubmitSightingHanlder)}
+      >
         {catchMsg == "" ? null : (
           <CheckModal
             isOpen={loginModal}
@@ -247,10 +228,12 @@ const Catch = () => {
           </CheckModal>
         )}
         <Header>목격 글 작성하기</Header>
-        <ReportAnimalInfoArea>
-          <ReportanimaltypesBox>
-            <ReportanimaltypesTitle>동물정보</ReportanimaltypesTitle>
-            <ReportanimaltypesSelect>
+        <styles.ReportAnimalInfoArea>
+          <styles.ReportanimaltypesBox>
+            <styles.ReportanimaltypesTitle>
+              동물정보
+            </styles.ReportanimaltypesTitle>
+            <styles.ReportanimaltypesSelect>
               <div>
                 <p>종류*</p>
                 <CustomSelect
@@ -261,7 +244,7 @@ const Catch = () => {
               </div>
               <div>
                 <p>품종*</p>
-                <ReportInput
+                <styles.ReportInput
                   type="text"
                   placeholder="입력하기"
                   {...register("animaltypes", {
@@ -284,8 +267,8 @@ const Catch = () => {
                 />
                 <span>{errors?.animaltypes?.message}</span>
               </div>
-            </ReportanimaltypesSelect>
-          </ReportanimaltypesBox>
+            </styles.ReportanimaltypesSelect>
+          </styles.ReportanimaltypesBox>
 
           <SeleteTab
             onChangeGender={onChangeGender}
@@ -294,11 +277,11 @@ const Catch = () => {
             tabValue={tabValue}
           />
 
-          <ReportAnimalInfoBox>
-            <ReportAnimalInfoBoxColumn>
-              <ReportAnimalInfoBoxColumnRow>
+          <styles.ReportAnimalInfoBox>
+            <styles.ReportAnimalInfoBoxColumn>
+              <styles.ReportAnimalInfoBoxColumnRow>
                 <p>추정나이(살)*</p>
-                <ReportInput
+                <styles.ReportInput
                   type="text"
                   placeholder="입력하기"
                   {...register("animalAge", {
@@ -317,11 +300,11 @@ const Catch = () => {
                   }}
                 />
                 <span>{errors?.animalAge?.message}</span>
-              </ReportAnimalInfoBoxColumnRow>
+              </styles.ReportAnimalInfoBoxColumnRow>
 
-              <ReportAnimalInfoBoxColumnRow>
+              <styles.ReportAnimalInfoBoxColumnRow>
                 <p>추정체중(Kg)*</p>
-                <ReportInput
+                <styles.ReportInput
                   type="text"
                   placeholder="입력하기"
                   {...register("animalkg", {
@@ -340,13 +323,13 @@ const Catch = () => {
                   }}
                 />
                 <span>{errors?.animalkg?.message}</span>
-              </ReportAnimalInfoBoxColumnRow>
-            </ReportAnimalInfoBoxColumn>
+              </styles.ReportAnimalInfoBoxColumnRow>
+            </styles.ReportAnimalInfoBoxColumn>
 
-            <ReportAnimalInfoBoxColumn>
-              <ReportAnimalInfoBoxColumnColumn>
+            <styles.ReportAnimalInfoBoxColumn>
+              <styles.ReportAnimalInfoBoxColumnColumn>
                 <p>색상*</p>
-                <ReportLgInput
+                <styles.ReportLgInput
                   type="text"
                   placeholder="입력하기"
                   {...register("animalcolor", {
@@ -368,17 +351,19 @@ const Catch = () => {
                   }}
                 />
                 <span>{errors?.animalcolor?.message}</span>
-              </ReportAnimalInfoBoxColumnColumn>
-            </ReportAnimalInfoBoxColumn>
-          </ReportAnimalInfoBox>
-        </ReportAnimalInfoArea>
+              </styles.ReportAnimalInfoBoxColumnColumn>
+            </styles.ReportAnimalInfoBoxColumn>
+          </styles.ReportAnimalInfoBox>
+        </styles.ReportAnimalInfoArea>
+
         <Location />
-        <ReportAnimalDayBox>
+
+        <styles.ReportAnimalDayBox>
           <p>목격일시 *</p>
           <div>
             <div>
               <p>날짜*</p>
-              <ReportInput
+              <styles.ReportInput
                 type="date"
                 onChange={handleDateChange}
                 value={selectedDate}
@@ -394,15 +379,17 @@ const Catch = () => {
               />
             </div>
           </div>
-        </ReportAnimalDayBox>
-        <ReportAnimalSignificantBox>
-          <ReportAnimalSignificantBoxTitle>
+        </styles.ReportAnimalDayBox>
+
+        <styles.ReportAnimalSignificantBox>
+          <styles.ReportAnimalSignificantBoxTitle>
             <p> 특이사항 </p>
-          </ReportAnimalSignificantBoxTitle>
-          <ReportAnimalSignificantBoxInputArea>
+          </styles.ReportAnimalSignificantBoxTitle>
+
+          <styles.ReportAnimalSignificantBoxInputArea>
             <div>
               <p>특징</p>
-              <ReportLgInput
+              <styles.ReportLgInput
                 type="text"
                 placeholder="입력하기"
                 {...register("characteristic", {
@@ -427,7 +414,7 @@ const Catch = () => {
             </div>
             <div>
               <p>메모</p>
-              <ReportLgInput
+              <styles.ReportLgInput
                 type="text"
                 placeholder="입력하기"
                 {...register("memo", {
@@ -450,13 +437,13 @@ const Catch = () => {
               />
               <span>{errors?.memo?.message}</span>
             </div>
-          </ReportAnimalSignificantBoxInputArea>
-        </ReportAnimalSignificantBox>
-        <ReportAnimalPictureArea>
-          <ReportAnimalPictureAreaTitle>
+          </styles.ReportAnimalSignificantBoxInputArea>
+        </styles.ReportAnimalSignificantBox>
+        <styles.ReportAnimalPictureArea>
+          <styles.ReportAnimalPictureAreaTitle>
             <p>사진첨부</p>
-          </ReportAnimalPictureAreaTitle>
-          <ReportAnimalPictureAreaInputBox>
+          </styles.ReportAnimalPictureAreaTitle>
+          <styles.ReportAnimalPictureAreaInputBox>
             <input
               type="file"
               accept="image/*"
@@ -466,14 +453,17 @@ const Catch = () => {
               onChange={onChangeUploadHandler}
               required
             />
-            <ReportAnimalPictureInput onClick={() => imageRef.click()}>
+            <styles.ReportAnimalPictureInput onClick={() => imageRef.click()}>
               <h3>+</h3>
-            </ReportAnimalPictureInput>
+            </styles.ReportAnimalPictureInput>
             {showImages.length === 0 ? null : (
               <>
                 {showImages.map((image, index) => (
-                  <ReportAnimalPicturePreview key={index}>
-                    <PreviewImage src={image} alt={`${image}-${index}`} />
+                  <styles.ReportAnimalPicturePreview key={index}>
+                    <styles.PreviewImage
+                      src={image}
+                      alt={`${image}-${index}`}
+                    />
                     <div
                       onClick={() => {
                         onClickDeleteHandler(index);
@@ -481,12 +471,12 @@ const Catch = () => {
                     >
                       <img src={imgdelete} />
                     </div>
-                  </ReportAnimalPicturePreview>
+                  </styles.ReportAnimalPicturePreview>
                 ))}
               </>
             )}
-          </ReportAnimalPictureAreaInputBox>
-        </ReportAnimalPictureArea>
+          </styles.ReportAnimalPictureAreaInputBox>
+        </styles.ReportAnimalPictureArea>
         {isActive === true ? (
           <Button type="submit" disable assistiveFillButton>
             작성 하기
@@ -496,7 +486,7 @@ const Catch = () => {
             작성 완료
           </Button>
         )}
-      </ReportMissingContainer>
+      </styles.ReportMissingContainer>
     </Layout>
   );
 };
