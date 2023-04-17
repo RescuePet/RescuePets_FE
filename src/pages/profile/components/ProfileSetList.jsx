@@ -52,7 +52,7 @@ const ProfileSetList = () => {
       {memberRole === "ADMIN" && (
         <ListBox onClick={() => navigate("/profile/reportmanagement")}>
           <ReportSvg></ReportSvg>
-          <List>신고관리</List>
+          <List>게시물 신고관리</List>
           <ArrowSvg>&gt;</ArrowSvg>
         </ListBox>
       )}

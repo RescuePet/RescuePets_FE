@@ -28,9 +28,7 @@ const Post = ({ item }) => {
       desertionNo: item.desertionNo,
     };
     dispatch(__postAdoptionListScrap(payload));
-    console.log("publickScrap before");
     dispatch(publicScrap(payload));
-    console.log("publickScrap after");
   };
 
   useEffect(() => {

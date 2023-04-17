@@ -13,7 +13,6 @@ import Location from "./components/Location";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  __deleteAdminPost,
   __deleteMemberPost,
   __getMissingPostDetail,
   __postMissingScrap,
@@ -154,6 +153,11 @@ const MissingDetail = () => {
   };
 
   const chatHandler = async () => {
+    if (memberRole === "BAD_MEMBER") {
+      toggleModal();
+      setMissingDetailMsg("BAD MEMBER는 채팅방 생성을 할 수 없습니다.");
+      return;
+    }
     try {
       const response = await instance.post(
         `/chat/room/${missingPostDetail.id}`

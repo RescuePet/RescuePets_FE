@@ -30,6 +30,8 @@ import {
   resetAmplitude,
 } from "../../utils/amplitude";
 import isLogin from "../../utils/isLogin";
+import { useModalState } from "../../hooks/useModalState";
+import { CheckModal } from "../../elements/Modal";
 
 const ChatRoom = () => {
   // 앰플리튜드
@@ -52,6 +54,8 @@ const ChatRoom = () => {
   const { optionState, reportState } = useSelector((state) => state.menubar);
 
   const [chatlog, setChatLog] = useState([]);
+  const [Msg, setMsg] = useState("");
+  const [roleCheckModal, toggleRoleCheckModal] = useModalState(false);
   const sender = JSON.parse(Cookies.get("UserInfo"));
 
   let client;
@@ -113,6 +117,14 @@ const ChatRoom = () => {
   const submitHandler = useCallback((register) => {
     let message = register.message;
     if (message === "") {
+      return;
+    } else if (sender.memberRole === "BAD_MEMBER") {
+      toggleRoleCheckModal();
+      setMsg("BAD MEMBER는 채팅을 보낼 수 없습니다.");
+      setTimeout(() => {
+        setMsg("");
+        return;
+      }, 1500);
       return;
     }
     const sendSettings = {
@@ -192,6 +204,15 @@ const ChatRoom = () => {
       ></InputContainer>
       {optionState && <Option setting={ChatRoomMeatData} />}
       {reportState && <ReportModal setting={reportModalData} />}
+      {Msg === "" ? null : (
+        <CheckModal
+          isOpen={roleCheckModal}
+          toggle={toggleRoleCheckModal}
+          onClose={toggleRoleCheckModal}
+        >
+          {Msg}
+        </CheckModal>
+      )}
     </Layout>
   );
 };

@@ -142,10 +142,7 @@ export const __deleteMemberPost = createAsyncThunk(
   "deleteMemberPost",
   async (payload, thunkAPI) => {
     try {
-      const response = await instance.delete(
-        `/api/post/temporary/${payload.id}`
-      );
-      console.log(response);
+      await instance.delete(`/api/post/temporary/${payload.id}`);
       return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
       throw new Error(error.response.data.message);
@@ -158,8 +155,8 @@ export const __deleteAdminPost = createAsyncThunk(
   "deleteAdminPost",
   async (payload, thunkAPI) => {
     try {
-      const response = await instance.delete(`/api/post/${payload.id}`);
-      console.log(response);
+      await instance.delete(`/api/post/${payload.id}`);
+
       return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
       console.log(error);
@@ -174,8 +171,9 @@ export const __getSoftDeleteList = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await instance.get(
-        `/api/post/temporary/${payload.postType}`
+        `/api/post/temporary/all?page=${payload.page}&size=${payload.size}`
       );
+
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       throw new Error(error.response.data.message);
@@ -383,17 +381,10 @@ export const petworkSlice = createSlice({
 
     builder
       .addCase(__deleteAdminPost.fulfilled, (state, action) => {
-        if (action.payload.type === "missing") {
-          const index = state.missingPostLists.findIndex((item) => {
-            return item.id === Number(action.payload.id);
-          });
-          state.missingPostLists.splice(index, 1);
-        } else if (action.payload.type === "catch") {
-          const index = state.catchPostLists.findIndex(
-            (item) => item.id === Number(action.payload.id)
-          );
-          state.catchPostLists.splice(index, 1);
-        }
+        const index = state.softDeleteList.findIndex((item) => {
+          return item.id === Number(action.payload.id);
+        });
+        state.softDeleteList.splice(index, 1);
       })
       .addCase(__deleteAdminPost.rejected, (state) => {
         state.error = true;

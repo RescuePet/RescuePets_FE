@@ -14,7 +14,7 @@ const UserGrade = () => {
   useEffect(() => {
     const payload = {
       page: 1,
-      size: 100,
+      size: 200,
     };
     dispatch(__getUserList(payload));
   }, []);
