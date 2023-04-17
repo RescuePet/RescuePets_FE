@@ -60,6 +60,10 @@ const ChatRoomListContainer = styled.div`
   ${PostBorderStyle}
   width: 100%;
   padding-top: 1rem;
+  background-color: ${(props) => props.theme.color.white};
+  :hover {
+    background-color: ${(props) => props.theme.color.line_alternative};
+  }
 `;
 
 const ClickDiv = styled(Link)`

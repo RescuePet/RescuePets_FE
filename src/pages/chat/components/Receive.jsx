@@ -81,6 +81,6 @@ const ReceiveTimeSpan = styled.span`
   right: -31px;
   bottom: 0.0625rem;
   ${Body_400_10};
-  color: #cccccc;
+  color: ${(props) => props.theme.color.text_normal}; ;
 `;
 export default Receive;

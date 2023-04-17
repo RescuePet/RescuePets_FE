@@ -27,6 +27,7 @@ import CarouselLink from "../pages/carousel/CarouselLink";
 import CustomerSC from "../pages/profile/CustomerSC";
 import UserGrade from "../pages/profile/UserGrade";
 import ReportManagement from "../pages/profile/ReportManagement";
+import DeleteList from "../pages/profile/DeleteList";
 
 const Router = () => {
   return (
@@ -60,6 +61,7 @@ const Router = () => {
           path="/profile/reportmanagement"
           element={<ReportManagement />}
         />
+        <Route path="/profile/deletelists" element={<DeleteList />} />
         <Route path="/profile/customer" element={<CustomerSC />} />
         <Route path="/introduce" element={<CarouselLink />} />
         <Route path="/*" element={<NotFound />} />

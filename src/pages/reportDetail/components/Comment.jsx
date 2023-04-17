@@ -71,7 +71,13 @@ const Comment = ({ item }) => {
               {item.modifiedAt.substring(11, 16)}
             </CommentTime>
           </UserBox>
-          <CommentMeatBalls onClick={() => setCommentOption((prev) => !prev)} />
+          {nickname === item.userNickName && (
+            <CommentMeatBalls
+              onClick={(e) => {
+                setCommentOption((prev) => !prev);
+              }}
+            />
+          )}
         </UserInfo>
         <CommentText>{item.content}</CommentText>
       </CommentBox>

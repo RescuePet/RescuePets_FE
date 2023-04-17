@@ -137,14 +137,46 @@ export const __postCatchScrap = createAsyncThunk(
   }
 );
 
-// Delete Post
-export const __deletePost = createAsyncThunk(
-  "deletePost",
+// MEMBER DeletePost
+export const __deleteMemberPost = createAsyncThunk(
+  "deleteMemberPost",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await instance.delete(
+        `/api/post/temporary/${payload.id}`
+      );
+      console.log(response);
+      return thunkAPI.fulfillWithValue(payload);
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
+// ADMIN Delete Post
+export const __deleteAdminPost = createAsyncThunk(
+  "deleteAdminPost",
   async (payload, thunkAPI) => {
     try {
       const response = await instance.delete(`/api/post/${payload.id}`);
       console.log(response);
       return thunkAPI.fulfillWithValue(payload);
+    } catch (error) {
+      console.log(error);
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
+// Get Soft Delete List
+export const __getSoftDeleteList = createAsyncThunk(
+  "getSoftDeleteList",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await instance.get(
+        `/api/post/temporary/${payload.postType}`
+      );
+      return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       throw new Error(error.response.data.message);
     }
@@ -163,6 +195,7 @@ const initialState = {
   catchPostLists: [],
   missingPostDetail: {},
   catchPostDetail: {},
+  softDeleteList: [],
 };
 
 export const petworkSlice = createSlice({
@@ -334,8 +367,22 @@ export const petworkSlice = createSlice({
         state.error = true;
       });
 
+    builder.addCase(__deleteMemberPost.fulfilled, (state, action) => {
+      if (action.payload.type === "missing") {
+        const index = state.missingPostLists.findIndex((item) => {
+          return item.id === Number(action.payload.id);
+        });
+        state.missingPostLists.splice(index, 1);
+      } else if (action.payload.type === "catch") {
+        const index = state.catchPostLists.findIndex(
+          (item) => item.id === Number(action.payload.id)
+        );
+        state.catchPostLists.splice(index, 1);
+      }
+    });
+
     builder
-      .addCase(__deletePost.fulfilled, (state, action) => {
+      .addCase(__deleteAdminPost.fulfilled, (state, action) => {
         if (action.payload.type === "missing") {
           const index = state.missingPostLists.findIndex((item) => {
             return item.id === Number(action.payload.id);
@@ -348,7 +395,15 @@ export const petworkSlice = createSlice({
           state.catchPostLists.splice(index, 1);
         }
       })
-      .addCase(__deletePost.rejected, (state) => {
+      .addCase(__deleteAdminPost.rejected, (state) => {
+        state.error = true;
+      });
+
+    builder
+      .addCase(__getSoftDeleteList.fulfilled, (state, action) => {
+        state.softDeleteList = [...action.payload];
+      })
+      .addCase(__getSoftDeleteList.rejected, (state) => {
         state.error = true;
       });
   },

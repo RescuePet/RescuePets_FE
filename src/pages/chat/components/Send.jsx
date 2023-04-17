@@ -60,7 +60,7 @@ const SendTimeSpan = styled.span`
   left: -31px;
   bottom: 1px;
   ${Body_400_10}
-  color:#CCCCCC;
+  color: ${(props) => props.theme.color.text_normal}; ;
 `;
 
 export default Send;

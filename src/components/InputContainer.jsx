@@ -69,6 +69,7 @@ const InputContainer = ({ placeholder, submitHandler }) => {
           <CloseBox
             onClick={() => {
               reset();
+              setInputValue("");
               dispatch(toggleCommentInput());
             }}
           >
@@ -91,7 +92,6 @@ const ChatFooter = styled.div`
   padding-bottom: 1.5rem;
   border-top: 0.0625rem solid ${(props) => props.theme.color.text_disable};
   background-color: ${(props) => props.theme.color.white};
-  z-index: -10;
   @media screen and (max-width: 26.9375rem) {
     width: 100%;
     position: fixed;
