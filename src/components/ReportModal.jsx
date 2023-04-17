@@ -13,14 +13,14 @@ import { CheckModal } from "../elements/Modal";
 
 const ReportModal = ({ setting, reportCloseHandler, onChangeMsg }) => {
   const reportOption = [
-    { id: 0, name: "부적절한단어", value: "부적절한단어" },
-    { id: 1, name: "거짓정보", value: "거짓정보" },
-    { id: 2, name: "신체노출", value: "신체노출" },
+    { id: 0, name: "폭력적 표현", value: "폭력적 표현" },
+    { id: 1, name: "부정확한 정보", value: "부정확한 정보" },
+    { id: 2, name: "선정적 표현", value: "선정적 표현" },
     { id: 3, name: "기타", value: "기타" },
   ];
 
   const [type, setType] = useState(reportOption[0].name);
-  const [typeID, setTypeID] = useState("부적절한단어");
+  const [typeID, setTypeID] = useState("폭력적 표현");
   const { register, handleSubmit, reset } = useForm();
   const dispatch = useDispatch();
   const [loginModal, toggleModal] = useModalState(false);
@@ -40,7 +40,7 @@ const ReportModal = ({ setting, reportCloseHandler, onChangeMsg }) => {
       content: payload.reason,
       postId: Number(setting.postId),
       commentId: 0,
-      reportCode: typeID,
+      reportReasonEnum: typeID,
     };
     try {
       const response = await instance.post(`/api/report/post`, data);
@@ -63,7 +63,7 @@ const ReportModal = ({ setting, reportCloseHandler, onChangeMsg }) => {
       content: payload.reason,
       postId: null,
       commentId: setting.commentId,
-      reportCode: typeID,
+      reportReasonEnum: typeID,
     };
     try {
       const response = await instance.post(`/api/report/comment`, data);
@@ -82,10 +82,11 @@ const ReportModal = ({ setting, reportCloseHandler, onChangeMsg }) => {
       content: payload.reason,
       informantId: 0,
       nickname: setting.nickname,
-      reportCode: typeID,
+      reportReasonEnum: typeID,
     };
     try {
       const response = await instance.post(`/api/report/member`, data);
+      console.log(response);
       if (response.status === 200) {
         setReportMsg("신고가 완료되었습니다.");
       }

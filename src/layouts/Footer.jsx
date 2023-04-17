@@ -25,8 +25,6 @@ const Footer = () => {
 
   const { memberRole } = JSON.parse(Cookies.get("UserInfo"));
 
-  console.log(memberRole);
-
   const moveToChatRoom = () => {
     localStorage.setItem("chatCount", 0);
     dispatch(seeChatCountReset(0));

@@ -13,7 +13,6 @@ import Location from "./components/Location";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  __deleteAdminPost,
   __deleteMemberPost,
   __getMissingPostDetail,
   __postMissingScrap,

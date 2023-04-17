@@ -84,6 +84,34 @@ export const __putUserGrade = createAsyncThunk(
       const response = await instance.put(`/api/member/role`, payload);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.status);
+    }
+  }
+);
+
+// Get Report List
+export const __getReportList = createAsyncThunk(
+  "getReportList",
+  async (_, thunkAPI) => {
+    try {
+      const response = await instance.get(`/api/report/all`);
+      console.log(response);
+      return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+// Delete Report List
+export const __deleteReportList = createAsyncThunk(
+  "deleteReportList",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await instance.delete(`/api/report/${payload}`);
+      console.log(response);
+      return thunkAPI.fulfillWithValue(payload);
+    } catch (error) {
       console.log(error);
     }
   }
@@ -92,6 +120,7 @@ export const __putUserGrade = createAsyncThunk(
 const initialState = {
   loading: false,
   error: false,
+  errorMessage: "",
   myData: { postCount: 0, commentCount: 0, scrapCount: 0 },
   myPostList: [],
   myPostPage: 1,
@@ -101,6 +130,7 @@ const initialState = {
   myScrapPage: 1,
   userList: [],
   userListPage: 1,
+  reportList: [],
 };
 
 export const profileSlice = createSlice({
@@ -190,11 +220,31 @@ export const profileSlice = createSlice({
         state.error = true;
       });
 
-    builder.addCase(__putUserGrade.fulfilled, (state, action) => {
-      const itemIndex = state.userList.findIndex(
-        (item) => item.id === action.payload.id
-      );
-      state.userList[itemIndex] = { ...action.payload };
+    builder
+      .addCase(__putUserGrade.fulfilled, (state, action) => {
+        const itemIndex = state.userList.findIndex(
+          (item) => item.id === action.payload.id
+        );
+        state.userList[itemIndex] = { ...action.payload };
+      })
+      .addCase(__putUserGrade.rejected, (state, action) => {
+        state.error = true;
+        if (action.payload === 409)
+          state.errorMessage = "이미 BAD MEMBER 입니다.";
+      });
+
+    builder
+      .addCase(__getReportList.fulfilled, (state, action) => {
+        state.reportList = [...action.payload];
+      })
+      .addCase(__getReportList.rejected, (state) => {
+        state.error = true;
+      });
+
+    builder.addCase(__deleteReportList.fulfilled, (state, action) => {
+      state.reportList = state.reportList.filter((item) => {
+        return item.id !== action.payload;
+      });
     });
   },
 });
