@@ -6,16 +6,21 @@ import { FlexAttribute } from "../../../style/Mixin";
 import male from "../../../asset/male.svg";
 import female from "../../../asset/female.svg";
 import questionmark from "../../../asset/questionmark.svg";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Option from "../../../components/Option";
 import { useDispatch } from "react-redux";
-import { __deleteMemberPost } from "../../../redux/modules/petworkSlice";
+import {
+  __deleteAdminPost,
+  __deleteMemberPost,
+  __getSoftDeleteList,
+} from "../../../redux/modules/petworkSlice";
 import Meatballs from "../../../asset/Meatballs";
 import { deleteMyPost } from "../../../redux/modules/profileSlice";
 
 const PostList = ({ item }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const [postOption, setPostOption] = useState(false);
 
   const refineDataHandler = () => {
@@ -108,6 +113,20 @@ const PostList = ({ item }) => {
     },
   ];
 
+  const optionAdminSetting = [
+    {
+      option: "관리자 권한으로 삭제",
+      color: "report",
+      handler: () => {
+        const payload = {
+          id: item.id,
+        };
+        dispatch(__deleteAdminPost(payload));
+        closePostOption();
+      },
+    },
+  ];
+
   return (
     <>
       <ListContainer
@@ -128,7 +147,14 @@ const PostList = ({ item }) => {
         <PostMeatballs onClick={myPostHandler} />
       </ListContainer>
       {postOption && (
-        <Option setting={optionMySetting} mapCloseHandler={closePostOption} />
+        <Option
+          setting={
+            location.pathname === "/profile/deletelists"
+              ? optionAdminSetting
+              : optionMySetting
+          }
+          mapCloseHandler={closePostOption}
+        />
       )}
     </>
   );
