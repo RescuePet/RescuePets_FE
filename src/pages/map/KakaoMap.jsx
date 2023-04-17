@@ -42,6 +42,7 @@ const KakaoMap = () => {
   const encryptedPo = localStorage.getItem("userPosition");
   const decryptedPo = decryptString(encryptedPo);
   const userPosition = decryptedPo && JSON.parse(decryptedPo);
+
   useEffect(() => {
     if (userPosition !== "") {
       setLat(userPosition.lat);

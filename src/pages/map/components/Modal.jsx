@@ -189,7 +189,7 @@ export function MarkerModal(props) {
   return (
     <Modal isOpen={props.isOpen} onClose={props.toggle}>
       <ModalInBox>
-        <ModalTopLinknumber>
+        {/* <ModalTopLinknumber>
           연결된 링크: {showLink.length == 0 ? null : showLink.length}
         </ModalTopLinknumber>
         <ModalSideLinkLook onClick={linkshowHandler}>
@@ -199,7 +199,7 @@ export function MarkerModal(props) {
           <ModalSideLinkadd onClick={linkaddfirst}>➕1</ModalSideLinkadd>
         ) : (
           <ModalSideLinkadd onClick={linkaddsecond}>➕2</ModalSideLinkadd>
-        )}
+        )} */}
         {/* <ModalSideDelete onClick={linkDelete}>🗑</ModalSideDelete> */}
         <ModalTitle>
           <ModalTitleinfo>

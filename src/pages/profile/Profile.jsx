@@ -55,6 +55,7 @@ const Profile = () => {
           Cookies.remove("Token");
           Cookies.remove("Refresh");
           Cookies.remove("UserInfo");
+          localStorage.removeItem("userPosition");
           setMsg("");
           navigate("/signin");
         }, 1000);
@@ -64,7 +65,6 @@ const Profile = () => {
     });
   };
 
-  // 로그
   return (
     <Layout>
       <ProfileHeader>

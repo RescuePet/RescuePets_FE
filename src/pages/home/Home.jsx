@@ -112,13 +112,18 @@ const Home = () => {
       lat,
       lng,
     };
-    // localStorage.setItem("CP", JSON.stringify(Po));
     dispatch(setMemberPosition({ lat: lat, lng: lng }));
     const encryptedPo = encryptString(JSON.stringify(userPosition));
     localStorage.setItem("userPosition", encryptedPo);
   }, []);
 
   const onFailure = () => {
+    const defaultPosition = {
+      lat: "37.515133",
+      lng: "126.934086",
+    };
+    const encryptedPo = encryptString(JSON.stringify(defaultPosition));
+    localStorage.setItem("userPosition", encryptedPo);
     console.log("위치 정보를 찾을수 없습니당.");
   };
 

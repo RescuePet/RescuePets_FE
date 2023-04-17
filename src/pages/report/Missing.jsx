@@ -501,7 +501,6 @@ const Missing = () => {
               inputMode="numeric"
               onChange={(event) => {
                 const value = event.target.value;
-                console.log(value);
                 event.target.value = Number(
                   value.replace(/[^0-9]/g, "")
                 ).toLocaleString();
