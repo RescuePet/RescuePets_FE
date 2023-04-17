@@ -8,9 +8,11 @@ import {
   resetCommentInput,
   toggleCommentInput,
 } from "../../../redux/modules/petworkSlice";
+import Cookies from "js-cookie";
 
 const PostInformation = ({ postInfo }) => {
   const dispatch = useDispatch();
+  const { memberRole } = JSON.parse(Cookies.get("UserInfo"));
 
   useEffect(() => {
     return () => {
@@ -20,7 +22,15 @@ const PostInformation = ({ postInfo }) => {
 
   return (
     <PostInfoWrapper>
-      <InfoBox onClick={() => dispatch(toggleCommentInput())}>
+      <InfoBox
+        onClick={() => {
+          if (memberRole === "BAD_MEMBER") {
+            alert("BAD_MEMBER는 댓글을 작성할 수 없습니다.");
+            return;
+          }
+          dispatch(toggleCommentInput());
+        }}
+      >
         <Comment />
         <span>댓글 달기</span>
         &nbsp;

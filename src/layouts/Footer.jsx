@@ -14,11 +14,16 @@ import FooterIconProfile from "../asset/footericon/FooterIconProfile";
 import Reportcatch from "../asset/Reportcatch";
 import { seeChatCountReset } from "../redux/modules/sseSlice";
 import { seeMyCountReset } from "../redux/modules/sseSlice";
+import Cookies from "js-cookie";
 
 const Footer = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { memberRole } = JSON.parse(Cookies.get("UserInfo"));
+
+  console.log(memberRole);
 
   const moveToChatRoom = () => {
     localStorage.setItem("chatCount", 0);
@@ -37,10 +42,15 @@ const Footer = () => {
   const [menuBarToggle, setMenuBarToggle] = useState(false);
 
   const onClickMenuBarHandler = () => {
+    if (memberRole === "BAD_MEMBER") {
+      alert("Bad Member는 글을 작성할 수 없습니다.");
+      return;
+    }
     setMenuBar(!menuBar);
     setMenuBarToggle(!menuBarToggle);
     dispatch(toggleMenu(menuBarToggle));
     const ToggleBtn = document.querySelector(".toggleBtn");
+
     if (menuBar === true) {
       ToggleBtn.classList.remove("active");
     } else {

@@ -12,7 +12,6 @@ import { useDispatch } from "react-redux";
 import {
   __deleteAdminPost,
   __deleteMemberPost,
-  __getSoftDeleteList,
 } from "../../../redux/modules/petworkSlice";
 import Meatballs from "../../../asset/Meatballs";
 import { deleteMyPost } from "../../../redux/modules/profileSlice";
