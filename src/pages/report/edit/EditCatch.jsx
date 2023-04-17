@@ -15,29 +15,7 @@ import { __getMissingPostDetail } from "../../../redux/modules/petworkSlice";
 import cancel from "../../../asset/delete.svg";
 import imgdelete from "../../../asset/imgDelete.svg";
 import { __PutCatchposts } from "../../../redux/modules/editpostsSlice";
-import {
-  ReportMissingContainer,
-  ReportAnimalInfoArea,
-  ReportAnimalInfoBox,
-  ReportAnimalInfoBoxColumn,
-  ReportAnimalInfoBoxColumnRow,
-  ReportanimaltypesBox,
-  ReportanimaltypesTitle,
-  ReportanimaltypesSelect,
-  ReportInput,
-  ReportLgInput,
-  ReportAnimalDayBox,
-  ReportAnimalSignificantBox,
-  ReportAnimalSignificantBoxTitle,
-  ReportAnimalSignificantBoxInputArea,
-  ReportAnimalPictureArea,
-  ReportAnimalPictureAreaTitle,
-  ReportAnimalPictureAreaInputBox,
-  ReportAnimalPictureInput,
-  ReportAnimalPicturePreview,
-  ReportAnimalInfoBoxColumnColumn,
-  PreviewImage,
-} from "../components/reportstyle";
+import styles from "../components/reportstyle";
 const EditCatch = () => {
   let imageRef;
   const { id } = useParams();
@@ -245,14 +223,14 @@ const EditCatch = () => {
   const selecteHour = missingPostDetail.happenHour;
   return (
     <Layout>
-      <ReportMissingContainer onSubmit={handleSubmit(onSubmitEditCatchHandler)}>
+      <styles.ReportMissingContainer onSubmit={handleSubmit(onSubmitEditCatchHandler)}>
         {/* 컴포넌트  */}
         <Header>내 목격 글 수정 </Header>
 
-        <ReportAnimalInfoArea>
-          <ReportanimaltypesBox>
-            <ReportanimaltypesTitle>동물 정보 *</ReportanimaltypesTitle>
-            <ReportanimaltypesSelect>
+        <styles.ReportAnimalInfoArea>
+          <styles.ReportanimaltypesBox>
+            <styles.ReportanimaltypesTitle>동물 정보 *</styles.ReportanimaltypesTitle>
+            <styles.ReportanimaltypesSelect>
               <div>
                 <p>종류</p>
                 <CustomSelect
@@ -264,7 +242,7 @@ const EditCatch = () => {
               </div>
               <div>
                 <p>품종</p>
-                <ReportInput
+                <styles.ReportInput
                   type="text"
                   placeholder={missingPostDetail.kindCd}
                   {...register("animaltypes", {
@@ -286,8 +264,8 @@ const EditCatch = () => {
                 />
                 <span>{errors?.animaltypes?.message}</span>
               </div>
-            </ReportanimaltypesSelect>
-          </ReportanimaltypesBox>
+            </styles.ReportanimaltypesSelect>
+          </styles.ReportanimaltypesBox>
           <SeleteTab
             onChangeGender={onChangeGender}
             onChangeNeutered={onChangeNeutered}
@@ -295,11 +273,11 @@ const EditCatch = () => {
             tabValue={tabValue}
           />
 
-          <ReportAnimalInfoBox>
-            <ReportAnimalInfoBoxColumn>
-              <ReportAnimalInfoBoxColumnRow>
+          <styles.ReportAnimalInfoBox>
+            <styles.ReportAnimalInfoBoxColumn>
+              <styles.ReportAnimalInfoBoxColumnRow>
                 <p>추정나이(살)</p>
-                <ReportInput
+                <styles.ReportInput
                   type="text"
                   placeholder={missingPostDetail.age}
                   {...register("animalAge", {
@@ -317,11 +295,11 @@ const EditCatch = () => {
                   }}
                 />
                 <span>{errors?.animalAge?.message}</span>
-              </ReportAnimalInfoBoxColumnRow>
+              </styles.ReportAnimalInfoBoxColumnRow>
 
-              <ReportAnimalInfoBoxColumnRow>
+              <styles.ReportAnimalInfoBoxColumnRow>
                 <p>추정체중(Kg)</p>
-                <ReportInput
+                <styles.ReportInput
                   type="text"
                   placeholder={missingPostDetail.weight}
                   {...register("animalkg", {
@@ -339,13 +317,13 @@ const EditCatch = () => {
                   }}
                 />
                 <span>{errors?.animalkg?.message}</span>
-              </ReportAnimalInfoBoxColumnRow>
-            </ReportAnimalInfoBoxColumn>
+              </styles.ReportAnimalInfoBoxColumnRow>
+            </styles.ReportAnimalInfoBoxColumn>
 
-            <ReportAnimalInfoBoxColumn>
-              <ReportAnimalInfoBoxColumnColumn>
+            <styles.ReportAnimalInfoBoxColumn>
+              <styles.ReportAnimalInfoBoxColumnColumn>
                 <p>색상</p>
-                <ReportLgInput
+                <styles.ReportLgInput
                   type="text"
                   placeholder={missingPostDetail.colorCd}
                   {...register("animalcolor", {
@@ -366,19 +344,19 @@ const EditCatch = () => {
                   }}
                 />
                 <span>{errors?.animalcolor?.message}</span>
-              </ReportAnimalInfoBoxColumnColumn>
-            </ReportAnimalInfoBoxColumn>
-          </ReportAnimalInfoBox>
-        </ReportAnimalInfoArea>
+              </styles.ReportAnimalInfoBoxColumnColumn>
+            </styles.ReportAnimalInfoBoxColumn>
+          </styles.ReportAnimalInfoBox>
+        </styles.ReportAnimalInfoArea>
 
         <EditLocation data={missingPostDetail} />
 
-        <ReportAnimalDayBox>
+        <styles.ReportAnimalDayBox>
           <p>실종일시 *</p>
           <div>
             <div>
               <p>날짜</p>
-              <ReportInput
+              <styles.ReportInput
                 type="date"
                 onChange={handleDateChange}
                 value={selectedDate}
@@ -395,16 +373,16 @@ const EditCatch = () => {
               />
             </div>
           </div>
-        </ReportAnimalDayBox>
+        </styles.ReportAnimalDayBox>
         {/* 특이사항  */}
-        <ReportAnimalSignificantBox>
-          <ReportAnimalSignificantBoxTitle>
+        <styles.ReportAnimalSignificantBox>
+          <styles.ReportAnimalSignificantBoxTitle>
             <p> 특이사항 </p>
-          </ReportAnimalSignificantBoxTitle>
-          <ReportAnimalSignificantBoxInputArea>
+          </styles.ReportAnimalSignificantBoxTitle>
+          <styles.ReportAnimalSignificantBoxInputArea>
             <div>
               <p>특징</p>
-              <ReportLgInput
+              <styles.ReportLgInput
                 type="text"
                 placeholder={
                   missingPostDetail.specialMark == ""
@@ -433,7 +411,7 @@ const EditCatch = () => {
             {/* 메모 */}
             <div>
               <p>메모</p>
-              <ReportLgInput
+              <styles.ReportLgInput
                 type="text"
                 placeholder={
                   missingPostDetail.content == ""
@@ -459,14 +437,14 @@ const EditCatch = () => {
               />
               <span>{errors?.memo?.message}</span>
             </div>
-          </ReportAnimalSignificantBoxInputArea>
-        </ReportAnimalSignificantBox>
+          </styles.ReportAnimalSignificantBoxInputArea>
+        </styles.ReportAnimalSignificantBox>
 
-        <ReportAnimalPictureArea>
-          <ReportAnimalPictureAreaTitle>
+        <styles.ReportAnimalPictureArea>
+          <styles.ReportAnimalPictureAreaTitle>
             <p>사진첨부</p>
-          </ReportAnimalPictureAreaTitle>
-          <ReportAnimalPictureAreaInputBox>
+          </styles.ReportAnimalPictureAreaTitle>
+          <styles.ReportAnimalPictureAreaInputBox>
             <input
               type="file"
               accept="image/*"
@@ -476,14 +454,14 @@ const EditCatch = () => {
               onChange={onChangeUploadHandler}
               required
             />
-            <ReportAnimalPictureInput onClick={() => imageRef.click()}>
+            <styles.ReportAnimalPictureInput onClick={() => imageRef.click()}>
               <h3>+</h3>
-            </ReportAnimalPictureInput>
+            </styles.ReportAnimalPictureInput>
             {showImages.length === 0 ? null : (
               <>
                 {showImages.map((image, index) => (
-                  <ReportAnimalPicturePreview key={index}>
-                    <PreviewImage src={image} alt={`${image}-${index}`} />
+                  <styles.ReportAnimalPicturePreview key={index}>
+                    <styles.PreviewImage src={image} alt={`${image}-${index}`} />
                     <div
                       onClick={() => {
                         onClickDeleteHandler(index);
@@ -491,34 +469,34 @@ const EditCatch = () => {
                     >
                       <img src={imgdelete} />
                     </div>
-                  </ReportAnimalPicturePreview>
+                  </styles.ReportAnimalPicturePreview>
                 ))}
               </>
             )}
-          </ReportAnimalPictureAreaInputBox>
-        </ReportAnimalPictureArea>
+          </styles.ReportAnimalPictureAreaInputBox>
+        </styles.ReportAnimalPictureArea>
 
-        <ReportAnimalPictureArea>
-          <ReportAnimalPictureAreaTitle>
+        <styles.ReportAnimalPictureArea>
+          <styles.ReportAnimalPictureAreaTitle>
             <p>기존이미지</p>
-          </ReportAnimalPictureAreaTitle>
-          <ReportAnimalPictureAreaInputBox>
+          </styles.ReportAnimalPictureAreaTitle>
+          <styles.ReportAnimalPictureAreaInputBox>
             {missingPostDetail?.postImages?.length === 0 ? (
-              <ReportAnimalPicturePreview></ReportAnimalPicturePreview>
+              <styles.ReportAnimalPicturePreview></styles.ReportAnimalPicturePreview>
             ) : (
               <>
                 {missingPostDetail?.postImages?.map((image, index) => (
-                  <ReportAnimalPicturePreview key={index}>
-                    <PreviewImage
+                  <styles.ReportAnimalPicturePreview key={index}>
+                    <styles.PreviewImage
                       src={image.imageURL}
                       alt={`${image.imageURL}-${index}`}
                     />
-                  </ReportAnimalPicturePreview>
+                  </styles.ReportAnimalPicturePreview>
                 ))}
               </>
             )}
-          </ReportAnimalPictureAreaInputBox>
-        </ReportAnimalPictureArea>
+          </styles.ReportAnimalPictureAreaInputBox>
+        </styles.ReportAnimalPictureArea>
 
         <Button type="submit" fillButton>
           수정 하기
@@ -533,7 +511,7 @@ const EditCatch = () => {
             {editMsg}
           </CheckModal>
         )}
-      </ReportMissingContainer>
+      </styles.ReportMissingContainer>
     </Layout>
   );
 };

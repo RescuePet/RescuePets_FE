@@ -135,6 +135,7 @@ const CommentMeatBalls = styled(Meatballs)`
   top: 0;
   right: 0;
   cursor: pointer;
+  
 `;
 
 const UserName = styled.span`

@@ -7,11 +7,13 @@ import time from "../../../asset/time.svg";
 import information from "../../../asset/information.svg";
 import Button from "../../../elements/Button";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   __GetLink,
   __PostLink,
   __DeleteLink,
+  getlinkToggle,
+  showlinkToggle,
 } from "../../../redux/modules/linkSlice";
 
 export default function Modal({ isOpen, onClose, children }) {
@@ -116,16 +118,15 @@ export function MarkerModal(props) {
         linkedPostId: secondId,
       },
     };
-
     if (firstId !== "" && secondId !== "") {
       dispatch(__PostLink(one)).then((response) => {
-        // console.log(response);
+        console.log(response);
         if (response.type == "postLink/rejected") {
-          // console.log("실패");
+          console.log("실패");
           setFirstId("");
           setSecondId("");
         } else if (response.type == "postLink/fulfilled") {
-          // console.log("연결성공");
+          console.log("연결성공");
           setFirstId("");
           setSecondId("");
         }
@@ -134,52 +135,72 @@ export function MarkerModal(props) {
   }, [secondId]);
 
   const [showLink, setShowLink] = useState("");
-  // console.log(showLink.length);
+  const [getToggle, setGetToggle] = useState(false);
 
-  const linkshow = () => {
-    dispatch(__GetLink(data.id)).then((response) => {
-      if (response.type == "getLink/fulfilled") {
-        console.log("통신성공");
-        if (response.payload.data == []) {
-          console.log("연결은 됬는데 없다");
-        } else {
-          setShowLink(response.payload.data);
+  const link = useSelector((state) => {
+    return state.link;
+  });
+
+  const linkshowHandler = () => {
+    dispatch(getlinkToggle(false));
+    setGetToggle(!getToggle);
+    // dispatch(getlinkToggle(getToggle));
+    dispatch(showlinkToggle(getToggle));
+    // console.log(link.linkToggle);
+    if (link?.linkToggle === true) {
+      dispatch(__GetLink(data.id)).then((response) => {
+        if (response.type == "getLink/fulfilled") {
+          // console.log("통신성공");
           // console.log(response.payload.data);
+          if (response.payload.data == []) {
+            setShowLink("연결된 링크 없음");
+            // dispatch(getlinkAlert(response.payload.data));
+            // console.log("연결은 됬는데 없다");
+          } else {
+            setShowLink(response.payload.data);
+            // dispatch(getlinkAlert(response.payload.data));
+            // console.log(response.payload.data);
+          }
+        } else {
+          console.log("통신 실패");
         }
-      } else {
-        console.log("통신 실패");
-      }
-    });
+      });
+    } else {
+      setShowLink("");
+      // console.log("닫기");
+    }
   };
 
-  const linkDelete = () => {
-    dispatch(__DeleteLink(data.id)).then((response) => {
-      // if (response.type == "getLink/fulfilled") {
-      // console.log("통신성공");
-      //   if (response.payload.data == []) {
-      //     console.log("연결은 됬는데 없다");
-      //   } else {
-      //     console.log(response.payload.data);
-      //   }
-      // } else {
-      //   console.log("통신 실패");
-      // }
-    });
-  };
-  // console.log(data);
+  // const linkDelete = () => {
+  //   dispatch(__DeleteLink(data.id)).then((response) => {
+  //     if (response.type == "getLink/fulfilled") {
+  //       console.log("통신성공");
+  //       if (response.payload.data == []) {
+  //         console.log("연결은 됬는데 없다");
+  //       } else {
+  //         console.log(response.payload.data);
+  //       }
+  //     } else {
+  //       console.log("통신 실패");
+  //     }
+  //   });
+  // };
+
   return (
     <Modal isOpen={props.isOpen} onClose={props.toggle}>
       <ModalInBox>
-        {/* <ModalTopLinknumber>
-          링크{showLink.length == 0 ? null : showLink.length}
+        <ModalTopLinknumber>
+          연결된 링크: {showLink.length == 0 ? null : showLink.length}
         </ModalTopLinknumber>
-        <ModalSideLinkLook onClick={linkshow}>🔍</ModalSideLinkLook>
+        <ModalSideLinkLook onClick={linkshowHandler}>
+          {link?.linkToggle === false ? "🔍" : "❌"}
+        </ModalSideLinkLook>
         {firstId === "" ? (
           <ModalSideLinkadd onClick={linkaddfirst}>➕1</ModalSideLinkadd>
         ) : (
           <ModalSideLinkadd onClick={linkaddsecond}>➕2</ModalSideLinkadd>
-        )} 
-        <ModalSideDelete onClick={linkDelete}>🗑</ModalSideDelete>*/}
+        )}
+        {/* <ModalSideDelete onClick={linkDelete}>🗑</ModalSideDelete> */}
         <ModalTitle>
           <ModalTitleinfo>
             {data?.name !== "missingdetail" ? (

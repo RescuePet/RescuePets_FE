@@ -28,11 +28,22 @@ const FloatingPetNetworkContainer = styled.div`
   border-radius: 50%;
   cursor: pointer;
   box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.25);
+  &:hover {
+    border: 1px solid ${(props) => props.theme.color.primary_heavy};
+  }
+  &:active {
+    background: ${(props) => props.theme.color.primary_normal};
+    transition: 0.2s ease;
+  }
   @media screen and (max-width: 26.875rem) {
     margin-left: calc(50% + 7.6875rem);
   }
   > img {
     width: 1.125rem;
     height: 1.125rem;
+    &:active {
+      background: #fff;
+      transition: 0.2s ease;
+    }
   }
 `;
