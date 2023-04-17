@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FlexAttribute, PostBorderStyle } from "../../../style/Mixin";
 import ClippingFill from "../../../asset/profile/ClippingFill";
@@ -9,10 +9,14 @@ import {
   toggleCommentInput,
 } from "../../../redux/modules/petworkSlice";
 import Cookies from "js-cookie";
+import { useModalState } from "../../../hooks/useModalState";
+import { CheckModal } from "../../../elements/Modal";
 
 const PostInformation = ({ postInfo }) => {
   const dispatch = useDispatch();
   const { memberRole } = JSON.parse(Cookies.get("UserInfo"));
+  const [Msg, setMsg] = useState("");
+  const [roleCheckModal, toggleRoleCheckModal] = useModalState(false);
 
   useEffect(() => {
     return () => {
@@ -21,28 +25,47 @@ const PostInformation = ({ postInfo }) => {
   }, []);
 
   return (
-    <PostInfoWrapper>
-      <InfoBox
-        onClick={() => {
-          if (memberRole === "BAD_MEMBER") {
-            alert("BAD_MEMBER는 댓글을 작성할 수 없습니다.");
-            return;
-          }
-          dispatch(toggleCommentInput());
-        }}
-      >
-        <Comment />
-        <span>댓글 달기</span>
-        &nbsp;
-        <span>{postInfo.commentCount}</span>
-      </InfoBox>
-      <InfoBox onClick={postInfo.scrapHandler}>
-        <ClippingFill />
-        <span>스크랩</span>
-        &nbsp;
-        <span>{postInfo.scrapCount}</span>
-      </InfoBox>
-    </PostInfoWrapper>
+    <>
+      <PostInfoWrapper>
+        <InfoBox
+          onClick={() => {
+            if (memberRole === "BAD_MEMBER") {
+              if (memberRole === "BAD_MEMBER") {
+                toggleRoleCheckModal();
+                setMsg("BAD MEMBER는 댓글을 작성할 수 없습니다.");
+                setTimeout(() => {
+                  setMsg("");
+                  return;
+                }, 1500);
+                return;
+              }
+              return;
+            }
+            dispatch(toggleCommentInput());
+          }}
+        >
+          <Comment />
+          <span>댓글 달기</span>
+          &nbsp;
+          <span>{postInfo.commentCount}</span>
+        </InfoBox>
+        <InfoBox onClick={postInfo.scrapHandler}>
+          <ClippingFill />
+          <span>스크랩</span>
+          &nbsp;
+          <span>{postInfo.scrapCount}</span>
+        </InfoBox>
+      </PostInfoWrapper>
+      {Msg === "" ? null : (
+        <CheckModal
+          isOpen={roleCheckModal}
+          toggle={toggleRoleCheckModal}
+          onClose={toggleRoleCheckModal}
+        >
+          {Msg}
+        </CheckModal>
+      )}
+    </>
   );
 };
 
