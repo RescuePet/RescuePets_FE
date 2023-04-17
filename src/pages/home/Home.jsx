@@ -8,6 +8,7 @@ import Carousel from "./components/Carousel";
 import carouselImage1 from "../../asset/carousel/1.png";
 import carouselImage2 from "../../asset/carousel/2.png";
 import { useDispatch, useSelector } from "react-redux";
+import CryptoJS from "crypto-js";
 import {
   addAdoptionPage,
   __getAdoptionList,
@@ -85,6 +86,16 @@ const Home = () => {
     descriptionCategory,
   } = useSelector((state) => state.search);
 
+  const secretKey = process.env.REACT_APP_CURRENTPOS_POSITION;
+
+  // 암호화하기
+  const encryptString = (str) => {
+    const key = CryptoJS.enc.Utf8.parse(secretKey);
+    const iv = CryptoJS.enc.Utf8.parse(secretKey);
+    const encrypted = CryptoJS.AES.encrypt(str, key, { iv });
+    return encrypted.toString();
+  };
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(onSuccess, onFailure);
     return () => {
@@ -95,7 +106,14 @@ const Home = () => {
   const onSuccess = useCallback((position) => {
     const lat = position.coords.latitude;
     const lng = position.coords.longitude;
+    const userPosition = {
+      lat,
+      lng,
+    };
+    // localStorage.setItem("CP", JSON.stringify(Po));
     dispatch(setMemberPosition({ lat: lat, lng: lng }));
+    const encryptedPo = encryptString(JSON.stringify(userPosition));
+    localStorage.setItem("userPosition", encryptedPo);
   }, []);
 
   const onFailure = () => {

@@ -7,51 +7,53 @@ import catchmarker from "../../asset/marker/catchmarker.png";
 import Mymarker from "../../asset/marker/mymarker.png";
 import { useSelector, useDispatch } from "react-redux";
 import { __GetMissingData } from "../../redux/modules/missingSlice";
-// import { __GetCatchData } from "../../redux/modules/catchSlice";
 import { useModalState } from "../../hooks/useModalState";
 import { MarkerModal } from "./components/Modal";
 import { Spinner } from "../../components/Spinner";
 import currentLocationimg from "../../asset/currentLocation.svg";
 import Meatballs from "../../asset/Meatballs";
+import CryptoJS from "crypto-js";
 const { kakao } = window;
 
 const KakaoMap = () => {
   const dispatch = useDispatch();
   const [newCatchData, setNewCatchData] = useState("");
+  const mapRef = useRef();
+  const [NEW, setNEW] = useState(undefined);
   const [loginModal, toggleModal] = useModalState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  // 링크 토글
-  const [currentLink, setCurrentLink] = useState(false);
-
-  const menutoggle = useSelector((state) => {
-    return state.menubar.toggle;
-  });
-
-  const [mapBg, setMapBg] = useState(menutoggle);
-
-  useEffect(() => {
-    setMapBg(menutoggle);
-  }, [menutoggle]);
+  // 현재위치를 가지고오는 로직
+  const [lat, setLat] = useState("");
+  const [lng, setLng] = useState("");
 
   const getlink = useSelector((state) => {
     return state.link;
   });
 
-  const currentPosition = useSelector((state) => {
-    return state.search;
-  });
+  const secretKey = process.env.REACT_APP_CURRENTPOS_POSITION;
+  // 복화화하기
+  const decryptString = (str) => {
+    const key = CryptoJS.enc.Utf8.parse(secretKey);
+    const iv = CryptoJS.enc.Utf8.parse(secretKey);
+    const decrypted = CryptoJS.AES.decrypt(str, key, { iv });
+    return decrypted.toString(CryptoJS.enc.Utf8);
+  };
 
-  // console.log(currentPosition.latitude);
-  // console.log(currentPosition.longitude);
+  const encryptedPo = localStorage.getItem("userPosition");
+  const decryptedPo = decryptString(encryptedPo);
+  const userPosition = decryptedPo && JSON.parse(decryptedPo);
+  useEffect(() => {
+    if (userPosition !== "") {
+      setLat(userPosition.lat);
+      setLng(userPosition.lng);
+    }
+  }, []);
 
   //디비에 저장된 데이터 값 가져오기
   useEffect(() => {
     dispatch(__GetMissingData());
   }, []);
 
-  const mapRef = useRef();
-  const [NEW, setNEW] = useState(undefined);
   const { data, loading } = useSelector((state) => state.MissingData);
 
   useEffect(() => {
@@ -76,10 +78,7 @@ const KakaoMap = () => {
   useEffect(() => {
     const container = document.getElementById("myMap");
     const options = {
-      center: new kakao.maps.LatLng(
-        currentPosition.latitude,
-        currentPosition.longitude
-      ),
+      center: new kakao.maps.LatLng(lat, lng),
       level: 11,
     };
     mapRef.current = new kakao.maps.Map(container, options);
@@ -94,10 +93,7 @@ const KakaoMap = () => {
       MyimageSize,
       MyimageOption
     );
-    const MymarkerPosition = new kakao.maps.LatLng(
-      currentPosition.latitude,
-      currentPosition.longitude
-    );
+    const MymarkerPosition = new kakao.maps.LatLng(lat, lng);
 
     let marker = new kakao.maps.Marker({
       position: MymarkerPosition,
@@ -105,7 +101,7 @@ const KakaoMap = () => {
     });
 
     marker.setMap(mapRef.current);
-  }, []);
+  }, [lat]);
 
   useEffect(() => {
     const missingimageSrc = `${missingmarker}`;
@@ -133,10 +129,7 @@ const KakaoMap = () => {
           toggleModal();
 
           const linePath = [
-            new kakao.maps.LatLng(
-              currentPosition.latitude,
-              currentPosition.longitude
-            ),
+            new kakao.maps.LatLng(lat, lng),
             new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
           ];
 
@@ -187,10 +180,7 @@ const KakaoMap = () => {
           toggleModal();
           // 현재 내위치랑 클릭한 마커에 위치를 가져오는 로직 거리도 구해야만한다
           const linePath = [
-            new kakao.maps.LatLng(
-              currentPosition.latitude,
-              currentPosition.longitude
-            ),
+            new kakao.maps.LatLng(lat, lng),
             new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
           ];
 
@@ -253,32 +243,11 @@ const KakaoMap = () => {
     return state.linkAlert;
   });
 
-  // useEffect(() => {
-  //   // console.log(linkAlert);
-
-  //   if (linkAlert?.linkToggle === true) {
-  //     console.log(linkAlert.getlinkMsg);
-  //   }
-  // }, [linkAlert]);
-
   const onClickMoveToCurrentLocation = () => {
-    const moveLatLon = new kakao.maps.LatLng(
-      currentPosition.latitude,
-      currentPosition.longitude
-    );
+    const moveLatLon = new kakao.maps.LatLng(lat, lng);
     mapRef.current.panTo(moveLatLon);
     mapRef.current.setLevel(5);
   };
-
-  // const MoveToPlus = () => {
-  //   const level = mapRef.current.getLevel();
-  //   mapRef.current.setLevel(level - 1);
-  // };
-
-  // const MoveToMinus = () => {
-  //   const level = mapRef.current.getLevel();
-  //   mapRef.current.setLevel(level + 1);
-  // };
 
   const [markerInfoTabToggle, setMarkerInfoTabToggle] = useState(false);
 
