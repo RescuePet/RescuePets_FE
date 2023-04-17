@@ -16,6 +16,7 @@ import {
 import managerImage from "../../../asset/userGrade/manager.png";
 import memberImage from "../../../asset/userGrade/member.png";
 import banImage from "../../../asset/userGrade/ban.png";
+import adminImage from "../../../asset/userGrade/admin.png";
 
 const UserInformation = () => {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ const UserInformation = () => {
       case "BAD_MEMBER":
         return <UserGradeImage src={banImage} />;
       default:
-        return null;
+        return <UserGradeImage src={adminImage} />;
     }
   };
 
