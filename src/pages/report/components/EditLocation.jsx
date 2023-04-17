@@ -5,43 +5,41 @@ import styled from "styled-components";
 import Marker from "../../../asset/marker/marker.png";
 import questionmark from "../../../asset/questionmark.svg";
 import { Border_1_color } from "../../../style/Mixin";
+import CryptoJS from "crypto-js";
 
 const EditLocation = ({ data }) => {
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
   const { kakao } = window;
 
-  const [long, setLong] = useState("");
-  const [lati, setLati] = useState("");
-  // 위치가져오는데 실패시 보여줄 좌표
-  const defaultValue = {
-    lat: "37.515133",
-    lng: "126.934086",
+  // 현재위치를 받아오는 로직
+  const [lng, setLng] = useState("");
+  const [lat, setLat] = useState("");
+
+  const secretKey = process.env.REACT_APP_CURRENTPOS_POSITION;
+
+  // 복화화하기
+  const decryptString = (str) => {
+    const key = CryptoJS.enc.Utf8.parse(secretKey);
+    const iv = CryptoJS.enc.Utf8.parse(secretKey);
+    const decrypted = CryptoJS.AES.decrypt(str, key, { iv });
+    return decrypted.toString(CryptoJS.enc.Utf8);
   };
+
+  const encryptedPo = localStorage.getItem("userPosition");
+  const decryptedPo = decryptString(encryptedPo);
+  const userPosition = decryptedPo && JSON.parse(decryptedPo);
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(onSucces, onFailure);
-    // 성공
-    // 여기는 렌더링이 초기에 한번만 일어나게 해야만한다
-    function onSucces(position) {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      setIsLoading(false);
-      setLong(lng);
-      setLati(lat);
-    }
-    // 실패
-    function onFailure() {
-      setLong(defaultValue.lng);
-      setLati(defaultValue.lat);
-      setIsLoading(false);
-      console.log("위치 정보를 찾을수 없습니다.");
+    if (userPosition !== "") {
+      setLat(userPosition.lat);
+      setLng(userPosition.lng);
     }
   }, []);
 
   useEffect(() => {
     const mapContainer = document.getElementById("map"),
       mapOption = {
-        center: new kakao.maps.LatLng(lati, long),
+        center: new kakao.maps.LatLng(lat, lng),
         level: 5,
       };
     const map = new kakao.maps.Map(mapContainer, mapOption);
@@ -77,7 +75,7 @@ const EditLocation = ({ data }) => {
     const searchDetailAddrFromCoords = (coords, callback) => {
       geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
     };
-  }, [long]);
+  }, [lng]);
 
   return (
     <ReportKakaoMapContainer>

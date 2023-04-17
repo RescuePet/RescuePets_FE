@@ -40,7 +40,7 @@ const SeleteTab = ({
     //   setCurrentNicknameTab(0);
     // }
     else {
-      console.log("에러");
+      // console.log("에러");
     }
   }, []);
 
