@@ -156,6 +156,11 @@ const SightingDetail = () => {
   };
 
   const chatHandler = async () => {
+    if (memberRole === "BAD_MEMBER") {
+      toggleModal();
+      setCatchDetailMsg("BAD MEMBER는 채팅방 생성을 할 수 없습니다.");
+      return;
+    }
     try {
       const response = await instance.post(`/chat/room/${catchPostDetail.id}`);
       navigate(`/chatroom/${catchPostDetail.nickname}/${response.data}`);

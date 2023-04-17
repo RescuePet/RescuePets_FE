@@ -154,6 +154,11 @@ const MissingDetail = () => {
   };
 
   const chatHandler = async () => {
+    if (memberRole === "BAD_MEMBER") {
+      toggleModal();
+      setMissingDetailMsg("BAD MEMBER는 채팅방 생성을 할 수 없습니다.");
+      return;
+    }
     try {
       const response = await instance.post(
         `/chat/room/${missingPostDetail.id}`
