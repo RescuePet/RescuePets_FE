@@ -209,7 +209,9 @@ const Missing = () => {
   };
   return (
     <Layout>
-      <styles.ReportMissingContainer onSubmit={handleSubmit(onSubmitMissingHanlder)}>
+      <styles.ReportMissingContainer
+        onSubmit={handleSubmit(onSubmitMissingHanlder)}
+      >
         {missingMsg == "" ? null : (
           <CheckModal
             isOpen={loginModal}
@@ -223,7 +225,9 @@ const Missing = () => {
 
         <styles.ReportAnimalInfoArea>
           <styles.ReportanimaltypesBox>
-            <styles.ReportanimaltypesTitle>동물 정보 *</styles.ReportanimaltypesTitle>
+            <styles.ReportanimaltypesTitle>
+              동물 정보 *
+            </styles.ReportanimaltypesTitle>
             <styles.ReportanimaltypesSelect>
               <div>
                 <p>종류*</p>
@@ -474,7 +478,10 @@ const Missing = () => {
               <>
                 {showImages.map((image, index) => (
                   <styles.ReportAnimalPicturePreview key={index}>
-                    <styles.PreviewImage src={image} alt={`${image}-${index}`} />
+                    <styles.PreviewImage
+                      src={image}
+                      alt={`${image}-${index}`}
+                    />
                     <div
                       onClick={() => {
                         onClickDeleteHandler(index);
@@ -501,7 +508,6 @@ const Missing = () => {
               inputMode="numeric"
               onChange={(event) => {
                 const value = event.target.value;
-                console.log(value);
                 event.target.value = Number(
                   value.replace(/[^0-9]/g, "")
                 ).toLocaleString();

@@ -142,10 +142,7 @@ export const __deleteMemberPost = createAsyncThunk(
   "deleteMemberPost",
   async (payload, thunkAPI) => {
     try {
-      const response = await instance.delete(
-        `/api/post/temporary/${payload.id}`
-      );
-      console.log(response);
+      await instance.delete(`/api/post/temporary/${payload.id}`);
       return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
       throw new Error(error.response.data.message);
@@ -158,8 +155,8 @@ export const __deleteAdminPost = createAsyncThunk(
   "deleteAdminPost",
   async (payload, thunkAPI) => {
     try {
-      const response = await instance.delete(`/api/post/${payload.id}`);
-      console.log(response);
+      await instance.delete(`/api/post/${payload.id}`);
+
       return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
       console.log(error);
@@ -176,7 +173,7 @@ export const __getSoftDeleteList = createAsyncThunk(
       const response = await instance.get(
         `/api/post/temporary/all?page=${payload.page}&size=${payload.size}`
       );
-      console.log(response);
+
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       throw new Error(error.response.data.message);

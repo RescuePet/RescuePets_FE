@@ -86,7 +86,6 @@ const ReportModal = ({ setting, reportCloseHandler, onChangeMsg }) => {
     };
     try {
       const response = await instance.post(`/api/report/member`, data);
-      console.log(response);
       if (response.status === 200) {
         setReportMsg("신고가 완료되었습니다.");
       }

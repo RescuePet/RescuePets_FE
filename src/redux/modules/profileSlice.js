@@ -95,7 +95,6 @@ export const __getReportList = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await instance.get(`/api/report/all`);
-      console.log(response);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       console.log(error);
@@ -108,8 +107,7 @@ export const __deleteReportList = createAsyncThunk(
   "deleteReportList",
   async (payload, thunkAPI) => {
     try {
-      const response = await instance.delete(`/api/report/${payload}`);
-      console.log(response);
+      await instance.delete(`/api/report/${payload}`);
       return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
       console.log(error);

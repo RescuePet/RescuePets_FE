@@ -13,8 +13,6 @@ const ReportList = ({ item }) => {
   const dispatch = useDispatch();
   const [reportOption, setReportOption] = useState(false);
 
-  console.log(item);
-
   const reportOptionSetting = [
     {
       option: "Bad Member로 변경",
