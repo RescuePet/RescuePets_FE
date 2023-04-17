@@ -12,8 +12,6 @@ import { useModalState } from "../../hooks/useModalState";
 import { MarkerModal } from "./components/Modal";
 import { Spinner } from "../../components/Spinner";
 import currentLocationimg from "../../asset/currentLocation.svg";
-import { CheckModal } from "../../elements/Modal";
-import { showlinkToggle } from "../../redux/modules/linkSlice";
 import Meatballs from "../../asset/Meatballs";
 const { kakao } = window;
 
@@ -21,7 +19,7 @@ const KakaoMap = () => {
   const dispatch = useDispatch();
   const [newCatchData, setNewCatchData] = useState("");
   const [loginModal, toggleModal] = useModalState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   // 링크 토글
   const [currentLink, setCurrentLink] = useState(false);
@@ -40,9 +38,10 @@ const KakaoMap = () => {
     return state.link;
   });
 
-  // const currentPosition = useSelector((state) => {
-  //   return state.search;
-  // });
+  const currentPosition = useSelector((state) => {
+    return state.search;
+  });
+
   // console.log(currentPosition.latitude);
   // console.log(currentPosition.longitude);
 
@@ -50,31 +49,6 @@ const KakaoMap = () => {
   useEffect(() => {
     dispatch(__GetMissingData());
   }, []);
-
-  // 현재위치를 가지고오는 로직
-  const [long, setLong] = useState("");
-  const [lati, setLati] = useState("");
-
-  navigator.geolocation.getCurrentPosition(onSucces, onFailure);
-  function onSucces(position) {
-    const lat = position.coords.latitude;
-    const lng = position.coords.longitude;
-    setIsLoading(false);
-    setLong(lng);
-    setLati(lat);
-  }
-
-  const defaultValue = {
-    lat: "37.515133",
-    lng: "126.934086",
-  };
-
-  function onFailure() {
-    setLong(defaultValue.lng);
-    setLati(defaultValue.lat);
-    setIsLoading(false);
-    console.log("위치 정보를 찾을수 없습니당.");
-  }
 
   const mapRef = useRef();
   const [NEW, setNEW] = useState(undefined);
@@ -102,14 +76,17 @@ const KakaoMap = () => {
   useEffect(() => {
     const container = document.getElementById("myMap");
     const options = {
-      center: new kakao.maps.LatLng(lati, long),
+      center: new kakao.maps.LatLng(
+        currentPosition.latitude,
+        currentPosition.longitude
+      ),
       level: 11,
     };
     mapRef.current = new kakao.maps.Map(container, options);
 
     // 현재위치에 마커 생성 로직
     const MyimageSrc = `${Mymarker}`;
-    const MyimageSize = new kakao.maps.Size(36, 36);
+    const MyimageSize = new kakao.maps.Size(46, 46);
     const MyimageOption = { offset: new kakao.maps.Point(10, 20) };
 
     let MymarkerImage = new kakao.maps.MarkerImage(
@@ -117,7 +94,10 @@ const KakaoMap = () => {
       MyimageSize,
       MyimageOption
     );
-    const MymarkerPosition = new kakao.maps.LatLng(lati, long);
+    const MymarkerPosition = new kakao.maps.LatLng(
+      currentPosition.latitude,
+      currentPosition.longitude
+    );
 
     let marker = new kakao.maps.Marker({
       position: MymarkerPosition,
@@ -125,7 +105,7 @@ const KakaoMap = () => {
     });
 
     marker.setMap(mapRef.current);
-  }, [long]);
+  }, []);
 
   useEffect(() => {
     const missingimageSrc = `${missingmarker}`;
@@ -151,17 +131,19 @@ const KakaoMap = () => {
         });
         kakao.maps.event.addListener(marker, "click", function () {
           toggleModal();
-          // 현재 내위치랑 클릭한 마커에 위치를 가져오는 로직 거리도 구해야만한다
+
           const linePath = [
-            new kakao.maps.LatLng(lati, long),
+            new kakao.maps.LatLng(
+              currentPosition.latitude,
+              currentPosition.longitude
+            ),
             new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
           ];
 
           const polyline = new kakao.maps.Polyline({
-            path: linePath, // 선을 구성하는 좌표배열 입니다
-            strokeWeight: 0, // 선의 두께 입니다
-            strokeColor: "#FFAE00", // 선의 색깔입니다
-            strokeOpacity: 0, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+            path: linePath,
+            strokeWeight: 0,
+            strokeOpacity: 0,
           });
 
           const distance = Math.round(polyline.getLength());
@@ -205,7 +187,10 @@ const KakaoMap = () => {
           toggleModal();
           // 현재 내위치랑 클릭한 마커에 위치를 가져오는 로직 거리도 구해야만한다
           const linePath = [
-            new kakao.maps.LatLng(lati, long),
+            new kakao.maps.LatLng(
+              currentPosition.latitude,
+              currentPosition.longitude
+            ),
             new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
           ];
 
@@ -258,110 +243,7 @@ const KakaoMap = () => {
         // alert("연결된 링크 없다");
       }
     }
-  }, [onSucces]);
-
-  // // 실패시 작동 로직
-
-  useEffect(() => {
-    // 목격글 마커
-    const missingimageSrc = `${missingmarker}`;
-    const missingimageSize = new kakao.maps.Size(16, 20);
-    const missingimageOption = { offset: new kakao.maps.Point(10, 20) };
-
-    let missingmarkerImage = new kakao.maps.MarkerImage(
-      missingimageSrc,
-      missingimageSize,
-      missingimageOption
-    );
-
-    // 실종글 작성 마커 인포 생성 로직
-    missingData &&
-      missingData.map((item) => {
-        let marker = new kakao.maps.Marker({
-          map: mapRef.current,
-          position: new kakao.maps.LatLng(
-            item.happenLatitude,
-            item.happenLongitude
-          ),
-          image: missingmarkerImage,
-        });
-        kakao.maps.event.addListener(marker, "click", function () {
-          toggleModal();
-
-          const linePath = [
-            new kakao.maps.LatLng(lati, long),
-            new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
-          ];
-
-          const polyline = new kakao.maps.Polyline({
-            path: linePath, // 선을 구성하는 좌표배열 입니다
-            strokeWeight: 0, // 선의 두께 입니다
-            strokeColor: "#FFAE00", // 선의 색깔입니다
-            strokeOpacity: 0, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-          });
-
-          const distance = Math.round(polyline.getLength());
-          const data = { km: distance, name: "missingdetail" };
-
-          const newItem = {
-            ...data,
-            ...item,
-          };
-          setNewCatchData(newItem);
-          polyline.setMap(mapRef.current);
-        });
-      });
-
-    // 목격글 마커
-    const catchimageSrc = `${catchmarker}`;
-    const catchimageSize = new kakao.maps.Size(16, 20);
-    const catchimageOption = { offset: new kakao.maps.Point(10, 20) };
-
-    let catchmarkerImage = new kakao.maps.MarkerImage(
-      catchimageSrc,
-      catchimageSize,
-      catchimageOption
-    );
-
-    // 목격글 작성 마커 인포 생성 로직
-    catchData &&
-      catchData.map((item) => {
-        let marker = new kakao.maps.Marker({
-          map: mapRef.current,
-          position: new kakao.maps.LatLng(
-            item.happenLatitude,
-            item.happenLongitude
-          ),
-          image: catchmarkerImage,
-          name: item.id,
-        });
-
-        kakao.maps.event.addListener(marker, "click", function () {
-          toggleModal();
-
-          const linePath = [
-            new kakao.maps.LatLng(lati, long),
-            new kakao.maps.LatLng(item.happenLatitude, item.happenLongitude),
-          ];
-
-          const polyline = new kakao.maps.Polyline({
-            path: linePath,
-            strokeWeight: 0,
-            strokeColor: "#FFAE00",
-            strokeOpacity: 0,
-          });
-          const distance = Math.round(polyline.getLength());
-          const data = { km: distance, name: "catchdetail" };
-
-          const newItem = {
-            ...data,
-            ...item,
-          };
-          setNewCatchData(newItem);
-          polyline.setMap(mapRef.current);
-        });
-      });
-  }, [onFailure]);
+  }, [missingData]);
 
   const link = useSelector((state) => {
     return state.link?.data?.data;
@@ -371,28 +253,32 @@ const KakaoMap = () => {
     return state.linkAlert;
   });
 
-  useEffect(() => {
-    // console.log(linkAlert);
+  // useEffect(() => {
+  //   // console.log(linkAlert);
 
-    if (linkAlert?.linkToggle === true) {
-      console.log(linkAlert.getlinkMsg);
-    }
-  }, [linkAlert]);
+  //   if (linkAlert?.linkToggle === true) {
+  //     console.log(linkAlert.getlinkMsg);
+  //   }
+  // }, [linkAlert]);
 
   const onClickMoveToCurrentLocation = () => {
-    const moveLatLon = new kakao.maps.LatLng(lati, long);
+    const moveLatLon = new kakao.maps.LatLng(
+      currentPosition.latitude,
+      currentPosition.longitude
+    );
     mapRef.current.panTo(moveLatLon);
+    mapRef.current.setLevel(5);
   };
 
-  const MoveToPlus = () => {
-    const level = mapRef.current.getLevel();
-    mapRef.current.setLevel(level - 1);
-  };
+  // const MoveToPlus = () => {
+  //   const level = mapRef.current.getLevel();
+  //   mapRef.current.setLevel(level - 1);
+  // };
 
-  const MoveToMinus = () => {
-    const level = mapRef.current.getLevel();
-    mapRef.current.setLevel(level + 1);
-  };
+  // const MoveToMinus = () => {
+  //   const level = mapRef.current.getLevel();
+  //   mapRef.current.setLevel(level + 1);
+  // };
 
   const [markerInfoTabToggle, setMarkerInfoTabToggle] = useState(false);
 
@@ -435,8 +321,6 @@ const KakaoMap = () => {
         <MapTabBtn>
           <CommentMeatBalls onClick={onClickTabToggleHandler} />
         </MapTabBtn>
-        {/* <MapAddBtn onClick={MoveToPlus}>+</MapAddBtn> */}
-        {/* <MapMinusBtn onClick={MoveToMinus}>-</MapMinusBtn> */}
       </MyMap>
     </>
   );
