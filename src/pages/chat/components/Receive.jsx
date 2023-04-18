@@ -37,6 +37,7 @@ const ReceiverImage = styled.img`
 
 const ReceiveText = styled.div`
   margin-left: 8px;
+  white-space: pre-line;
 `;
 
 const ReceiveMessage = styled.div`
