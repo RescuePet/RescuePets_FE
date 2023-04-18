@@ -1,17 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import MapSvg from "../../../asset/map";
 import { FlexAttribute, FloatingButtonStyle } from "../../../style/Mixin";
+import ArrowTop from "../../../asset/ArrowTop";
 
 const FloatingButton = ({ onClick }) => {
   return (
-    <FloatingChatButton onClick={onClick}>
-      <FloatingMapButtonSvg />
-    </FloatingChatButton>
+    <FloatingScrollButton onClick={onClick}>
+      <FloatingArrowSvg />
+    </FloatingScrollButton>
   );
 };
 
-const FloatingChatButton = styled.div`
+const FloatingScrollButton = styled.div`
   position: fixed;
   ${FlexAttribute("row", "center", "center")}
   ${FloatingButtonStyle}
@@ -31,7 +31,7 @@ const FloatingChatButton = styled.div`
   }
 `;
 
-const FloatingMapButtonSvg = styled(MapSvg)`
+const FloatingArrowSvg = styled(ArrowTop)`
   width: 1.875rem;
   height: 1.875rem;
 `;
