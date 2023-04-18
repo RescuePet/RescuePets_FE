@@ -34,6 +34,7 @@ const SendMessage = styled.div`
   border-radius: 4px;
   background: ${(props) => props.theme.color.primary_normal};
   word-break: break-all;
+  white-space: pre-line;
   ::after {
     content: "";
     position: absolute;

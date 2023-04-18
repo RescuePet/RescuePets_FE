@@ -23,6 +23,7 @@ const InputContainer = ({ placeholder, submitHandler }) => {
     if (e.keyCode === 13 && !e.shiftKey) {
       e.preventDefault();
       handleSubmit((register) => {
+        console.log(register);
         submitHandler(register);
         setInputValue("");
         reset();
@@ -135,6 +136,7 @@ const Input = styled.textarea`
   padding: 3px 30px 3px 20px;
   resize: none;
   overflow: hidden;
+  white-space: pre-line;
   ${Body_400_12};
   line-height: 24px;
   ${InputBorder_1};

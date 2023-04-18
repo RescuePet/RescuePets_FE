@@ -135,7 +135,6 @@ const CommentMeatBalls = styled(Meatballs)`
   top: 0;
   right: 0;
   cursor: pointer;
-  
 `;
 
 const UserName = styled.span`
@@ -151,6 +150,7 @@ const CommentText = styled.span`
   ${Body_400_12}
   margin-left: 3.0625rem;
   line-height: 18px;
+  white-space: pre-line;
 `;
 
 export default Comment;
