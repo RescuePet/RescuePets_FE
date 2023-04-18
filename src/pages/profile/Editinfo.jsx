@@ -186,7 +186,8 @@ const Editinfo = () => {
 
           <EditInfoTextBox>
             <p>이메일</p>
-            <input type="text" value={userInfo.email} />
+            {/* <input type="text" value={userInfo.email} /> */}
+            <div>userInfo.email</div>
           </EditInfoTextBox>
 
           <EditinfoButtonBox>
@@ -282,12 +283,19 @@ const EditInfoTextBox = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 1.25rem;
-  gap: 5px 0;
-  > P {
+  gap: 0.4688rem 0;
+  > p {
     width: 100%;
     height: 20%;
     ${(props) => props.theme.Body_400_14_16}
     color: ${(props) => props.theme.color.black};
+  }
+  > div {
+    width: 100%;
+    height: 1.5rem;
+    ${Border_1_color}
+    border-radius: 0;
+    ${(props) => props.theme.Body_400_12}
   }
   > input {
     width: 100%;
