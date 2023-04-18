@@ -23,7 +23,6 @@ const InputContainer = ({ placeholder, submitHandler }) => {
     if (e.keyCode === 13 && !e.shiftKey) {
       e.preventDefault();
       handleSubmit((register) => {
-        console.log(register);
         submitHandler(register);
         setInputValue("");
         reset();
