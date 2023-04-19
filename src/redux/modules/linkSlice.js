@@ -54,8 +54,8 @@ export const link = createSlice({
   name: "link",
   initialState,
   reducers: {
-    getlinkToggle: (state) => {
-            state.linkToggle = !state.linkToggle
+    getlinkToggle: (state, action) => {
+            state.linkToggle = action.payload
           },
     showlinkToggle: (state) =>{
             state.showlink = !state.showlink
