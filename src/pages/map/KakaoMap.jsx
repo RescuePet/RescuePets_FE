@@ -223,8 +223,8 @@ const KakaoMap = () => {
       polyline.setMap(mapRef.current);
     } else if (getlink.linkToggle === true) {
       if (getlink.data.data?.length > 0) {
-        console.log("링크연결");
-        console.log(getlink?.data?.data);
+        // console.log("링크연결");
+        // console.log(getlink?.data?.data);
         const linePath = [
           new kakao.maps.LatLng(
             newCatchData.happenLatitude,
@@ -244,7 +244,7 @@ const KakaoMap = () => {
         });
         polyline.setMap(mapRef.current);
       } else {
-        console.log("연결된 링크 없다");
+        // console.log("연결된 링크 없다");
       }
     }
   }, [missingData]);

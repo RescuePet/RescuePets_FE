@@ -120,13 +120,13 @@ export function MarkerModal(props) {
     };
     if (firstId !== "" && secondId !== "") {
       dispatch(__PostLink(one)).then((response) => {
-        console.log(response);
+        // console.log(response);
         if (response.type == "postLink/rejected") {
-          console.log("실패");
+          // console.log("실패");
           setFirstId("");
           setSecondId("");
         } else if (response.type == "postLink/fulfilled") {
-          console.log("연결성공");
+          // console.log("연결성공");
           setFirstId("");
           setSecondId("");
         }
@@ -141,6 +141,12 @@ export function MarkerModal(props) {
     return state.link;
   });
 
+  useEffect(() => {
+    if (props.isOpen === false) {
+      setShowLink("");
+    }
+  }, [props.isOpen]);
+
   const onClickShowLinkHandler = () => {
     setGetToggle(!getToggle);
     dispatch(getlinkToggle(getToggle));
@@ -151,14 +157,13 @@ export function MarkerModal(props) {
           if (response?.payload?.data?.length > 0) {
             setShowLink(response?.payload?.data?.length);
           } else {
-            console.log("연결된 링크가 없습니다");
+            setShowLink(0);
           }
         } else {
           setShowLink(0);
         }
       });
     } else {
-      // console.log("링크가리기");
       setGetToggle(!getToggle);
       // console.log(getToggle);
       dispatch(getlinkToggle(getToggle));
@@ -201,14 +206,14 @@ export function MarkerModal(props) {
   const linkDelete = () => {
     dispatch(__DeleteLink(data.id)).then((response) => {
       if (response.type == "getLink/fulfilled") {
-        console.log("통신성공");
+        // console.log("통신성공");
         if (response.payload.data == []) {
-          console.log("연결은 됬는데 없다");
+          // console.log("연결은 됬는데 없다");
         } else {
-          console.log(response.payload.data);
+          // console.log(response.payload.data);
         }
       } else {
-        console.log("통신 실패");
+        // console.log("통신 실패");
       }
     });
   };
@@ -217,7 +222,7 @@ export function MarkerModal(props) {
     <Modal isOpen={props.isOpen} onClose={props.toggle}>
       <ModalInBox>
         <ModalTopLinknumber>
-          연결된 링크: {showLink == 0 ? null : showLink.length}
+          연결된 링크: {showLink == "" ? null : showLink}
         </ModalTopLinknumber>
         <ModalSideLinkLook onClick={onClickShowLinkHandler}>
           {link?.linkToggle === false ? "🔍" : "❌"}
