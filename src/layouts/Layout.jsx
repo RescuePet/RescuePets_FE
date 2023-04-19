@@ -66,11 +66,11 @@ const Layout = ({ children }) => {
       if (data.message !== undefined) {
         toggleModal();
         setData(data);
-        if (data.message.split(" ")[1] == "새로운") {
+        if (data.message.split(" ")[1] === "새로운") {
           dispatch(seeChatCount(1));
-        } else if (data.message.split(" ")[1] == "댓글을") {
+        } else if (data.message.split(" ")[1] === "댓글을") {
           dispatch(seeMyaddCount(1));
-        } else if (data.message.split(" ")[1] == "스크랩") {
+        } else if (data.message.split(" ")[1] === "스크랩") {
           dispatch(seeMyaddCount(1));
         }
       }

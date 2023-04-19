@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { FlexAttribute } from "../../style/Mixin";
 import Layout from "../../layouts/Layout";
@@ -41,6 +41,7 @@ import {
   setAmplitudeUserId,
   resetAmplitude,
 } from "../../utils/amplitude";
+import FloatingButton from "./components/FloatingButton";
 
 const Home = () => {
   // 앰플리튜드
@@ -67,6 +68,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [ref, inView] = useInView();
+  const scrollRef = useRef();
   const [userInfo, setUserInfo] = useState({});
 
   const { adoptionPage, adoptionLists } = useSelector(
@@ -222,9 +224,13 @@ const Home = () => {
     dispatch(__getAdoptionSearch(adoptionSearchPayload));
   };
 
+  const scrollTopHandler = () => {
+    scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <Layout>
-      <Header>
+      <Header ref={scrollRef}>
         {searchPublicState ? (
           <SearchCategory />
         ) : (
@@ -282,6 +288,7 @@ const Home = () => {
           })}
         <div ref={ref}></div>
       </PostContainer>
+      <FloatingButton onClick={scrollTopHandler} />
     </Layout>
   );
 };
