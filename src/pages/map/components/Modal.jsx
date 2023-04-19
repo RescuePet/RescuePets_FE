@@ -136,7 +136,7 @@ export function MarkerModal(props) {
 
   const [showLink, setShowLink] = useState(0);
   const [getToggle, setGetToggle] = useState(false);
-  console.log(showLink);
+
   const link = useSelector((state) => {
     return state.link;
   });
