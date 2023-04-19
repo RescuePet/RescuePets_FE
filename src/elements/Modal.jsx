@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
+import ModalImg from "../asset/Spinner/spinner.png";
 
 export default function Modal({ isOpen, onClose, children }) {
   const backdropVariants = {
@@ -20,7 +21,7 @@ export default function Modal({ isOpen, onClose, children }) {
       setIsOpenModal(isOpen);
       const timeoutId = setTimeout(() => {
         setIsOpenModal(false);
-      }, 550);
+      }, 900);
       return () => clearTimeout(timeoutId);
     }
   }, [isOpen]);
@@ -77,12 +78,19 @@ export const ModalMsgContainer = styled.div`
   width: 100%;
   height: 100%;
   color: #333333;
-  /* display: flex;
-  align-items: center; */
   ${(props) => props.theme.FlexCenter}
+  > img {
+    position: absolute;
+    width: 3rem;
+    height: 3rem;
+    left: -0.8125rem;
+    top: -1.25rem;
+  }
   > h2 {
+    padding: 1.25rem;
     /* margin-left: 1.25rem; */
     ${(props) => props.theme.Body_400_14_16}
+    text-align: center;
   }
 `;
 
@@ -92,6 +100,7 @@ export function CheckModal(props) {
     <>
       <Modal isOpen={props.isOpen} onClose={props.toggle}>
         <ModalMsgContainer>
+          <img src={ModalImg} />
           <h2>{props.children}</h2>
         </ModalMsgContainer>
       </Modal>
