@@ -134,18 +134,18 @@ export function MarkerModal(props) {
     }
   }, [secondId]);
 
-  const [showLink, setShowLink] = useState("");
+  const [showLink, setShowLink] = useState(0);
   const [getToggle, setGetToggle] = useState(false);
-
+  console.log(showLink);
   const link = useSelector((state) => {
     return state.link;
   });
 
-  useEffect(() => {
-    if (props.isOpen === false) {
-      setShowLink("");
-    }
-  }, [props.isOpen]);
+  // useEffect(() => {
+  //   if (props.isOpen === false) {
+  //     setShowLink("");
+  //   }
+  // }, [props.isOpen]);
 
   const onClickShowLinkHandler = () => {
     setGetToggle(!getToggle);
@@ -221,9 +221,7 @@ export function MarkerModal(props) {
   return (
     <Modal isOpen={props.isOpen} onClose={props.toggle}>
       <ModalInBox>
-        <ModalTopLinknumber>
-          연결된 링크: {showLink == "" ? null : showLink}
-        </ModalTopLinknumber>
+        <ModalTopLinknumber>연결된 링크: {showLink}</ModalTopLinknumber>
         <ModalSideLinkLook onClick={onClickShowLinkHandler}>
           {link?.linkToggle === false ? "🔍" : "❌"}
         </ModalSideLinkLook>
