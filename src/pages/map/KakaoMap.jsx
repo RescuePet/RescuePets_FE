@@ -205,12 +205,26 @@ const KakaoMap = () => {
         });
       });
 
-    // console.log("연결된 링크지우기", getlink.showlink);
-    if (getlink.showlink === false) {
-    } else if (getlink.showlink === true) {
+    // console.log(getlink);
+    if (getlink.linkToggle === false) {
+      const linePath = [
+        new kakao.maps.LatLng(
+          newCatchData.happenLatitude,
+          newCatchData.happenLongitude
+        ),
+      ];
+
+      const polyline = new kakao.maps.Polyline({
+        path: linePath,
+        strokeWeight: 0,
+        strokeColor: "#FFAE00",
+        strokeOpacity: 0,
+      });
+      polyline.setMap(mapRef.current);
+    } else if (getlink.linkToggle === true) {
       if (getlink.data.data?.length > 0) {
         console.log("링크연결");
-
+        console.log(getlink?.data?.data);
         const linePath = [
           new kakao.maps.LatLng(
             newCatchData.happenLatitude,
@@ -228,21 +242,12 @@ const KakaoMap = () => {
           strokeColor: "#FFAE00",
           strokeOpacity: 1,
         });
-        const distance = Math.round(polyline.getLength());
         polyline.setMap(mapRef.current);
       } else {
-        // alert("연결된 링크 없다");
+        console.log("연결된 링크 없다");
       }
     }
   }, [missingData]);
-
-  const link = useSelector((state) => {
-    return state.link?.data?.data;
-  });
-
-  const linkAlert = useSelector((state) => {
-    return state.linkAlert;
-  });
 
   const onClickMoveToCurrentLocation = () => {
     const moveLatLon = new kakao.maps.LatLng(lat, lng);

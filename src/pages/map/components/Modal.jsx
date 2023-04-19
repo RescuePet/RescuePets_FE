@@ -141,66 +141,93 @@ export function MarkerModal(props) {
     return state.link;
   });
 
-  const linkshowHandler = () => {
-    dispatch(getlinkToggle(false));
+  const onClickShowLinkHandler = () => {
     setGetToggle(!getToggle);
-    // dispatch(getlinkToggle(getToggle));
-    dispatch(showlinkToggle(getToggle));
-    // console.log(link.linkToggle);
-    if (link?.linkToggle === true) {
+    dispatch(getlinkToggle(getToggle));
+    // console.log(getToggle);
+    if (getToggle == true) {
       dispatch(__GetLink(data.id)).then((response) => {
         if (response.type == "getLink/fulfilled") {
-          // console.log("통신성공");
-          // console.log(response.payload.data);
-          if (response.payload.data == []) {
-            setShowLink("연결된 링크 없음");
-            // dispatch(getlinkAlert(response.payload.data));
-            // console.log("연결은 됬는데 없다");
+          if (response?.payload?.data?.length > 0) {
+            setShowLink(response?.payload?.data?.length);
           } else {
-            setShowLink(response.payload.data);
-            // dispatch(getlinkAlert(response.payload.data));
-            // console.log(response.payload.data);
+            console.log("연결된 링크가 없습니다");
           }
         } else {
-          console.log("통신 실패");
+          setShowLink(0);
         }
       });
     } else {
-      setShowLink("");
-      // console.log("닫기");
+      // console.log("링크가리기");
+      setGetToggle(!getToggle);
+      // console.log(getToggle);
+      dispatch(getlinkToggle(getToggle));
     }
   };
 
-  // const linkDelete = () => {
-  //   dispatch(__DeleteLink(data.id)).then((response) => {
+  // const linkshowHandler = () => {
+  // setGetToggle(!getToggle);
+  // dispatch(getlinkToggle(getToggle));
+
+  // dispatch(getlinkToggle(false));
+  // setGetToggle(!getToggle);
+  // // dispatch(getlinkToggle(getToggle));
+  // dispatch(showlinkToggle(getToggle));
+  // // console.log(link.linkToggle);
+  // if (link?.linkToggle === true) {
+  //   dispatch(__GetLink(data.id)).then((response) => {
   //     if (response.type == "getLink/fulfilled") {
-  //       console.log("통신성공");
+  //       // console.log("통신성공");
+  //       // console.log(response.payload.data);
   //       if (response.payload.data == []) {
-  //         console.log("연결은 됬는데 없다");
+  //         setShowLink("연결된 링크 없음");
+  //         // dispatch(getlinkAlert(response.payload.data));
+  //         // console.log("연결은 됬는데 없다");
   //       } else {
-  //         console.log(response.payload.data);
+  //         setShowLink(response.payload.data);
+  //         // dispatch(getlinkAlert(response.payload.data));
+  //         // console.log(response.payload.data);
   //       }
   //     } else {
   //       console.log("통신 실패");
   //     }
   //   });
+  // } else {
+  //   setShowLink("");
+  //   // console.log("닫기");
+  // }
   // };
+
+  const linkDelete = () => {
+    dispatch(__DeleteLink(data.id)).then((response) => {
+      if (response.type == "getLink/fulfilled") {
+        console.log("통신성공");
+        if (response.payload.data == []) {
+          console.log("연결은 됬는데 없다");
+        } else {
+          console.log(response.payload.data);
+        }
+      } else {
+        console.log("통신 실패");
+      }
+    });
+  };
 
   return (
     <Modal isOpen={props.isOpen} onClose={props.toggle}>
       <ModalInBox>
-        {/* <ModalTopLinknumber>
-          연결된 링크: {showLink.length == 0 ? null : showLink.length}
+        <ModalTopLinknumber>
+          연결된 링크: {showLink == 0 ? null : showLink.length}
         </ModalTopLinknumber>
-        <ModalSideLinkLook onClick={linkshowHandler}>
+        <ModalSideLinkLook onClick={onClickShowLinkHandler}>
           {link?.linkToggle === false ? "🔍" : "❌"}
         </ModalSideLinkLook>
         {firstId === "" ? (
           <ModalSideLinkadd onClick={linkaddfirst}>➕1</ModalSideLinkadd>
         ) : (
           <ModalSideLinkadd onClick={linkaddsecond}>➕2</ModalSideLinkadd>
-        )} */}
-        {/* <ModalSideDelete onClick={linkDelete}>🗑</ModalSideDelete> */}
+        )}
+        <ModalSideDelete onClick={linkDelete}>🗑</ModalSideDelete>
         <ModalTitle>
           <ModalTitleinfo>
             {data?.name !== "missingdetail" ? (
