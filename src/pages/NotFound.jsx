@@ -33,10 +33,8 @@ export default NotFound;
 
 const NotFoundContainer = styled.div`
   width: 100%;
-  height: 75%;
   img {
     width: 100%;
-    height: 100%;
   }
 `;
 
