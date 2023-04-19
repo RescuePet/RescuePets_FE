@@ -43,7 +43,7 @@ const BtnStyle = styled.button`
       ${(props) => props.theme.Body_700_14}
       color: ${(props) => props.theme.color.white};
       background: ${(props) => props.theme.color.text_assistive};
-      cursor: default;
+      cursor: pointer;
     `}
     ${(props) =>
     props.GOToDetailButton &&
