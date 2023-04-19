@@ -194,8 +194,9 @@ const KakaoMap = () => {
 
           const distance = Math.round(polyline.getLength());
 
-          const data = { km: distance, name: "sightingdetail" };
+          const data = { km: distance, name: "catchdetail" };
 
+        
           const newItem = {
             ...data,
             ...item,

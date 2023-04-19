@@ -84,8 +84,7 @@ export function MarkerModal(props) {
 
   const [firstId, setFirstId] = useState("");
   const [secondId, setSecondId] = useState("");
-  // console.log(firstId);
-  // console.log(secondId);
+
   const data = props?.data;
   const Stringkm = String(data?.km);
 
@@ -226,9 +225,9 @@ export function MarkerModal(props) {
           {link?.linkToggle === false ? "🔍" : "❌"}
         </ModalSideLinkLook>
         {firstId === "" ? (
-          <ModalSideLinkadd onClick={linkaddfirst}>➕1</ModalSideLinkadd>
+          <ModalSideLinkadd onClick={linkaddfirst}>➕</ModalSideLinkadd>
         ) : (
-          <ModalSideLinkadd onClick={linkaddsecond}>➕2</ModalSideLinkadd>
+          <ModalSideLinkadd onClick={linkaddsecond}>✅</ModalSideLinkadd>
         )}
         <ModalSideDelete onClick={linkDelete}>🗑</ModalSideDelete>
         <ModalTitle>
