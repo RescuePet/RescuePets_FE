@@ -18,7 +18,7 @@ export default function Modal({ isOpen, onClose, children }) {
     if (isOpen) {
       const timeoutId = setTimeout(() => {
         onClose();
-      }, 750);
+      }, 1500);
       return () => clearTimeout(timeoutId);
     }
   }, [isOpen]);
