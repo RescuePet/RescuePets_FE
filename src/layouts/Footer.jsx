@@ -63,6 +63,16 @@ const Footer = () => {
       ToggleBtn.classList.add("active");
     }
   };
+  const userCurrentPosition = localStorage.getItem("userPosition");
+
+  const moveToMapHandler = () => {
+    if (userCurrentPosition) {
+      navigate("/map");
+    } else {
+      toggleRoleCheckModal();
+      setMsg("주소 가지고오는중...");
+    }
+  };
 
   const sseChatCount = JSON.parse(localStorage.getItem("chatCount"));
   const sseMyCount = JSON.parse(localStorage.getItem("myCount"));
@@ -87,7 +97,7 @@ const Footer = () => {
             location.pathname.split("/")[1] === "catchdetail" ||
             location.pathname.split("/")[1] === "poster"
           }
-          onClick={() => navigate("/map")}
+          onClick={moveToMapHandler}
         >
           <FooterIconNetwork></FooterIconNetwork>
           <span>펫트워크</span>
