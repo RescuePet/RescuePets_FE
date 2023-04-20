@@ -1,4 +1,4 @@
-# “구해줘! 펫츠“ 🐶
+# 구해줘! 펫츠 🐶
 
 <img width='750px' src=https://user-images.githubusercontent.com/95469708/233132774-e2e4f806-bcba-4db8-a189-a5ff977eb94b.png>
 
@@ -187,11 +187,13 @@
 <details>
   <summary> 3️. SSE 연결이 되면 45초가 지나면 SSE 연결이 끊기는 문제 </summary>
  <br>
- 원인: `event-source-polyfill`  이 라이브러리를 사용하면서 45초 마다 연결이 끊기는 문제 발생
+- 원인: `event-source-polyfill`  이 라이브러리를 사용하면서 45초 마다 연결이 끊기는 문제 발생
 
 > 해결 : useEffect를 사용해 연결이 끊기면 다시 연결하는 로직을 연결을 했고
-heartbeatTimeout (SSE 클라이언트가 서버로부터 응답을 받지 못했을 때 연결을 끊는 시간 ) 
-withCredentials  (SSE 요청에 대해 자격 증명(쿠키 및 인증 헤더))
+> heartbeatTimeout (SSE 클라이언트가 서버로부터 응답을 받지 못했을 때 연결을 끊는 시간 )
+withCredentials  (SSE 요청에 대해 자격 증명(쿠키 및 인증 헤더)) 를 사용하여 SSE 연결을 해서 해결했다
+	
+수정코드 
 ```jsx 
 useEffect(() => {
       eventSource = new EventSourcePolyfill(
@@ -205,20 +207,14 @@ useEffect(() => {
     eventSource.onmessage = (event) => {
 	   ...
     };
-
-		eventSource.onerror = (event) => {
-     eventSource.close();
-    };
 	
     return () => {
       eventSource.close();
     };
 	...
-  }, []);
+  }, [eventSource]);
 ```
 
-    
-    를 사용하여 SSE 연결을 해서 해결했다
 </details>
 
 <details>
@@ -233,9 +229,10 @@ useEffect(() => {
 <details>
   <summary> 5. 현재위치 사용하는 카카오맵을 통해 마커로 표시하는 경우 로딩이 오래걸리는 문제</summary>
  <br>
-  1. polyline 그려진 지도를 이미지 형태로 변환하여 서버에 저장하려고 했으나, 카카오 API를 사용하여 발생한 결과물을 서버에 저장하는 것이 카카오 정책에 의해 불가능 (canvas 객체를 선언해서 png 파일로 변환 뒤 서버에 보내려고 했음)
-  
-  2. 5초마다 위도, 경도를 배열 형태 만들어 종료시 전체 배열을 서버로 보내고, 기록을 확인하는 페이지에서는 이미지 대신 지도를 생성하고 그 위에 다시 값을 받아 그려주는 방식으로 해결
+- 원인 : 로그인 후 Home으로 이동시 유저 동의 시 유저 위치를 받아와
+리덕스에 저장 하지만 언마운트시 시 리덕스스토어에 저장된 값이 사라져 다시 위치를 받아오는 현상 발생
+- 해결 : CryptoJS 라이브러리를 사용해서 Home페이지에서 유저에 위치좌표로 암호화 후
+로컬스토리지에 저장 유저 위치가 필요한 부분 복호화하여 로딩문제를 해결
 </details>
 <br>
 </details>
