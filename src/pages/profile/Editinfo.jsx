@@ -187,7 +187,7 @@ const Editinfo = () => {
           <EditInfoTextBox>
             <p>이메일</p>
             {/* <input type="text" value={userInfo.email} /> */}
-            <div>userInfo.email</div>
+            <div>{userInfo.email}</div>
           </EditInfoTextBox>
 
           <EditinfoButtonBox>
