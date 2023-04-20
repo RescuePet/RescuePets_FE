@@ -415,6 +415,6 @@ useEffect(() => {
 
 <br>
 
-◻ Copyright ©2023 Hang-Hae99 12th Final : A team 3 all rights reserved.
+◻ Copyright ©2023 Hang-Hae99 12th Final : A team 2 all rights reserved.
 
 
