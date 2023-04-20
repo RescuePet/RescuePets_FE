@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import { HeaderStyle, Border_1_color, FlexAttribute } from "../../style/Mixin";
 import { useLocation, useNavigate } from "react-router-dom";
-import imageCompression from "browser-image-compression";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import camera from "../../asset/profile/camera.png";
@@ -24,6 +23,7 @@ import {
 } from "../../utils/amplitude";
 import isLogin from "../../utils/isLogin";
 import { instance } from "../../utils/api";
+import Option from "../../components/Option";
 
 const Editinfo = () => {
   let imageRef;
@@ -46,6 +46,7 @@ const Editinfo = () => {
   const [loginModal, toggleModal] = useModalState(false);
   const [editMsg, setEditMsg] = useState("");
   const [Msg, setMsg] = useState("");
+  const [secessionOption, setSecessionOption] = useState(false);
 
   const {
     register,
@@ -90,11 +91,11 @@ const Editinfo = () => {
       toggleModal();
       reset();
       if (response.type === "putMyinfoEdit/rejected") {
-        if (response.error.message == "중복된 닉네임이 존재합니다.") {
+        if (response.error.message === "중복된 닉네임이 존재합니다.") {
           setEditMsg(response.error.message);
         }
         setEditMsg("실패! 알림창을 클릭하여 다시 시도해주세요!");
-      } else if (response.type == "putMyinfoEdit/fulfilled") {
+      } else if (response.type === "putMyinfoEdit/fulfilled") {
         setEditMsg(response.payload.message);
         setTimeout(function () {
           navigate("/profile");
@@ -122,6 +123,7 @@ const Editinfo = () => {
           Cookies.remove("Refresh");
           Cookies.remove("UserInfo");
           setMsg("");
+          setSecessionOption(false);
           navigate("/signin");
         }, 1000);
       } else {
@@ -132,11 +134,24 @@ const Editinfo = () => {
     }
   };
 
+  const secessionOptionSetting = [
+    {
+      option: "구해줘! 펫츠 탈퇴하기",
+      color: "report",
+      handler: secessionHandler,
+      type: "comment",
+    },
+  ];
+
+  const mapCloseHandler = () => {
+    setSecessionOption(false);
+  };
+
   return (
     <>
       <Layout>
         <EditInfoForm onSubmit={handleSubmit(onSubmitmyInfoHandler)}>
-          {editMsg == "" ? null : (
+          {editMsg === "" ? null : (
             <CheckModal
               isOpen={loginModal}
               toggle={toggleModal}
@@ -151,7 +166,7 @@ const Editinfo = () => {
           </EditHeader>
           <EditInfoImgBox>
             <EditInfoImgBack>
-              {imageFormData == "" ? (
+              {imageFormData === "" ? (
                 <EditInfoImgIn src={userInfo?.profileImage} />
               ) : (
                 <EditInfoImgIn src={imageShow} />
@@ -200,13 +215,16 @@ const Editinfo = () => {
                 저장하기
               </Button>
             )}
-            <SecessionButton assistiveFillButton onClick={secessionHandler}>
+            <SecessionButton
+              assistiveFillButton
+              onClick={() => setSecessionOption(!secessionOption)}
+            >
               회원 탈퇴
             </SecessionButton>
           </EditinfoButtonBox>
         </EditInfoForm>
       </Layout>
-      {Msg == "" ? null : (
+      {Msg === "" ? null : (
         <CheckModal
           isOpen={loginModal}
           toggle={toggleModal}
@@ -214,6 +232,12 @@ const Editinfo = () => {
         >
           {Msg}
         </CheckModal>
+      )}
+      {secessionOption && (
+        <Option
+          setting={secessionOptionSetting}
+          mapCloseHandler={mapCloseHandler}
+        />
       )}
     </>
   );
