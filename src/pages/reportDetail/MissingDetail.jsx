@@ -143,12 +143,12 @@ const MissingDetail = () => {
       setMissingDetailMsg("댓글을 입력해주세요.");
       return;
     } else {
+      dispatch(addCommentCount());
       dispatch(__postComment(data));
       commentRef.current.scrollIntoView({
         behavior: "smooth",
         block: "center",
       });
-      dispatch(addCommentCount());
     }
   };
 

@@ -16,6 +16,7 @@ import {
   __deleteMemberPost,
   __getCatchPostDetail,
   __postCatchScrap,
+  addCommentCount,
 } from "../../redux/modules/petworkSlice";
 import {
   __getComment,
@@ -137,7 +138,7 @@ const SightingDetail = () => {
     scrapCount: catchPostDetail.wishedCount,
   };
 
-  const submitHandler = (content) => {
+  const submitHandler = async (content) => {
     let data = {
       id: id,
       content: content.message,
@@ -147,6 +148,7 @@ const SightingDetail = () => {
       setCatchDetailMsg("댓글을 입력해주세요.");
       return;
     } else {
+      dispatch(addCommentCount());
       dispatch(__postComment(data));
       commentRef.current.scrollIntoView({
         behavior: "smooth",
