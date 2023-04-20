@@ -20,6 +20,7 @@ import FloatingButton from "./components/FloatingButton";
 import {
   __getPostSearch,
   completeSearch,
+  resetSearchPage,
   setMemberPosition,
   setSearchValue,
   toggleDescriptionCategory,
@@ -116,7 +117,7 @@ const PetworkList = () => {
     size: 15,
   };
 
-  const adoptionSearchPayload = {
+  const petworkSearchPayload = {
     page: searchPage,
     size: 15,
     longitude: longitude,
@@ -138,13 +139,15 @@ const PetworkList = () => {
       dispatch(__getCatchPost(catchPayloadSettings));
     }
     if ((missingInView || catchInView) && postSearchMode) {
-      dispatch(__getPostSearch(adoptionSearchPayload));
+      console.log("scroll page", searchPage);
+      dispatch(__getPostSearch(petworkSearchPayload));
     }
   }, [missingInView, catchInView]);
 
   const searchPostHandler = (value) => {
+    console.log(searchPage);
     const payload = {
-      page: searchPage,
+      page: 1,
       size: 15,
       longitude: longitude,
       latitude: latitude,
@@ -156,14 +159,13 @@ const PetworkList = () => {
     };
     dispatch(togglePostSearchMode(true));
     dispatch(completeSearch());
-
-    dispatch(__getPostSearch(payload));
+    dispatch(__getPostSearch(payload)).then(() => dispatch(resetSearchPage()));
   };
 
   const searchDistanceHandler = (distance) => {
     if (distanceState) {
       const payload = {
-        page: searchPage,
+        page: 1,
         size: 15,
         longitude: longitude,
         latitude: latitude,
@@ -173,19 +175,23 @@ const PetworkList = () => {
         postType: postType,
       };
       dispatch(togglePostSearchMode(true));
-      dispatch(completeSearch());
       dispatch(toggleDescriptionCategory(`search_distance_${distance}`));
+      dispatch(toggleDescriptionCategory(distance));
       logEvent(distance);
+      dispatch(completeSearch());
 
-      dispatch(__getPostSearch(payload));
+      dispatch(__getPostSearch(payload)).then(() =>
+        dispatch(resetSearchPage())
+      );
     } else {
       dispatch(toggleDescriptionCategory(distance));
     }
   };
 
   const searchKindHandler = (kindCategory) => {
+    console.log(searchPage);
     const payload = {
-      page: searchPage,
+      page: 1,
       size: 15,
       longitude: longitude,
       latitude: latitude,
@@ -200,7 +206,7 @@ const PetworkList = () => {
     dispatch(togglePostSearchMode(true));
     dispatch(completeSearch());
 
-    dispatch(__getPostSearch(payload));
+    dispatch(__getPostSearch(payload)).then(() => dispatch(resetSearchPage()));
   };
 
   return (
