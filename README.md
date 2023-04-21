@@ -10,11 +10,36 @@
 
 <br>
 
+
+
+
+
 ## 📍 바로가기
 - [🐶 구해줘! 펫츠 바로가기](https://www.rescuepets.co.kr/)
-- [프론트엔드 GitHub Repository](https://github.com/RescuePet/RescuePets_FE)
-- [백엔드 GitHub Respository](https://github.com/RescuePet/RescuePets_BE)
-- [프로젝트 발표 영상]()
+- [프로젝트 발표 영상](https://www.youtube.com/watch?v=excz-lSRTsk)
+
+### 깃허브 레포
+
+> FE :
+[구해줘! 펫츠 FE 깃허브 바로가기](https://github.com/RescuePet/RescuePets_FE)
+
+
+> BE : 
+[구해줘! 펫츠 BE 깃허브 바로가기](https://github.com/RescuePet/RescuePets_BE)
+
+### 노션
+
+>프로젝트 노션 :
+[프로젝트 노션 바로가기](https://www.notion.so/RescuePets-A-2-b35947780b5143b4a6ea6836a513b870)
+
+
+>원페이지 노션 :
+[원페이지 노션 바로가기](https://www.notion.so/b553ab28d3f744a383fd36663197fef1)
+
+
+
+
+
 
 ## 👨‍👩‍👧‍👦 Team
 |이현동|음지훈|유영우|김관희|박성현|오영석|김정임|
@@ -32,7 +57,8 @@
 ## 주요 기능 
 
 ### 1. 동물보호관리시스템 유기동물 정보 조회 (open API 사용)
-- https://www.data.go.kr/data/15098931/openapi.do
+
+> 사용한 open API 주소 https://www.data.go.kr/data/15098931/openapi.do
 
 - 공공 API를 이용해 현재 유기동물의 정보를 가져와 사용자에게 제공합니다.
 - 스케줄러를 활용하여 30분마다 최신정보를 가지고 옵니다. 
@@ -41,7 +67,7 @@
 - KakaoMap API를 이용해 유기 동물이 구조된 위치, 현재 보호소 위치를 확인할 수 있습니다. 
 <details>
 <summary>자세하기 더보기</summary>
-<img src="https://user-images.githubusercontent.com/86552492/232416563-e5dad8be-a621-429c-b8e0-9d66ca91a7a4.png">
+<img src="https://user-images.githubusercontent.com/95469708/233530296-1101dd9a-b69b-403f-abbd-9ee9ca7b72cc.png">
   
 </details>
 
@@ -229,9 +255,9 @@ useEffect(() => {
 <details>
   <summary> 5. 현재위치 사용하는 카카오맵을 통해 마커로 표시하는 경우 로딩이 오래걸리는 문제</summary>
  <br>
-- 원인 : 로그인 후 Home으로 이동시 유저 동의 시 유저 위치를 받아와
+> 원인 : 로그인 후 Home으로 이동시 유저 동의 시 유저 위치를 받아와
 리덕스에 저장 하지만 언마운트시 시 리덕스스토어에 저장된 값이 사라져 다시 위치를 받아오는 현상 발생
-- 해결 : CryptoJS 라이브러리를 사용해서 Home페이지에서 유저에 위치좌표로 암호화 후
+> 해결 : CryptoJS 라이브러리를 사용해서 Home페이지에서 유저에 위치좌표로 암호화 후
 로컬스토리지에 저장 유저 위치가 필요한 부분 복호화하여 로딩문제를 해결
 </details>
 <br>
