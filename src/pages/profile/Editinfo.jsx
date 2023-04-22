@@ -45,7 +45,6 @@ const Editinfo = () => {
 
   const [loginModal, toggleModal] = useModalState(false);
   const [editMsg, setEditMsg] = useState("");
-  const [Msg, setMsg] = useState("");
   const [secessionOption, setSecessionOption] = useState(false);
 
   const {
@@ -76,7 +75,7 @@ const Editinfo = () => {
   const [isActive, setIsActive] = useState(true);
 
   useEffect(() => {
-    if (watch("name") !== "" && imageFormData !== "") {
+    if (watch("name") !== "" || imageFormData !== "") {
       setIsActive(false);
     } else {
       setIsActive(true);
@@ -85,16 +84,22 @@ const Editinfo = () => {
 
   const onSubmitmyInfoHandler = (data) => {
     const formData = new FormData();
-    formData.append("nickname", data.name);
-    formData.append("image", imageFormData);
+    if (data.name == "") {
+      formData.append("image", imageFormData);
+    } else if (imageFormData === "") {
+      formData.append("nickname", data.name);
+    } else if (data.name !== "" && imageFormData === "") {
+      formData.append("nickname", data.name);
+      formData.append("image", imageFormData);
+    }
+
     dispatch(__PutMyinfoEdit(formData)).then((response) => {
       toggleModal();
       reset();
-      if (response.type === "putMyinfoEdit/rejected") {
-        if (response.error.message === "중복된 닉네임이 존재합니다.") {
-          setEditMsg(response.error.message);
-        }
-        setEditMsg("실패! 알림창을 클릭하여 다시 시도해주세요!");
+      console.log(response);
+      if (response.payload == undefined) {
+        setEditMsg(response.error.message);
+        reset();
       } else if (response.type === "putMyinfoEdit/fulfilled") {
         setEditMsg(response.payload.message);
         setTimeout(function () {
@@ -117,17 +122,17 @@ const Editinfo = () => {
       const response = await instance.post(`/api/member/withdrawal`);
       if (response.data.status === true) {
         toggleModal();
-        setMsg("✅ 회원탈퇴 성공");
+        setEditMsg("✅ 회원탈퇴 성공");
         setTimeout(() => {
           Cookies.remove("Token");
           Cookies.remove("Refresh");
           Cookies.remove("UserInfo");
-          setMsg("");
+          setEditMsg("");
           setSecessionOption(false);
           navigate("/signin");
         }, 1000);
       } else {
-        setMsg("회원탈퇴 오류");
+        setEditMsg("회원탈퇴 오류");
       }
     } catch (error) {
       return;
@@ -188,7 +193,7 @@ const Editinfo = () => {
               type="text"
               placeholder={userInfo.nickname}
               {...register("name", {
-                required: true,
+                required: false,
                 pattern: {
                   value: /^[ㄱ-ㅎ|가-힣]+$/,
                   message: "한글만 2 ~ 6글자 사이로 입력",
@@ -224,15 +229,6 @@ const Editinfo = () => {
           </EditinfoButtonBox>
         </EditInfoForm>
       </Layout>
-      {Msg === "" ? null : (
-        <CheckModal
-          isOpen={loginModal}
-          toggle={toggleModal}
-          onClose={toggleModal}
-        >
-          {Msg}
-        </CheckModal>
-      )}
       {secessionOption && (
         <Option
           setting={secessionOptionSetting}

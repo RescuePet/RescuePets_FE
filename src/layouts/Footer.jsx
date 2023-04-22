@@ -109,7 +109,7 @@ const Footer = () => {
         >
           <FooterIconChat></FooterIconChat>
           <span>채팅</span>
-          {sseChatCount == 0 ? null : <p>{sseChatCount}</p>}
+          {/* {sseChatCount == 0 ? null : <p>{sseChatCount}</p>} */}
         </FooterEachIconContiner>
         <FooterEachIconContiner
           style={{ position: "relative" }}
