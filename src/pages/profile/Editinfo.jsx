@@ -88,7 +88,7 @@ const Editinfo = () => {
       formData.append("image", imageFormData);
     } else if (imageFormData === "") {
       formData.append("nickname", data.name);
-    } else if (data.name !== "" && imageFormData === "") {
+    } else if (data.name !== "" && imageFormData !== "") {
       formData.append("nickname", data.name);
       formData.append("image", imageFormData);
     }
@@ -96,7 +96,6 @@ const Editinfo = () => {
     dispatch(__PutMyinfoEdit(formData)).then((response) => {
       toggleModal();
       reset();
-      console.log(response);
       if (response.payload == undefined) {
         setEditMsg(response.error.message);
         reset();
