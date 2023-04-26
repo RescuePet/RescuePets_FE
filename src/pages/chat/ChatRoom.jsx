@@ -21,6 +21,7 @@ import { toggleOption } from "../../redux/modules/menubarSlice";
 import ReportModal from "../../components/ReportModal";
 import { toggleReport } from "../../redux/modules/menubarSlice";
 import { resetunreadChat } from "../../redux/modules/chatSlice";
+import chatroombackground from "../../asset/chat/chatroombackground.png";
 
 import {
   initAmplitude,
@@ -28,6 +29,9 @@ import {
   setAmplitudeUserId,
   resetAmplitude,
 } from "../../utils/amplitude";
+import isLogin from "../../utils/isLogin";
+import { useModalState } from "../../hooks/useModalState";
+import { CheckModal } from "../../elements/Modal";
 
 const ChatRoom = () => {
   // 앰플리튜드
@@ -35,7 +39,9 @@ const ChatRoom = () => {
   useEffect(() => {
     initAmplitude();
     logEvent(`enter_/${location.pathname.split("/")[1]}`);
-    setAmplitudeUserId();
+    if (isLogin()) {
+      setAmplitudeUserId();
+    }
     return () => {
       resetAmplitude();
     };
@@ -48,6 +54,8 @@ const ChatRoom = () => {
   const { optionState, reportState } = useSelector((state) => state.menubar);
 
   const [chatlog, setChatLog] = useState([]);
+  const [Msg, setMsg] = useState("");
+  const [roleCheckModal, toggleRoleCheckModal] = useModalState(false);
   const sender = JSON.parse(Cookies.get("UserInfo"));
 
   let client;
@@ -110,6 +118,14 @@ const ChatRoom = () => {
     let message = register.message;
     if (message === "") {
       return;
+    } else if (sender.memberRole === "BAD_MEMBER") {
+      toggleRoleCheckModal();
+      setMsg("BAD MEMBER는 채팅을 보낼 수 없습니다.");
+      setTimeout(() => {
+        setMsg("");
+        return;
+      }, 1500);
+      return;
     }
     const sendSettings = {
       sender: sender.nickname,
@@ -158,7 +174,7 @@ const ChatRoom = () => {
         <HeaderTitle>{nickname}</HeaderTitle>
         <OptionChat onClick={() => dispatch(toggleOption())} />
       </ChatRoomHeader>
-      <ChatRoomBody ref={messagesRef}>
+      <ChatRoomBody ref={messagesRef} image={chatroombackground}>
         {chatlog.length !== 0 &&
           chatlog.map((item, index) => {
             if (item.sender === sender.nickname) {
@@ -188,6 +204,15 @@ const ChatRoom = () => {
       ></InputContainer>
       {optionState && <Option setting={ChatRoomMeatData} />}
       {reportState && <ReportModal setting={reportModalData} />}
+      {Msg === "" ? null : (
+        <CheckModal
+          isOpen={roleCheckModal}
+          toggle={toggleRoleCheckModal}
+          onClose={toggleRoleCheckModal}
+        >
+          {Msg}
+        </CheckModal>
+      )}
     </Layout>
   );
 };
@@ -220,8 +245,13 @@ const OptionChat = styled(Meatballs)`
 
 const ChatRoomBody = styled.div`
   width: 100%;
+  height: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
+  background-image: url(${(props) => props.image});
+  background-size: 200px;
+  background-repeat: no-repeat;
+  background-position: center;
 `;
 
 export default ChatRoom;

@@ -36,51 +36,39 @@ const Layout = ({ children }) => {
   const ref = useRef(null);
   const token = Cookies.get("Token");
 
-  const [listening, setListening] = useState(false);
 
   const [data, setData] = useState([]);
   let eventSource = undefined;
 
   useEffect(() => {
-    if (listening === false) {
       eventSource = new EventSourcePolyfill(
         `${process.env.REACT_APP_SIGN_TEST}/sse/`,
         {
           headers: {
             Authorization: token,
           },
+          heartbeatTimeout: 2000000,
+          withCredentials: true,
         }
       );
-    }
-
-    eventSource.onopen = (event) => {
-      setListening(true);
-    };
 
     eventSource.onmessage = (event) => {
-      setListening(true);
       const checkJSON = event.data.split(" ")[0];
-
       const data = checkJSON !== "EventStream" && JSON.parse(event.data);
-
       if (data.message !== undefined) {
         toggleModal();
         setData(data);
-        if (data.message.split(" ")[1] == "새로운") {
+        if (data.message.split(" ")[1] === "새로운") {
           dispatch(seeChatCount(1));
-        } else if (data.message.split(" ")[1] == "댓글을") {
+        } else if (data.message.split(" ")[1] === "댓글을") {
           dispatch(seeMyaddCount(1));
-        } else if (data.message.split(" ")[1] == "스크랩") {
+        } else if (data.message.split(" ")[1] === "스크랩") {
           dispatch(seeMyaddCount(1));
         }
       }
     };
 
-    eventSource.onerror = (event) => {
-      setListening(false);
-    };
     return () => {
-      setListening(false);
       eventSource.close();
     };
   }, [eventSource]);

@@ -92,7 +92,7 @@ const UserList = ({ item }) => {
             <UserEmail>{item.email}</UserEmail>
           </AdditionWrapper>
         </div>
-        {item.memberRole !== "ADMIN" && (
+        {item.memberRole !== "ADMIN" && item.memberRole !== memberRole && (
           <UserListMeatballs onClick={() => setUserOption(!userOption)} />
         )}
       </ListContainer>

@@ -1,4 +1,4 @@
-import React, { Children } from "react";
+import React from "react";
 import styled from "styled-components";
 import { FlexAttribute } from "../style/Mixin";
 
@@ -17,6 +17,7 @@ const ErrorContainer = styled.div`
 
 const ErrorImage = styled.img`
   width: 100%;
+  object-fit: cover;
 `;
 
 export default Error404;

@@ -69,6 +69,7 @@ const InputContainer = ({ placeholder, submitHandler }) => {
           <CloseBox
             onClick={() => {
               reset();
+              setInputValue("");
               dispatch(toggleCommentInput());
             }}
           >
@@ -134,6 +135,7 @@ const Input = styled.textarea`
   padding: 3px 30px 3px 20px;
   resize: none;
   overflow: hidden;
+  white-space: pre-line;
   ${Body_400_12};
   line-height: 24px;
   ${InputBorder_1};

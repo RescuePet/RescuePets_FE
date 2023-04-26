@@ -34,6 +34,7 @@ const SendMessage = styled.div`
   border-radius: 4px;
   background: ${(props) => props.theme.color.primary_normal};
   word-break: break-all;
+  white-space: pre-line;
   ::after {
     content: "";
     position: absolute;
@@ -60,7 +61,7 @@ const SendTimeSpan = styled.span`
   left: -31px;
   bottom: 1px;
   ${Body_400_10}
-  color:#CCCCCC;
+  color: ${(props) => props.theme.color.text_normal}; ;
 `;
 
 export default Send;

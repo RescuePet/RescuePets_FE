@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { FlexAttribute } from "../../style/Mixin";
 import Layout from "../../layouts/Layout";
@@ -8,6 +8,7 @@ import Carousel from "./components/Carousel";
 import carouselImage1 from "../../asset/carousel/1.png";
 import carouselImage2 from "../../asset/carousel/2.png";
 import { useDispatch, useSelector } from "react-redux";
+import CryptoJS from "crypto-js";
 import {
   addAdoptionPage,
   __getAdoptionList,
@@ -40,6 +41,7 @@ import {
   setAmplitudeUserId,
   resetAmplitude,
 } from "../../utils/amplitude";
+import FloatingButton from "./components/FloatingButton";
 
 const Home = () => {
   // 앰플리튜드
@@ -47,7 +49,9 @@ const Home = () => {
   useEffect(() => {
     initAmplitude();
     logEvent(`enter_${location.pathname}`);
-    setAmplitudeUserId();
+    if (isLogin()) {
+      setAmplitudeUserId();
+    }
     return () => {
       resetAmplitude();
     };
@@ -64,6 +68,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [ref, inView] = useInView();
+  const scrollRef = useRef();
   const [userInfo, setUserInfo] = useState({});
 
   const { adoptionPage, adoptionLists } = useSelector(
@@ -85,6 +90,16 @@ const Home = () => {
     descriptionCategory,
   } = useSelector((state) => state.search);
 
+  const secretKey = process.env.REACT_APP_CURRENTPOS_POSITION;
+
+  // 암호화하기
+  const encryptString = (str) => {
+    const key = CryptoJS.enc.Utf8.parse(secretKey);
+    const iv = CryptoJS.enc.Utf8.parse(secretKey);
+    const encrypted = CryptoJS.AES.encrypt(str, key, { iv });
+    return encrypted.toString();
+  };
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(onSuccess, onFailure);
     return () => {
@@ -95,10 +110,22 @@ const Home = () => {
   const onSuccess = useCallback((position) => {
     const lat = position.coords.latitude;
     const lng = position.coords.longitude;
+    const userPosition = {
+      lat,
+      lng,
+    };
     dispatch(setMemberPosition({ lat: lat, lng: lng }));
+    const encryptedPo = encryptString(JSON.stringify(userPosition));
+    localStorage.setItem("userPosition", encryptedPo);
   }, []);
 
   const onFailure = () => {
+    const defaultPosition = {
+      lat: "37.515133",
+      lng: "126.934086",
+    };
+    const encryptedPo = encryptString(JSON.stringify(defaultPosition));
+    localStorage.setItem("userPosition", encryptedPo);
     console.log("위치 정보를 찾을수 없습니당.");
   };
 
@@ -197,14 +224,18 @@ const Home = () => {
     dispatch(__getAdoptionSearch(adoptionSearchPayload));
   };
 
+  const scrollTopHandler = () => {
+    scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <Layout>
-      <Header>
+      <Header ref={scrollRef}>
         {searchPublicState ? (
           <SearchCategory />
         ) : (
           <>
-            <img
+            <UserImage
               src={
                 userInfo.profileImage == null ? profile : userInfo.profileImage
               }
@@ -257,6 +288,7 @@ const Home = () => {
           })}
         <div ref={ref}></div>
       </PostContainer>
+      <FloatingButton onClick={scrollTopHandler} />
     </Layout>
   );
 };
@@ -270,11 +302,13 @@ const Header = styled.div`
   padding-bottom: 0.5625rem;
   font-size: 1.125rem;
   font-weight: 700;
-  img {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-  }
+`;
+
+const UserImage = styled.img`
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  object-fit: cover;
 `;
 
 const HeaderSpan = styled.span`

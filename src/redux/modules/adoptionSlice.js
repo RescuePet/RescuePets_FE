@@ -119,7 +119,7 @@ export const adoptionSlice = createSlice({
     builder
       .addCase(__postAdoptionListScrap.fulfilled, (state, action) => {
         const index = state.adoptionLists.findIndex(
-          (item) => item.desertionNo === action.payload.desertionNo.toString()
+          (item) => item.desertionNo === action.payload.desertionNo
         );
         if (action.payload.page === "home") {
           const updateListsItem = {

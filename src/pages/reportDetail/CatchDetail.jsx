@@ -13,9 +13,10 @@ import Location from "./components/Location";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
-  __deletePost,
+  __deleteMemberPost,
   __getCatchPostDetail,
   __postCatchScrap,
+  addCommentCount,
 } from "../../redux/modules/petworkSlice";
 import {
   __getComment,
@@ -50,6 +51,7 @@ import {
   setAmplitudeUserId,
   resetAmplitude,
 } from "../../utils/amplitude";
+import isLogin from "../../utils/isLogin";
 
 const SightingDetail = () => {
   // 앰플리튜드
@@ -57,7 +59,9 @@ const SightingDetail = () => {
   useEffect(() => {
     initAmplitude();
     logEvent(`enter_/${location.pathname.split("/")[1]}`);
-    setAmplitudeUserId();
+    if (isLogin()) {
+      setAmplitudeUserId();
+    }
     return () => {
       resetAmplitude();
     };
@@ -134,7 +138,7 @@ const SightingDetail = () => {
     scrapCount: catchPostDetail.wishedCount,
   };
 
-  const submitHandler = (content) => {
+  const submitHandler = async (content) => {
     let data = {
       id: id,
       content: content.message,
@@ -144,6 +148,7 @@ const SightingDetail = () => {
       setCatchDetailMsg("댓글을 입력해주세요.");
       return;
     } else {
+      dispatch(addCommentCount());
       dispatch(__postComment(data));
       commentRef.current.scrollIntoView({
         behavior: "smooth",
@@ -153,6 +158,11 @@ const SightingDetail = () => {
   };
 
   const chatHandler = async () => {
+    if (memberRole === "BAD_MEMBER") {
+      toggleModal();
+      setCatchDetailMsg("BAD MEMBER는 채팅방 생성을 할 수 없습니다.");
+      return;
+    }
     try {
       const response = await instance.post(`/chat/room/${catchPostDetail.id}`);
       navigate(`/chatroom/${catchPostDetail.nickname}/${response.data}`);
@@ -204,7 +214,7 @@ const SightingDetail = () => {
           id: id,
           type: "catch",
         };
-        dispatch(__deletePost(payload)).then(() => {
+        dispatch(__deleteMemberPost(payload)).then(() => {
           dispatch(toggleOption());
           navigate("/petwork");
         });
@@ -228,7 +238,14 @@ const SightingDetail = () => {
       option: "관리자 권한으로 삭제",
       color: "report",
       handler: () => {
-        console.log("ADMIN");
+        const payload = {
+          id: id,
+          type: "catch",
+        };
+        dispatch(__deleteMemberPost(payload)).then(() => {
+          dispatch(toggleOption());
+          navigate("/petwork");
+        });
       },
     },
   ];
@@ -301,7 +318,7 @@ const SightingDetail = () => {
       <PostInformation postInfo={postInfo}></PostInformation>
       <CommentContainer>
         <CommentListWrapper>
-          <div ref={commentRef}></div>
+          {commentList.length >= 8 && <div ref={commentRef}></div>}
           {commentList?.map((item) => {
             return (
               <Comment key={`catch-comment-${item.id}`} item={item}></Comment>
@@ -335,11 +352,10 @@ const SightingDetail = () => {
       {optionState && memberRole === "ADMIN" && (
         <Option setting={optionAdminSetting} />
       )}
-
       {reportState && (
         <ReportModal setting={reportSetting} onChangeMsg={onChangeReportMsg} />
       )}
-      {catchdetailMsg == "" ? null : (
+      {catchdetailMsg === "" ? null : (
         <CheckModal
           isOpen={loginModal}
           toggle={toggleModal}

@@ -11,29 +11,7 @@ import Location from "./components/Location";
 import imgdelete from "../../asset/imgDelete.svg";
 import { CustomSelect } from "../../elements/CustomSelect";
 import SeleteTab from "./components/SeleteTab";
-import {
-  ReportMissingContainer,
-  ReportAnimalInfoArea,
-  ReportAnimalInfoBox,
-  ReportAnimalInfoBoxColumn,
-  ReportAnimalInfoBoxColumnRow,
-  ReportanimaltypesBox,
-  ReportanimaltypesTitle,
-  ReportanimaltypesSelect,
-  ReportInput,
-  ReportLgInput,
-  ReportAnimalDayBox,
-  ReportAnimalSignificantBox,
-  ReportAnimalSignificantBoxTitle,
-  ReportAnimalSignificantBoxInputArea,
-  ReportAnimalPictureArea,
-  ReportAnimalPictureAreaTitle,
-  ReportAnimalPictureAreaInputBox,
-  ReportAnimalPictureInput,
-  ReportAnimalPicturePreview,
-  ReportAnimalUserInfo,
-  PreviewImage,
-} from "./components/reportstyle";
+import styles from "./components/reportstyle";
 import { NameValue, TimeValue } from "./components/data";
 import { addImage } from "../../redux/modules/missingSlice";
 import { __PostMissingData } from "../../redux/modules/petworkSlice";
@@ -47,6 +25,7 @@ import {
   setAmplitudeUserId,
   resetAmplitude,
 } from "../../utils/amplitude";
+import isLogin from "../../utils/isLogin";
 
 const Missing = () => {
   // 앰플리튜드
@@ -54,7 +33,9 @@ const Missing = () => {
   useEffect(() => {
     initAmplitude();
     logEvent(`enter_${location.pathname}`);
-    setAmplitudeUserId();
+    if (isLogin()) {
+      setAmplitudeUserId();
+    }
     return () => {
       resetAmplitude();
     };
@@ -228,7 +209,9 @@ const Missing = () => {
   };
   return (
     <Layout>
-      <ReportMissingContainer onSubmit={handleSubmit(onSubmitMissingHanlder)}>
+      <styles.ReportMissingContainer
+        onSubmit={handleSubmit(onSubmitMissingHanlder)}
+      >
         {missingMsg == "" ? null : (
           <CheckModal
             isOpen={loginModal}
@@ -240,10 +223,12 @@ const Missing = () => {
         )}
         <Header>실종 글 작성하기</Header>
 
-        <ReportAnimalInfoArea>
-          <ReportanimaltypesBox>
-            <ReportanimaltypesTitle>동물 정보 *</ReportanimaltypesTitle>
-            <ReportanimaltypesSelect>
+        <styles.ReportAnimalInfoArea>
+          <styles.ReportanimaltypesBox>
+            <styles.ReportanimaltypesTitle>
+              동물 정보 *
+            </styles.ReportanimaltypesTitle>
+            <styles.ReportanimaltypesSelect>
               <div>
                 <p>종류*</p>
                 <CustomSelect
@@ -254,7 +239,7 @@ const Missing = () => {
               </div>
               <div>
                 <p>품종*</p>
-                <ReportInput
+                <styles.ReportInput
                   type="text"
                   placeholder="입력하기"
                   {...register("animaltypes", {
@@ -277,8 +262,8 @@ const Missing = () => {
                 />
                 <span>{errors?.animaltypes?.message}</span>
               </div>
-            </ReportanimaltypesSelect>
-          </ReportanimaltypesBox>
+            </styles.ReportanimaltypesSelect>
+          </styles.ReportanimaltypesBox>
 
           <SeleteTab
             onChangeGender={onChangeGender}
@@ -287,11 +272,11 @@ const Missing = () => {
             tabValue={tabValue}
           />
 
-          <ReportAnimalInfoBox>
-            <ReportAnimalInfoBoxColumn>
-              <ReportAnimalInfoBoxColumnRow>
+          <styles.ReportAnimalInfoBox>
+            <styles.ReportAnimalInfoBoxColumn>
+              <styles.ReportAnimalInfoBoxColumnRow>
                 <p>이름*</p>
-                <ReportInput
+                <styles.ReportInput
                   type="text"
                   placeholder="입력하기"
                   {...register("animalName", {
@@ -313,10 +298,10 @@ const Missing = () => {
                   }}
                 />
                 <span>{errors?.animalName?.message}</span>
-              </ReportAnimalInfoBoxColumnRow>
-              <ReportAnimalInfoBoxColumnRow>
+              </styles.ReportAnimalInfoBoxColumnRow>
+              <styles.ReportAnimalInfoBoxColumnRow>
                 <p>나이(살)*</p>
-                <ReportInput
+                <styles.ReportInput
                   type="text"
                   placeholder="입력하기"
                   {...register("animalAge", {
@@ -335,12 +320,12 @@ const Missing = () => {
                   }}
                 />
                 <span>{errors?.animalAge?.message}</span>
-              </ReportAnimalInfoBoxColumnRow>
-            </ReportAnimalInfoBoxColumn>
-            <ReportAnimalInfoBoxColumn>
-              <ReportAnimalInfoBoxColumnRow>
+              </styles.ReportAnimalInfoBoxColumnRow>
+            </styles.ReportAnimalInfoBoxColumn>
+            <styles.ReportAnimalInfoBoxColumn>
+              <styles.ReportAnimalInfoBoxColumnRow>
                 <p>체중(Kg)*</p>
-                <ReportInput
+                <styles.ReportInput
                   type="text"
                   placeholder="입력하기"
                   {...register("animalkg", {
@@ -359,10 +344,10 @@ const Missing = () => {
                   }}
                 />
                 <span>{errors?.animalkg?.message}</span>
-              </ReportAnimalInfoBoxColumnRow>
-              <ReportAnimalInfoBoxColumnRow>
+              </styles.ReportAnimalInfoBoxColumnRow>
+              <styles.ReportAnimalInfoBoxColumnRow>
                 <p>색상*</p>
-                <ReportInput
+                <styles.ReportInput
                   type="text"
                   placeholder="입력하기"
                   {...register("animalcolor", {
@@ -384,19 +369,19 @@ const Missing = () => {
                   }}
                 />
                 <span>{errors?.animalcolor?.message}</span>
-              </ReportAnimalInfoBoxColumnRow>
-            </ReportAnimalInfoBoxColumn>
-          </ReportAnimalInfoBox>
-        </ReportAnimalInfoArea>
+              </styles.ReportAnimalInfoBoxColumnRow>
+            </styles.ReportAnimalInfoBoxColumn>
+          </styles.ReportAnimalInfoBox>
+        </styles.ReportAnimalInfoArea>
         {/* 실종 로직  */}
         <Location />
         {/* 실종 로직 */}
-        <ReportAnimalDayBox>
+        <styles.ReportAnimalDayBox>
           <p>실종일시 *</p>
           <div>
             <div>
               <p>날짜*</p>
-              <ReportInput
+              <styles.ReportInput
                 type="date"
                 onChange={handleDateChange}
                 value={selectedDate}
@@ -412,16 +397,16 @@ const Missing = () => {
               />
             </div>
           </div>
-        </ReportAnimalDayBox>
+        </styles.ReportAnimalDayBox>
         {/* 특이사항  */}
-        <ReportAnimalSignificantBox>
-          <ReportAnimalSignificantBoxTitle>
+        <styles.ReportAnimalSignificantBox>
+          <styles.ReportAnimalSignificantBoxTitle>
             <p> 특이사항 </p>
-          </ReportAnimalSignificantBoxTitle>
-          <ReportAnimalSignificantBoxInputArea>
+          </styles.ReportAnimalSignificantBoxTitle>
+          <styles.ReportAnimalSignificantBoxInputArea>
             <div>
               <p>특징</p>
-              <ReportLgInput
+              <styles.ReportLgInput
                 type="text"
                 placeholder="입력하기"
                 {...register("characteristic", {
@@ -447,7 +432,7 @@ const Missing = () => {
             {/* 메모 */}
             <div>
               <p>메모</p>
-              <ReportLgInput
+              <styles.ReportLgInput
                 type="text"
                 placeholder="입력하기"
                 {...register("memo", {
@@ -470,13 +455,13 @@ const Missing = () => {
               />
               <span>{errors?.memo?.message}</span>
             </div>
-          </ReportAnimalSignificantBoxInputArea>
-        </ReportAnimalSignificantBox>
-        <ReportAnimalPictureArea>
-          <ReportAnimalPictureAreaTitle>
+          </styles.ReportAnimalSignificantBoxInputArea>
+        </styles.ReportAnimalSignificantBox>
+        <styles.ReportAnimalPictureArea>
+          <styles.ReportAnimalPictureAreaTitle>
             <p>사진첨부*</p>
-          </ReportAnimalPictureAreaTitle>
-          <ReportAnimalPictureAreaInputBox>
+          </styles.ReportAnimalPictureAreaTitle>
+          <styles.ReportAnimalPictureAreaInputBox>
             <input
               type="file"
               accept="image/*"
@@ -486,14 +471,17 @@ const Missing = () => {
               onChange={onChangeUploadHandler}
               required
             />
-            <ReportAnimalPictureInput onClick={() => imageRef.click()}>
+            <styles.ReportAnimalPictureInput onClick={() => imageRef.click()}>
               <h3>+</h3>
-            </ReportAnimalPictureInput>
+            </styles.ReportAnimalPictureInput>
             {showImages.length === 0 ? null : (
               <>
                 {showImages.map((image, index) => (
-                  <ReportAnimalPicturePreview key={index}>
-                    <PreviewImage src={image} alt={`${image}-${index}`} />
+                  <styles.ReportAnimalPicturePreview key={index}>
+                    <styles.PreviewImage
+                      src={image}
+                      alt={`${image}-${index}`}
+                    />
                     <div
                       onClick={() => {
                         onClickDeleteHandler(index);
@@ -501,16 +489,16 @@ const Missing = () => {
                     >
                       <img src={imgdelete} />
                     </div>
-                  </ReportAnimalPicturePreview>
+                  </styles.ReportAnimalPicturePreview>
                 ))}
               </>
             )}
-          </ReportAnimalPictureAreaInputBox>
-        </ReportAnimalPictureArea>
-        <ReportAnimalUserInfo>
+          </styles.ReportAnimalPictureAreaInputBox>
+        </styles.ReportAnimalPictureArea>
+        <styles.ReportAnimalUserInfo>
           <div>
             <p>사례금(원)</p>
-            <ReportInput
+            <styles.ReportInput
               type="text"
               placeholder="입력하기"
               {...register("money", {
@@ -520,7 +508,6 @@ const Missing = () => {
               inputMode="numeric"
               onChange={(event) => {
                 const value = event.target.value;
-                console.log(value);
                 event.target.value = Number(
                   value.replace(/[^0-9]/g, "")
                 ).toLocaleString();
@@ -536,7 +523,7 @@ const Missing = () => {
           </div>
           <div>
             <p>연락처</p>
-            <ReportInput
+            <styles.ReportInput
               type="tel"
               placeholder="010xxxxxxxx"
               inputMode="numeric"
@@ -557,7 +544,7 @@ const Missing = () => {
             />
             <span>{errors?.number?.message}</span>
           </div>
-        </ReportAnimalUserInfo>
+        </styles.ReportAnimalUserInfo>
         {isActive === true ? (
           <Button type="submit" disable assistiveFillButton>
             작성 하기
@@ -567,7 +554,7 @@ const Missing = () => {
             작성 완료
           </Button>
         )}
-      </ReportMissingContainer>
+      </styles.ReportMissingContainer>
     </Layout>
   );
 };

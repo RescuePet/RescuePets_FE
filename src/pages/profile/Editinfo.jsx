@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Layout from "../../layouts/Layout";
 import { HeaderStyle, Border_1_color, FlexAttribute } from "../../style/Mixin";
 import { useLocation, useNavigate } from "react-router-dom";
-import imageCompression from "browser-image-compression";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import camera from "../../asset/profile/camera.png";
@@ -22,6 +21,9 @@ import {
   setAmplitudeUserId,
   resetAmplitude,
 } from "../../utils/amplitude";
+import isLogin from "../../utils/isLogin";
+import { instance } from "../../utils/api";
+import Option from "../../components/Option";
 
 const Editinfo = () => {
   let imageRef;
@@ -33,7 +35,9 @@ const Editinfo = () => {
   useEffect(() => {
     initAmplitude();
     logEvent(`enter_${location.pathname}`);
-    setAmplitudeUserId();
+    if (isLogin()) {
+      setAmplitudeUserId();
+    }
     return () => {
       resetAmplitude();
     };
@@ -41,6 +45,7 @@ const Editinfo = () => {
 
   const [loginModal, toggleModal] = useModalState(false);
   const [editMsg, setEditMsg] = useState("");
+  const [secessionOption, setSecessionOption] = useState(false);
 
   const {
     register,
@@ -70,7 +75,7 @@ const Editinfo = () => {
   const [isActive, setIsActive] = useState(true);
 
   useEffect(() => {
-    if (watch("name") !== "" && imageFormData !== "") {
+    if (watch("name") !== "" || imageFormData !== "") {
       setIsActive(false);
     } else {
       setIsActive(true);
@@ -79,17 +84,22 @@ const Editinfo = () => {
 
   const onSubmitmyInfoHandler = (data) => {
     const formData = new FormData();
-    formData.append("nickname", data.name);
-    formData.append("image", imageFormData);
+    if (data.name == "") {
+      formData.append("image", imageFormData);
+    } else if (imageFormData === "") {
+      formData.append("nickname", data.name);
+    } else if (data.name !== "" && imageFormData !== "") {
+      formData.append("nickname", data.name);
+      formData.append("image", imageFormData);
+    }
+
     dispatch(__PutMyinfoEdit(formData)).then((response) => {
       toggleModal();
       reset();
-      if (response.type === "putMyinfoEdit/rejected") {
-        if (response.error.message == "중복된 닉네임이 존재합니다.") {
-          setEditMsg(response.error.message);
-        }
-        setEditMsg("실패! 알림창을 클릭하여 다시 시도해주세요!");
-      } else if (response.type == "putMyinfoEdit/fulfilled") {
+      if (response.payload == undefined) {
+        setEditMsg(response.error.message);
+        reset();
+      } else if (response.type === "putMyinfoEdit/fulfilled") {
         setEditMsg(response.payload.message);
         setTimeout(function () {
           navigate("/profile");
@@ -106,75 +116,125 @@ const Editinfo = () => {
     return <Spinner />;
   }
 
+  const secessionHandler = async () => {
+    try {
+      const response = await instance.post(`/api/member/withdrawal`);
+      if (response.data.status === true) {
+        toggleModal();
+        setEditMsg("✅ 회원탈퇴 성공");
+        setTimeout(() => {
+          Cookies.remove("Token");
+          Cookies.remove("Refresh");
+          Cookies.remove("UserInfo");
+          setEditMsg("");
+          setSecessionOption(false);
+          navigate("/signin");
+        }, 1000);
+      } else {
+        setEditMsg("회원탈퇴 오류");
+      }
+    } catch (error) {
+      return;
+    }
+  };
+
+  const secessionOptionSetting = [
+    {
+      option: "구해줘! 펫츠 탈퇴하기",
+      color: "report",
+      handler: secessionHandler,
+      type: "comment",
+    },
+  ];
+
+  const mapCloseHandler = () => {
+    setSecessionOption(false);
+  };
+
   return (
-    <Layout>
-      <EditInfoForm onSubmit={handleSubmit(onSubmitmyInfoHandler)}>
-        {editMsg == "" ? null : (
-          <CheckModal
-            isOpen={loginModal}
-            toggle={toggleModal}
-            onClose={toggleModal}
-          >
-            {editMsg}
-          </CheckModal>
-        )}
-        <EditHeader>
-          <h2>내 정보 수정</h2>
-          <CloseSvg src={close} onClick={MoveToBackPage} />
-        </EditHeader>
-        <EditInfoImgBox>
-          <EditInfoImgBack>
-            {imageFormData == "" ? (
-              <EditInfoImgIn src={userInfo?.profileImage} />
-            ) : (
-              <EditInfoImgIn src={imageShow} />
-            )}
-            <input
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
-              ref={(refer) => (imageRef = refer)}
-              onChange={onChangeUploadHandler}
-            />
-            <EditInfoImgInput src={camera} onClick={() => imageRef.click()} />
-          </EditInfoImgBack>
-        </EditInfoImgBox>
-
-        <EditInfoTextBox>
-          <p>닉네임</p>
-          <input
-            type="text"
-            placeholder={userInfo.nickname}
-            {...register("name", {
-              required: true,
-              pattern: {
-                value: /^[ㄱ-ㅎ|가-힣]+$/,
-                message: "한글만 2 ~ 6글자 사이로 입력",
-              },
-              maxLength: { value: 6, message: "6글자 이하이어야 합니다." },
-            })}
-          />
-          <span>{errors?.name?.message}</span>
-        </EditInfoTextBox>
-
-        <EditInfoTextBox>
-          <p>이메일</p>
-          <input type="text" value={userInfo.email} />
-        </EditInfoTextBox>
-
-        <EditinfoButtonBox>
-          {isActive === true ? (
-            <Button disable emptyButton type="button">
-              저장 중
-            </Button>
-          ) : (
-            <Button type="submit" fillButton>
-              저장하기
-            </Button>
+    <>
+      <Layout>
+        <EditInfoForm onSubmit={handleSubmit(onSubmitmyInfoHandler)}>
+          {editMsg === "" ? null : (
+            <CheckModal
+              isOpen={loginModal}
+              toggle={toggleModal}
+              onClose={toggleModal}
+            >
+              {editMsg}
+            </CheckModal>
           )}
-        </EditinfoButtonBox>
-      </EditInfoForm>
-    </Layout>
+          <EditHeader>
+            <h2>내 정보 수정</h2>
+            <CloseSvg src={close} onClick={MoveToBackPage} />
+          </EditHeader>
+          <EditInfoImgBox>
+            <EditInfoImgBack>
+              {imageFormData === "" ? (
+                <EditInfoImgIn src={userInfo?.profileImage} />
+              ) : (
+                <EditInfoImgIn src={imageShow} />
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                ref={(refer) => (imageRef = refer)}
+                onChange={onChangeUploadHandler}
+              />
+              <EditInfoImgInput src={camera} onClick={() => imageRef.click()} />
+            </EditInfoImgBack>
+          </EditInfoImgBox>
+
+          <EditInfoTextBox>
+            <p>닉네임</p>
+            <input
+              type="text"
+              placeholder={userInfo.nickname}
+              {...register("name", {
+                required: false,
+                pattern: {
+                  value: /^[ㄱ-ㅎ|가-힣]+$/,
+                  message: "한글만 2 ~ 6글자 사이로 입력",
+                },
+                maxLength: { value: 6, message: "6글자 이하이어야 합니다." },
+              })}
+            />
+            <span>{errors?.name?.message}</span>
+          </EditInfoTextBox>
+
+          <EditInfoTextBox>
+            <p>이메일</p>
+            {/* <input type="text" value={userInfo.email} /> */}
+            <div>{userInfo.email}</div>
+          </EditInfoTextBox>
+
+          <EditinfoButtonBox>
+            {isActive === true ? (
+              <Button disable emptyButton type="button">
+                저장 중
+              </Button>
+            ) : (
+              <Button type="submit" fillButton>
+                저장하기
+              </Button>
+            )}
+            <SecessionButton
+              assistiveFillButton
+              onClick={() => setSecessionOption(!secessionOption)}
+            >
+              회원 탈퇴
+            </SecessionButton>
+          </EditinfoButtonBox>
+        </EditInfoForm>
+      </Layout>
+      {secessionOption && (
+        <Option
+          setting={secessionOptionSetting}
+          mapCloseHandler={mapCloseHandler}
+        />
+      )}
+    </>
   );
 };
 
@@ -242,12 +302,19 @@ const EditInfoTextBox = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 1.25rem;
-  gap: 5px 0;
-  > P {
+  gap: 0.4688rem 0;
+  > p {
     width: 100%;
     height: 20%;
     ${(props) => props.theme.Body_400_14_16}
     color: ${(props) => props.theme.color.black};
+  }
+  > div {
+    width: 100%;
+    height: 1.5rem;
+    ${Border_1_color}
+    border-radius: 0;
+    ${(props) => props.theme.Body_400_12}
   }
   > input {
     width: 100%;
@@ -264,6 +331,10 @@ const EditInfoTextBox = styled.div`
 `;
 
 const EditinfoButtonBox = styled.div`
-  ${(props) => props.theme.FlexCenter}
-  margin-top: 9.375rem;
+  ${FlexAttribute("column", "center", "center")}
+  margin-top: 6.25rem
+`;
+
+const SecessionButton = styled(Button)`
+  margin-top: 1rem;
 `;

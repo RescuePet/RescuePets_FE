@@ -6,16 +6,20 @@ import { FlexAttribute } from "../../../style/Mixin";
 import male from "../../../asset/male.svg";
 import female from "../../../asset/female.svg";
 import questionmark from "../../../asset/questionmark.svg";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Option from "../../../components/Option";
 import { useDispatch } from "react-redux";
-import { __deletePost } from "../../../redux/modules/petworkSlice";
+import {
+  __deleteAdminPost,
+  __deleteMemberPost,
+} from "../../../redux/modules/petworkSlice";
 import Meatballs from "../../../asset/Meatballs";
 import { deleteMyPost } from "../../../redux/modules/profileSlice";
 
 const PostList = ({ item }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const [postOption, setPostOption] = useState(false);
 
   const refineDataHandler = () => {
@@ -70,7 +74,7 @@ const PostList = ({ item }) => {
         id: item.id,
         type: "missing",
       };
-      dispatch(__deletePost(payload)).then(() => {
+      dispatch(__deleteMemberPost(payload)).then(() => {
         setPostOption(!postOption);
       });
     } else if (refineData.postType === "목격") {
@@ -78,7 +82,7 @@ const PostList = ({ item }) => {
         id: item.id,
         type: "catch",
       };
-      dispatch(__deletePost(payload)).then(() => {
+      dispatch(__deleteMemberPost(payload)).then(() => {
         setPostOption(!postOption);
       });
     }
@@ -108,6 +112,20 @@ const PostList = ({ item }) => {
     },
   ];
 
+  const optionAdminSetting = [
+    {
+      option: "관리자 권한으로 삭제",
+      color: "report",
+      handler: () => {
+        const payload = {
+          id: item.id,
+        };
+        dispatch(__deleteAdminPost(payload));
+        closePostOption();
+      },
+    },
+  ];
+
   return (
     <>
       <ListContainer
@@ -128,7 +146,14 @@ const PostList = ({ item }) => {
         <PostMeatballs onClick={myPostHandler} />
       </ListContainer>
       {postOption && (
-        <Option setting={optionMySetting} mapCloseHandler={closePostOption} />
+        <Option
+          setting={
+            location.pathname === "/profile/deletelists"
+              ? optionAdminSetting
+              : optionMySetting
+          }
+          mapCloseHandler={closePostOption}
+        />
       )}
     </>
   );
@@ -197,25 +222,6 @@ const PostMeatballs = styled(Meatballs)`
   left: calc(100% - 26px);
   cursor: pointer;
   z-index: 10;
-`;
-
-const CommentInfo = styled.div`
-  width: 28px;
-  height: 28px;
-  border: 1px solid ${(props) => props.theme.color.text_alternative};
-  border-radius: 50%;
-  text-align: center;
-  span {
-    ${(props) => props.theme.Body_300_10};
-    color: ${(props) => props.theme.color.text_alternative};
-    line-height: 28px;
-  }
-`;
-
-const ScrapInfo = styled.div`
-  width: 24px;
-  height: 24px;
-  background-color: black;
 `;
 
 export default PostList;

@@ -20,6 +20,7 @@ import {
   setAmplitudeUserId,
   resetAmplitude,
 } from "../../utils/amplitude";
+import isLogin from "../../utils/isLogin";
 
 const Profile = () => {
   // 앰플리튜드
@@ -27,7 +28,9 @@ const Profile = () => {
   useEffect(() => {
     initAmplitude();
     logEvent(`enter_${location.pathname}`);
-    setAmplitudeUserId();
+    if (isLogin()) {
+      setAmplitudeUserId();
+    }
     return () => {
       resetAmplitude();
     };
@@ -52,6 +55,7 @@ const Profile = () => {
           Cookies.remove("Token");
           Cookies.remove("Refresh");
           Cookies.remove("UserInfo");
+          localStorage.removeItem("userPosition");
           setMsg("");
           navigate("/signin");
         }, 1000);
@@ -61,7 +65,6 @@ const Profile = () => {
     });
   };
 
-  // 로그
   return (
     <Layout>
       <ProfileHeader>
@@ -101,6 +104,7 @@ const HeaderImage = styled.div`
   height: 100%;
   > img {
     height: 1.875rem;
+    object-fit: cover;
   }
 `;
 
@@ -126,12 +130,12 @@ const Withdrawal = styled.button`
   ${Body_400_12}
   color: ${(props) => props.theme.color.text_alternative};
   text-decoration: underline;
-  :hover {
+  /* :hover {
     transform: translate(0px, -1px);
     background-color: ${(props) => props.theme.color.line_alternative};
     transition: 0.3s;
     color: ${(props) => props.theme.color.status_caution};
-  }
+  } */
   :active {
     background-color: ${(props) => props.theme.color.line_alternative};
     color: ${(props) => props.theme.color.status_caution};

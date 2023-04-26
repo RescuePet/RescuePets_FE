@@ -21,6 +21,7 @@ import {
   setAmplitudeUserId,
   resetAmplitude,
 } from "../../utils/amplitude";
+import isLogin from "../../utils/isLogin";
 
 const MyScrap = () => {
   // 앰플리튜드
@@ -28,7 +29,9 @@ const MyScrap = () => {
   useEffect(() => {
     initAmplitude();
     logEvent(`enter_${location.pathname}`);
-    setAmplitudeUserId();
+    if (isLogin()) {
+      setAmplitudeUserId();
+    }
     return () => {
       resetAmplitude();
     };

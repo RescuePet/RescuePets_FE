@@ -71,7 +71,13 @@ const Comment = ({ item }) => {
               {item.modifiedAt.substring(11, 16)}
             </CommentTime>
           </UserBox>
-          <CommentMeatBalls onClick={() => setCommentOption((prev) => !prev)} />
+          {nickname === item.userNickName && (
+            <CommentMeatBalls
+              onClick={(e) => {
+                setCommentOption((prev) => !prev);
+              }}
+            />
+          )}
         </UserInfo>
         <CommentText>{item.content}</CommentText>
       </CommentBox>
@@ -144,6 +150,7 @@ const CommentText = styled.span`
   ${Body_400_12}
   margin-left: 3.0625rem;
   line-height: 18px;
+  white-space: pre-line;
 `;
 
 export default Comment;

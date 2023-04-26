@@ -89,7 +89,7 @@ const initialState = {
   searchPostSetState: false,
   inputState: false,
   distanceState: false,
-  searchPage: 1,
+  searchPage: 2,
   responseMessage: "",
   postType: "MISSING",
   longitude: "126.934086",
@@ -156,8 +156,11 @@ export const searchSlice = createSlice({
     resetResponseMessage: (state) => {
       state.responseMessage = "";
     },
+    resetSearchPage: (state) => {
+      state.searchPage = 2;
+    },
     completeSearch: (state) => {
-      state.searchPage = 1;
+      // state.searchPage = 1;
       state.publicSearchLists = [];
       state.postSearchLists = [];
     },
@@ -231,6 +234,7 @@ export const {
   resetSearchState,
   resetKindValue,
   resetResponseMessage,
+  resetSearchPage,
   completeSearch,
   publicScrap,
   postScrap,

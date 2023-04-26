@@ -5,7 +5,6 @@ import { instance } from "../../utils/api";
 export const __GetLink = createAsyncThunk(
   "getLink",
   async (payload, thunkAPI) => {
-    console.log(payload)
     try {
       const response = await instance.get(`/api/post/links/Coordinates/${payload}`);
       return thunkAPI.fulfillWithValue(response.data);
@@ -19,8 +18,6 @@ export const __GetLink = createAsyncThunk(
 export const __PostLink = createAsyncThunk(
   "postLink",
   async (payload,thunkAPI) => {
-    // console.log(firstId)
-    console.log(payload)
     try {
       const response = await instance.post(`/api/post/links/${payload.first}`, payload.second);
       return thunkAPI.fulfillWithValue(response?.data?.data);
@@ -35,7 +32,6 @@ export const __PostLink = createAsyncThunk(
 export const __DeleteLink = createAsyncThunk(
   "deleteLink",
   async (payload, thunkAPI) => {
-    console.log(payload)
     try {
       const response = await instance.delete(`/api/post/links/${payload}`);
       return thunkAPI.fulfillWithValue(response?.data?.data);
@@ -48,6 +44,8 @@ export const __DeleteLink = createAsyncThunk(
 
 const initialState = {
   data: '',
+  linkToggle: false,
+  showlink: false,
   error: false,
   loading: false,
 };
@@ -55,7 +53,15 @@ const initialState = {
 export const link = createSlice({
   name: "link",
   initialState,
-  reducers: {},
+  reducers: {
+    getlinkToggle: (state, action) => {
+            state.linkToggle = action.payload
+          },
+    showlinkToggle: (state) =>{
+            state.showlink = !state.showlink
+          },
+    
+  },
   extraReducers: (builder) => {
     builder.addCase(__GetLink.pending, (state) => {
       state.loading = true;
@@ -100,5 +106,5 @@ export const link = createSlice({
     });
   },
 });
-
+export const { getlinkToggle ,showlinkToggle} = link.actions;
 export default link.reducer;

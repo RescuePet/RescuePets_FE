@@ -18,7 +18,7 @@ export default function Modal({ isOpen, onClose, children }) {
     if (isOpen) {
       const timeoutId = setTimeout(() => {
         onClose();
-      }, 750);
+      }, 1500);
       return () => clearTimeout(timeoutId);
     }
   }, [isOpen]);
@@ -65,25 +65,29 @@ const ModalContainer = styled(motion.div)`
   position: absolute;
   top: 9%;
   right: 15%;
-  width: 14.0625rem;
+  width: 15.625rem;
   height: 3rem;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 `;
 
-export const ModalSEEMsgContainer = styled.div`
+const ModalSEEMsgContainer = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
   color: ${(props) => props.theme.color.white};
-  ${(props) => props.theme.Body_400_14_16}
+  padding-left: 1.5625rem;
   ${(props) => props.theme.FlexCenter}
-  padding-left: .625rem;
   > img {
     position: fixed;
     width: 2.5rem;
     height: 2.5rem;
     top: -13%;
     left: -4%;
+  }
+  > h2 {
+    width: 100%;
+    word-break: break-all;
+    ${(props) => props.theme.Body_400_14_16}
   }
 `;
 
