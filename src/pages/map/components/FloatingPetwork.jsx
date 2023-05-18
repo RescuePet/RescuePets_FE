@@ -12,7 +12,7 @@ export const FloatingPetwork = () => {
 
   return (
     <FloatingPetNetworkContainer onClick={MoveToPetWork}>
-      <img src={floating} onClick={MoveToPetWork} />
+      <img src={floating} onClick={MoveToPetWork} alt="floating" />
     </FloatingPetNetworkContainer>
   );
 };

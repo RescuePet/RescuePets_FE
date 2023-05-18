@@ -128,6 +128,8 @@ const PetworkList = () => {
     type: "post",
     postType: postType,
   };
+  console.log(petwork);
+  // console.log(missingInView);
 
   useEffect(() => {
     if (missingInView && !postSearchMode) {
@@ -144,71 +146,71 @@ const PetworkList = () => {
     }
   }, [missingInView, catchInView]);
 
-  const searchPostHandler = (value) => {
-    console.log(searchPage);
-    const payload = {
-      page: 1,
-      size: 15,
-      longitude: longitude,
-      latitude: latitude,
-      description: descriptionCategory,
-      searchKey: searchCategory,
-      searchValue: value,
-      type: "post",
-      postType: postType,
-    };
-    dispatch(togglePostSearchMode(true));
-    dispatch(completeSearch());
-    dispatch(__getPostSearch(payload)).then(() => dispatch(resetSearchPage()));
-  };
+  // const searchPostHandler = (value) => {
+  //   console.log(searchPage);
+  //   const payload = {
+  //     page: 1,
+  //     size: 15,
+  //     longitude: longitude,
+  //     latitude: latitude,
+  //     description: descriptionCategory,
+  //     searchKey: searchCategory,
+  //     searchValue: value,
+  //     type: "post",
+  //     postType: postType,
+  //   };
+  //   dispatch(togglePostSearchMode(true));
+  //   dispatch(completeSearch());
+  //   dispatch(__getPostSearch(payload)).then(() => dispatch(resetSearchPage()));
+  // };
 
-  const searchDistanceHandler = (distance) => {
-    if (distanceState) {
-      const payload = {
-        page: 1,
-        size: 15,
-        longitude: longitude,
-        latitude: latitude,
-        description: distance,
-        searchKey: searchCategory,
-        type: "post",
-        postType: postType,
-      };
-      dispatch(togglePostSearchMode(true));
-      dispatch(toggleDescriptionCategory(`search_distance_${distance}`));
-      dispatch(toggleDescriptionCategory(distance));
-      logEvent(distance);
-      dispatch(completeSearch());
+  // const searchDistanceHandler = (distance) => {
+  //   if (distanceState) {
+  //     const payload = {
+  //       page: 1,
+  //       size: 15,
+  //       longitude: longitude,
+  //       latitude: latitude,
+  //       description: distance,
+  //       searchKey: searchCategory,
+  //       type: "post",
+  //       postType: postType,
+  //     };
+  //     dispatch(togglePostSearchMode(true));
+  //     dispatch(toggleDescriptionCategory(`search_distance_${distance}`));
+  //     dispatch(toggleDescriptionCategory(distance));
+  //     logEvent(distance);
+  //     dispatch(completeSearch());
 
-      dispatch(__getPostSearch(payload)).then(() =>
-        dispatch(resetSearchPage())
-      );
-    } else {
-      dispatch(toggleDescriptionCategory(distance));
-    }
-  };
+  //     dispatch(__getPostSearch(payload)).then(() =>
+  //       dispatch(resetSearchPage())
+  //     );
+  //   } else {
+  //     dispatch(toggleDescriptionCategory(distance));
+  //   }
+  // };
 
-  const searchKindHandler = (kindCategory) => {
-    console.log(searchPage);
-    const payload = {
-      page: 1,
-      size: 15,
-      longitude: longitude,
-      latitude: latitude,
-      description: descriptionCategory,
-      searchKey: searchCategory,
-      searchValue: kindCategory,
-      type: "post",
-      postType: postType,
-    };
-    dispatch(setSearchValue(kindCategory));
-    dispatch(toggleKindCategory(kindCategory));
-    dispatch(togglePostSearchMode(true));
-    dispatch(completeSearch());
+  // const searchKindHandler = (kindCategory) => {
+  //   console.log(searchPage);
+  //   const payload = {
+  //     page: 1,
+  //     size: 15,
+  //     longitude: longitude,
+  //     latitude: latitude,
+  //     description: descriptionCategory,
+  //     searchKey: searchCategory,
+  //     searchValue: kindCategory,
+  //     type: "post",
+  //     postType: postType,
+  //   };
+  //   dispatch(setSearchValue(kindCategory));
+  //   dispatch(toggleKindCategory(kindCategory));
+  //   dispatch(togglePostSearchMode(true));
+  //   dispatch(completeSearch());
 
-    dispatch(__getPostSearch(payload)).then(() => dispatch(resetSearchPage()));
-  };
-
+  //   dispatch(__getPostSearch(payload)).then(() => dispatch(resetSearchPage()));
+  // };
+  console.log(petwork.missingPostLists);
   return (
     <Layout>
       <PetworkHeader>
@@ -226,7 +228,8 @@ const PetworkList = () => {
         )}
       </PetworkHeader>
       <Category></Category>
-      {searchPostSetState && (
+
+      {/* {searchPostSetState && (
         <SearchSetting
           petwork
           searchHandler={searchPostHandler}
@@ -244,7 +247,8 @@ const PetworkList = () => {
         </ListTitleWrapper>
       )}
       {responseMessage === "유기동물 검색 결과가 없습니다." &&
-        postSearchLists.length === 0 && <Error404 srcUrl={ErrorPost} />}
+        postSearchLists.length === 0 && <Error404 srcUrl={ErrorPost} />} */}
+
       <ListCardContainer>
         {!searchPostSetState &&
           petwork.category === "우리집 반려동물을 찾아주세요" &&

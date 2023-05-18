@@ -33,7 +33,7 @@ const ImageCarousel = ({ images, imageCarouselInfo, data }) => {
             key={`carousel-image-${index}`}
             imageUrl={image?.imageURL}
           >
-            <Image src={image?.imageURL} />
+            <Image src={image?.imageURL} alt="imageUrl" />
           </ImageWrapper>
         ))}
       </StyledSlider>

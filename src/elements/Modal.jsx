@@ -100,7 +100,7 @@ export function CheckModal(props) {
     <>
       <Modal isOpen={props.isOpen} onClose={props.toggle}>
         <ModalMsgContainer>
-          <img src={ModalImg} />
+          <img src={ModalImg} alt="modalImg"/>
           <h2>{props.children}</h2>
         </ModalMsgContainer>
       </Modal>

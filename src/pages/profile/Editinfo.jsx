@@ -14,7 +14,7 @@ import Cookies from "js-cookie";
 import { Spinner } from "../../components/Spinner";
 import { useModalState } from "../../hooks/useModalState";
 import { CheckModal } from "../../elements/Modal";
-
+import imageCompression from "browser-image-compression";
 import {
   initAmplitude,
   logEvent,
@@ -65,11 +65,23 @@ const Editinfo = () => {
 
   const onChangeUploadHandler = async (e) => {
     e.preventDefault();
-    const imageFile = e.target.files[0];
 
-    const currentImageUrl = URL.createObjectURL(imageFile);
-    setImageShow(currentImageUrl);
-    setImageFormData(imageFile);
+    const imageFile = e.target.files[0];
+    // console.log("Before Compression: ", imageFile.size);
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
+    try {
+      const compressedFile = await imageCompression(imageFile, options);
+      const currentImageUrl = URL.createObjectURL(imageFile);
+      setImageShow(currentImageUrl);
+      setImageFormData(compressedFile);
+      // console.log("After Compression: ", compressedFile.size);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const [isActive, setIsActive] = useState(true);
@@ -171,9 +183,9 @@ const Editinfo = () => {
           <EditInfoImgBox>
             <EditInfoImgBack>
               {imageFormData === "" ? (
-                <EditInfoImgIn src={userInfo?.profileImage} />
+                <EditInfoImgIn src={userInfo?.profileImage} alt="userInfoIMG" />
               ) : (
-                <EditInfoImgIn src={imageShow} />
+                <EditInfoImgIn src={imageShow} alt="userInfoIMG" />
               )}
               <input
                 type="file"

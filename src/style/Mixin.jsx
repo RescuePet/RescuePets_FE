@@ -67,7 +67,7 @@ export const ContentInformationStyle = css`
 `;
 
 export const AlertMessageCountStyle = css`
-  ${FlexAttribute("row", "center", "center")}
+  ${FlexAttribute("row", "center", "center")};
   border-radius: 50%;
   margin-top: 0.25rem;
   padding-top: 1px;

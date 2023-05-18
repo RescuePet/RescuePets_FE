@@ -64,7 +64,7 @@ const ActiveButton = styled.button`
     props.active
       ? css`
           border-bottom: 0.125rem solid
-            ${(props) => props.theme.color.primary_normal}; ;
+            ${(props) => props.theme.color.primary_normal};
         `
       : css`
           border-bottom: 0.125rem solid transparent;

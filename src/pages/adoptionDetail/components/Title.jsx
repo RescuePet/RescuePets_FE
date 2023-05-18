@@ -14,7 +14,7 @@ const Title = ({ titleData }) => {
       <TitleWrapper>
         <State category={"adoptionDetail"}>{titleData.process}</State>
         <SemiText>{titleData.kindCd}</SemiText>
-        <SexCd src={titleData.sexCd} />
+        <SexCd src={titleData.sexCd} alt="sexcd" />
         <RegularText>{titleData.information}</RegularText>
       </TitleWrapper>
     </TitleContainer>

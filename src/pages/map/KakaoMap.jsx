@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import styled from "styled-components";
 import Header from "./components/Header";
 import { FloatingPetwork } from "./components/FloatingPetwork";
@@ -43,19 +43,51 @@ const KakaoMap = () => {
   const decryptedPo = decryptString(encryptedPo);
   const userPosition = decryptedPo && JSON.parse(decryptedPo);
 
-  useEffect(() => {
+  const memoizedPosition = useMemo(() => {
     if (userPosition !== "") {
-      setLat(userPosition.lat);
-      setLng(userPosition.lng);
+      return {
+        lat: userPosition.lat,
+        lng: userPosition.lng,
+      };
     }
-  }, []);
+    return null;
+  }, [userPosition]);
+
+  useEffect(() => {
+    if (memoizedPosition) {
+      setLat(memoizedPosition.lat);
+      setLng(memoizedPosition.lng);
+    }
+  }, [memoizedPosition]);
+
+  // useEffect(() => {
+  //   if (userPosition !== "") {
+  //     setLat(userPosition.lat);
+  //     setLng(userPosition.lng);
+  //   }
+  // }, []);
+
+  // const secretKey = useMemo(() => {
+  //   return CryptoJS.enc.Utf8.parse(process.env.REACT_APP_CURRENTPOS_POSITION);
+  // }, []);
+
+  // const encryptedPo = localStorage.getItem("userPosition");
+  // const decryptedPo = encryptedPo && decryptString(encryptedPo);
+  // const userPosition = decryptedPo && JSON.parse(decryptedPo);
+
+  // useEffect(() => {
+  //   if (userPosition) {
+  //     setLat(userPosition.lat);
+  //     setLng(userPosition.lng);
+  //   }
+  // }, [userPosition, setLat, setLng]);
 
   //디비에 저장된 데이터 값 가져오기
   useEffect(() => {
     dispatch(__GetMissingData());
   }, []);
 
-  const { data, loading } = useSelector((state) => state.MissingData);
+  const { data } = useSelector((state) => state.MissingData);
 
   useEffect(() => {
     setNEW(data?.data);
@@ -196,7 +228,6 @@ const KakaoMap = () => {
 
           const data = { km: distance, name: "catchdetail" };
 
-        
           const newItem = {
             ...data,
             ...item,
@@ -279,7 +310,7 @@ const KakaoMap = () => {
         ></MarkerModal>
         <FloatingPetwork />
         <CurrentLocationBtn onClick={onClickMoveToCurrentLocation}>
-          <img src={currentLocationimg} />
+          <img src={currentLocationimg} alt="currentLocationimg" />
         </CurrentLocationBtn>
         {markerInfoTabToggle === false ? null : (
           <MapTabInfo>

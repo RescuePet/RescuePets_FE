@@ -63,6 +63,7 @@ const Comment = ({ item }) => {
         <UserInfo>
           <UserImg
             src={item.profileImage !== null ? item.profileImage : profileIcon}
+            alt="userimg"
           />
           <UserBox>
             <UserName>{item.userNickName}</UserName>

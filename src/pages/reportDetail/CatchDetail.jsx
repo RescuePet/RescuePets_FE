@@ -271,7 +271,7 @@ const SightingDetail = () => {
       <InfoContainer>
         <InfoWrapper>
           <BotyTitleWrapper>
-            <BodyTitleSvg src={locationSvg} />
+            <BodyTitleSvg src={locationSvg} alt="locationSvg" />
             <BodyTitleText>위치</BodyTitleText>
           </BotyTitleWrapper>
           <ContentTextWrapper>
@@ -280,7 +280,7 @@ const SightingDetail = () => {
         </InfoWrapper>
         <InfoWrapper>
           <BotyTitleWrapper>
-            <BodyTitleSvg src={time} />
+            <BodyTitleSvg src={time} alt="time" />
             <BodyTitleText>발견일시</BodyTitleText>
           </BotyTitleWrapper>
           <ContentTextWrapper>
@@ -295,7 +295,7 @@ const SightingDetail = () => {
         {catchPostDetail.specialMark && (
           <InfoWrapper>
             <BotyTitleWrapper>
-              <BodyTitleSvg src={informationIcon} />
+              <BodyTitleSvg src={informationIcon} alt="informationIcon" />
               <BodyTitleText>특징</BodyTitleText>
             </BotyTitleWrapper>
             <ContentTextWrapper>

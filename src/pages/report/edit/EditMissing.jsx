@@ -214,9 +214,15 @@ const EditMissing = () => {
         : formData.append("contact", data.number);
     }
 
-    imageFormData.map((img) => {
-      formData.append("postImages", img);
-    });
+    {
+      imageFormData == ""
+        ? missingPostDetail?.postImages.map((img) => {
+            formData.append("postImages", img);
+          })
+        : imageFormData.map((img) => {
+            formData.append("postImages", img);
+          });
+    }
 
     toggleModal();
     const number = missingPostDetail.id;

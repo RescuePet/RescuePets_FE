@@ -7,7 +7,6 @@ import spinnerImg from "../asset/Spinner/spinner.png"
 export const Spinner = () => {
   return (
     <LoadingBackBg>
-
         <LoadingInRound >
             <LoadingInRound2>
                 <LoadingInRound3>

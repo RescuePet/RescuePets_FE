@@ -74,7 +74,6 @@ const Home = () => {
   const { adoptionPage, adoptionLists } = useSelector(
     (state) => state.adoption
   );
-
   const {
     publicSearchMode,
     publicSearchLists,

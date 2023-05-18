@@ -97,7 +97,7 @@ export function SseAlertModal(props) {
     <>
       <Modal isOpen={props.isOpen} onClose={props.toggle}>
         <ModalSEEMsgContainer>
-          <img src={ModalImg} />
+          <img src={ModalImg} alt="modalImg" />
           <h2>{props.children}</h2>
         </ModalSEEMsgContainer>
       </Modal>

@@ -35,7 +35,6 @@ const EditCatch = () => {
     formState: { errors },
     reset,
     resetField,
-    watch,
   } = useForm({ mode: "onChange" });
 
   const onClickDeleteValue = (data) => {
@@ -134,6 +133,7 @@ const EditCatch = () => {
   const [editMsg, setEditMsg] = useState("");
 
   const onSubmitEditCatchHandler = (data) => {
+    console.log(data);
     const formData = new FormData();
     formData.append("postType", "CATCH");
     formData.append("upkind", typeID);
@@ -196,10 +196,15 @@ const EditCatch = () => {
         ? formData.append("content", missingPostDetail.content)
         : formData.append("content", data.memo);
     }
-
-    imageFormData.map((img) => {
-      formData.append("postImages", img);
-    });
+    {
+      imageFormData == ""
+        ? missingPostDetail?.postImages.map((img) => {
+            formData.append("postImages", img);
+          })
+        : imageFormData.map((img) => {
+            formData.append("postImages", img);
+          });
+    }
 
     toggleModal();
     const number = missingPostDetail.id;
@@ -221,15 +226,20 @@ const EditCatch = () => {
 
   const SelecteKind = missingPostDetail.upkind;
   const selecteHour = missingPostDetail.happenHour;
+
   return (
     <Layout>
-      <styles.ReportMissingContainer onSubmit={handleSubmit(onSubmitEditCatchHandler)}>
+      <styles.ReportMissingContainer
+        onSubmit={handleSubmit(onSubmitEditCatchHandler)}
+      >
         {/* 컴포넌트  */}
         <Header>내 목격 글 수정 </Header>
 
         <styles.ReportAnimalInfoArea>
           <styles.ReportanimaltypesBox>
-            <styles.ReportanimaltypesTitle>동물 정보 *</styles.ReportanimaltypesTitle>
+            <styles.ReportanimaltypesTitle>
+              동물 정보 *
+            </styles.ReportanimaltypesTitle>
             <styles.ReportanimaltypesSelect>
               <div>
                 <p>종류</p>
@@ -461,7 +471,10 @@ const EditCatch = () => {
               <>
                 {showImages.map((image, index) => (
                   <styles.ReportAnimalPicturePreview key={index}>
-                    <styles.PreviewImage src={image} alt={`${image}-${index}`} />
+                    <styles.PreviewImage
+                      src={image}
+                      alt={`${image}-${index}`}
+                    />
                     <div
                       onClick={() => {
                         onClickDeleteHandler(index);

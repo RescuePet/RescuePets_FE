@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 
 import styled from "styled-components";
 import { FlexAttribute } from "../../../style/Mixin";
@@ -16,33 +16,35 @@ import {
   resetResponseMessage,
 } from "../../../redux/modules/searchSlice";
 
-const Post = ({ item }) => {
+const Post = React.memo(({ item }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const scrapHandler = (e) => {
-    e.stopPropagation();
-    let payload = {
-      page: "home",
-      state: item.isScrap,
-      desertionNo: item.desertionNo,
-    };
-    dispatch(__postAdoptionListScrap(payload));
-    dispatch(publicScrap(payload));
-  };
+  const scrapHandler = useCallback(
+    (e) => {
+      e.stopPropagation();
+      let payload = {
+        page: "home",
+        state: item.isScrap,
+        desertionNo: item.desertionNo,
+      };
+      dispatch(__postAdoptionListScrap(payload));
+      dispatch(publicScrap(payload));
+    },
+    [dispatch, item.desertionNo, item.isScrap]
+  );
 
   useEffect(() => {
-    return () => {
-      dispatch(resetResponseMessage());
-    };
-  }, []);
+    const reset = () => dispatch(resetResponseMessage());
+    return reset;
+  }, [dispatch]);
 
   return (
     <PostContainer
       onClick={() => navigate(`/adoptiondetail/${item.desertionNo}`)}
     >
       <ThunbnailWrapper image={item.filename}>
-        <Tuumbnail src={item.filename}></Tuumbnail>
+        <Tuumbnail src={item.filename} alt="filename"></Tuumbnail>
         <State category={"adoptionKind"}>{item.data.refinedata.kind}</State>
       </ThunbnailWrapper>
       <InformationWrapper>
@@ -79,7 +81,7 @@ const Post = ({ item }) => {
       </InformationWrapper>
     </PostContainer>
   );
-};
+});
 
 const PostContainer = styled.div`
   position: relative;

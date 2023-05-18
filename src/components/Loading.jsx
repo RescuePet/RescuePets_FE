@@ -8,7 +8,7 @@ export const Loading = () => {
       <LoadingInRound>
         <LoadingInRound2>
           <LoadingInRound3>
-            <LoadingInRound4 src={spinnerImg} />
+            <LoadingInRound4 src={spinnerImg} alt="spinnerImg" />
           </LoadingInRound3>
         </LoadingInRound2>
       </LoadingInRound>

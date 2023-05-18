@@ -9,42 +9,33 @@ const SeleteTab = ({
   // onChangeNickname,
 }) => {
   const [currentGenderTab, setCurrentGenderTab] = useState(2);
-  const [currentNeuteredTab, setCurrentNeuteredTab] = useState(2);
+  const [currentNeuteredTab, setCurrentNeuteredTab] = useState(0);
   // const [currentNicknameTab, setCurrentNicknameTab] = useState(0);
 
   // Edit 일때 값이 캐싱 되는 현상
   useEffect(() => {
-    if (tabValue?.GenderNum === "MALE") {
-      setCurrentGenderTab(0);
-    } else if (tabValue?.GenderNum === "FEMALE") {
-      setCurrentGenderTab(1);
-    } else if (tabValue?.GenderNum === "UNKNOWN") {
-      setCurrentGenderTab(2);
-    } else if (tabValue?.GenderNum == "") {
-      setCurrentGenderTab(0);
-    }
-    if (tabValue?.neuterYn === "YES") {
-      setCurrentNeuteredTab(0);
-    } else if (tabValue?.neuterYn === "NO") {
-      setCurrentNeuteredTab(1);
-    } else if (tabValue?.neuterYn === "UNKNOWN") {
-      setCurrentNeuteredTab(2);
-    } else if (tabValue?.neuterYn == "") {
-      setCurrentNeuteredTab(0);
-    }
-    // if (tabValue?.ninkCheck == true) {
-    //   setCurrentNicknameTab(0);
-    // } else if (tabValue?.ninkCheck == false) {
-    //   setCurrentNicknameTab(1);
-    // } else if (tabValue?.ninkCheck == "") {
-    //   setCurrentNicknameTab(0);
-    // }
-    else {
-      // console.log("에러");
+    if (tabValue?.neuterYn == "YES") {
+      return setCurrentNeuteredTab(0);
+    } else if (tabValue?.neuterYn == "NO") {
+      return setCurrentNeuteredTab(1);
+    } else if (tabValue?.neuterYn == "UNKNOWN") {
+      return setCurrentNeuteredTab(2);
     }
   }, []);
 
-  const selectMGenderHandler = (index) => {
+  useEffect(() => {
+    if (tabValue?.GenderNum === "MALE") {
+      return setCurrentGenderTab(0);
+    } else if (tabValue?.GenderNum === "FEMALE") {
+      return setCurrentGenderTab(1);
+    } else if (tabValue?.GenderNum === "UNKNOWN") {
+      return setCurrentGenderTab(2);
+    }
+  }, []);
+
+
+  
+  const selectGenderHandler = (index) => {
     setCurrentGenderTab(index);
     onChangeGender(SeletegenderArr[index].value);
   };
@@ -73,7 +64,7 @@ const SeleteTab = ({
                 className={
                   index === currentGenderTab ? "submenu focused" : "submenu"
                 }
-                onClick={() => selectMGenderHandler(index)}
+                onClick={() => selectGenderHandler(index)}
               >
                 {el.gender}
               </li>
@@ -86,7 +77,7 @@ const SeleteTab = ({
             <p>중성화</p>
           </ReportAnimalInfoCheckBoxTitle>
           <ReportAnimalInfoCheckBoxSelete>
-            {seleteneuteredArr.map((el, index) => (
+            {seleteneuteredArr?.map((el, index) => (
               <li
                 key={index}
                 className={

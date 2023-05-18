@@ -274,7 +274,7 @@ const MissingDetail = () => {
       <InfoContainer>
         <InfoWrapper>
           <BodyTitleWrapper>
-            <BodyTitleSvg src={locationSvg} />
+            <BodyTitleSvg src={locationSvg} alt="locationSvg" />
             <BodyTitleText>위치</BodyTitleText>
           </BodyTitleWrapper>
           <ContentTextWrapper>
@@ -283,7 +283,7 @@ const MissingDetail = () => {
         </InfoWrapper>
         <InfoWrapper>
           <BodyTitleWrapper>
-            <BodyTitleSvg src={time} />
+            <BodyTitleSvg src={time} alt="time" />
             <BodyTitleText>실종일시</BodyTitleText>
           </BodyTitleWrapper>
           <ContentTextWrapper>
@@ -298,7 +298,7 @@ const MissingDetail = () => {
         {missingPostDetail.specialMark && (
           <InfoWrapper>
             <BodyTitleWrapper>
-              <BodyTitleSvg src={informationIcon} />
+              <BodyTitleSvg src={informationIcon} alt="informationIcon" />
               <BodyTitleText>특징</BodyTitleText>
             </BodyTitleWrapper>
             <ContentTextWrapper>
@@ -320,7 +320,7 @@ const MissingDetail = () => {
         {missingPostDetail.gratuity && (
           <InfoWrapper>
             <BodyTitleWrapper>
-              <BodyTitleSvg src={gratuity} />
+              <BodyTitleSvg src={gratuity} alt="gratuity" />
               <BodyTitleText>사례금</BodyTitleText>
             </BodyTitleWrapper>
             <ContentTextWrapper>

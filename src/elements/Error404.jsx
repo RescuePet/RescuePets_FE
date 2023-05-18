@@ -5,7 +5,7 @@ import { FlexAttribute } from "../style/Mixin";
 const Error404 = ({ srcUrl }) => {
   return (
     <ErrorContainer>
-      <ErrorImage src={srcUrl} />
+      <ErrorImage src={srcUrl} alt="NotFoundImg"/>
     </ErrorContainer>
   );
 };

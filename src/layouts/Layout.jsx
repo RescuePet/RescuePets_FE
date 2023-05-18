@@ -36,21 +36,20 @@ const Layout = ({ children }) => {
   const ref = useRef(null);
   const token = Cookies.get("Token");
 
-
   const [data, setData] = useState([]);
   let eventSource = undefined;
 
   useEffect(() => {
-      eventSource = new EventSourcePolyfill(
-        `${process.env.REACT_APP_SIGN_TEST}/sse/`,
-        {
-          headers: {
-            Authorization: token,
-          },
-          heartbeatTimeout: 2000000,
-          withCredentials: true,
-        }
-      );
+    eventSource = new EventSourcePolyfill(
+      `${process.env.REACT_APP_SIGN_TEST}/sse/`,
+      {
+        headers: {
+          Authorization: token,
+        },
+        heartbeatTimeout: 2000000,
+        withCredentials: true,
+      }
+    );
 
     eventSource.onmessage = (event) => {
       const checkJSON = event.data.split(" ")[0];
@@ -142,13 +141,13 @@ const Layout = ({ children }) => {
             location.pathname.split("/")[1] !== "editmissing" &&
             location.pathname.split("/")[1] !== "chatroom" && <Footer></Footer>}
         </MobileLayout>
-        <LogoImage src={Logo} />
-        <RoadLeftImage src={RoadLeft} />
-        <DogImage src={PopDog} />
-        <MarkerImage src={Marker} />
-        <SoleImage src={Sole} />
-        <RoadRightImage src={RoadRight} />
-        <PeopleImage src={People} />
+        <LogoImage src={Logo} alt="logo" />
+        <RoadLeftImage src={RoadLeft} alt="RoadLeft" />
+        <DogImage src={PopDog} alt="PopDog" />
+        <MarkerImage src={Marker} alt="Marker" />
+        <SoleImage src={Sole} alt="Sole" />
+        <RoadRightImage src={RoadRight} alt="RoadRight" />
+        <PeopleImage src={People} alt="People" />
       </WebLayout>
     </>
   );

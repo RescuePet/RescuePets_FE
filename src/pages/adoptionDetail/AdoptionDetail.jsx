@@ -158,7 +158,7 @@ const AdoptionDetail = () => {
     <Layout>
       <ScrollToTop />
       <ImageContainer image={adoptionDetail.popfile}>
-        <Image src={adoptionDetail.popfile} />
+        <Image src={adoptionDetail.popfile} alt="adoptionDetailImg" />
         <BackButton onClick={() => navigate(-1)} />
         {adoptionDetail.isScrap ? (
           <ScrapStateTrue onClick={scrapHandler} />
