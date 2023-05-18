@@ -133,7 +133,6 @@ const EditCatch = () => {
   const [editMsg, setEditMsg] = useState("");
 
   const onSubmitEditCatchHandler = (data) => {
-    console.log(data);
     const formData = new FormData();
     formData.append("postType", "CATCH");
     formData.append("upkind", typeID);

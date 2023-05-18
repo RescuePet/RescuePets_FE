@@ -139,13 +139,13 @@ const PetworkList = () => {
       dispatch(__getCatchPost(catchPayloadSettings));
     }
     if ((missingInView || catchInView) && postSearchMode) {
-      console.log("scroll page", searchPage);
+      // console.log("scroll page", searchPage);
       dispatch(__getPostSearch(petworkSearchPayload));
     }
   }, [missingInView, catchInView]);
 
   const searchPostHandler = (value) => {
-    console.log(searchPage);
+    // console.log(searchPage);
     const payload = {
       page: 1,
       size: 15,
@@ -189,7 +189,7 @@ const PetworkList = () => {
   };
 
   const searchKindHandler = (kindCategory) => {
-    console.log(searchPage);
+    // console.log(searchPage);
     const payload = {
       page: 1,
       size: 15,

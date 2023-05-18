@@ -19,7 +19,7 @@ const DeleteList = () => {
     dispatch(__getSoftDeleteList(payload));
   }, []);
 
-  console.log(softDeleteList);
+  // console.log(softDeleteList);
 
   return (
     <Layout>
