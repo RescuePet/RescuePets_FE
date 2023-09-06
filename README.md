@@ -106,7 +106,7 @@
 <details>
 <summary>자세하기 더보기</summary>
 <br>
-<img width: "800px" src="https://user-images.githubusercontent.com/95469708/233387608-c089a819-6d7b-4edd-9f52-0cf81c714b6d.gif"/>
+<img width: "800px" src="https://github.com/Jihun1215/MEPO/assets/95469708/3abb00db-a0e6-43d4-9b88-f1d73648a746"/>
 </details>
 
 ### 6. 실시간 알림 기능
